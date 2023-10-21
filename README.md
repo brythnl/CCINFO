@@ -1,75 +1,17 @@
-# Nuxt 3 Minimal Starter
+# CCINFO Development
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Development Environment Setup
+---
+Make sure to already have Docker Engine and Docker Compose installed.
 
-## Setup
-
-Make sure to install the dependencies:
-
+1. Clone the repository
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+git clone git@github.com:brythnl/CCINFO.git
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
+2. Start the local development environment
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+docker compose up
 ```
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+3. Access local development server on http://localhost:3000
