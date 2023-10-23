@@ -1,5 +1,15 @@
+<script setup>
+  import { ref } from 'vue'
+
+  const msg = ref('Hello World')
+</script>
+
 <template>
-  <div>
-    <NuxtWelcome />
-  </div>
+  <NuxtLayout>
+    <v-app>
+      <v-container>
+        <v-text-field v-model="msg" />
+      </v-container>
+    </v-app>
+  </NuxtLayout>
 </template>
