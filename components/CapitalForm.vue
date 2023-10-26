@@ -1,11 +1,26 @@
 <script lang="ts" setup>
-const beginDate = ref("");
-const endDate = ref("");
-const interestRate = ref(0);
-const interestCalculation = ref("");
-const savingRate = ref(0);
 
-function getEndCapital() {}
+const API_TOKEN = ""
+
+const capitalInput = reactive({
+  beginDate: "",
+  endDate: "",
+  interestRate: 0,
+  interestCalculation: "",
+  savingRate: 0
+})
+
+async function getEndCapital() {
+  const { data } = await useFetch('https://demo.portal.aixigo.cloud:443/finance-math/capital', {
+    query: { begin: capitalInput.beginDate, end: capitalInput.endDate, interestRate: capitalInput.interestRate, interestCalculation: capitalInput.interestCalculation, savingRate: capitalInput.savingRate },
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${API_TOKEN}`
+    }
+  })
+  console.log(toRaw(data.value))
+}
+
 </script>
 
 <template>
@@ -13,28 +28,24 @@ function getEndCapital() {}
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
-          <v-date-picker
-            v-model="beginDate"
-            input-text="Begin date"
-            input-mode="keyboard"
-            hide-actions
-          ></v-date-picker>
+          <input
+            type="date"
+            v-model="capitalInput.beginDate"
+          />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="4">
-          <v-date-picker
-            v-model="endDate"
-            input-text="End date"
-            input-mode="keyboard"
-            hide-actions
-          ></v-date-picker>
+          <input
+            type="date"
+            v-model="capitalInput.endDate"
+          />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="4">
           <v-text-field
-            v-model="interestRate"
+            v-model="capitalInput.interestRate"
             label="Interest rate"
             required
             hide-details
@@ -43,11 +54,10 @@ function getEndCapital() {}
           ></v-text-field>
         </v-col>
       </v-row>
-
       <v-row>
         <v-col cols="12" md="4">
           <v-select
-            v-model="interestCalculation"
+            v-model="capitalInput.interestCalculation"
             clearable
             label="Interest calculation"
             :items="['YEARLY', 'MONTHLY', 'DAILY']"
@@ -57,7 +67,7 @@ function getEndCapital() {}
       <v-row>
         <v-col cols="12" md="4">
           <v-text-field
-            v-model="savingRate"
+            v-model="capitalInput.savingRate"
             label="Saving rate"
             required
             hide-details
