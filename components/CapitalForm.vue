@@ -10,6 +10,7 @@ const capitalInput = reactive({
   savingRate: 0
 })
 
+const emit= defineEmits(['calculated'])
 async function getEndCapital() {
   const { data } = await useFetch('https://demo.portal.aixigo.cloud:443/finance-math/capital', {
     query: { begin: capitalInput.beginDate, end: capitalInput.endDate, interestRate: capitalInput.interestRate, interestCalculation: capitalInput.interestCalculation, savingRate: capitalInput.savingRate },
@@ -18,7 +19,9 @@ async function getEndCapital() {
       Authorization: `Bearer ${API_TOKEN}`
     }
   })
+  
   console.log(toRaw(data.value))
+  emit('calculated',toRaw(data.value))
 }
 
 </script>
