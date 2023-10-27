@@ -21,8 +21,8 @@ const capitalData = ref({
   capitalSeries: [0],
 });
 
-function storeCapitalData(fetchedCapitalData: CapitalData){
-  capitalData.value = fetchedCapitalData
+function storeCapitalData(fetchedCapitalData: CapitalData) {
+  capitalData.value = fetchedCapitalData;
 }
 
 </script>
@@ -31,22 +31,22 @@ function storeCapitalData(fetchedCapitalData: CapitalData){
   <v-container class="h-100 ma-10">
     <v-row class="h-100">
       <v-col cols="3" class="h-100 rounded-lg bg-cyan-darken-3 ma-2">
-    <div class="w-100 h-100">
-      <capital-form @calculated="calculateForm"/>
-    </div>
-  </v-col>
-  <v-col class="h-100 rounded-lg bg-cyan-darken-3 ma-2">
-    <div class="w-100 h-100">
-      <capital-graph/>
-    </div>
-  </v-col>
-    <v-col class="h-100 rounded-lg bg-cyan-darken-3 ma-2">
-    <div class="w-100 h-100">
-      <capital-output :data="newResult"/>
-    </div>
-  </v-col>
-  </v-row>
-</v-container>
+        <div class="w-100 h-100">
+          <capital-form @fetch="storeCapitalData" />
+        </div>
+      </v-col>
+      <v-col class="h-100 rounded-lg bg-cyan-darken-3 ma-2">
+        <div class="w-100 h-100">
+          <capital-graph />
+        </div>
+      </v-col>
+      <v-col class="h-100 rounded-lg bg-cyan-darken-3 ma-2">
+        <div class="w-100 h-100">
+          <capital-output :capital-data="capitalData" />
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <style scoped></style>
