@@ -1,15 +1,30 @@
 <script setup lang="ts">
-
 export interface CapitalData {
-    capitalResult: {
-      capitalAmount: number;
-      savingRate: number;
-      startInvestment: number;
-      interestRate: number;
-      end: string;
-    },
-    capitalSeries: number[]
+  capitalResult: {
+    capitalAmount: number;
+    savingRate: number;
+    startInvestment: number;
+    interestRate: number;
+    end: string;
+  };
+  capitalSeries: number[];
 }
+
+const capitalData = ref({
+  capitalResult: {
+    capitalAmount: 0,
+    savingRate: 0,
+    startInvestment: 0,
+    interestRate: 0,
+    end: "2020-01-01",
+  },
+  capitalSeries: [0],
+});
+
+function storeCapitalData(fetchedCapitalData: CapitalData){
+  capitalData.value = fetchedCapitalData
+}
+
 </script>
 
 <template>
