@@ -45,18 +45,26 @@ async function fetchCapitalData() {
   <v-form>
     <v-container>
       <v-row>
-        <v-col>
-          <input
-            type="date"
-            v-model="capitalInput.beginDate"
-          />
-        </v-col>
+        <label for="capital-begin-date">Begin Date</label>
       </v-row>
       <v-row>
         <v-col>
           <input
+            id="capital-begin-date"
+            v-model="capitalInput.beginDate"
             type="date"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <label for="capital-end-date">End Date</label>
+      </v-row>
+      <v-row>
+        <v-col>
+          <input
+            id="capital-end-date"
             v-model="capitalInput.endDate"
+            type="date"
           />
         </v-col>
       </v-row>
@@ -64,7 +72,7 @@ async function fetchCapitalData() {
         <v-col>
           <v-text-field
             v-model="capitalInput.interestRate"
-            label="Interest rate"
+            label="Interest Rate"
             required
             hide-details
             type="number"
@@ -73,20 +81,20 @@ async function fetchCapitalData() {
         </v-col>
       </v-row>
       <v-row>
-        <v-col >
+        <v-col>
           <v-select
             v-model="capitalInput.interestCalculation"
             clearable
-            label="Interest calculation"
+            label="Interest Calculation"
             :items="['YEARLY', 'MONTHLY', 'DAILY']"
           ></v-select>
         </v-col>
       </v-row>
       <v-row>
-        <v-col >
+        <v-col>
           <v-text-field
             v-model="capitalInput.savingRate"
-            label="Saving rate"
+            label="Saving Rate"
             required
             hide-details
             type="number"
@@ -95,18 +103,16 @@ async function fetchCapitalData() {
         </v-col>
       </v-row>
       <v-row>
-        <v-col >
+        <v-col>
           <v-btn
-            :disabled="loading"
-            :loading="loading"
             block
             class="text-none mb-4"
             color="indigo-darken-3"
             size="x-large"
             variant="flat"
-            @click="getEndCapital"
+            @click="fetchCapitalData"
           >
-            Get end capital
+            Calculate
           </v-btn>
         </v-col>
       </v-row>
