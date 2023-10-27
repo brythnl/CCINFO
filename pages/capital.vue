@@ -1,10 +1,14 @@
-<script lang="ts" setup>
-import { ref } from 'vue'
-//const result = ref();
-const newResult = ref();
-function calculateForm(res:[]){
-  newResult.value=res;
-  //console.log(newResult.value[]);
+<script setup lang="ts">
+
+export interface CapitalData {
+    capitalResult: {
+      capitalAmount: number;
+      savingRate: number;
+      startInvestment: number;
+      interestRate: number;
+      end: string;
+    },
+    capitalSeries: number[]
 }
 </script>
 
