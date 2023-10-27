@@ -1,14 +1,17 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+import type { CapitalData } from "~/pages/capital.vue";
 
-const API_TOKEN = ""
+const emit = defineEmits<{
+  (e: "fetch", capitalData: CapitalData): void;
+}>();
 
 const capitalInput = reactive({
   beginDate: "",
   endDate: "",
   interestRate: 0,
   interestCalculation: "",
-  savingRate: 0
-})
+  savingRate: 0,
+});
 
 const emit= defineEmits(['calculated'])
 async function getEndCapital() {
