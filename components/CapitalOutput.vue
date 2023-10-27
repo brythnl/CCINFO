@@ -1,7 +1,9 @@
-<script lang="ts" setup>
-const props = defineProps({
-  data:[]
-});
+<script setup lang="ts">
+import type { CapitalData } from "~/pages/capital.vue";
+
+defineProps<{
+  capitalData: CapitalData;
+}>();
 </script>
 
 <template>
