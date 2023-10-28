@@ -52,6 +52,7 @@ async function fetchCapitalData() {
             required
             hide-details
             type="date"
+            class="bg-white rounded"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -63,6 +64,7 @@ async function fetchCapitalData() {
             required
             hide-details
             type="date"
+            class="bg-white rounded"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -75,6 +77,7 @@ async function fetchCapitalData() {
             hide-details
             type="number"
             step="0.01"
+            class="bg-white rounded"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -85,6 +88,7 @@ async function fetchCapitalData() {
             clearable
             label="Interest Calculation"
             :items="['YEARLY', 'MONTHLY', 'DAILY']"
+            class="bg-white rounded"
           ></v-select>
         </v-col>
       </v-row>
@@ -97,6 +101,7 @@ async function fetchCapitalData() {
             hide-details
             type="number"
             step="0.01"
+            class="bg-white rounded"
           ></v-text-field>
         </v-col>
       </v-row>
