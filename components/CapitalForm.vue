@@ -30,7 +30,7 @@ async function fetchCapitalData() {
         accept: "application/json",
         Authorization: `Bearer ${API_TOKEN}`,
       },
-    },
+    }
   );
 
   console.log(toRaw(data.value));
@@ -45,27 +45,25 @@ async function fetchCapitalData() {
   <v-form>
     <v-container>
       <v-row>
-        <label for="capital-begin-date">Begin Date</label>
-      </v-row>
-      <v-row>
         <v-col>
-          <input
-            id="capital-begin-date"
+          <v-text-field
             v-model="capitalInput.beginDate"
+            label="Begin Date"
+            required
+            hide-details
             type="date"
-          />
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
-        <label for="capital-end-date">End Date</label>
-      </v-row>
-      <v-row>
         <v-col>
-          <input
-            id="capital-end-date"
+          <v-text-field
             v-model="capitalInput.endDate"
+            label="End Date"
+            required
+            hide-details
             type="date"
-          />
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
