@@ -38,9 +38,9 @@ const formTab = ref("");
           <div class="w-100">
             <v-card-text class="bg-cyan-darken-3">
               <v-window v-model="formTab">
-                <v-window-item value="saving"><saving-form/></v-window-item>
-                <v-window-item value="withdraw"><withdraw-form/></v-window-item>
-                <v-window-item value="comb"><combo-form/></v-window-item>
+                <v-window-item value="saving"><sparplan-form/></v-window-item>
+                <v-window-item value="withdraw"><entnahme-form/></v-window-item>
+                <v-window-item value="comb"><kombi-form/></v-window-item>
               </v-window>
             </v-card-text>
           </div>
