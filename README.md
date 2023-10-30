@@ -1,6 +1,18 @@
 # CCINFO Development
 
 ## Development Environment Setup
+### Without Docker:
+1. Install npm packages
+```bash
+npm i
+```
+
+2. Run development server
+```bash
+npm run dev
+```
+
+### With Docker:
 Make sure to already have Docker Engine and Docker Compose installed.
 
 1. Clone the repository

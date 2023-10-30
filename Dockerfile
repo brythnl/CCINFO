@@ -6,7 +6,7 @@ RUN apt-get update && apt-get upgrade
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install && npm cache clean force
 
 COPY . .
 
