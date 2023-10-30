@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 const toFind = ref("")
+const dateTime = new Date().toISOString().split('T')[0].toString().replace('/T/','');
 const savingInput=reactive({
   startCapital:0,
   savingRate:0,
   interestRate:0,
+  startDate:dateTime,
   endDate:"",
   interestCalculation: "YEARLY",
   endCapital:0,
@@ -19,6 +21,7 @@ function getData(){
   savingInput.interestRate = savingInput.interestRate/100;
   console.log(savingInput);
 }
+
 </script>
 
 <template>
