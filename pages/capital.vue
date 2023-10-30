@@ -24,16 +24,27 @@ const capitalData = ref({
 function storeCapitalData(fetchedCapitalData: CapitalData) {
   capitalData.value = fetchedCapitalData;
 }
-
+const formTab = ref("");
 </script>
 
 <template>
   <v-container class="h-100 ma-10">
     <v-row class="h-100">
       <v-col cols="3" class="h-100 rounded-lg bg-cyan-darken-3 ma-2">
-        <div class="w-100 h-100">
-          <capital-form @fetch="storeCapitalData" />
-        </div>
+        <v-card flat>
+          <div>
+            <form-tabs @tabUpdate="(n)=>formTab=n"/>
+          </div>
+          <div class="w-100">
+            <v-card-text class="bg-cyan-darken-3">
+              <v-window v-model="formTab">
+                <v-window-item value="saving"><saving-form/></v-window-item>
+                <v-window-item value="withdraw"><withdraw-form/></v-window-item>
+                <v-window-item value="comb"><combo-form/></v-window-item>
+              </v-window>
+            </v-card-text>
+          </div>
+        </v-card>
       </v-col>
       <v-col class="h-100 rounded-lg bg-cyan-darken-3 ma-2">
         <div class="w-100 h-100">
