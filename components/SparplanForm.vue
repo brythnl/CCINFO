@@ -54,7 +54,7 @@ function getData(){
                 <v-img src="~/assets/Information-Icon.png"></v-img>
             </v-avatar>
               Details
-            <v-tooltip activator="parent" location="end">
+            <v-tooltip activator="parent" location="end" class="w-50">
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
                sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
             </v-tooltip>
@@ -81,7 +81,7 @@ function getData(){
                 <v-img src="~/assets/Information-Icon.png"></v-img>
             </v-avatar>
               Details
-            <v-tooltip activator="parent" location="end">
+            <v-tooltip activator="parent" location="end" class="w-50">
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
                sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
             </v-tooltip>
@@ -108,7 +108,7 @@ function getData(){
                 <v-img src="~/assets/Information-Icon.png"></v-img>
             </v-avatar>
               Details
-            <v-tooltip activator="parent" location="end">
+            <v-tooltip activator="parent" location="end" class="w-50">
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
                sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
             </v-tooltip>
@@ -133,7 +133,7 @@ function getData(){
                 <v-img src="~/assets/Information-Icon.png"></v-img>
             </v-avatar>
               Details
-            <v-tooltip activator="parent" location="end">
+            <v-tooltip activator="parent" location="end" class="w-50">
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
                sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
             </v-tooltip>
@@ -159,7 +159,7 @@ function getData(){
                 <v-img src="~/assets/Information-Icon.png"></v-img>
             </v-avatar>
               Details
-            <v-tooltip activator="parent" location="end">
+            <v-tooltip activator="parent" location="end" class="w-50">
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
                sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
             </v-tooltip>
