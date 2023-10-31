@@ -33,8 +33,10 @@ function getData(){
       v-model="toFind"
       @update:model-value="reset">
         <v-row>
-        <v-col>
           <v-radio label="Startkapital (€)" value="startkapital"></v-radio>
+        </v-row>
+        <v-row>
+        <v-col>
           <v-text-field
             v-model="savingInput.startCapital"
             required
@@ -46,10 +48,22 @@ function getData(){
             :disabled="toFind==''||toFind=='startkapital'"
           ></v-text-field>
         </v-col>
+        <v-col cols="3" class="ma-auto">
+          <v-btn style="background-color: inherit;" flat>
+            <v-avatar class="ma-auto">
+                <v-img src="~/assets/Information-Icon.png"></v-img>
+            </v-avatar>
+              Details
+            <v-tooltip activator="parent" location="end">
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+               sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+            </v-tooltip>
+          </v-btn>
+        </v-col>
       </v-row>
+      <v-row><v-radio label="Sparrate (€)" value="sparrate"></v-radio></v-row>
       <v-row>
         <v-col>
-          <v-radio label="Sparrate (€)" value="sparrate"></v-radio>
           <v-text-field
             v-model="savingInput.savingRate"
             required
@@ -61,10 +75,22 @@ function getData(){
             :disabled="toFind==''||toFind=='sparrate'"
           ></v-text-field>
         </v-col>
+        <v-col cols="3" class="ma-auto">
+          <v-btn style="background-color: inherit;" flat>
+            <v-avatar class="ma-auto">
+                <v-img src="~/assets/Information-Icon.png"></v-img>
+            </v-avatar>
+              Details
+            <v-tooltip activator="parent" location="end">
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+               sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+            </v-tooltip>
+          </v-btn>
+        </v-col>
       </v-row>
+      <v-row><v-radio label="Sparzins (%)" value="sparzins"></v-radio></v-row>
       <v-row>
         <v-col>
-          <v-radio label="Sparzins (%)" value="sparzins"></v-radio>
           <v-text-field
             v-model="savingInput.interestRate"
             required
@@ -76,10 +102,22 @@ function getData(){
             :disabled="toFind==''||toFind=='sparzins'"
           ></v-text-field>
         </v-col>
+        <v-col cols="3" class="ma-auto">
+          <v-btn style="background-color: inherit;" flat>
+            <v-avatar class="ma-auto">
+                <v-img src="~/assets/Information-Icon.png"></v-img>
+            </v-avatar>
+              Details
+            <v-tooltip activator="parent" location="end">
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+               sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+            </v-tooltip>
+          </v-btn>
+        </v-col>
       </v-row>
+      <v-row><v-radio label="Enddatum" value="enddatum"></v-radio></v-row>
       <v-row>
-        <v-col>
-          <v-radio label="Enddatum" value="enddatum"></v-radio>
+        <v-col>      
           <v-text-field
             v-model="savingInput.endDate"
             required
@@ -89,10 +127,22 @@ function getData(){
             :disabled="toFind==''||toFind=='enddatum'"
           ></v-text-field>
         </v-col>
+        <v-col cols="3" class="ma-auto">
+          <v-btn style="background-color: inherit;" flat>
+            <v-avatar class="ma-auto">
+                <v-img src="~/assets/Information-Icon.png"></v-img>
+            </v-avatar>
+              Details
+            <v-tooltip activator="parent" location="end">
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+               sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+            </v-tooltip>
+          </v-btn>
+        </v-col>
       </v-row>
+      <v-row><v-radio label="Endkapital (€)" value="endkapital"></v-radio></v-row>
       <v-row>
         <v-col>
-          <v-radio label="Endkapital (€)" value="endkapital"></v-radio>
           <v-text-field
             v-model="savingInput.endCapital"
             hide-details
@@ -102,6 +152,18 @@ function getData(){
             class="bg-white rounded"
             :disabled="toFind==''||toFind=='endkapital'"
           ></v-text-field>
+        </v-col>
+        <v-col cols="3" class="ma-auto">
+          <v-btn style="background-color: inherit;" flat>
+            <v-avatar class="ma-auto">
+                <v-img src="~/assets/Information-Icon.png"></v-img>
+            </v-avatar>
+              Details
+            <v-tooltip activator="parent" location="end">
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+               sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+            </v-tooltip>
+          </v-btn>
         </v-col>
       </v-row>
     </v-radio-group>

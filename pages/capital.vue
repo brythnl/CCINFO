@@ -28,32 +28,33 @@ const formTab = ref("");
 </script>
 
 <template>
-  <v-container class="h-100 ma-10">
+  <v-container class="h-100">
     <v-row class="h-100">
-      <v-col cols="3" class="h-100 rounded-lg bg-cyan-darken-3 ma-2">
-        <v-card flat>
-          <div>
-            <form-tabs @tabUpdate="(n)=>formTab=n"/>
-          </div>
-          <div class="w-100">
-            <v-card-text class="bg-cyan-darken-3">
-              <v-window v-model="formTab">
-                <v-window-item value="saving"><sparplan-form/></v-window-item>
-                <v-window-item value="withdraw"><entnahme-form/></v-window-item>
-                <v-window-item value="comb"><kombi-form/></v-window-item>
-              </v-window>
-            </v-card-text>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col class="h-100 rounded-lg bg-cyan-darken-3 ma-2">
-        <div class="w-100 h-100">
+      <v-col cols="4" ld="4" class="h-100">
+        <div class="h-100 bg-cyan-darken-3 rounded-lg">
+          <v-card flat>
+            <div>
+              <form-tabs @tabUpdate="(n)=>formTab=n"/>
+            </div>
+            <div class="w-100">
+              <v-card-text class="bg-cyan-darken-3">
+                <v-window v-model="formTab">
+                  <v-window-item value="saving"><sparplan-form/></v-window-item>
+                  <v-window-item value="withdraw"><entnahme-form/></v-window-item>
+                  <v-window-item value="comb"><kombi-form/></v-window-item>
+                </v-window>
+              </v-card-text>
+            </div>
+          </v-card>
+        </div>
+      </v-col >
+      <v-col cols="4" md="4" class="h-100">
+        <div class="h-100 bg-cyan-darken-3 px-4 rounded-lg">
           <capital-graph />
         </div>
       </v-col>
-      <v-col class="h-100 rounded-lg bg-cyan-darken-3 ma-2">
-        <div class="w-100 h-100">
-          <capital-output :capital-data="capitalData" />
+      <v-col cols="4" md="4" class="h-100">
+        <div class="h-100 bg-cyan-darken-3 rounded-lg">
         </div>
       </v-col>
     </v-row>
