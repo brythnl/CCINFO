@@ -28,16 +28,16 @@ const formTab = ref("");
 </script>
 
 <template>
-  <v-container class="h-100" fluid="true">
+  <v-container class="h-100 ma-auto" fluid="true">
     <v-row class="h-100">
       <v-col cols="4" ld="4" class="h-100">
-        <div class="h-100 bg-cyan-darken-3 rounded-lg">
+        <div class="h-100 rounded-lg" style="background-color: #F1F9FF; border: solid 3px;">
           <v-card flat>
             <div>
               <form-tabs @tabUpdate="(n)=>formTab=n"/>
             </div>
             <div class="w-100">
-              <v-card-text class="bg-cyan-darken-3">
+              <v-card-text style="background-color: #F1F9FF;">
                 <v-window v-model="formTab">
                   <v-window-item value="saving"><sparplan-form/></v-window-item>
                   <v-window-item value="withdraw"><entnahme-form/></v-window-item>

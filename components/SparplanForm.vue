@@ -60,12 +60,14 @@ function determineEndpoint(item: string){
       <v-radio-group 
       v-model="toFind"
       @update:model-value="reset">
-        <v-row>
+        <v-row >
           <v-radio label="Startkapital (€)" value="startkapital" @click="determineEndpoint('startcapital')"></v-radio>
         </v-row>
         <v-row>
-        <v-col>
+        <v-col class="pa-0">
           <v-text-field
+            style="border: 3px solid #00476B;"
+            density="compact"
             v-model="savingInput.startCapital"
             required
             hide-details
@@ -92,8 +94,10 @@ function determineEndpoint(item: string){
       <v-row>
         <v-radio label="Sparrate (€)" value="sparrate" @click="determineEndpoint('savingrate')"></v-radio></v-row>
       <v-row>
-        <v-col>
+        <v-col class="pa-0">
           <v-text-field
+            style="border: 3px solid #00476B;"
+            density="compact"
             v-model="savingInput.savingRate"
             required
             hide-details
@@ -120,8 +124,10 @@ function determineEndpoint(item: string){
       <v-row>
         <v-radio label="Sparzins (%)" value="sparzins" @click="determineEndpoint('interestrate')"></v-radio></v-row>
       <v-row>
-        <v-col>
+        <v-col class="pa-0">
           <v-text-field
+            style="border: 3px solid #00476B;"
+            density="compact"
             v-model="savingInput.interestRate"
             required
             hide-details
@@ -147,8 +153,10 @@ function determineEndpoint(item: string){
       </v-row>
       <v-row><v-radio label="Enddatum" value="enddatum" @click="determineEndpoint('enddate')"></v-radio></v-row>
       <v-row>
-        <v-col>      
+        <v-col class="pa-0">      
           <v-text-field
+            style="border: 3px solid #00476B;"
+            density="compact"
             v-model="savingInput.endDate"
             required
             hide-details
@@ -172,8 +180,10 @@ function determineEndpoint(item: string){
       </v-row>
       <v-row><v-radio label="Endkapital (€)" value="endkapital" @click="determineEndpoint('endcapital')"></v-radio></v-row>
       <v-row>
-        <v-col>
+        <v-col class="pa-0">
           <v-text-field
+            style="border: 3px solid #00476B;"
+            density="compact"
             v-model="savingInput.endCapital"
             hide-details
             placeholder="Endkapital (€)"
@@ -202,7 +212,7 @@ function determineEndpoint(item: string){
           <v-btn
             block
             class="text-none mb-4"
-            color="indigo-darken-3"
+            color="#00476B"
             size="x-large"
             variant="flat"
             @click="getData"
