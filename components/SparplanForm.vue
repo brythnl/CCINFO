@@ -22,6 +22,34 @@ function getData(){
   console.log(savingInput);
 }
 
+function determineEndpoint(item: string){
+  let endpoint: string ='';
+  switch(item){
+    case 'startcapital':{
+      endpoint = '/saving-start-value';
+      break;
+    }
+    case 'savingrate':{
+      endpoint = '/saving-rate';
+      break;
+    }
+    case 'interestrate':{
+      endpoint = '/interest-rate';
+      break;
+    }
+    case 'enddate':{
+      endpoint = '/end-date';
+      break;
+    }
+    case 'endcapital':{
+      endpoint = '/capital';
+      break;
+    }
+    
+  }
+  console.log(`Es wird ${endpoint} aufgerufen`)
+}
+
 </script>
 
 <template>
@@ -33,7 +61,7 @@ function getData(){
       v-model="toFind"
       @update:model-value="reset">
         <v-row>
-          <v-radio label="Startkapital (€)" value="startkapital"></v-radio>
+          <v-radio label="Startkapital (€)" value="startkapital" @click="determineEndpoint('startcapital')"></v-radio>
         </v-row>
         <v-row>
         <v-col>
@@ -61,7 +89,8 @@ function getData(){
           </v-btn>
         </v-col>
       </v-row>
-      <v-row><v-radio label="Sparrate (€)" value="sparrate"></v-radio></v-row>
+      <v-row>
+        <v-radio label="Sparrate (€)" value="sparrate" @click="determineEndpoint('savingrate')"></v-radio></v-row>
       <v-row>
         <v-col>
           <v-text-field
@@ -88,7 +117,8 @@ function getData(){
           </v-btn>
         </v-col>
       </v-row>
-      <v-row><v-radio label="Sparzins (%)" value="sparzins"></v-radio></v-row>
+      <v-row>
+        <v-radio label="Sparzins (%)" value="sparzins" @click="determineEndpoint('interestrate')"></v-radio></v-row>
       <v-row>
         <v-col>
           <v-text-field
@@ -115,7 +145,7 @@ function getData(){
           </v-btn>
         </v-col>
       </v-row>
-      <v-row><v-radio label="Enddatum" value="enddatum"></v-radio></v-row>
+      <v-row><v-radio label="Enddatum" value="enddatum" @click="determineEndpoint('enddate')"></v-radio></v-row>
       <v-row>
         <v-col>      
           <v-text-field
@@ -140,7 +170,7 @@ function getData(){
           </v-btn>
         </v-col>
       </v-row>
-      <v-row><v-radio label="Endkapital (€)" value="endkapital"></v-radio></v-row>
+      <v-row><v-radio label="Endkapital (€)" value="endkapital" @click="determineEndpoint('endcapital')"></v-radio></v-row>
       <v-row>
         <v-col>
           <v-text-field
