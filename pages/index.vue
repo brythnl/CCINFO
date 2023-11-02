@@ -74,21 +74,22 @@ async function fetchSavingApi(input: EmitData){
     }
     
   }
+function onScroll(){
 }
 const formTab = ref("");
 </script>
 
 <template>
-  <v-container class="h-100" fluid="true">
+  <v-container fluid="false">
     <v-row class="h-100">
-      <v-col cols="4" ld="4" class="h-100">
-        <div class="h-100 bg-cyan-darken-3 rounded-lg">
-          <v-card flat>
+      <v-col cols="4" ld="4">
+        <div class="h-100 rounded-lg" style="background-color: #F1F9FF;">
             <div>
               <form-tabs @tabUpdate="(n)=>formTab=n"/>
             </div>
-            <div class="w-100">
-              <v-card-text class="bg-cyan-darken-3">
+            <v-card v-scroll.self="onScroll" class="overflow-y-auto" max-height="850" style="background-color: #F1F9FF;border: solid 3px;">
+            <div class="">
+              <v-card-text>
                 <v-window v-model="formTab">
                   <v-window-item value="saving"><sparplan-form @passInputData="fetchSavingApi"/></v-window-item>
                   <v-window-item value="withdraw"><entnahme-form/></v-window-item>
@@ -99,12 +100,12 @@ const formTab = ref("");
           </v-card>
         </div>
       </v-col >
-      <v-col cols="4" md="4" class="h-100">
+      <v-col cols="4" md="4">
         <div class="h-100 bg-cyan-darken-3 px-4 rounded-lg">
           <capital-graph />
         </div>
       </v-col>
-      <v-col cols="4" md="4" class="h-100">
+      <v-col cols="4" md="4">
         <div class="h-100 bg-cyan-darken-3 rounded-lg">
         </div>
       </v-col>

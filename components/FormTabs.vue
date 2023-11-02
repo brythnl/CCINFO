@@ -9,7 +9,7 @@ function tabUpdate(){
 
 <template>
   <div>
-    <v-tabs v-model="planSelect" height="100" @update:model-value="tabUpdate" class="bg-cyan-darken-3" grow>
+    <v-tabs v-model="planSelect" height="100" @update:model-value="tabUpdate" grow color="#B2B2B2" bg-color="#00476B">
       <v-tab value="saving" elevation="5">
         <v-container>
           <v-row>
