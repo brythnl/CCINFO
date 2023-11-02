@@ -1,6 +1,33 @@
 <script lang="ts" setup>
 const toFind = ref("")
 const dateTime = new Date().toISOString().split('T')[0].toString().replace('/T/','');
+
+const emit = defineEmits<{
+  (e: "passInputData", savingPlanInputData:{}): void;
+}>();
+
+export interface EmitData{
+  startCapital: number,
+  savingRate: number,
+  interestRate: number,
+  startDate:string,
+  endDate:string,
+  interestCalculation: string,
+  endCapital: number,
+  endpoint: string
+}
+
+const emitData = {
+  startCapital:0,
+  savingRate:0,
+  interestRate:0,
+  startDate:dateTime,
+  endDate:"",
+  interestCalculation: "YEARLY",
+  endCapital:0,
+  endpoint:''
+}
+
 const savingInput=reactive({
   startCapital:0,
   savingRate:0,
@@ -10,6 +37,7 @@ const savingInput=reactive({
   interestCalculation: "YEARLY",
   endCapital:0,
 })
+
 function reset(){
   savingInput.startCapital=0;
   savingInput.savingRate=0;
@@ -18,36 +46,53 @@ function reset(){
   savingInput.endCapital=0;
 }
 function getData(){
-  savingInput.interestRate = savingInput.interestRate/100;
-  console.log(savingInput);
+  inputValidation(JSON.parse(JSON.stringify(savingInput)))
+  emit("passInputData", emitData);
+  
+}
+
+function inputValidation(input:EmitData){
+  emitData.startCapital = formatizeNumbers(input.startCapital) * 100;
+  emitData.endCapital = formatizeNumbers(input.endCapital) *100;
+  emitData.savingRate = formatizeNumbers(input.savingRate) * 100;
+  emitData.interestRate= formatizeNumbers(input.interestRate)*0.01;
+  emitData.endDate = input.endDate || '2023-12-12';
+  return input;
+}
+
+function formatizeNumbers(num: number){
+  let str:string = num.toString();
+  str = str.replace(',', '.');
+  if(str.split('.').length > 1){
+    str = (str.split('.'))[0] + '.' +(str.split('.'))[1].substring(0, 2);
+  }
+  return Number(str)
 }
 
 function determineEndpoint(item: string){
-  let endpoint: string ='';
   switch(item){
     case 'startcapital':{
-      endpoint = '/saving-start-value';
+      emitData.endpoint = '/saving-start-value';
       break;
     }
     case 'savingrate':{
-      endpoint = '/saving-rate';
+      emitData.endpoint = '/saving-rate';
       break;
     }
     case 'interestrate':{
-      endpoint = '/interest-rate';
+      emitData.endpoint = '/interest-rate';
       break;
     }
     case 'enddate':{
-      endpoint = '/end-date';
+      emitData.endpoint = '/end-date';
       break;
     }
     case 'endcapital':{
-      endpoint = '/capital';
+      emitData.endpoint = '/capital';
       break;
     }
     
   }
-  console.log(`Es wird ${endpoint} aufgerufen`)
 }
 
 </script>
