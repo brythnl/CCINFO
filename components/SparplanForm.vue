@@ -200,6 +200,7 @@ function determineEndpoint(item: string){
                       density="compact"
                       v-model="savingInput.oneTimeInvestment[n+1]"
                       hide-details
+                      required
                       placeholder="weitere Einmalzahlung"
                       type="number"
                       class="bg-white rounded"
@@ -213,6 +214,7 @@ function determineEndpoint(item: string){
                       density="compact"
                       v-model="savingInput.oneTimeInvestmentDate[n+1]"
                       hide-details
+                      required
                       type="date"
                       class="bg-white rounded"
                       :disabled="toFind==''||toFind=='startkapital'"
@@ -235,11 +237,11 @@ function determineEndpoint(item: string){
                   stacked
                   class="pa-0"
                   text="Neue Einmalzahlung hinzufügen">
-
                   </v-btn>
+                  
                   <v-btn 
                   style="border: solid 1px black;" 
-                  @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;}" 
+                  @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;savingInput.oneTimeInvestment.pop();savingInput.oneTimeInvestmentDate.pop()}" 
                   :disabled="toFind==''||toFind=='startkapital'||einmalZahlung<=0"
                   variant="flat"
                   width="200"
