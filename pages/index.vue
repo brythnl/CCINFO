@@ -2,5 +2,6 @@
 </script>
 
 <template>
+    <api-visualization/>
 </template>
 
