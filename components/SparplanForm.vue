@@ -13,25 +13,38 @@ const emit = defineEmits<{
 }>();
 
 export interface EmitData{
-  startCapital: number,
-  savingRate: number,
-  interestRate: number,
-  startDate:string,
+  beginDate:string,
   endDate:string,
+  interestRate: number,
   interestCalculation: string,
+  reductionFactor: number,
+  dynamicSavingRateFactor: number,
+  //startCapital: number,
+  savingPlanBegin: string,
+  savingPlanEnd: string,
+  oneTimeInvestment:[],
+  oneTimeInvestmentDate: string[],
+  savingRate: number,
   endCapital: number,
-  endpoint: string
+  endpoint: string,
+  emitable: boolean
 }
 
 const emitData = {
-  startCapital:0,
-  savingRate:0,
+  beginDate:todayDate,
+  endDate: inTenYears,
   interestRate:0,
-  startDate:dateTime,
-  endDate:"",
   interestCalculation: "YEARLY",
+  reductionFactor:0,
+  dynamicSavingRateFactor:0,
+  //startCapital:0,
+  savingPlanBegin:"",
+  savingPlanEnd:"",
+  oneTimeInvestment:[0],
+  oneTimeInvestmentDate:[todayDate],
+  savingRate:0,
   endCapital:0,
-  endpoint:''
+  endpoint:'',
 }
 
 const savingInput=reactive({
@@ -59,17 +72,43 @@ function reset(){
   einmalZahlung.value=0;
 }
 function getData(){
-  inputValidation(JSON.parse(JSON.stringify(savingInput)))
-  emit("passInputData", emitData);
+  let validation = inputValidation(JSON.parse(JSON.stringify(savingInput)));
+  
+  if(validation.emitable){
+    //emit("passInputData", emitData);
+    console.log(emitData)
+  }else{
+    console.log(`Inputvalidierung fehlgeschlagen: ${validation.msg}`)
+  }
+  
   }
 
 function inputValidation(input:EmitData){
-  emitData.startCapital = formatizeNumbers(input.startCapital) * 100;
+  let errorlog='';
+  let validDate=true;
+
+  //emitData.startCapital = formatizeNumbers(input.startCapital) * 100;
   emitData.endCapital = formatizeNumbers(input.endCapital) *100;
   emitData.savingRate = formatizeNumbers(input.savingRate) * 100;
   emitData.interestRate= formatizeNumbers(input.interestRate)*0.01;
-  emitData.endDate = input.endDate || '2023-12-12';
-  return input;
+
+  emitData.oneTimeInvestment= input.oneTimeInvestment.map((investement)=>{
+    return(formatizeNumbers(investement))
+  })
+  emitData.oneTimeInvestmentDate = input.oneTimeInvestmentDate;
+  input.oneTimeInvestmentDate.push(input.savingPlanBegin)
+
+  input.beginDate = findBeginDate(input.oneTimeInvestmentDate)
+
+  if(compareDates(input.beginDate, input.endDate)){
+    emitData.beginDate=input.beginDate;
+    emitData.endDate=input.endDate
+  }else
+  {
+    validDate = false;
+    errorlog = 'Enddatum liegt vor Startdatum';
+  }
+  return {emitable: validDate, msg: errorlog};
 }
 
 function formatizeNumbers(num: number){
@@ -80,6 +119,28 @@ function formatizeNumbers(num: number){
   }
   return Number(str)
 }
+
+function findBeginDate(dates: string[]){
+  dates.sort((a: string, b: string)=>{
+    return new Date(a).valueOf()- new Date(b).valueOf();
+  })
+  return dates[0];
+}
+
+function compareDates(beginDateStr: string, endDateStr: string) {
+  // Convert the date strings to Date objects
+  const beginDate = new Date(beginDateStr);
+  const endDate = new Date(endDateStr);
+
+  // Compare the dates
+  if (beginDate > endDate) {
+    return false;
+  }else{
+    return true;
+  }
+}
+
+
 function determineEndpoint(item: string){
   switch(item){
     case 'startcapital':{
@@ -105,6 +166,42 @@ function determineEndpoint(item: string){
     
   }
 }
+
+function setEndDateToBiggestDate(){
+  savingInput.endDate = findBiggestDate()
+}
+
+function findBiggestDate() {
+  if (savingInput.oneTimeInvestmentDate.length === 0) {
+    return inTenYears; // Handle the case where the array is empty
+  }
+  date
+
+  let maxDate = new Date(savingInput.oneTimeInvestmentDate[0]);
+
+  for (let i = 1; i < savingInput.oneTimeInvestmentDate.length; i++) {
+    const currentDate = new Date(savingInput.oneTimeInvestmentDate[i]);
+
+    if (currentDate > maxDate) {
+      maxDate = currentDate;
+    }
+  }
+  const savingPlanBegin = new Date(savingInput.savingPlanEnd)
+  if( savingPlanBegin > maxDate){
+    maxDate =savingPlanBegin;
+  }
+
+  return maxDate.toISOString().split('T')[0].toString().replace('/T/',''); // Return the biggest date in "YYYY-MM-DD" format
+}
+
+
+watch(() =>savingInput.oneTimeInvestmentDate,()=>{
+  setEndDateToBiggestDate()
+}, { deep:true })
+
+watch(savingInput.endDate, ()=>{
+  setEndDateToBiggestDate()
+})
 </script>
 
 <template>
@@ -134,17 +231,18 @@ function determineEndpoint(item: string){
             :disabled="toFind==''||toFind=='startkapital'"
           ></v-text-field>
         </v-col>
-        <v-col cols="2" class="pa-0">
-          <v-btn style="background-color: inherit;" flat>
-            <v-avatar>
-                <v-img src="~/assets/Information-Icon.png"></v-img>
-            </v-avatar>
-            <v-tooltip activator="parent" location="end" class="w-50">
-              This parameter defines any number of one-time cash inflows.
-            </v-tooltip>
-          </v-btn>
+        <v-col class="pa-0 pl-1">
+          <v-text-field
+            style="border: 3px solid #00476B;"
+            density="compact"
+            v-model="savingInput.oneTimeInvestmentDate[0]"
+            hide-details
+            type="date"
+            class="bg-white rounded"
+            :disabled="toFind==''||toFind=='startkapital'"
+          ></v-text-field>
         </v-col>
-        <v-col cols="4">
+        <v-col v-if="0 == einmalZahlung" cols="2">
           <v-row><h5>weitere Einmalzahlung</h5></v-row>
           <v-row>
           <v-btn-group 
@@ -152,7 +250,6 @@ function determineEndpoint(item: string){
           variant="tonal"
           color="#00476B" >
             <v-btn style="border: solid 1px black;" @click="()=>einmalZahlung++" :disabled="toFind==''||toFind=='startkapital'">+</v-btn>
-            <v-btn style="border: solid 1px black;" @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;}" :disabled="toFind==''||toFind=='startkapital'">-</v-btn>
           </v-btn-group>
         </v-row>
         </v-col>
@@ -182,7 +279,20 @@ function determineEndpoint(item: string){
             :disabled="toFind==''||toFind=='startkapital'"
           ></v-text-field>
         </v-col>
+        <v-col  cols="4">
+          <v-row><h5>weitere Einmalzahlung</h5></v-row>
+          <v-row>
+          <v-btn-group 
+          density="compact"
+          variant="tonal"
+          color="#00476B" >
+            <v-btn v-if="n==einmalZahlung" v-bind:id="n" style="border: solid 1px black;" @click="()=>einmalZahlung++" :disabled="toFind==''||toFind=='startkapital'">+</v-btn>
+            <v-btn v-bind:id="n" style="border: solid 1px black;" @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0; savingInput.oneTimeInvestmentDate.splice(n, 1); savingInput.oneTimeInvestment.splice(n, 1);console.log(savingInput.oneTimeInvestment)}" :disabled="toFind==''||toFind=='startkapital'">-</v-btn>
+          </v-btn-group>
+        </v-row>
+        </v-col>
       </v-row>
+
       <v-row>
         <v-radio label="Sparrate" value="sparrate" @click="determineEndpoint('savingrate')"></v-radio></v-row>
       <v-row>
@@ -306,8 +416,7 @@ function determineEndpoint(item: string){
             color="#00476B"
             size="x-large"
             variant="flat"
-            @click="getData"
-          >
+            @click="getData">
             Calculate
           </v-btn>
         </v-col>
