@@ -2,6 +2,11 @@
 const toFind = ref("")
 const einmalZahlung = ref(0);
 const dateTime = new Date().toISOString().split('T')[0].toString().replace('/T/','');
+const date = new Date();
+const todayDate = date.toISOString().split('T')[0].toString().replace('/T/','');
+date.setFullYear(date.getFullYear()+10);
+const inTenYears = date.toISOString().split('T')[0].toString().replace('/T/','');
+
 
 const emit = defineEmits<{
   (e: "passInputData", savingPlanInputData:{}): void;
@@ -28,12 +33,6 @@ const emitData = {
   endCapital:0,
   endpoint:''
 }
-
-const date = new Date();
-const todayDate = date.toISOString().split('T')[0].toString().replace('/T/','');
-date.setFullYear(date.getFullYear()+10);
-const inTenYears = date.toISOString().split('T')[0].toString().replace('/T/','');
-
 
 const savingInput=reactive({
   beginDate:todayDate,
@@ -62,8 +61,7 @@ function reset(){
 function getData(){
   inputValidation(JSON.parse(JSON.stringify(savingInput)))
   emit("passInputData", emitData);
-  
-}
+  }
 
 function inputValidation(input:EmitData){
   emitData.startCapital = formatizeNumbers(input.startCapital) * 100;
