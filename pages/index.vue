@@ -37,7 +37,7 @@ async function fetchSavingApi(input: EmitData){
         "https://demo.portal.aixigo.cloud:443/finance-math/capital",
         {
           query: {
-            begin: input.startDate,
+            begin: input.beginDate,
             end: input.endDate,
             interestRate: input.interestRate,
             interestCalculation: input.interestCalculation,
@@ -86,7 +86,7 @@ const formTab = ref("");
       <v-col style="border: solid 3px;" class="mx-2 pa-0">
         <div class="h-100 rounded-lg" style="background-color: #F1F9FF;">
             <div>
-              <form-tabs @tabUpdate="(n)=>formTab=n"/>
+              <form-tabs @tabUpdate="(n: string)=>formTab=n"/>
             </div>
             <v-card v-scroll.self="onScroll" class="overflow-y-auto" max-height="850" style="background-color: #F1F9FF;" elevation="0">
             <div class="">
