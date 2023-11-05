@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const toFind = ref("")
 const einmalZahlung = ref(0);
+const sparrate = ref(0);
 const dateTime = new Date().toISOString().split('T')[0].toString().replace('/T/','');
 const date = new Date();
 const todayDate = date.toISOString().split('T')[0].toString().replace('/T/','');
@@ -54,33 +55,37 @@ const savingInput=reactive({
   interestCalculation: "YEARLY",
   reductionFactor:0,
   dynamicSavingRateFactor:0,
-  savingPlanBegin:"",
-  savingPlanEnd:"",
+  savingPlanBegin:todayDate,
+  savingPlanEnd:inTenYears,
   oneTimeInvestment:[0],
   oneTimeInvestmentDate:[todayDate],
   savingRate:0,
+  savingCycle:"MONTHLY",
   endCapital:0,
 })
 
 function reset(){
   savingInput.oneTimeInvestment=[0];
-  oneTimeInvestmentDate:[todayDate];
+  savingInput.oneTimeInvestmentDate=[todayDate];
   savingInput.savingRate=0;
+  savingInput.savingPlanBegin=todayDate
+  savingInput.savingPlanEnd=inTenYears;
   savingInput.interestRate=0;
   savingInput.endDate=inTenYears;
   savingInput.endCapital=0;
   einmalZahlung.value=0;
+  sparrate.value=0
 }
 function getData(){
-  let validation = inputValidation(JSON.parse(JSON.stringify(savingInput)));
+  let validation = //inputValidation(JSON.parse(JSON.stringify(savingInput)));
   
   if(validation.emitable){
-    //emit("passInputData", emitData);
+    ////emit("passInputData", emitData);
     console.log(emitData)
   }else{
     console.log(`Inputvalidierung fehlgeschlagen: ${validation.msg}`)
   }
-  
+  console.log(savingInput);
   }
 
 function inputValidation(input:EmitData){
@@ -206,7 +211,6 @@ watch(savingInput.endDate, ()=>{
 
 <template>
   <p>Was möchten Sie berechnen ?</p>
-  
   <v-form>
     <v-container>
       <v-radio-group 
@@ -231,18 +235,17 @@ watch(savingInput.endDate, ()=>{
             :disabled="toFind==''||toFind=='startkapital'"
           ></v-text-field>
         </v-col>
-        <v-col class="pa-0 pl-1">
-          <v-text-field
-            style="border: 3px solid #00476B;"
-            density="compact"
-            v-model="savingInput.oneTimeInvestmentDate[0]"
-            hide-details
-            type="date"
-            class="bg-white rounded"
-            :disabled="toFind==''||toFind=='startkapital'"
-          ></v-text-field>
+        <v-col cols="2" class="pa-0">
+          <v-btn style="background-color: inherit;" flat>
+            <v-avatar>
+                <v-img src="~/assets/Information-Icon.png"></v-img>
+            </v-avatar>
+            <v-tooltip activator="parent" location="end" class="w-50">
+              This parameter defines any number of one-time cash inflows.
+            </v-tooltip>
+          </v-btn>
         </v-col>
-        <v-col v-if="0 == einmalZahlung" cols="2">
+        <v-col cols="4">
           <v-row><h5>weitere Einmalzahlung</h5></v-row>
           <v-row>
           <v-btn-group 
@@ -250,6 +253,7 @@ watch(savingInput.endDate, ()=>{
           variant="tonal"
           color="#00476B" >
             <v-btn style="border: solid 1px black;" @click="()=>einmalZahlung++" :disabled="toFind==''||toFind=='startkapital'">+</v-btn>
+            <v-btn style="border: solid 1px black;" @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;}" :disabled="toFind==''||toFind=='startkapital'">-</v-btn>
           </v-btn-group>
         </v-row>
         </v-col>
@@ -279,20 +283,7 @@ watch(savingInput.endDate, ()=>{
             :disabled="toFind==''||toFind=='startkapital'"
           ></v-text-field>
         </v-col>
-        <v-col  cols="4">
-          <v-row><h5>weitere Einmalzahlung</h5></v-row>
-          <v-row>
-          <v-btn-group 
-          density="compact"
-          variant="tonal"
-          color="#00476B" >
-            <v-btn v-if="n==einmalZahlung" v-bind:id="n" style="border: solid 1px black;" @click="()=>einmalZahlung++" :disabled="toFind==''||toFind=='startkapital'">+</v-btn>
-            <v-btn v-bind:id="n" style="border: solid 1px black;" @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0; savingInput.oneTimeInvestmentDate.splice(n, 1); savingInput.oneTimeInvestment.splice(n, 1);console.log(savingInput.oneTimeInvestment)}" :disabled="toFind==''||toFind=='startkapital'">-</v-btn>
-          </v-btn-group>
-        </v-row>
-        </v-col>
       </v-row>
-
       <v-row>
         <v-radio label="Sparrate" value="sparrate" @click="determineEndpoint('savingrate')"></v-radio></v-row>
       <v-row>
@@ -422,7 +413,7 @@ watch(savingInput.endDate, ()=>{
         </v-col>
       </v-row>
     </v-container>
-  </v-form>
+  </v-form> 
 </template>
 
 <style scoped></style>

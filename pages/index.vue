@@ -75,20 +75,20 @@ async function fetchSavingApi(input: EmitData){
     
   }
 }
-function onScroll(){
-}
+
+function onScroll(){}
 const formTab = ref("");
 </script>
 
 <template>
-  <v-container fluid="false">
+  <v-container class="h-100" fluid>
     <v-row class="h-100">
-      <v-col cols="4" ld="4">
+      <v-col style="border: solid 3px;" class="mx-2 pa-0">
         <div class="h-100 rounded-lg" style="background-color: #F1F9FF;">
             <div>
               <form-tabs @tabUpdate="(n)=>formTab=n"/>
             </div>
-            <v-card v-scroll.self="onScroll" class="overflow-y-auto" max-height="850" style="background-color: #F1F9FF;border: solid 3px;">
+            <v-card v-scroll.self="onScroll" class="overflow-y-auto" max-height="850" style="background-color: #F1F9FF;" elevation="0">
             <div class="">
               <v-card-text>
                 <v-window v-model="formTab">
@@ -100,14 +100,14 @@ const formTab = ref("");
             </div>
           </v-card>
         </div>
-      </v-col >
-      <v-col cols="4" md="4">
+      </v-col>
+      <v-col class="mx-2 pa-0">
         <div class="h-100 bg-cyan-darken-3 px-4 rounded-lg">
           <capital-graph />
         </div>
       </v-col>
-      <v-col cols="4" md="4">
-        <div class="h-100 bg-cyan-darken-3 rounded-lg">
+      <v-col class="mx-2 pa-0">
+          <div class="h-100 bg-cyan-darken-3 rounded-lg">
         </div>
       </v-col>
     </v-row>
