@@ -214,16 +214,10 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
         v-model="toFind"
         @update:model-value="reset">
 
-        <v-expansion-panels>
-
-          <v-expansion-panel 
-          elevation="0" 
-          bg-color="#F1F9FF">
                 <v-row class="ma-0">
-                  <v-col class="pa-0" cols="6">
+                  <v-col class="pa-0" >
                     <v-radio label="1. Einmalzahlung (Startkapital)" value="startkapital" @click="determineEndpoint('startcapital')"></v-radio>
                   </v-col>
-
 
                   <v-col class="pa-0">
                     <v-btn style="background-color: inherit;" flat>
@@ -241,10 +235,6 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
                   </v-col>
                 </v-row>
                 <v-row class="ma-0">
-                  <v-col cols="1" class="pa-0">
-                    <v-expansion-panel-title class="pa-0">
-                    </v-expansion-panel-title>
-                  </v-col>
                   <v-col class="pa-0" cols="6">
                     <v-text-field
                       prefix="€"
@@ -274,80 +264,7 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
                   </v-col>
                 </v-row>
 
-            <v-expansion-panel-text>
-              <v-row v-for="n in einmalZahlung" class="ma-0">
-                <v-row class="ma-0">
-                  <v-col class="pa-0">
-                    <v-label>{{ n+1 }}.te Einmalzahlung</v-label>
-                  </v-col>
-                  <v-col class="pa-0">
-                    <v-label>Datum</v-label>
-                  </v-col>
-                </v-row>
-                <v-row class="ma-0">
-                  <v-col class="pa-0">
-                    <v-text-field
-                      prefix="€"
-                      style="border: 3px solid #00476B;"
-                      density="compact"
-                      v-model="savingInput.oneTimeInvestment[n+1]"
-                      hide-details
-                      placeholder="weitere Einmalzahlung"
-                      type="number"
-                      class="bg-white rounded"
-                      :disabled="toFind==''||toFind=='startkapital'"
-                    ></v-text-field>
-                  </v-col>
 
-                  <v-col class="pa-0">
-                    <v-text-field
-                      style="border: 3px solid #00476B;"
-                      density="compact"
-                      v-model="savingInput.oneTimeInvestmentDate[n+1]"
-                      hide-details
-                      type="date"
-                      class="bg-white rounded"
-                      :disabled="toFind==''||toFind=='startkapital'"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-row>
-                <v-btn-group 
-                density="compact"
-                variant="tonal"
-                color="#00476B"
-                class="w-100 mt-2"
-                divided>
-                  <v-btn 
-                  style="border: solid 1px black;" 
-                  @click="()=>einmalZahlung++" 
-                  :disabled="toFind==''||toFind=='startkapital'"
-                  variant="flat"
-                  width="200"
-                  stacked
-                  class="pa-0"
-                  text="Neue Einmalzahlung hinzufügen">
-
-                  </v-btn>
-                  <v-btn 
-                  style="border: solid 1px black;" 
-                  @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;}" 
-                  :disabled="toFind==''||toFind=='startkapital'||einmalZahlung<=0"
-                  variant="flat"
-                  width="200"
-                  stacked
-                  class="pa-0 mx-5"
-                  text=" Einmalzahlung entfernen">
-                  </v-btn>
-                </v-btn-group>
-              </v-expansion-panel-text>
-          </v-expansion-panel>
-        </v-expansion-panels>
-
-        <v-expansion-panels>
-          <v-expansion-panel
-          elevation="0" 
-          bg-color="#F1F9FF">
                 <v-row class="ma-0">
                   <v-col class="pa-0">
                     <v-radio label="Sparrate" value="sparrate" @click="determineEndpoint('savingrate')">
@@ -366,10 +283,6 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
                 </v-row>
 
                 <v-row class="ma-0">
-                  <v-col cols="1" class="pa-0">
-                    <v-expansion-panel-title class="pa-0">
-                    </v-expansion-panel-title>
-                  </v-col>
                   <v-col class="pa-0">
                     <v-text-field
                       prefix="€"
@@ -385,147 +298,13 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
                       :disabled="toFind==''||toFind=='sparrate'"
                     ></v-text-field>
                   </v-col>
-                  <v-col class="pa-0 ms-2 mt-1">
-                      <v-select
-                      label="Turnus"
-                      variant="outlined"
-                      v-model="savingInput.savingCycle"
-                      :items="['DAILY','MONTHLY','YEARLY']"
-                      :disabled="toFind==''||toFind=='sparrate'"
-                      density="compact">
-                      </v-select>
-                  </v-col>
                 </v-row>
-            
-            <v-expansion-panel-text>
-              <v-row class="ma-0">
-                <v-col class="pa-0">
-                    <v-label>Startdatum</v-label>
-                    <v-text-field
-                      style="border: 3px solid #00476B;"
-                      density="compact"
-                      v-model="savingInput.savingPlanBegin"
-                      hide-details
-                      type="date"
-                      class="bg-white rounded"
-                      :disabled="toFind==''||toFind=='sparrate'"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col class="pa-0 mb-4">
-                    <v-label>Startdatum</v-label>
-                    <v-text-field
-                      style="border: 3px solid #00476B;"
-                      density="compact"
-                      v-model="savingInput.savingPlanEnd"
-                      hide-details
-                      type="date"
-                      class="bg-white rounded"
-                      :disabled="toFind==''||toFind=='sparrate'"
-                    ></v-text-field>
-                  </v-col>
-              </v-row>
-              <v-divider></v-divider>
-              <v-row v-for="n in sparrate" class="ma-0">
-                <v-container>
-                  <v-row>
-                    <v-label>Sparplan {{ n+1 }}</v-label>
-                  </v-row>
-
-                    <v-row class="ma-0">
-                      <v-col class="pa-0">
-                        <v-text-field
-                          prefix="€"
-                          style="border: 3px solid #00476B;"
-                          density="compact"
-                          v-model="savingInput.savingRate"
-                          required
-                          hide-details
-                          placeholder="Sparrate"
-                          type="number"
-                          step="0.01"
-                          class="bg-white rounded"
-                          :disabled="toFind==''||toFind=='sparrate'"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col class="pa-0 ms-2 mt-1">
-                          <v-select
-                          label="Turnus"
-                          variant="outlined"
-                          v-model="savingInput.savingCycle"
-                          :items="['DAILY','MONTHLY','YEARLY']"
-                          :disabled="toFind==''||toFind=='sparrate'"
-                          density="compact">
-                          </v-select>
-                      </v-col>
-                    </v-row>
-
-                    <v-row class="ma-0">
-                    <v-col class="pa-0">
-                        <v-label>Startdatum</v-label>
-                        <v-text-field
-                          style="border: 3px solid #00476B;"
-                          density="compact"
-                          v-model="savingInput.savingPlanBegin"
-                          hide-details
-                          type="date"
-                          class="bg-white rounded"
-                          :disabled="toFind==''||toFind=='sparrate'"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col class="pa-0">
-                        <v-label>Startdatum</v-label>
-                        <v-text-field
-                          style="border: 3px solid #00476B;"
-                          density="compact"
-                          v-model="savingInput.savingPlanEnd"
-                          hide-details
-                          type="date"
-                          class="bg-white rounded"
-                          :disabled="toFind==''||toFind=='sparrate'"
-                        ></v-text-field>
-                      </v-col>
-                  </v-row>
-                </v-container>
-                <v-divider></v-divider>
-              </v-row>
-
-              <v-btn-group 
-                density="compact"
-                variant="tonal"
-                color="#00476B"
-                class="w-100 mt-2"
-                divided>
-                  <v-btn 
-                  style="border: solid 1px black;" 
-                  @click="()=>sparrate++" 
-                  :disabled="toFind==''||toFind=='sparrate'"
-                  variant="flat"
-                  width="150"
-                  stacked
-                  class="pa-0">
-                    Neue Sparplan hinzufügen
-                  </v-btn>
-                  <v-btn 
-                  style="border: solid 1px black;" 
-                  @click="()=>{sparrate>0?sparrate--:sparrate=0;}" 
-                  :disabled="toFind==''||toFind=='sparrate'||sparrate<=0"
-                  variant="flat"
-                  width="150"
-                  stacked
-                  class="pa-0 mx-5">
-                    Sparplan entfernen
-                  </v-btn>
-                </v-btn-group>
-              
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-        </v-expansion-panels>
 
         <v-row class="ma-0">
           <v-col class="pa-0">
           <v-radio label="Sparzins" value="sparzins" @click="determineEndpoint('interestrate')"></v-radio>
           </v-col>
-          <v-col cols="3" class="pa-0">
+          <v-col class="pa-0">
             <v-btn style="background-color: inherit;" flat>
               <v-avatar class="ma-auto">
                   <v-img src="~/assets/Information-Icon.png"></v-img>
@@ -539,7 +318,7 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
             </v-btn>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="ma-0">
         <v-col class="pa-0">
           <v-text-field
             prefix="€"
@@ -555,74 +334,13 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
             :disabled="toFind==''||toFind=='startkapital'"
           ></v-text-field>
         </v-col>
-        <v-col cols="2" class="pa-0">
-          <v-btn style="background-color: inherit;" flat>
-            <v-avatar>
-                <v-img src="~/assets/Information-Icon.png"></v-img>
-            </v-avatar>
-            <v-tooltip activator="parent" location="end" class="w-50">
-              This parameter defines any number of one-time cash inflows.
-            </v-tooltip>
-          </v-btn>
-        </v-col>
-        <v-col cols="4">
-          <v-row><h5>weitere Einmalzahlung</h5></v-row>
-          <v-row>
-          <v-btn-group 
-          density="compact"
-          variant="tonal"
-          color="#00476B" >
-            <v-btn style="border: solid 1px black;" @click="()=>einmalZahlung++" :disabled="toFind==''||toFind=='startkapital'">+</v-btn>
-            <v-btn style="border: solid 1px black;" @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;}" :disabled="toFind==''||toFind=='startkapital'">-</v-btn>
-          </v-btn-group>
-        </v-row>
-        </v-col>
       </v-row>
-      <v-row v-for="n in einmalZahlung">
+    
+      <v-row class="mx-0">
         <v-col class="pa-0">
-          <v-text-field
-            prefix="€"
-            style="border: 3px solid #00476B;"
-            density="compact"
-            v-model="savingInput.oneTimeInvestment[n]"
-            hide-details
-            placeholder="weitere Einmalzahlung"
-            type="number"
-            class="bg-white rounded ma-3"
-            :disabled="toFind==''||toFind=='startkapital'"
-          ></v-text-field>
+          <v-radio label="Enddatum" value="enddatum" @click="determineEndpoint('enddate')"></v-radio>
         </v-col>
-        <v-col>
-          <v-text-field
-            style="border: 3px solid #00476B;"
-            density="compact"
-            v-model="savingInput.oneTimeInvestmentDate[n]"
-            hide-details
-            type="date"
-            class="bg-white rounded"
-            :disabled="toFind==''||toFind=='startkapital'"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-radio label="Sparrate" value="sparrate" @click="determineEndpoint('savingrate')"></v-radio></v-row>
-      <v-row>
-        <v-col class="pa-0">
-          <v-text-field
-            prefix="€"
-            style="border: 3px solid #00476B;"
-            density="compact"
-            v-model="savingInput.savingRate"
-            required
-            hide-details
-            placeholder="Sparrate"
-            type="number"
-            step="0.01"
-            class="bg-white rounded"
-            :disabled="toFind==''||toFind=='sparrate'"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="3" class="ma-auto">
+        <v-col class="pa-0" >
           <v-btn style="background-color: inherit;" flat>
             <v-avatar class="ma-auto">
                 <v-img src="~/assets/Information-Icon.png"></v-img>
@@ -634,39 +352,8 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
           </v-btn>
         </v-col>
       </v-row>
-      <v-row>
-        <v-radio label="Sparzins" value="sparzins" @click="determineEndpoint('interestrate')"></v-radio></v-row>
-      <v-row>
-        <v-col class="pa-0">
-          <v-text-field
-            suffix="%"
-            style="border: 3px solid #00476B;"
-            density="compact"
-            v-model="savingInput.interestRate"
-            required
-            hide-details
-            placeholder="Sparzins"
-            type="number"
-            step="1"
-            class="bg-white rounded"
-            :disabled="toFind==''||toFind=='sparzins'"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="3" class="ma-auto">
-          <v-btn style="background-color: inherit;" flat>
-            <v-avatar class="ma-auto">
-                <v-img src="~/assets/Information-Icon.png"></v-img>
-            </v-avatar>
-            <v-tooltip activator="parent" location="end" class="w-50">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-               sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-            </v-tooltip>
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-row><v-radio label="Enddatum" value="enddatum" @click="determineEndpoint('enddate')"></v-radio></v-row>
-      <v-row>
-        <v-col class="pa-0">      
+      <v-row class="ma-0">
+        <v-col class="px-0">      
           <v-text-field
             style="border: 3px solid #00476B;"
             density="compact"
@@ -678,7 +365,13 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
             :disabled="toFind==''||toFind=='enddatum'"
           ></v-text-field>
         </v-col>
-        <v-col cols="3" class="ma-auto">
+        
+      </v-row>
+      <v-row class="ma-0">
+        <v-col class="pa-0">
+        <v-radio label="Endkapital" value="endkapital" @click="determineEndpoint('endcapital')"></v-radio>
+      </v-col>
+        <v-col class="pa-0">
           <v-btn style="background-color: inherit;" flat>
             <v-avatar class="ma-auto">
                 <v-img src="~/assets/Information-Icon.png"></v-img>
@@ -690,8 +383,7 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
           </v-btn>
         </v-col>
       </v-row>
-      <v-row><v-radio label="Endkapital" value="endkapital" @click="determineEndpoint('endcapital')"></v-radio></v-row>
-      <v-row>
+      <v-row class="ma-0">
         <v-col class="pa-0">
           <v-text-field
             prefix="€"
@@ -705,17 +397,6 @@ watch(() =>savingInput.oneTimeInvestmentDate,()=>{
             class="bg-white rounded"
             :disabled="toFind==''||toFind=='endkapital'"
           ></v-text-field>
-        </v-col>
-        <v-col cols="3" class="ma-auto">
-          <v-btn style="background-color: inherit;" flat>
-            <v-avatar class="ma-auto">
-                <v-img src="~/assets/Information-Icon.png"></v-img>
-            </v-avatar>
-            <v-tooltip activator="parent" location="end" class="w-50">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-               sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-            </v-tooltip>
-          </v-btn>
         </v-col>
       </v-row>
     </v-radio-group>

@@ -102,7 +102,6 @@ const formTab = ref("");
       </v-col>
       <v-col class="mx-2 pa-0">
         <div class="h-100 bg-cyan-darken-3 px-4 rounded-lg">
-          <capital-graph />
         </div>
       </v-col>
       <v-col class="mx-2 pa-0">
