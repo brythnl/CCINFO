@@ -9,7 +9,7 @@ export interface financeMathInput {
   savingPlanBegin?: string;
   savingPlanEnd?: string;
   oneTimeInvestment?: number[];
-  oneTimeInvestmentDate?: string;
+  oneTimeInvestmentDate?: string[];
   savingRate?: number;
   endValue?: number;
 }
