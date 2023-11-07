@@ -47,6 +47,7 @@ const emitData = {
   endpoint:"",
 }
 
+//Variable to recieve data coming from Form
 const savingInput=reactive({
   beginDate:todayDate,
   endDate:"",
@@ -63,8 +64,11 @@ const savingInput=reactive({
   endCapital:0,
 })
 
-function reset(){
+//function to change endPoing
+function endPointChange(){
   emitData.endpoint=toFind.value;
+
+  //resetting inputs due to change of endpoint
   savingInput.oneTimeInvestment=[0];
   savingInput.oneTimeInvestmentDate=[todayDate];
   savingInput.savingRate=0;
@@ -77,6 +81,7 @@ function reset(){
   dynamik.value=false;
 }
 
+//function to get the inputs from Form by pressing the calculate buttong
 function getData(){
   //console.log(savingInput);
   let validation = inputValidation(JSON.parse(JSON.stringify(savingInput)));
@@ -151,7 +156,7 @@ watch(()=> savingInput.endDate, ()=>{
     <v-container>
       <v-radio-group
         v-model="toFind"
-        @update:model-value="reset">
+        @update:model-value="endPointChange">
 
         <v-expansion-panels>
 
