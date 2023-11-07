@@ -33,24 +33,6 @@ async function fetchSavingApi(input: EmitData){
   console.log(input);
   switch(input.endpoint){
     case '/capital':{
-      const { data, error } = await useFetch<CapitalData>(
-        "https://demo.portal.aixigo.cloud:443/finance-math/capital",
-        {
-          query: {
-            begin: input.beginDate,
-            end: input.endDate,
-            interestRate: input.interestRate,
-            interestCalculation: input.interestCalculation,
-            savingRate: input.savingRate,
-          },
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${API_TOKEN}`,
-          },
-        }
-      );
-      console.log(toRaw(data.value));
-      console.log(toRaw(error.value));
       break;
     }
     case '/saving-rate':{
