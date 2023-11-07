@@ -69,7 +69,7 @@ const formTab = ref("");
             <div>
               <form-tabs @tabUpdate="(n: string)=>formTab=n"/>
             </div>
-            <v-card class="overflow-y-auto" max-height="850" style="background-color: #F1F9FF;" elevation="0">
+            <v-card v-scroll.self="onScroll" class="overflow-y-auto" max-height="850" style="background-color: #F1F9FF;" elevation="0">
             <div class="">
               <v-card-text>
                 <v-window v-model="formTab">
@@ -84,7 +84,6 @@ const formTab = ref("");
       </v-col>
       <v-col class="mx-2 pa-0">
         <div class="h-100 bg-cyan-darken-3 px-4 rounded-lg">
-          <capital-graph />
         </div>
       </v-col>
       <v-col class="mx-2 pa-0">

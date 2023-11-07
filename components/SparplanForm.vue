@@ -158,10 +158,6 @@ watch(()=> savingInput.endDate, ()=>{
                   </v-col>
                 </v-row>
                 <v-row class="ma-0">
-                  <v-col cols="1" class="pa-0">
-                    <v-expansion-panel-title class="pa-0">
-                    </v-expansion-panel-title>
-                  </v-col>
                   <v-col class="pa-0" cols="6">
                     <v-text-field
                       prefix="€"
@@ -340,7 +336,13 @@ watch(()=> savingInput.endDate, ()=>{
             :disabled="toFind==''||toFind=='enddatum'"
           ></v-text-field>
         </v-col>
-        <v-col cols="3" class="ma-auto">
+        
+      </v-row>
+      <v-row class="ma-0">
+        <v-col class="pa-0">
+        <v-radio label="Endkapital" value="endkapital" @click="determineEndpoint('endcapital')"></v-radio>
+      </v-col>
+        <v-col class="pa-0">
           <v-btn style="background-color: inherit;" flat>
             <v-avatar class="ma-auto">
                 <v-img src="~/assets/Information-Icon.png"></v-img>
@@ -367,17 +369,6 @@ watch(()=> savingInput.endDate, ()=>{
             class="bg-white rounded"
             :disabled="toFind==''||toFind=='endkapital'"
           ></v-text-field>
-        </v-col>
-        <v-col cols="3" class="ma-auto">
-          <v-btn style="background-color: inherit;" flat>
-            <v-avatar class="ma-auto">
-                <v-img src="~/assets/Information-Icon.png"></v-img>
-            </v-avatar>
-            <v-tooltip activator="parent" location="end" class="w-50">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-               sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-            </v-tooltip>
-          </v-btn>
         </v-col>
       </v-row>
     </v-radio-group>
