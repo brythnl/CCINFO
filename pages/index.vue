@@ -57,7 +57,7 @@ async function fetchSavingApi(input: EmitData){
     
   }
 }
-function onScroll(){}
+
 const formTab = ref("");
 </script>
 
@@ -69,13 +69,13 @@ const formTab = ref("");
             <div>
               <form-tabs @tabUpdate="(n: string)=>formTab=n"/>
             </div>
-            <v-card v-scroll.self="onScroll" class="overflow-y-auto" max-height="850" style="background-color: #F1F9FF;" elevation="0">
+            <v-card class="overflow-y-auto" max-height="850" style="background-color: #F1F9FF;" elevation="0">
             <div class="">
               <v-card-text>
                 <v-window v-model="formTab">
                   <v-window-item value="saving"><sparplan-form @passInputData="fetchSavingApi"/></v-window-item>
-                  <v-window-item value="withdraw"><entnahme-form/></v-window-item>
-                  <v-window-item value="comb"><kombi-form/></v-window-item>
+                  <v-window-item value="withdraw">entnahmeForm</v-window-item>
+                  <v-window-item value="comb">kombiForm</v-window-item>
                 </v-window>
               </v-card-text>
             </div>
