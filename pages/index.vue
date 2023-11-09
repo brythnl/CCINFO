@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { EmitData } from '~/components/SparplanForm.vue';
 
+const output = {capitalAmount: 1000000, savingRate: 50000, startInvestment: 100000, interestRate: 0.05, end: '2023-04-02'};
+let endpoint = ref('end-date');
+const endpoints = ['saving-rate', 'interest-rate', 'saving-start-value', 'end-date', 'capital'];
+let i =0;
 export interface CapitalData {
   capitalResult: {
     capitalAmount: number;
@@ -84,14 +88,20 @@ const formTab = ref("");
       </v-col>
       <v-col class="mx-2 pa-0">
         <div class="h-100 bg-cyan-darken-3 px-4 rounded-lg">
+            <v-btn @click="i++; endpoint = endpoints[i%5];" block class="text-none mb-4" color="#00476B" size="x-large" variant="flat">Testen</v-btn>
+            <SavingPlanAnswerSentence :output="output" :currency="'€'" :endpoint="endpoint"></SavingPlanAnswerSentence>
         </div>
       </v-col>
       <v-col class="mx-2 pa-0">
           <div class="h-100 bg-cyan-darken-3 rounded-lg">
+            
         </div>
       </v-col>
     </v-row>
   </v-container>
+  
 </template>
+
+
 
 <style scoped></style>
