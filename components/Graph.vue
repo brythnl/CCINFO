@@ -25,13 +25,13 @@ import { Chart as highcharts } from "highcharts-vue";
         },
         labels: {
           formatter: function () {
-            return this.value;
+            return this.value + ' €'; // TODO: The Currency should be variable
           },
         },
       },
       series: [
         {
-          name: '',
+          name: 'abc',
           data: [
             0, 2400, 4824, 7272.24, 9744.9624, 12242.412024000001,
             14764.836144240002, 17312.4845056824,
