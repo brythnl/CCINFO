@@ -3,7 +3,7 @@
 const formTab = ref("");
 const API_TOKEN = ""
 
-async function fetchSavingApi(formInput){
+async function fetchSavingApi(formInput) { // add parameter type (financeMathInput)
   console.log(formInput)
   // fetch API to formInput.endpoint with formInput
 }

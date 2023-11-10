@@ -1,4 +1,12 @@
 <script lang="ts" setup>
+import {
+  todayDate,
+  inTenYears,
+  formatNumber,
+  findSmallestDate,
+  findBiggestDate
+} from '~/utils/formUtils'
+
 const emit = defineEmits<{
   (e: "calculateInput", sparplanInput: {}): void;
 }>();
@@ -6,11 +14,6 @@ const emit = defineEmits<{
 const selectedEndpoint = ref("")
 const einmalZahlung = ref(0);
 const dynamik = ref(false);
-
-const date = new Date();
-const todayDate = date.toISOString().split('T')[0].toString().replace('/T/','');
-date.setFullYear(date.getFullYear() + 10);
-const inTenYears = date.toISOString().split('T')[0].toString().replace('/T/','');
 
 // form data (user input)
 const sparplanInput = reactive({
@@ -57,30 +60,13 @@ function emitData() {
 
 function validateInput(): void {
   // Set decimal separator to dot and make numbers to integer
-  sparplanInput.endValue = Math.round(formatizeNumbers(sparplanInput.endValue) * 100);
-  sparplanInput.savingRate = Math.round(formatizeNumbers(sparplanInput.savingRate) * 100);
-  sparplanInput.interestRate= formatizeNumbers(sparplanInput.interestRate) * 0.01;
-  sparplanInput.dynamicSavingRateFactor = formatizeNumbers(sparplanInput.dynamicSavingRateFactor) * 0.01;
-  sparplanInput.oneTimeInvestment= sparplanInput.oneTimeInvestment.map(investment => Math.round(formatizeNumbers(investment) * 100))
+  sparplanInput.endValue = Math.round(formatNumber(sparplanInput.endValue) * 100);
+  sparplanInput.savingRate = Math.round(formatNumber(sparplanInput.savingRate) * 100);
+  sparplanInput.interestRate= formatNumber(sparplanInput.interestRate) * 0.01;
+  sparplanInput.dynamicSavingRateFactor = formatNumber(sparplanInput.dynamicSavingRateFactor) * 0.01;
+  sparplanInput.oneTimeInvestment= sparplanInput.oneTimeInvestment.map(investment => Math.round(formatNumber(investment) * 100))
   // Date validation
   sparplanInput.begin = findSmallestDate(sparplanInput.oneTimeInvestmentDate)
-}
-
-function formatizeNumbers(num: number): number {
-  return Number(num
-    .toString()
-    .replace(',', '.')
-  );
-}
-
-function findSmallestDate(dates: string[]): string {
-  dates.sort((a: string, b: string) => new Date(a).valueOf() - new Date(b).valueOf())
-  return dates[0];
-}
-
-function findBiggestDate(dates: string[]): string {
-  dates.sort((a: string, b: string) => new Date(b).valueOf()- new Date(a).valueOf())
-  return dates[0];
 }
 
 function setEndDateToBiggestDate(): void {
