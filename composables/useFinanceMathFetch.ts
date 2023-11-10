@@ -1,8 +1,6 @@
 import type { financeMathInput } from "~/types/index.d.ts"
 
-export const useFinanceMathFetch = async <DataT>(endpoint: string, paramInput: financeMathInput) => {
-  let API_TOKEN = ""
-
+export const useFinanceMathFetch = async <DataT>(endpoint: string, paramInput: financeMathInput, API_TOKEN: string) => {
   let url = `https://demo.portal.aixigo.cloud:443/finance-math/${endpoint}?`
 
   const keys = Object.keys(paramInput) as Array<keyof typeof paramInput>
