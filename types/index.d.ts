@@ -14,3 +14,24 @@ export interface financeMathInput {
   endValue?: number;
   endpoint: string;
 }
+
+export interface financeMathResult {
+  capitalResult?: {
+    capitalAmount: number,
+    savingRate: number,
+    startInvestment: number,
+    interestRate: number,
+    end: string,
+  };
+  capitalSeries?: number[];
+  begin?: string;
+  end?: string;
+  startValue?: number;
+  interestRate?: number;
+  compoundInterest?: number;
+  capitalAmount?: number;
+  savingRate?: number;
+  startInvestment?: number;
+  interestRate?: number;
+  end?: string;
+}
