@@ -40,7 +40,7 @@ function changeEndpoint(){
   sparplanInput.oneTimeInvestment = [0];
   sparplanInput.oneTimeInvestmentDate = [todayDate];
 
-  sparplanInput.end = (sparplanInput.endpoint === "enddate") ? "" : inTenYears;
+  sparplanInput.end = (sparplanInput.endpoint === "end-date") ? "" : inTenYears;
   sparplanInput.savingPlanBegin = sparplanInput.begin
   sparplanInput.savingPlanEnd = sparplanInput.end;
 
@@ -70,7 +70,7 @@ function validateInput(): void {
 }
 
 function setEndDateToBiggestDate(): void {
-  if (sparplanInput.endpoint == 'enddate') return;
+  if (sparplanInput.endpoint == 'end-date') return;
   let tmp: string[] = (JSON.parse(JSON.stringify(sparplanInput.oneTimeInvestmentDate)))
   tmp.push(JSON.parse(JSON.stringify(sparplanInput.savingPlanEnd)))
   sparplanInput.end = findBiggestDate(tmp)
@@ -105,7 +105,7 @@ watch(() => sparplanInput.end, () => {
           bg-color="#F1F9FF">
                 <v-row class="ma-0">
                   <v-col cols="6">
-                    <v-radio label="1. Einmalzahlung (Startkapital)" value="startcapital"></v-radio>
+                    <v-radio label="1. Einmalzahlung (Startkapital)" value="saving-start-value"></v-radio>
                   </v-col>
                   <v-col>
                     <v-btn style="background-color: inherit;" flat>
@@ -137,7 +137,7 @@ watch(() => sparplanInput.end, () => {
                       type="number"
                       step="0.01"
                       class="bg-white rounded"
-                      :disabled="selectedEndpoint==''||selectedEndpoint=='startcapital'"
+                      :disabled="selectedEndpoint==''||selectedEndpoint=='saving-start-value'"
                     ></v-text-field>
                   </v-col>
                   <v-col class="pa-0 ms-2">
@@ -148,7 +148,7 @@ watch(() => sparplanInput.end, () => {
                       hide-details
                       type="date"
                       class="bg-white rounded"
-                      :disabled="selectedEndpoint==''||selectedEndpoint=='startcapital'"
+                      :disabled="selectedEndpoint==''||selectedEndpoint=='saving-start-value'"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -173,7 +173,7 @@ watch(() => sparplanInput.end, () => {
                       placeholder="weitere Einmalzahlung"
                       type="number"
                       class="bg-white rounded"
-                      :disabled="selectedEndpoint==''||selectedEndpoint=='startcapital'"
+                      :disabled="selectedEndpoint==''||selectedEndpoint=='saving-start-value'"
                     ></v-text-field>
                   </v-col>
                   <v-col class="pa-0">
@@ -184,7 +184,7 @@ watch(() => sparplanInput.end, () => {
                       hide-details
                       type="date"
                       class="bg-white rounded"
-                      :disabled="selectedEndpoint==''||selectedEndpoint=='startcapital'"
+                      :disabled="selectedEndpoint==''||selectedEndpoint=='saving-start-value'"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -197,7 +197,7 @@ watch(() => sparplanInput.end, () => {
                   <v-btn
                   style="border: solid 2px black;"
                   @click="()=>einmalZahlung++"
-                  :disabled="selectedEndpoint==''||selectedEndpoint=='startcapital'"
+                  :disabled="selectedEndpoint==''||selectedEndpoint=='saving-start-value'"
                   variant="flat"
                   width="200"
                   stacked
@@ -209,7 +209,7 @@ watch(() => sparplanInput.end, () => {
                   <v-btn
                   style="border: solid 2px black;"
                   @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparplanInput.oneTimeInvestment.pop();sparplanInput.oneTimeInvestmentDate.pop()}"
-                  :disabled="selectedEndpoint==''||selectedEndpoint=='startcapital'||einmalZahlung<=0"
+                  :disabled="selectedEndpoint==''||selectedEndpoint=='saving-start-value'||einmalZahlung<=0"
                   variant="flat"
                   width="200"
                   stacked
@@ -227,7 +227,7 @@ watch(() => sparplanInput.end, () => {
           bg-color="#F1F9FF">
                 <v-row class="ma-0">
                   <v-col>
-                    <v-radio label="Sparrate" value="savingrate">
+                    <v-radio label="Sparrate" value="saving-rate">
                     </v-radio>
                   </v-col>
                   <v-col>
@@ -258,7 +258,7 @@ watch(() => sparplanInput.end, () => {
                       type="number"
                       step="0.01"
                       class="bg-white rounded"
-                      :disabled="selectedEndpoint==''||selectedEndpoint=='savingrate'"
+                      :disabled="selectedEndpoint==''||selectedEndpoint=='saving-rate'"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -301,7 +301,7 @@ watch(() => sparplanInput.end, () => {
                 <v-col class="pa-0 my-auto">
                   <v-row class="ma-0">
                     <v-col class="pa-0" cols="9">
-                      <v-radio-group v-model="dynamik" class="pa-0 ma-0" hide-details :disabled="selectedEndpoint==''||selectedEndpoint=='savingrate'">
+                      <v-radio-group v-model="dynamik" class="pa-0 ma-0" hide-details :disabled="selectedEndpoint==''||selectedEndpoint=='saving-rate'">
                         <v-checkbox label="Dynamik" hide-details=""></v-checkbox>
                       </v-radio-group>
                     </v-col>
@@ -314,7 +314,7 @@ watch(() => sparplanInput.end, () => {
                           This parameter defines the percentage by which the monthly savings rate annually increases.
 
                             Using this parameter, it is possible to simulate a dynamic savings rate, for instance,
-                            to compensatethe inflation rate between 1% and 3%. If no savings rate is specified,
+                            to compensate the inflation rate between 1% and 3%. If no savings rate is specified,
                             this field will be irrelevant for the outcome of the calculation.
                         </v-tooltip>
                       </v-btn>
@@ -331,7 +331,7 @@ watch(() => sparplanInput.end, () => {
                       hide-details
                       type="date"
                       class="bg-white rounded"
-                      :disabled="selectedEndpoint==''||selectedEndpoint=='savingrate'"
+                      :disabled="selectedEndpoint==''||selectedEndpoint=='saving-rate'"
                     ></v-text-field>
                   </v-col>
                   <v-col class="pa-0" cols="4">
@@ -342,7 +342,7 @@ watch(() => sparplanInput.end, () => {
                         hide-details
                         type="date"
                         class="bg-white rounded"
-                        :disabled="selectedEndpoint==''||selectedEndpoint=='savingrate'"
+                        :disabled="selectedEndpoint==''||selectedEndpoint=='saving-rate'"
                       ></v-text-field>
                   </v-col>
                   <v-col class="pa-0" cols="4">
@@ -365,7 +365,7 @@ watch(() => sparplanInput.end, () => {
         </v-expansion-panels>
         <v-row class="ma-0">
           <v-col>
-          <v-radio label="Sparzins" value="interestrate"></v-radio>
+          <v-radio label="Sparzins" value="interest-rate"></v-radio>
           </v-col>
           <v-col>
             <v-btn style="background-color: inherit;" flat>
@@ -394,13 +394,13 @@ watch(() => sparplanInput.end, () => {
             type="number"
             step="1"
             class="bg-white rounded"
-            :disabled="selectedEndpoint==''||selectedEndpoint=='interestrate'"
+            :disabled="selectedEndpoint==''||selectedEndpoint=='interest-rate'"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row class="ma-0">
         <v-col>
-          <v-radio label="Enddatum" value="enddate"></v-radio>
+          <v-radio label="Enddatum" value="end-date"></v-radio>
         </v-col>
         <v-col class="ma-auto">
           <v-btn style="background-color: inherit;" flat>
@@ -423,13 +423,13 @@ watch(() => sparplanInput.end, () => {
             hide-details
             type="date"
             class="bg-white rounded"
-            :disabled="selectedEndpoint==''||selectedEndpoint=='enddate'"
+            :disabled="selectedEndpoint==''||selectedEndpoint=='end-date'"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row class="mx-0">
         <v-col>
-          <v-radio label="Endkapital" value="endcapital"></v-radio>
+          <v-radio label="Endkapital" value="capital"></v-radio>
         </v-col>
         <v-col class="ma-auto">
           <v-btn style="background-color: inherit;" flat>
@@ -454,7 +454,7 @@ watch(() => sparplanInput.end, () => {
             type="number"
             step="0.01"
             class="bg-white rounded"
-            :disabled="selectedEndpoint==''||selectedEndpoint=='endcapital'"
+            :disabled="selectedEndpoint==''||selectedEndpoint=='capital'"
           ></v-text-field>
         </v-col>
       </v-row>
