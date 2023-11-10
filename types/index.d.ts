@@ -12,4 +12,5 @@ export interface financeMathInput {
   oneTimeInvestmentDate?: string[];
   savingRate?: number;
   endValue?: number;
+  endpoint: string;
 }
