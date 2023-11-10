@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import type { financeMathInput, financeMathResult } from "~/types/index.d.ts"
+import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch"
 
 const formTab = ref("");
 const API_TOKEN = ""
 
-async function fetchSavingApi(formInput) { // add parameter type (financeMathInput)
-  console.log(formInput)
-  // fetch API to formInput.endpoint with formInput
-}
+const financeMathResult: financeMathResult = ref({
+// default values here
+})
 
+async function fetchFinanceMathAPI(formInput: financeMathInput) {
+  const { data } = await useFinanceMathFetch<financeMathResult>(formInput.endpoint, formInput, API_TOKEN)
+  financeMathResult.value = data
+}
 </script>
 
 <template>
@@ -22,7 +27,7 @@ async function fetchSavingApi(formInput) { // add parameter type (financeMathInp
             <div class="">
               <v-card-text>
                 <v-window v-model="formTab">
-                  <v-window-item value="saving"><sparplan-form @calculateInput="fetchSavingApi"/></v-window-item>
+                  <v-window-item value="saving"><sparplan-form @calculateInput="fetchFinanceMathAPI"/></v-window-item>
                   <v-window-item value="withdraw">entnahmeForm</v-window-item>
                   <v-window-item value="comb">kombiForm</v-window-item>
                 </v-window>
