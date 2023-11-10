@@ -45,7 +45,7 @@ const find = ref("a");
 </script>
 
 <template>
-  <div class="ma-auto">
+  <div>
     <h1 class="text-center">API</h1>
   </div>
   <v-divider></v-divider>
@@ -82,28 +82,28 @@ const find = ref("a");
       <v-card-text>
         <code>Request {</code>
         <div v-for="(item,index) in req">
-          <code class="ps-5" :class="index==find?'bg-green-accent-2':''">{{ index }}": {{ item }} <br></code>
+          <code class="ps-5" :class="index==find?'bg-green-accent-2':''"> "{{ index }}": {{ item }} <br></code>
         </div>
         <code>} <br><br></code>
 
         <code>Response {</code>
         <div v-for="(item,index) in data">
           <div v-if="index=='capitalResult'">
-            <code class="ps-5" :class="index==find?'bg-green-accent-2':''">{{ index }}": { <br></code>
+            <code class="ps-5" :class="index==find?'bg-green-accent-2':''"> "{{ index }}": { <br></code>
             <code v-for="(subitem,subindex) in item" class="ps-10" :class="subindex==find?'bg-green-accent-2':''">
               "{{ subindex }}": {{ subitem }},<br>
             </code>
             <code class="ps-5">} <br></code>
           </div>
           <div v-else-if="index=='capitalSeries'">
-            <code class="ps-5" :class="index==find?'bg-green-accent-2':''">{{ index }}": [ <br></code>
+            <code class="ps-5" :class="index==find?'bg-green-accent-2':''"> "{{ index }}": [ <br></code>
             <code v-for="(subitem,subindex) in item" class="ps-10" :class="subindex==find?'bg-green-accent-2':''">
               {{ subitem }},<br>
             </code>
             <code class="ps-5">] <br></code>
           </div>
 
-          <code v-else class="ps-5">"{{index}}": {{ item }},</code>
+          <code v-else class="ps-5" :class="index==find?'bg-green-accent-2':''">"{{index}}": {{ item }},</code>
         </div>
         <code>}</code>
       </v-card-text>
