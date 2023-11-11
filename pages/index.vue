@@ -17,9 +17,9 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
 
 <template>
   <v-container class="h-100" fluid>
-    <v-row class="h-100">
-      <v-col style="border: solid 3px;" class="mx-2 pa-0">
-        <div class="h-100 rounded-lg" style="background-color: #F1F9FF;">
+    <v-row class="h-100" >
+      <v-col class="px-1" cols="4">
+        <div class="h-100 rounded-lg" style="background-color: #F1F9FF;border: solid 3px;">
             <div>
               <form-tabs @tabUpdate="(n: string) => formTab = n"/>
             </div>
@@ -36,12 +36,13 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
           </v-card>
         </div>
       </v-col>
-      <v-col class="mx-2 pa-0">
+      <v-col class="px-1" cols="4">
         <div class="h-100 bg-cyan-darken-3 px-4 rounded-lg">
         </div>
       </v-col>
-      <v-col class="mx-2 pa-0">
-          <div class="h-100 bg-cyan-darken-3 rounded-lg">
+      <v-col class="px-1" cols="4">
+          <div class="h-100 rounded-lg" style="background-color: #F1F9FF;border: solid 3px;">
+            <api-visualization/>
         </div>
       </v-col>
     </v-row>
