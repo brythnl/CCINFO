@@ -66,6 +66,7 @@ watch(() => sparplanInput.end, () => {
 })
 
 watch(()=>sparplanInput.savingPlanEnd, () =>{
+  setEndDateToBiggestDate(sparplanInput)
   if(new Date(sparplanInput.Sparplansend)<new Date(sparplanInput.Sparplansstart))
     sparplanInput.Sparplansend=sparplanInput.Sparplansstart
 })

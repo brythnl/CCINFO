@@ -62,5 +62,6 @@ export const setEndDateToBiggestDate = (userInput:financeMathInput): void => {
   if (userInput.endpoint == 'end-date') return;
   let tmp: string[] = (JSON.parse(JSON.stringify(userInput.oneTimeInvestmentDate)))
   tmp.push(JSON.parse(JSON.stringify(userInput.savingPlanEnd)))
+  tmp.push(JSON.parse(JSON.stringify(userInput.end)))
   userInput.end = findBiggestDate(tmp)
 }
