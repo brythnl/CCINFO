@@ -368,7 +368,7 @@ watch(()=>sparplanInput.savingPlanEnd, () =>{
             suffix="%"
             style="border: 3px solid #00476B;"
             density="compact"
-            v-model="interestrate"
+            v-model="sparplanInput.interestRate"
             required
             hide-details
             placeholder="Sparzins"
