@@ -52,8 +52,9 @@ function changeEndpoint(){
 
 // get form data (user input)
 function emitData() {
-  validateInput(sparplanInput);
-  emit("calculateInput", sparplanInput);
+  const toSend = JSON.parse(JSON.stringify(sparplanInput))
+  validateInput(toSend);
+  emit("calculateInput", toSend);
 }
 
 watch(() => sparplanInput.oneTimeInvestmentDate, () => {
@@ -368,7 +369,7 @@ watch(()=>sparplanInput.savingPlanEnd, () =>{
             suffix="%"
             style="border: 3px solid #00476B;"
             density="compact"
-            v-model="interestrate"
+            v-model="sparplanInput.interestRate"
             required
             hide-details
             placeholder="Sparzins"

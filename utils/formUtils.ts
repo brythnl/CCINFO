@@ -51,7 +51,7 @@ export const validateInput = (userInput:financeMathInput): void => {
      userInput.savingRate = Math.round(formatNumber(userInput.savingRate));
      userInput.interestRate= formatNumber(userInput.interestRate) * 0.01;
      userInput.dynamicSavingRateFactor = formatNumber(userInput.dynamicSavingRateFactor) * 0.01;
-     userInput.oneTimeInvestment= userInput.oneTimeInvestment.map(investment => Math.round(formatNumber(investment) * 100))
+     userInput.oneTimeInvestment= userInput.oneTimeInvestment.map(investment => Math.round(formatNumber(investment)))
       // Date validation
       let tmp: string[] = (JSON.parse(JSON.stringify(userInput.oneTimeInvestmentDate)))
       tmp.push(userInput.savingPlanBegin)
