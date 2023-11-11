@@ -1,5 +1,9 @@
 <script lang="ts" setup>
 
+const props = defineProps<{
+  apiRequest:financeMathInput,
+  apiResponse:financeMathResult
+}>()
 
 const find = ref("a");
 
@@ -42,13 +46,13 @@ const find = ref("a");
     <v-card-item>
       <v-card-text>
         <code>Request {</code>
-        <div v-for="(item,index) in req">
-          <code class="ps-5" :class="index==find?'bg-green-accent-2':''"> "{{ index }}": {{ item }} <br></code>
+        <div v-for="(item,index) in props.apiRequest">
+          <code v-if="item!=0||item!=''" class="ps-5" :class="index==find?'bg-green-accent-2':''"> "{{ index }}": {{ item }} <br></code>
         </div>
         <code>} <br><br></code>
 
         <code>Response {</code>
-        <div v-for="(item,index) in resp">
+        <div v-for="(item,index) in props.apiResponse">
           <div v-if="index=='capitalResult'">
             <code class="ps-5" :class="index==find?'bg-green-accent-2':''"> "{{ index }}": { <br></code>
             <code v-for="(subitem,subindex) in item" class="ps-10" :class="subindex==find?'bg-green-accent-2':''">
