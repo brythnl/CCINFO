@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Chart as highcharts } from "highcharts-vue";
+
+const props = defineProps(["series"]);
 </script>
 
 <template>
-  <h1>Graph</h1>
   <highcharts
     :options="{
       chart: {
@@ -21,7 +22,7 @@ import { Chart as highcharts } from "highcharts-vue";
       },
       yAxis: {
         title: {
-          text: 'Capital accumulation',
+          text: 'Capital',
         },
         labels: {
           formatter: function () {
@@ -31,11 +32,8 @@ import { Chart as highcharts } from "highcharts-vue";
       },
       series: [
         {
-          name: 'abc',
-          data: [
-            0, 2400, 4824, 7272.24, 9744.9624, 12242.412024000001,
-            14764.836144240002, 17312.4845056824,
-          ], // sample data
+          name: 'Capital accumulation',
+          data: series,
         },
       ],
       tooltip: {
