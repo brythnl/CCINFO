@@ -5,23 +5,6 @@ function formatDate(date: Date) {
 
 export const todayDate = formatDate(new Date())
 
-export interface Input{
-  begin: string,
-  end: string,
-  interestCalculation: string,
-  interestRate: number,
-  reductionFactor: number,
-  dynamicSavingRateFactor: number,
-  savingPlanBegin: string,
-  savingPlanEnd: string,
-  oneTimeInvestment: number[],
-  oneTimeInvestmentDate: string[],
-  savingRate: number,
-  endValue: number,
-  endpoint: string
-}
-
-
 const date = new Date();
 date.setFullYear(date.getFullYear() + 10);
 export const inTenYears = formatDate(date)
