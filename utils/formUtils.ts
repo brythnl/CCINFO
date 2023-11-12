@@ -47,11 +47,11 @@ export const findBiggestDate = (dates: string[]): string => {
 
 export const validateInput = (userInput:financeMathInput): void => {
      // Set decimal separator to dot and make numbers to integer
-     userInput.endValue = Math.round(formatNumber(userInput.endValue));
-     userInput.savingRate = Math.round(formatNumber(userInput.savingRate));
+     userInput.endValue = Math.round(formatNumber(userInput.endValue)*100);
+     userInput.savingRate = Math.round(formatNumber(userInput.savingRate)*100);
      userInput.interestRate= formatNumber(userInput.interestRate) * 0.01;
      userInput.dynamicSavingRateFactor = formatNumber(userInput.dynamicSavingRateFactor) * 0.01;
-     userInput.oneTimeInvestment= userInput.oneTimeInvestment.map(investment => Math.round(formatNumber(investment)))
+     userInput.oneTimeInvestment= userInput.oneTimeInvestment.map(investment => Math.round(formatNumber(investment)*100))
       // Date validation
       let tmp: string[] = (JSON.parse(JSON.stringify(userInput.oneTimeInvestmentDate)))
       tmp.push(userInput.savingPlanBegin)
@@ -64,4 +64,8 @@ export const setEndDateToBiggestDate = (userInput:financeMathInput): void => {
   tmp.push(JSON.parse(JSON.stringify(userInput.savingPlanEnd)))
   tmp.push(JSON.parse(JSON.stringify(userInput.end)))
   userInput.end = findBiggestDate(tmp)
+}
+
+export const Enddate = (enddate: string)=>{
+
 }
