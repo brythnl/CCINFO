@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-const planSelect = ref("saving")
+const planSelect = ref("aktuell")
 const emit = defineEmits(['grafikUpdate'])
 function grafikUpdate(){
-  console.log(planSelect.value);
   emit('grafikUpdate',planSelect.value);
 }
 </script>
@@ -13,7 +12,7 @@ function grafikUpdate(){
     v-model="planSelect"
     @update:model-value="grafikUpdate"
     color="#B2B2B2" bg-color="#00476B"
-    align-tabs="end">
+    align-tabs="center">
       <v-tab value="aktuell" elevation="5">
         <h3>Grafik aktuell</h3>
       </v-tab>
