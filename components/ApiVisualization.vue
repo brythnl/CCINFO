@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { watch } from 'vue';
+
 
 const props = defineProps<{
   apiRequest:financeMathInput,
@@ -6,7 +8,25 @@ const props = defineProps<{
 }>()
 
 const find = ref("a");
-
+watch(()=> props.apiRequest.endpoint,()=>{
+  switch (props.apiRequest.endpoint){
+    case "saving-start-value":
+      find.value="startValue";
+      break;
+    case "saving-rate":
+      find.value="savingRate";
+      break;
+    case "interest-rate":
+      find.value="interestRate";
+      break;
+    case "end-date":
+      find.value="end";
+      break;
+    case "capital":
+      find.value="capitalAmount";
+      break;
+  }
+})
 </script>
 
 <template>
@@ -19,8 +39,7 @@ const find = ref("a");
     <v-divider></v-divider>
     <v-sheet>
       <v-btn-toggle v-model="find" divided color="#1B7694" rounded="100">
-        <v-slide-group show-arrows>
-          <v-slide-group-item>
+        <v-slide-group show-arrows center-active>
           <v-btn value="startInvestment" rounded="100"><v-chip size="small">Startkapital</v-chip></v-btn>
           <v-btn value="startValue"><v-chip size="small">Startbetrag</v-chip></v-btn>
           <v-btn value="capitalAmount" ><v-chip size="small">Endkapital</v-chip></v-btn>
@@ -36,7 +55,6 @@ const find = ref("a");
           <v-btn value="interestCalculation" ><v-chip size="small">Zinsberechnung</v-chip></v-btn>
           <v-btn value="savingPlanBegin" ><v-chip size="small">Sparplansstart</v-chip></v-btn>
           <v-btn value="savingPlanEnd" ><v-chip size="small">Sparplansend</v-chip></v-btn>
-          </v-slide-group-item>
         </v-slide-group>
       </v-btn-toggle>
     </v-sheet>
