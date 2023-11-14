@@ -1,5 +1,6 @@
 import type { financeMathInput } from "~/types/index.d.ts"
 
+// fetch data from a selected endpoint of the AIXIGO Finance Math API based on the passed input
 export const useFinanceMathFetch = <DataT>(endpoint: string, paramInput: financeMathInput, API_TOKEN: string) => {
   let url = `https://demo.portal.aixigo.cloud:443/finance-math/${endpoint}?`
 
