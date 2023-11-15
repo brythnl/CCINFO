@@ -73,7 +73,7 @@ watch(()=>sparplanInput.savingPlanEnd, () =>{
 </script>
 
 <template>
-  <p>Was möchten Sie berechnen ?</p>
+  <h3>Was möchten Sie berechnen?</h3>
   <v-form>
     <v-container>
       <v-radio-group
