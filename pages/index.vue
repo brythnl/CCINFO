@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { financeMathInput, financeMathResult } from "~/types/index.d.ts"
-import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch"
+import type {financeMathInput, financeMathResult} from "~/types/index.d.ts"
+import {useFinanceMathFetch} from "~/composables/useFinanceMathFetch"
 
 const formTab = ref("");
 const API_TOKEN = ""
@@ -14,7 +14,7 @@ const financeMathInput: financeMathInput = ref({
 
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
   financeMathInput.value = formInput
-  const { data } = await useFinanceMathFetch<financeMathResult>(formInput.endpoint, formInput, API_TOKEN)
+  const {data} = await useFinanceMathFetch<financeMathResult>(formInput.endpoint, formInput, API_TOKEN)
   financeMathResult.value = data
 }
 
@@ -22,17 +22,20 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
 
 <template>
   <v-container class="h-100" fluid>
-    <v-row class="h-100" >
+    <v-row class="h-100">
       <v-col class="px-1" cols="4">
-        <div class="h-100 rounded-lg" style="background-color: #F1F9FF;border: solid 3px;">
+        <div>
+          <v-card class="h-100 rounded-xl elevation-6">
+
             <div>
-              <form-tabs @tabUpdate="(n: string) => formTab = n"/>
-            </div>
-            <v-card class="overflow-y-auto" max-height="850" style="background-color: #F1F9FF;" elevation="0">
-            <div class="">
               <v-card-text>
+                <div>
+                  <form-tabs @tabUpdate="(n: string) => formTab = n"/>
+                </div>
                 <v-window v-model="formTab">
-                  <v-window-item value="saving"><sparplan-form @calculateInput="fetchFinanceMathAPI"/></v-window-item>
+                  <v-window-item value="saving">
+                    <sparplan-form @calculateInput="fetchFinanceMathAPI"/>
+                  </v-window-item>
                   <v-window-item value="withdraw">entnahmeForm</v-window-item>
                   <v-window-item value="comb">kombiForm</v-window-item>
                 </v-window>
@@ -42,12 +45,17 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
         </div>
       </v-col>
       <v-col class="px-1" cols="4">
-        <div class="h-100 bg-cyan-darken-3 px-4 rounded-lg">
+        <div>
+          <v-card class="h-500 rounded-xl elevation-6"></v-card>
         </div>
       </v-col>
       <v-col class="px-1" cols="4">
-          <div class="h-100 rounded-lg" style="background-color: #F1F9FF;border: solid 3px;">
-            <api-visualization :apiRequest="financeMathInput" :apiResponse="financeMathResult.value"/>
+        <div>
+          <v-card class="h-100 rounded-xl elevation-6">
+            <v-card-text>
+              <api-visualization :apiRequest="financeMathInput" :apiResponse="financeMathResult.value"/>
+            </v-card-text>
+          </v-card>
         </div>
       </v-col>
     </v-row>

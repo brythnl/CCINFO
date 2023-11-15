@@ -73,7 +73,8 @@ watch(()=>sparplanInput.savingPlanEnd, () =>{
 </script>
 
 <template>
-  <h3>Was möchten Sie berechnen?</h3>
+
+  <h3 class="font-bold py-3">Was möchten Sie berechnen?</h3>
   <v-form>
     <v-container>
       <v-radio-group
