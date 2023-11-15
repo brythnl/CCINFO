@@ -54,4 +54,6 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
