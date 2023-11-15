@@ -94,103 +94,77 @@ watch(() => sparplanInput.savingPlanEnd, () => {
             </v-tooltip>
           </v-btn>
 
-
         </div>
-        <v-row class="my-0">
-          <v-col cols="1" class="pa-0">
-          </v-col>
-          <v-col class="pa-0" cols="6">
-            <v-text-field
-                prefix="€"
-                style="border: 3px solid #00476B;"
-                density="compact"
-                v-model="sparplanInput.oneTimeInvestment[0]"
-                required
-                hide-details
-                placeholder="Startkapital"
-                type="number"
-                step="0.01"
-                class="bg-white rounded"
-                :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-            ></v-text-field>
-          </v-col>
-          <v-col class="pa-0 ms-2">
-            <v-text-field
-                style="border: 3px solid #00476B;"
-                density="compact"
-                v-model="sparplanInput.oneTimeInvestmentDate[0]"
-                hide-details
-                type="date"
-                class="bg-white rounded"
-                :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row v-for="n in einmalZahlung" class="ma-0">
-          <v-row class="ma-0">
-            <v-col class="pa-0">
-              <v-label>{{ n + 1 }}.te Einmalzahlung</v-label>
-            </v-col>
-            <v-col class="pa-0">
-              <v-label>Datum</v-label>
-            </v-col>
-          </v-row>
-          <v-row class="my-0">
-            <v-col class="pa-0">
-              <v-text-field
-                  prefix="€"
-                  style="border: 3px solid #00476B;"
-                  density="compact"
-                  v-model="sparplanInput.oneTimeInvestment[n]"
-                  hide-details
-                  placeholder="weitere Einmalzahlung"
-                  type="number"
-                  class="bg-white rounded"
-                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-              ></v-text-field>
-            </v-col>
-            <v-col class="pa-0">
-              <v-text-field
-                  style="border: 3px solid #00476B;"
-                  density="compact"
-                  v-model="sparplanInput.oneTimeInvestmentDate[n]"
-                  hide-details
-                  type="date"
-                  class="bg-white rounded"
-                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-row>
-        <v-btn-group
-            density="compact"
-            variant="tonal"
-            class="w-100 mt-2"
-            divided>
+        <div class="d-flex flex-row align-start">
+          <v-text-field
+              label="Betrag"
+              variant="outlined"
+              density="compact"
+              prefix="€"
+              v-model="sparplanInput.oneTimeInvestment[0]"
+              required
+              hide-details
+              type="number"
+              step="0.01"
+              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
+              pa-0
+          ></v-text-field>
+          <v-text-field
+              label="Datum"
+              variant="outlined"
+              density="compact"
+              v-model="sparplanInput.oneTimeInvestmentDate[0]"
+              hide-details
+              type="date"
+              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
+              pa-0
+          ></v-text-field>
+        </div>
+        <div v-for="n in einmalZahlung" class="ma-0 d-flex flex-row align-start">
+          <v-text-field
+              prefix="€"
+              :label="`${n + 1}. Einmalzahlung`"
+              variant="outlined"
+              density="compact"
+              v-model="sparplanInput.oneTimeInvestment[n]"
+              hide-details
+              placeholder="weitere Einmalzahlung"
+              type="number"
+              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
+          ></v-text-field>
+          <v-text-field
+              :label="`${n + 1}. Datum`"
+              variant="outlined"
+              density="compact"
+              v-model="sparplanInput.oneTimeInvestmentDate[n]"
+              hide-details
+              type="date"
+              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
+          ></v-text-field>
           <v-btn
-              style="border: solid 2px black;"
+              @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparplanInput.oneTimeInvestment.pop();sparplanInput.oneTimeInvestmentDate.pop()}"
+              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'||einmalZahlung<=0"
+              variant="flat"
+              stacked
+              icon="mdi-email"
+          >
+          </v-btn>
+        </div>
+        <div>
+          <v-btn
               @click="()=>einmalZahlung++"
               :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
               variant="flat"
               width="200"
+              density="compact"
               stacked
               class="pa-0"
-              text="Neue Einmalzahlung hinzufügen"
-              color="#1B7694">
-
+              rounded-lg
+              color="grey"
+              text="Neue Einmalzahlung"
+          >
           </v-btn>
-          <v-btn
-              style="border: solid 2px black;"
-              @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparplanInput.oneTimeInvestment.pop();sparplanInput.oneTimeInvestmentDate.pop()}"
-              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'||einmalZahlung<=0"
-              variant="flat"
-              width="200"
-              stacked
-              class="pa-0 mx-5"
-              text=" Einmalzahlung entfernen"
-              color="#B2B2B2">
-          </v-btn>
-        </v-btn-group>
+        </div>
         <v-row class="ma-0">
           <v-col>
             <v-radio label="Sparrate" value="saving-rate">
