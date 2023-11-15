@@ -76,7 +76,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
   <h3 class="font-bold py-3">Was möchten Sie berechnen?</h3>
   <v-form>
-    <v-container>
+    <div>
       <v-radio-group
           v-model="sparplanInput.endpoint"
           @update:model-value="changeEndpoint">
@@ -95,61 +95,78 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           </v-btn>
 
         </div>
-        <div class="d-flex flex-row align-start">
-          <v-text-field
-              label="Betrag"
-              variant="outlined"
-              density="compact"
-              prefix="€"
-              v-model="sparplanInput.oneTimeInvestment[0]"
-              required
-              hide-details
-              type="number"
-              step="0.01"
-              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-              pa-0
-          ></v-text-field>
-          <v-text-field
-              label="Datum"
-              variant="outlined"
-              density="compact"
-              v-model="sparplanInput.oneTimeInvestmentDate[0]"
-              hide-details
-              type="date"
-              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-              pa-0
-          ></v-text-field>
-        </div>
-        <div v-for="n in einmalZahlung" class="ma-0 d-flex flex-row align-start">
-          <v-text-field
-              prefix="€"
-              :label="`${n + 1}. Einmalzahlung`"
-              variant="outlined"
-              density="compact"
-              v-model="sparplanInput.oneTimeInvestment[n]"
-              hide-details
-              placeholder="weitere Einmalzahlung"
-              type="number"
-              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-          ></v-text-field>
-          <v-text-field
-              :label="`${n + 1}. Datum`"
-              variant="outlined"
-              density="compact"
-              v-model="sparplanInput.oneTimeInvestmentDate[n]"
-              hide-details
-              type="date"
-              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-          ></v-text-field>
-          <v-btn
-              @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparplanInput.oneTimeInvestment.pop();sparplanInput.oneTimeInvestmentDate.pop()}"
-              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'||einmalZahlung<=0"
-              variant="flat"
-              stacked
-              icon="mdi-email"
-          >
-          </v-btn>
-        </div>
+
+        <v-container>
+          <v-row class="pa-0">
+            <v-col class="pa-0">
+              <v-text-field
+                  label="Betrag"
+                  variant="outlined"
+                  density="compact"
+                  prefix="€"
+                  v-model="sparplanInput.oneTimeInvestment[0]"
+                  required
+                  hide-details
+                  type="number"
+                  step="0.01"
+                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
+                  class="pa-0"
+              ></v-text-field>
+            </v-col>
+            <v-col class="pa-0">
+              <v-text-field
+                  label="Datum"
+                  variant="outlined"
+                  density="compact"
+                  v-model="sparplanInput.oneTimeInvestmentDate[0]"
+                  hide-details
+                  type="date"
+                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
+                  class="pa-0"
+              ></v-text-field>
+            </v-col>
+            <v-col class="pa-0">
+
+            </v-col>
+          </v-row>
+          <v-row v-for="n in einmalZahlung" class="pa-0">
+            <v-col class="pa-0">
+              <v-text-field
+                  prefix="€"
+                  :label="`${n + 1}. Einmalzahlung`"
+                  variant="outlined"
+                  density="compact"
+                  v-model="sparplanInput.oneTimeInvestment[n]"
+                  hide-details
+                  placeholder="weitere Einmalzahlung"
+                  type="number"
+                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
+                  class="pa-0"
+              ></v-text-field>
+            </v-col>
+            <v-col class="pa-0">
+              <v-text-field
+                  :label="`${n + 1}. Datum`"
+                  variant="outlined"
+                  density="compact"
+                  v-model="sparplanInput.oneTimeInvestmentDate[n]"
+                  hide-details
+                  type="date"
+                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
+                  class="pa-0"
+              ></v-text-field>
+            </v-col>
+            <v-col class="pa-0">
+              <v-icon
+                  @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparplanInput.oneTimeInvestment.pop();sparplanInput.oneTimeInvestmentDate.pop()}"
+                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'||einmalZahlung<=0"
+                  class="align-content-end"
+              >
+                mdi-email</v-icon>
+            </v-col>
+          </v-row>
+        </v-container>
+
         <div>
           <v-btn
               @click="()=>einmalZahlung++"
@@ -415,7 +432,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           </v-btn>
         </v-col>
       </v-row>
-    </v-container>
+    </div>
   </v-form>
 </template>
 <style scoped></style>
