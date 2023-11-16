@@ -29,8 +29,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
         capitalSeriesInput.interestRate = result.interestRate
         break
       case "saving-rate":
-        // 404: /capital expects savingRate as integer, /savingRate returns a double
-        capitalSeriesInput.savingRate = result.savingRate
+        capitalSeriesInput.savingRate = Math.round(result.savingRate * 100)
         break
       case "saving-start-value":
     }
