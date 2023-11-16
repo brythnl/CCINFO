@@ -3,7 +3,7 @@ import type { financeMathInput } from "~/types/index.d.ts"
 // Date constants for form default values (todayDate, inTenYears, inTwentyYears)
 export const todayDate = formatDate(new Date())
 
-function formatDate(date: Date) {
+export function formatDate(date: Date) {
   return date.toISOString().split('T')[0].toString().replace('/T/','');
 }
 
