@@ -32,6 +32,9 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
         capitalSeriesInput.savingRate = Math.round(result.savingRate * 100)
         break
       case "saving-start-value":
+        capitalSeriesInput.oneTimeInvestment = [Math.round(result.startInvestment * 100)]
+        capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin]
+        break
     }
 
     const { data } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN)
