@@ -3,7 +3,7 @@ import type { financeMathInput, financeMathResult } from "~/types/index.d.ts"
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch"
 
 const formTab = ref("");
-const API_TOKEN = ""
+const API_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI4ZksxTW95NkVidjktcjNEQ3IwMXJtemVsY3FkMUpUbVJDaGh6YkxRblpnIn0.eyJleHAiOjE3MDAxNjg1NzUsImlhdCI6MTcwMDE2NDk3NSwiYXV0aF90aW1lIjoxNzAwMTY0OTY4LCJqdGkiOiJjMWM1ZDlhMC0xMmRjLTQ5ZWQtOTliNy03Y2Q3ZWEyNWVjNjciLCJpc3MiOiJodHRwczovL2xvZ2luLnBvcnRhbC5haXhpZ28uY2xvdWQvcmVhbG1zL2FwcHMiLCJhdWQiOlsid2Vic2l0ZSIsImRlbW8iXSwic3ViIjoiam9lc3Rpbi5icnlhbkBnbWFpbC5jb20iLCJ0eXAiOiJJRCIsImF6cCI6IndlYnNpdGUiLCJzZXNzaW9uX3N0YXRlIjoiYjg3NGRmMWMtZmVlMC00Yjk4LWIxOGQtY2NmNzY5ZDE4M2MyIiwiYXRfaGFzaCI6InFhdmpmc05jTExibkZQRTVPZ0NnMFEiLCJhY3IiOiIwIiwic2lkIjoiYjg3NGRmMWMtZmVlMC00Yjk4LWIxOGQtY2NmNzY5ZDE4M2MyIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInJvbGVzIjpbIkdVRVNUIl0sIm5hbWUiOiJCcnlhbiBOYXRoYW5hZWwgSm9lc3RpbiIsInByZWZlcnJlZF91c2VybmFtZSI6ImpvZXN0aW4uYnJ5YW5AZ21haWwuY29tIiwiZ2l2ZW5fbmFtZSI6IkJyeWFuIE5hdGhhbmFlbCIsImZhbWlseV9uYW1lIjoiSm9lc3RpbiIsInRlbmFudCI6Imd1ZXN0IiwiZW1haWwiOiJqb2VzdGluLmJyeWFuQGdtYWlsLmNvbSJ9.HSZTmJKiHAKxuXfBCqgEOkGNyexucf4cE8QB-u4zoHdHzNa6BeN5zIMX_RdItNSUK_AjZLwbdNPecFfHi9xmifE5nysx9csnOE2qEODk1fSNfS2SGq00nlPHjstRygS8YetJ6ZI6uWqMbjpM3NhSLBBL2PNTNIP7nyIG-pa5GElC-7VSeKMubxnWrK_zSYYJhy6Hy5D7LvB1e5cAZt9NRpXlLe4CvWoZ9FgZ6ORdzqMWrjoPqbZfc_PG1ENx5dO-A2kHjYxc9OXvQk1GMyaqOKB7jOTCbaHjQhWPUv-n9ik5oUboYRtutcYWlkANoOVs_PFEBSfjOcevYNUuZ5_O0g"
 
 const financeMathResult: financeMathResult = ref({
 // default values here
@@ -18,11 +18,21 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   financeMathResult.value = data
 
   if (formInput.endpoint !== "capital") {
-    const capitalSeriesInput: financeMathInput = formInput
+    const result = toRaw(financeMathResult.value.value)
+    const { endValue, ...capitalSeriesInput }: financeMathInput = formInput
+
     switch (formInput.endpoint) {
       case "end-date":
-        delete capitalSeriesInput.endValue
-        capitalSeriesInput.end = toRaw(financeMathResult.value.value).end
+        capitalSeriesInput.end = result.end
+        break
+      case "interest-rate":
+        capitalSeriesInput.interestRate = result.interestRate
+        break
+      case "saving-rate":
+        // 404: /capital expects savingRate as integer, /savingRate returns a double
+        capitalSeriesInput.savingRate = result.savingRate
+        break
+      case "saving-start-value":
     }
 
     const { data } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN)
