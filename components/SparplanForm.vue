@@ -100,9 +100,8 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           <v-row class="gap-x-3 ps-5">
             <v-col cols="5" class="px-0">
               <v-text-field
-                  label="Betrag"
+                  label="1. Einmalzahlung"
                   variant="outlined"
-
                   prefix="€"
                   v-model="sparplanInput.oneTimeInvestment[0]"
                   required
@@ -114,9 +113,8 @@ watch(() => sparplanInput.savingPlanEnd, () => {
             </v-col>
             <v-col cols="5" class="px-0">
               <v-text-field
-                  label="Datum"
+                  label="Startdatum"
                   variant="outlined"
-
                   v-model="sparplanInput.oneTimeInvestmentDate[0]"
                   hide-details
                   type="date"
@@ -154,12 +152,12 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
               ></v-text-field>
             </v-col>
-            <v-col cols="1" class="px-0">
+            <v-col cols="1" class="px-0 d-flex align-center justify-start">
               <v-icon
                   @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparplanInput.oneTimeInvestment.pop();sparplanInput.oneTimeInvestmentDate.pop()}"
                   :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'||einmalZahlung<=0"
               >
-                mdi-email
+                mdi-trash-can-outline
               </v-icon>
             </v-col>
           </v-row>
@@ -197,7 +195,6 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           <v-row class="gap-x-3 ps-5">
             <v-col cols="5" class="px-0">
               <v-text-field
-                  label="Sparrate"
                   variant="outlined"
                   prefix="€"
                   density="compact"
@@ -294,7 +291,6 @@ watch(() => sparplanInput.savingPlanEnd, () => {
             <v-col cols="11" class="px-0">
               <v-text-field
                   suffix="%"
-                  label="Sparzins"
                   variant="outlined"
                   density="compact"
                   v-model="sparplanInput.interestRate"
@@ -327,7 +323,6 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           <v-row class="gap-x-3 ps-5">
             <v-col cols="11" class="px-0">
               <v-text-field
-                  label="Enddatum"
                   variant="outlined"
                   density="compact"
                   v-model="sparplanInput.end"
@@ -359,7 +354,6 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           <v-row class="gap-x-3 ps-5 pb-2">
             <v-col cols="11" class="px-0">
               <v-text-field
-                  label="Endkapital"
                   variant="outlined"
                   prefix="€"
                   density="compact"
