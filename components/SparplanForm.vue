@@ -169,14 +169,12 @@ watch(() => sparplanInput.savingPlanEnd, () => {
             <v-btn
                 @click="()=>einmalZahlung++"
                 :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-                variant="flat"
-                width="200"
-                density="compact"
-                stacked
-                class="pa-0"
-                rounded-lg
-                color="grey"
+                rounded="lg"
+                variant="tonal"
+                color="#4195AC"
                 text="Neue Einmalzahlung"
+                prepend-icon="mdi-plus-circle-outline"
+                class="text-none"
             >
             </v-btn>
           </v-row>
@@ -293,7 +291,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
         <v-container class="px-0 py-0">
           <v-row class="gap-x-3 ps-5">
-            <v-col cols="5" class="px-0">
+            <v-col cols="11" class="px-0">
               <v-text-field
                   suffix="%"
                   label="Sparzins"
@@ -307,12 +305,6 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   step="1"
                   :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='interest-rate'"
               ></v-text-field>
-            </v-col>
-            <v-col cols="5" class="px-0">
-
-            </v-col>
-            <v-col cols="1" class="px-0">
-
             </v-col>
           </v-row>
         </v-container>
@@ -333,7 +325,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
         <!-- Enddatum Form -->
         <v-container class="px-0 py-0">
           <v-row class="gap-x-3 ps-5">
-            <v-col cols="5" class="px-0">
+            <v-col cols="11" class="px-0">
               <v-text-field
                   label="Enddatum"
                   variant="outlined"
@@ -344,12 +336,6 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   type="date"
                   :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='end-date'"
               ></v-text-field>
-            </v-col>
-            <v-col cols="5" class="px-0">
-
-            </v-col>
-            <v-col cols="1" class="px-0">
-
             </v-col>
           </v-row>
         </v-container>
@@ -371,7 +357,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
         <v-container class="px-0 py-0">
           <v-row class="gap-x-3 ps-5 pb-2">
-            <v-col cols="5" class="px-0">
+            <v-col cols="11" class="px-0">
               <v-text-field
                   label="Endkapital"
                   variant="outlined"
@@ -385,12 +371,6 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='capital'"
               ></v-text-field>
             </v-col>
-            <v-col cols="5" class="px-0">
-
-            </v-col>
-            <v-col cols="1" class="px-0">
-
-            </v-col>
           </v-row>
         </v-container>
       </v-radio-group>
@@ -399,7 +379,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
         <v-btn
             block
             class="text-none"
-            color="#00476B"
+            color="#16486B"
             size="x-large"
             variant="flat"
             @click="emitData">

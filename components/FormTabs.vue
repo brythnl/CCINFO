@@ -15,7 +15,7 @@ function tabUpdate(){
         @update:model-value="tabUpdate"
         grow
         stacked
-        bg-color="blue"
+        bg-color="#4195AC"
         class="rounded-lg"
     >
       <v-tab value="saving">
