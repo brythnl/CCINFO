@@ -272,124 +272,141 @@ watch(() => sparplanInput.savingPlanEnd, () => {
         </v-row>
         </v-container>
 
-        <!-- Dimas Sparrate Detail-->
-
-
-
-        <v-row class="ma-0">
-          <v-col>
-            <v-radio label="Sparzins" value="interest-rate"></v-radio>
-          </v-col>
-          <v-col>
-            <v-btn style="background-color: inherit;" flat>
-              <v-avatar class="ma-auto">
-                <v-img src="~/assets/Information-Icon.png"></v-img>
-              </v-avatar>
-              <v-tooltip activator="parent" location="end" class="w-50">
-                This parameter determines the interest rate or interest rates for calculations in financial mathematics.
-                Either a constant interest rate over the entire investment period or interest rates that vary annually
-                can be used.
-                If several interest rates are entered, the first rate applies to the first year, the second to the
-                second year, etc. For example,
-                if three interest rates are specified for an investment period of five years, the third interest rate
-                applies from the third year of the investment period onward.
-              </v-tooltip>
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row class="ma-0">
-          <v-col class="pa-0">
-            <v-text-field
-                suffix="%"
-                style="border: 3px solid #00476B;"
-                density="compact"
-                v-model="sparplanInput.interestRate"
-                required
-                hide-details
-                placeholder="Sparzins"
-                type="number"
-                step="1"
-                class="bg-white rounded"
-                :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='interest-rate'"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row class="ma-0">
-          <v-col>
-            <v-radio label="Enddatum" value="end-date"></v-radio>
-          </v-col>
-          <v-col class="ma-auto">
-            <v-btn style="background-color: inherit;" flat>
-              <v-avatar class="ma-auto">
-                <v-img src="~/assets/Information-Icon.png"></v-img>
-              </v-avatar>
-              <v-tooltip activator="parent" location="end" class="w-50">
-                This parameter defines the end of the investment period.
-                Default is 10 years from today.
-              </v-tooltip>
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row class="mx-0">
-          <v-col class="pa-0">
-            <v-text-field
-                style="border: 3px solid #00476B;"
-                density="compact"
-                v-model="sparplanInput.end"
-                required
-                hide-details
-                type="date"
-                class="bg-white rounded"
-                :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='end-date'"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row class="mx-0">
-          <v-col>
-            <v-radio label="Endkapital" value="capital"></v-radio>
-          </v-col>
-          <v-col class="ma-auto">
-            <v-btn style="background-color: inherit;" flat>
-              <v-avatar class="ma-auto">
-                <v-img src="~/assets/Information-Icon.png"></v-img>
-              </v-avatar>
-              <v-tooltip activator="parent" location="end" class="w-50">
-                This parameter specifies the desired capital that should be available at the end of the investment
-                period.
-              </v-tooltip>
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-text-field
-                prefix="€"
-                style="border: 3px solid #00476B;"
-                density="compact"
-                v-model="sparplanInput.endValue"
-                hide-details
-                placeholder="Endkapital"
-                type="number"
-                step="0.01"
-                class="bg-white rounded"
-                :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='capital'"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-      </v-radio-group>
-      <v-row>
-        <v-col>
-          <v-btn
-              block
-              class="text-none mb-4"
-              color="#00476B"
-              size="x-large"
-              variant="flat"
-              @click="emitData">
-            Calculate
+        <!-- Sparzins Radio Button -->
+        <div class="d-flex flex-row">
+          <v-radio label="Sparzins" value="interest-rate" density="compact"></v-radio>
+          <v-btn icon elevation="0" flat>
+            <v-icon>mdi-information</v-icon>
+            <v-tooltip activator="parent" location="end" class="w-50">
+              This parameter determines the interest rate or interest rates for calculations in financial mathematics.
+              Either a constant interest rate over the entire investment period or interest rates that vary annually
+              can be used.
+              If several interest rates are entered, the first rate applies to the first year, the second to the
+              second year, etc. For example,
+              if three interest rates are specified for an investment period of five years, the third interest rate
+              applies from the third year of the investment period onward.
+            </v-tooltip>
           </v-btn>
-        </v-col>
-      </v-row>
+        </div>
+
+        <!-- Sparzins Form -->
+
+        <v-container class="px-0 py-0">
+          <v-row class="gap-x-3 ps-5">
+            <v-col cols="5" class="px-0">
+              <v-text-field
+                  suffix="%"
+                  label="Sparzins"
+                  variant="outlined"
+                  density="compact"
+                  v-model="sparplanInput.interestRate"
+                  required
+                  hide-details
+                  placeholder="Sparzins"
+                  type="number"
+                  step="1"
+                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='interest-rate'"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="5" class="px-0">
+
+            </v-col>
+            <v-col cols="1" class="px-0">
+
+            </v-col>
+          </v-row>
+        </v-container>
+
+        <!-- Enddatum Radio Button -->
+
+        <div class="d-flex flex-row">
+          <v-radio label="Enddatum" value="end-date" density="compact"></v-radio>
+          <v-btn icon elevation="0" flat>
+            <v-icon>mdi-information</v-icon>
+            <v-tooltip activator="parent" location="end" class="w-50">
+              This parameter defines the end of the investment period.
+              Default is 10 years from today.
+            </v-tooltip>
+          </v-btn>
+        </div>
+
+        <!-- Enddatum Form -->
+        <v-container class="px-0 py-0">
+          <v-row class="gap-x-3 ps-5">
+            <v-col cols="5" class="px-0">
+              <v-text-field
+                  label="Enddatum"
+                  variant="outlined"
+                  density="compact"
+                  v-model="sparplanInput.end"
+                  required
+                  hide-details
+                  type="date"
+                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='end-date'"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="5" class="px-0">
+
+            </v-col>
+            <v-col cols="1" class="px-0">
+
+            </v-col>
+          </v-row>
+        </v-container>
+
+        <!-- Endkapital Radio Button -->
+
+        <div class="d-flex flex-row">
+          <v-radio label="Endkapital" value="capital" density="compact"></v-radio>
+          <v-btn icon elevation="0" flat>
+            <v-icon>mdi-information</v-icon>
+            <v-tooltip activator="parent" location="end" class="w-50">
+              This parameter specifies the desired capital that should be available at the end of the investment
+              period.
+            </v-tooltip>
+          </v-btn>
+        </div>
+
+        <!-- Endkapital Form -->
+
+        <v-container class="px-0 py-0">
+          <v-row class="gap-x-3 ps-5 pb-2">
+            <v-col cols="5" class="px-0">
+              <v-text-field
+                  label="Endkapital"
+                  variant="outlined"
+                  prefix="€"
+                  density="compact"
+                  v-model="sparplanInput.endValue"
+                  hide-details
+                  placeholder="Endkapital"
+                  type="number"
+                  step="0.01"
+                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='capital'"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="5" class="px-0">
+
+            </v-col>
+            <v-col cols="1" class="px-0">
+
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-radio-group>
+
+        <!-- Berechnen Button -->
+        <v-btn
+            block
+            class="text-none"
+            color="#00476B"
+            size="x-large"
+            variant="flat"
+            @click="emitData">
+          Berechnen
+        </v-btn>
+
+
     </div>
   </v-form>
 </template>
