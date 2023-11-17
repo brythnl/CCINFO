@@ -19,15 +19,15 @@ function tabUpdate(){
         class="rounded-lg"
     >
       <v-tab value="saving">
-        <v-icon size="x-large">mdi-email</v-icon>
+        <v-icon size="x-large">mdi-plus</v-icon>
         Sparen
       </v-tab>
       <v-tab value="withdraw">
-        <v-icon size="x-large">mdi-email</v-icon>
+        <v-icon size="x-large">mdi-minus</v-icon>
         Entnahme
         </v-tab>
       <v-tab value="comb">
-        <v-icon size="x-large">mdi-email</v-icon>
+        <v-icon size="x-large">mdi-plus-minus</v-icon>
         Kombi
         </v-tab>
     </v-tabs>
