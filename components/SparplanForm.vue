@@ -15,6 +15,7 @@ const einmalZahlung = ref(0);
 const dynamik = ref(false);
 const startkapitalDetails = ref(false);
 const sparplanDetails = ref(false);
+const toggleIcon = ref("mdi-chevron-down");
 
 
 // form data (user input)
@@ -33,6 +34,17 @@ const sparplanInput = reactive({
   endValue: 0,
   endpoint: ""
 })
+
+function toggleStartkapital(){
+  if(startkapitalDetails.value==false){
+    startkapitalDetails.value = true;
+    toggleIcon.value = "mdi-chevron-up";
+  }
+  else{
+    startkapitalDetails.value = false;
+    toggleIcon.value = "mdi-chevron-down";
+  }
+}
 
 // change endpoint
 function changeEndpoint() {
@@ -94,6 +106,9 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
         <!-- Startkapital Form -->
           <v-row class="gap-x-3 ps-5">
+            <v-col cols="auto" class="px-0">
+              <v-icon @click="toggleStartkapital">{{ toggleIcon }}</v-icon>
+            </v-col>
             <v-col cols="5" class="flex px-0">
               <v-text-field
                   label="1. Einmalzahlung"
@@ -117,7 +132,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                 </v-tooltip>
               </v-btn>
             </v-col>
-            <v-col v-if="showDetailsStartkapital" cols="5" class="flex px-0">
+            <v-col v-if="startkapitalDetails" cols="5" class="flex px-0">
               <v-text-field
                   label="Startdatum"
                   variant="outlined"
@@ -140,7 +155,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           </v-row>
 
           <!-- Startkapital Detail-Ansicht -->
-          <v-row v-for="n in einmalZahlung" class="gap-x-3 ps-5">
+          <v-row v-if="startkapitalDetails" v-for="n in einmalZahlung" class="gap-x-3 ps-5">
             <v-col cols="5" class="flex px-0">
               <v-text-field
                   prefix="€"
@@ -194,7 +209,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           </v-row>
 
           <!-- Button Neue Einmalzahlung -->
-          <v-row class="ps-5 py-2 my-0">
+          <v-row v-if="startkapitalDetails" class="ps-5 py-2 my-0">
             <v-btn
                 @click="()=>einmalZahlung++"
                 :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
