@@ -195,127 +195,87 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
         <!-- Sparrate Form -->
 
+        <v-container class="px-0 py-0">
+          <v-row class="gap-x-3 ps-5">
+            <v-col cols="5" class="px-0">
+              <v-text-field
+                  label="Sparrate"
+                  variant="outlined"
+                  prefix="€"
+                  density="compact"
+                  v-model="sparplanInput.savingRate"
+                  required
+                  hide-details
+                  placeholder="Sparrate"
+                  type="number"
+                  step="0.01"
+                  :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="5" class="px-0">
 
-        <v-row class="my-0">
-          <v-col cols="1" class="pa-0">
-          </v-col>
-          <v-col class="pa-0">
-            <v-text-field
-                prefix="€"
-                style="border: 3px solid #00476B;"
-                density="compact"
-                v-model="sparplanInput.savingRate"
-                required
-                hide-details
-                placeholder="Sparrate"
-                type="number"
-                step="0.01"
-                class="bg-white rounded"
-                :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col class="pa-0 my-auto ">
-            <v-row>
-              <v-col>
-                <v-label>Startdatum</v-label>
-              </v-col>
-              <v-col class="pa-0">
-                <v-btn style="background-color: inherit;" flat size="20">
-                  <v-avatar class="ma-auto">
-                    <v-img src="~/assets/Information-Icon.png"></v-img>
-                  </v-avatar>
-                  <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the begin of the optional savings plan. If no date is specified, the savings
-                    rate is applied for the total investment period.
-                  </v-tooltip>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-col>
-          <v-col class="pa-0 my-auto">
-            <v-row>
-              <v-col>
-                <v-label>Enddatum</v-label>
-              </v-col>
-              <v-col class="pa-0">
-                <v-btn style="background-color: inherit;" flat size="20">
-                  <v-avatar class="ma-auto">
-                    <v-img src="~/assets/Information-Icon.png"></v-img>
-                  </v-avatar>
-                  <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the end of the optional savings plan. If no date is specified, the savings
-                    rate is applied for the total investment period.
-                  </v-tooltip>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-col>
-          <v-col class="pa-0 my-auto">
-            <v-row class="ma-0">
-              <v-col class="pa-0" cols="9">
-                <v-radio-group v-model="dynamik" class="pa-0 ma-0" hide-details
-                               :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'">
-                  <v-checkbox label="Dynamik" hide-details=""></v-checkbox>
-                </v-radio-group>
-              </v-col>
-              <v-col class="pa-0">
-                <v-btn style="background-color: inherit;" flat class="pa-0 mt-1" size="30">
-                  <v-avatar class="ma-auto">
-                    <v-img src="~/assets/Information-Icon.png"></v-img>
-                  </v-avatar>
-                  <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the percentage by which the monthly savings rate annually increases.
+            </v-col>
+            <v-col cols="1" class="px-0">
 
-                    Using this parameter, it is possible to simulate a dynamic savings rate, for instance,
-                    to compensate the inflation rate between 1% and 3%. If no savings rate is specified,
-                    this field will be irrelevant for the outcome of the calculation.
-                  </v-tooltip>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-        <v-row class="my-0">
-          <v-col class="pa-0" cols="4">
+            </v-col>
+          </v-row>
+
+        <!-- Sparrate Detail-Ansicht -->
+        <v-row class="gap-x-3 ps-5">
+          <v-col cols="auto" class="px-0">
             <v-text-field
-                style="border: 3px solid #00476B;"
+                label="Startdatum"
+                variant="outlined"
                 density="compact"
                 v-model="sparplanInput.savingPlanBegin"
                 hide-details
                 type="date"
-                class="bg-white rounded"
                 :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
             ></v-text-field>
           </v-col>
-          <v-col class="pa-0" cols="4">
+          <v-col cols="auto" class="px-0">
             <v-text-field
-                style="border: 3px solid #00476B;"
+                label="Enddatum"
+                variant="outlined"
                 density="compact"
                 v-model="sparplanInput.savingPlanEnd"
                 hide-details
                 type="date"
                 min="sparplan"
-                class="bg-white rounded"
                 :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
             ></v-text-field>
           </v-col>
-          <v-col class="pa-0" cols="4">
+          <v-col cols="auto" class="px-0">
+            <v-radio-group v-model="dynamik" class="pa-0 ma-0" hide-details
+                           :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'">
+              <v-checkbox label="Dynamik" hide-details=""></v-checkbox>
+            </v-radio-group>
             <v-text-field
                 v-if="dynamik"
                 suffix="%"
-                style="border: 3px solid #00476B;"
                 density="compact"
                 v-model="sparplanInput.dynamicSavingRateFactor"
                 hide-details
                 placeholder="Dynamik"
                 type="number"
                 step="1"
-                class="bg-white rounded"
             ></v-text-field>
           </v-col>
         </v-row>
+
+        <v-row class="my-0">
+          <v-col cols="1" class="pa-0">
+          </v-col>
+          <v-col class="pa-0">
+
+          </v-col>
+        </v-row>
+        </v-container>
+
+        <!-- Dimas Sparrate Detail-->
+
+
+
         <v-row class="ma-0">
           <v-col>
             <v-radio label="Sparzins" value="interest-rate"></v-radio>
