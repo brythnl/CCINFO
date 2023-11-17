@@ -102,7 +102,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               <v-text-field
                   label="Betrag"
                   variant="outlined"
-                  density="compact"
+
                   prefix="€"
                   v-model="sparplanInput.oneTimeInvestment[0]"
                   required
@@ -116,7 +116,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               <v-text-field
                   label="Datum"
                   variant="outlined"
-                  density="compact"
+
                   v-model="sparplanInput.oneTimeInvestmentDate[0]"
                   hide-details
                   type="date"
@@ -390,4 +390,10 @@ watch(() => sparplanInput.savingPlanEnd, () => {
     </div>
   </v-form>
 </template>
-<style scoped></style>
+
+<!-- Zahl- und Datumsfeld gleiche Größe -->
+<style scoped>
+.v-input{
+  line-height: unset;
+}
+</style>
