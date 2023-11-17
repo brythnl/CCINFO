@@ -81,7 +81,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           v-model="sparplanInput.endpoint"
           @update:model-value="changeEndpoint">
 
-
+        <!-- Startkapital Radio Button -->
         <div class="d-flex flex-row">
           <v-radio label="Startkapital" value="saving-start-value" density="compact"></v-radio>
           <v-btn icon elevation="0" flat>
@@ -93,12 +93,12 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               Default date for first cash inflow (start capital) is today.
             </v-tooltip>
           </v-btn>
-
         </div>
 
-        <v-container>
-          <v-row class="pa-0">
-            <v-col class="pa-0">
+        <!-- Startkapital Form -->
+        <v-container class="px-0 py-0">
+          <v-row class="gap-x-3 ps-5">
+            <v-col cols="5" class="px-0">
               <v-text-field
                   label="Betrag"
                   variant="outlined"
@@ -110,10 +110,9 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   type="number"
                   step="0.01"
                   :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-                  class="pa-0"
               ></v-text-field>
             </v-col>
-            <v-col class="pa-0">
+            <v-col cols="5" class="px-0">
               <v-text-field
                   label="Datum"
                   variant="outlined"
@@ -122,15 +121,16 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   hide-details
                   type="date"
                   :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-                  class="pa-0"
               ></v-text-field>
             </v-col>
-            <v-col class="pa-0">
+            <v-col cols="1" class="px-0">
 
             </v-col>
           </v-row>
-          <v-row v-for="n in einmalZahlung" class="pa-0">
-            <v-col class="pa-0">
+
+          <!-- Startkapital Detail-Ansicht -->
+          <v-row v-for="n in einmalZahlung" class="gap-x-3 ps-5">
+            <v-col cols="5" class="px-0">
               <v-text-field
                   prefix="€"
                   :label="`${n + 1}. Einmalzahlung`"
@@ -141,10 +141,9 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   placeholder="weitere Einmalzahlung"
                   type="number"
                   :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-                  class="pa-0"
               ></v-text-field>
             </v-col>
-            <v-col class="pa-0">
+            <v-col cols="5" class="px-0">
               <v-text-field
                   :label="`${n + 1}. Datum`"
                   variant="outlined"
@@ -153,51 +152,50 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   hide-details
                   type="date"
                   :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-                  class="pa-0"
               ></v-text-field>
             </v-col>
-            <v-col class="pa-0">
+            <v-col cols="1" class="px-0">
               <v-icon
                   @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparplanInput.oneTimeInvestment.pop();sparplanInput.oneTimeInvestmentDate.pop()}"
                   :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'||einmalZahlung<=0"
-                  class="align-content-end"
               >
-                mdi-email</v-icon>
+                mdi-email
+              </v-icon>
             </v-col>
+          </v-row>
+
+          <!-- Button Neue Einmalzahlung -->
+          <v-row class="ps-5 py-2 my-0">
+            <v-btn
+                @click="()=>einmalZahlung++"
+                :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
+                variant="flat"
+                width="200"
+                density="compact"
+                stacked
+                class="pa-0"
+                rounded-lg
+                color="grey"
+                text="Neue Einmalzahlung"
+            >
+            </v-btn>
           </v-row>
         </v-container>
 
-        <div>
-          <v-btn
-              @click="()=>einmalZahlung++"
-              :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
-              variant="flat"
-              width="200"
-              density="compact"
-              stacked
-              class="pa-0"
-              rounded-lg
-              color="grey"
-              text="Neue Einmalzahlung"
-          >
+        <!-- Startkapital Radio Button -->
+        <div class="d-flex flex-row">
+          <v-radio label="Sparrate" value="saving-rate" density="compact"></v-radio>
+          <v-btn icon elevation="0" flat>
+            <v-icon>mdi-information</v-icon>
+            <v-tooltip activator="parent" location="end" class="w-50">
+              This parameter specifies the monthly savings rate.
+            </v-tooltip>
           </v-btn>
         </div>
-        <v-row class="ma-0">
-          <v-col>
-            <v-radio label="Sparrate" value="saving-rate">
-            </v-radio>
-          </v-col>
-          <v-col>
-            <v-btn style="background-color: inherit;" flat>
-              <v-avatar class="ma-auto">
-                <v-img src="~/assets/Information-Icon.png"></v-img>
-              </v-avatar>
-              <v-tooltip activator="parent" location="end" class="w-50">
-                This parameter specifies the monthly savings rate.
-              </v-tooltip>
-            </v-btn>
-          </v-col>
-        </v-row>
+
+        <!-- Sparrate Form -->
+
+
         <v-row class="my-0">
           <v-col cols="1" class="pa-0">
           </v-col>
