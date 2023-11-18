@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { financeMathInput, financeMathResult } from "~/types/index.d.ts"
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch"
+import { getAPIToken } from "../utils/auth";
 
 const grafikTabs = ref("");
 const formTab = ref("");
 
-const API_TOKEN = ""
+const API_TOKEN = ref("")
 
 const financeMathResult: financeMathResult = ref({
 // default values here
@@ -16,10 +17,13 @@ const financeMathInput: financeMathInput = ref({
 
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
   financeMathInput.value = formInput
-  const { data } = await useFinanceMathFetch<financeMathResult>(formInput.endpoint, formInput, API_TOKEN)
+  const { data } = await useFinanceMathFetch<financeMathResult>(formInput.endpoint, formInput, API_TOKEN.value)
   financeMathResult.value = data
 }
 
+onBeforeMount(async () => {
+  API_TOKEN.value = await getAPIToken()
+})
 </script>
 
 <template>
