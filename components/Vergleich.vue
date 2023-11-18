@@ -25,7 +25,10 @@
 </template>
 
 <script>
-const dayjs = require('dayjs')
+import { useDayjs } from '#dayjs' // not need if you are using auto import
+const dayjs = useDayjs()
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat)
 
 //Dummy Data
 
@@ -164,8 +167,10 @@ export default {
     calculateDifference() {
       return (item) => {
         if (item.nachher instanceof Date && item.vorher instanceof Date) {
-          const timeDifference = item.nachher.getTime() - item.vorher.getTime();
-          return Math.ceil(timeDifference / (1000 * 60 * 60 * 24 * )); // Differenz in Tagen
+          //const timeDifference = item.nachher.getTime() - item.vorher.getTime();
+          let date1 = dayjs(item.vorher);
+          let date2 = dayjs(item.nachher);
+          return date2.diff(date1, 'month');
         } else {
           return (item.nachher - item.vorher).toFixed(2);
         }
@@ -179,7 +184,8 @@ export default {
     format() {
       return (item) => {
         if (item instanceof Date && item instanceof Date) {
-          return moment(item).format('L');
+          let date = dayjs(item);
+          return dayjs(date).format('DD.MM.YYYY');
         } else {
           return item.toFixed(2);
         }

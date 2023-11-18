@@ -16,7 +16,8 @@ export default defineNuxtConfig({
             });
         },
         'nuxt-highcharts',
-        '@nuxtjs/tailwindcss'
+        '@nuxtjs/tailwindcss',
+        'dayjs-nuxt'
     ],
     vite: {
         vue: {
@@ -26,4 +27,7 @@ export default defineNuxtConfig({
             },
         },
     },
+    dayjs: {
+        plugins: ['customParseFormat'],
+    }
 });
