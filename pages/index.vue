@@ -40,7 +40,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
         break
     }
 
-    const { data } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN)
+    const { data } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN.value)
     console.log(toRaw(data.value))
   }
 }
