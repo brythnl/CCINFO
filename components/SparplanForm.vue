@@ -14,9 +14,6 @@ const emit = defineEmits<{
 const einmalZahlung = ref(0);
 const dynamik = ref(false);
 
-let input
-
-
 // form data (user input)
 const sparplanInput = reactive({
   begin: todayDate,
