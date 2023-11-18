@@ -13,7 +13,7 @@ export const inTenYears = formatDate(date)
 date.setFullYear(date.getFullYear() + 10);
 export const inTwentyYears = formatDate(date)
 
-// format the decimal point of a number into a comma
+// format the decimal comma of a number into a point
 export const formatNumber = (num: number): number => {
   return Number(num
     .toString()
