@@ -21,6 +21,8 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
 </script>
 
 <template>
+  <h1 class="font-bold text-3xl text-center py-5">Aixigo Finanzplaner</h1>
+
   <v-container class="h-100" fluid>
     <v-row class="h-100">
       <v-col class="px-1" cols="4">
