@@ -11,7 +11,7 @@ const find = ref("a");
 watch(() => props.apiRequest.endpoint, () => {
   switch (props.apiRequest.endpoint) {
     case "saving-start-value":
-      find.value = "startValue";
+      find.value="startInvestment";
       break;
     case "saving-rate":
       find.value = "savingRate";
@@ -37,15 +37,12 @@ watch(() => props.apiRequest.endpoint, () => {
   <div>
     <h4 class="font-bold">Suchbegriffe: </h4>
     <v-sheet>
-
       <v-chip-group v-model="find" selected-class="text-blue">
         <v-slide-group center-active>
           <v-chip value="startInvestment" size="small">Startkapital</v-chip>
-          <v-chip value="startValue" size="small">Startbetrag</v-chip>
           <v-chip value="capitalAmount" size="small">Endkapital</v-chip>
           <v-chip value="savingRate" size="small">Sparrate</v-chip>
           <v-chip value="interestRate" size="small">Zinssatz</v-chip>
-          <v-chip value="compoundInterest" size="small">Zinseszins</v-chip>
           <v-chip value="capitalSeries" size="small">Kapitalserien</v-chip>
           <v-chip value="end" size="small">Enddatum</v-chip>
           <v-chip value="begin" size="small">Begindatum</v-chip>
@@ -57,7 +54,6 @@ watch(() => props.apiRequest.endpoint, () => {
           <v-chip value="savingPlanEnd" size="small">Sparplansend</v-chip>
         </v-slide-group>
       </v-chip-group>
-
     </v-sheet>
     <v-divider></v-divider>
   </div>

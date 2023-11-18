@@ -18,7 +18,6 @@ const sparplanDetails = ref(false);
 const iconStartkapital = ref("mdi-chevron-down");
 const iconSparplan = ref("mdi-chevron-down");
 
-
 // form data (user input)
 const sparplanInput = reactive({
   begin: todayDate,
@@ -87,15 +86,15 @@ watch(() => sparplanInput.oneTimeInvestmentDate, () => {
   setEndDateToBiggestDate(sparplanInput)
 }, {deep: true})
 
-watch(() => sparplanInput.end, () => {
-  setEndDateToBiggestDate(sparplanInput)
-})
+
 
 watch(() => sparplanInput.savingPlanEnd, () => {
   setEndDateToBiggestDate(sparplanInput)
   if (new Date(sparplanInput.savingPlanEnd) < new Date(sparplanInput.savingPlanStart))
     sparplanInput.savingPlanEnd = sparplanInput.savingPlanStart
 })
+
+
 </script>
 
 <template>
