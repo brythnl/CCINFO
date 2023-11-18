@@ -1,6 +1,7 @@
-# CCINFO Development
+# CCINFO
+> A finance planner app to calculate investments
 
-## Development Environment Setup
+## Installation
 ### Without Docker:
 1. Install npm packages
 ```bash
