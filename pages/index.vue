@@ -66,7 +66,7 @@ onBeforeMount(async () => {
                 </div>
                 <v-window v-model="formTab">
                   <v-window-item value="saving">
-                    <sparplan-form @calculateInput="fetchFinanceMathAPI"/>
+                    <sparplan-form @calculateInput="fetchFinanceMathAPI" :apiResponse="financeMathResult.value"/>
                   </v-window-item>
                   <v-window-item value="withdraw">entnahmeForm</v-window-item>
                   <v-window-item value="comb">kombiForm</v-window-item>
@@ -80,7 +80,7 @@ onBeforeMount(async () => {
         <div>
             <v-card class="h-500 rounded-xl elevation-6">
             <div>
-              <v-card-text>
+              <v-card-text height="700">
                 <grafik-tab @grafikUpdate="(m:string)=> grafikTabs = m"/>
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">Grafik aktuell</v-window-item>

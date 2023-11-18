@@ -57,7 +57,7 @@ watch(() => props.apiRequest.endpoint, () => {
     </v-sheet>
     <v-divider></v-divider>
   </div>
-  <v-card class="overflow-y-auto bg-grey-darken-4 h-100 rounded-lg" max-height="800" variant="outlined">
+  <v-card class="overflow-y-auto bg-grey-darken-4 h-100 rounded-lg" max-height="700" height="700" variant="outlined">
     <v-card-item>
       <v-card-text>
         <code>Request {</code>

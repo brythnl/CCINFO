@@ -11,12 +11,19 @@ const emit = defineEmits<{
   (e: "calculateInput", sparplanInput: {}): void;
 }>();
 
+//variable for the number of oneTimeInvestment and the dynamic status
 const einmalZahlung = ref(0);
 const dynamik = ref(false);
 const startkapitalDetails = ref(false);
 const sparplanDetails = ref(false);
 const iconStartkapital = ref("mdi-chevron-down");
 const iconSparplan = ref("mdi-chevron-down");
+
+//prop to show the result of selected field
+const props = defineProps<{
+  apiResponse:financeMathResult
+}>()
+
 
 // form data (user input)
 const sparplanInput = reactive({
@@ -115,9 +122,17 @@ watch(() => sparplanInput.savingPlanEnd, () => {
             </v-col>
           </v-row>
 
-
+          <!--Startkapital response slot-->
+          <v-row v-if="sparplanInput.endpoint=='saving-start-value'" class="px-5">
+            <v-card 
+            v-text="props.apiResponse?props.apiResponse.startInvestment:''" 
+            class="text-center w-75 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponse?'#4195AC':''"></v-card>
+          </v-row>
         <!-- Startkapital Form -->
-          <v-row class="px-5">
+          <v-row v-else class="px-5">
             <v-col cols="1" class="px-0">
               <v-icon size="large" @click="toggleStartkapital">{{ iconStartkapital }}</v-icon>
             </v-col>
@@ -268,7 +283,19 @@ watch(() => sparplanInput.savingPlanEnd, () => {
             <v-col cols="1" class="px-0">
               <v-icon size="large" @click="toggleSparplan">{{ iconSparplan }}</v-icon>
             </v-col>
-            <v-col class="flex ps-2 px-0">
+
+            <!--Sparrate response slot-->
+            <v-col v-if="sparplanInput.endpoint=='saving-rate'" class="flex ps-2 pa-0">
+            <v-card 
+            v-text="props.apiResponse?props.apiResponse.savingRate:''" 
+            class="text-center w-100 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponse?'#4195AC?':''"></v-card>
+          </v-col>
+
+          <!--Sparrate input field-->
+            <v-col v-else class="flex ps-2 px-0">
               <v-text-field
                   variant="outlined"
                   prefix="€"
@@ -309,7 +336,6 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                 v-model="sparplanInput.savingPlanBegin"
                 hide-details
                 type="date"
-                :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
             ></v-text-field>
             <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
               <v-icon size="small">mdi-information-outline</v-icon>
@@ -330,7 +356,6 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                 hide-details
                 type="date"
                 min="sparplan"
-                :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
             ></v-text-field>
             <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
               <v-icon size="small">mdi-information-outline</v-icon>
@@ -344,7 +369,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           </v-col>
           <v-col cols="3" class="ps-2 px-0 py-0">
             <div class="flex">
-              <v-radio-group v-model="dynamik" hide-details :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'">
+              <v-radio-group v-model="dynamik" hide-details >
                 <v-checkbox label="Dynamik" density="compact" hide-details=""></v-checkbox>
               </v-radio-group>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
@@ -384,7 +409,17 @@ watch(() => sparplanInput.savingPlanEnd, () => {
         <!-- Sparzins Form -->
 
           <v-row class="px-5">
-            <v-col class="flex ps-2 px-0" offset="1">
+             <!--Sparrate response slot-->
+            <v-col v-if="sparplanInput.endpoint=='interest-rate'" class="flex ps-2 px-0"  offset="1">
+            <v-card 
+            v-text="props.apiResponse?props.apiResponse.interestRate:''" 
+            class="text-center w-100 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponse?'#4195AC?':''"></v-card>
+            </v-col>
+            <!--Sparrate input field-->
+            <v-col v-else class="flex ps-2 px-0" offset="1">
               <v-text-field
                   suffix="%"
                   variant="outlined"
@@ -423,7 +458,17 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
         <!-- Enddatum Form -->
           <v-row class="px-5">
-            <v-col class="flex ps-2 px-0" offset="1">
+            <!--Enddate response slot-->
+            <v-col v-if="sparplanInput.endpoint=='end-date'" class="flex ps-2 px-0"  offset="1">
+            <v-card 
+            v-text="props.apiResponse?props.apiResponse.end:''" 
+            class="text-center w-100 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponse?'#4195AC?':''"></v-card>
+            </v-col>
+            <!--Enddate input field-->
+            <v-col v-else class="flex ps-2 px-0" offset="1">
               <v-text-field
                   variant="outlined"
                   density="compact"
@@ -459,7 +504,17 @@ watch(() => sparplanInput.savingPlanEnd, () => {
         <!-- Endkapital Form -->
 
           <v-row class="px-5 pb-2">
-            <v-col class="flex ps-2 px-0" offset="1">
+            <!--Endkapital response slot-->
+            <v-col v-if="sparplanInput.endpoint=='capital'" class="flex ps-2 px-0"  offset="1">
+            <v-card 
+            v-text="props.apiResponse?props.apiResponse.capitalResult.capitalAmount:''" 
+            class="text-center w-100 ma-auto justify-center" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponse?'#4195AC?':''"></v-card>
+            </v-col>
+            <!--Endkapital input field-->
+            <v-col v-else class="flex ps-2 px-0" offset="1">
               <v-text-field
                   variant="outlined"
                   prefix="€"
