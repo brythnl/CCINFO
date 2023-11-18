@@ -28,7 +28,6 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       <v-col class="px-1" cols="4">
         <div>
           <v-card class="h-100 rounded-xl elevation-6">
-
             <div>
               <v-card-text>
                 <div>
@@ -49,6 +48,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       <v-col class="px-1" cols="4">
         <div>
           <v-card class="h-500 rounded-xl elevation-6">
+            <vergleich></vergleich>
           </v-card>
         </div>
       </v-col>

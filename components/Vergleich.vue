@@ -1,6 +1,8 @@
 <template>
-  <v-sheet class="mx-auto my-auto pa-5" :elevation="6" :height="500" :width="500" rounded>
-    <v-table>
+  <div class="pa-5">
+    <h4 class="font-bold">Änderungen</h4>
+    <v-divider></v-divider>
+    <v-table >
       <thead>
       <tr>
         <th>Feld</th>
@@ -18,14 +20,14 @@
       </tr>
       </tbody>
     </v-table>
-  </v-sheet>
+    <v-divider></v-divider>
+  </div>
 </template>
 
 <script>
+const dayjs = require('dayjs')
 
 //Dummy Data
-
-import moment from "moment";
 
 const req_1 = ref()
 
@@ -163,7 +165,7 @@ export default {
       return (item) => {
         if (item.nachher instanceof Date && item.vorher instanceof Date) {
           const timeDifference = item.nachher.getTime() - item.vorher.getTime();
-          return Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Differenz in Tagen
+          return Math.ceil(timeDifference / (1000 * 60 * 60 * 24 * )); // Differenz in Tagen
         } else {
           return (item.nachher - item.vorher).toFixed(2);
         }
