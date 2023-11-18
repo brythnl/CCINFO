@@ -15,7 +15,9 @@ function grafikUpdate(){
     rounded="xl"
     divided
     density="compact"
-    class="justify-center">
+    class="justify-center"
+    color="#4195AC"
+    mandatory>
       <v-btn value="aktuell">Grafik aktuell</v-btn>
       <v-btn value="vorher">Grafik vorher</v-btn>
       <v-btn value="vergleich">Vergleich</v-btn>

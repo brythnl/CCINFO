@@ -54,7 +54,7 @@ onBeforeMount(async () => {
 <template>
   <h1 class="font-bold text-3xl text-center py-5">Aixigo Finanzplaner</h1>
 
-  <v-container class="h-100" fluid>
+  <v-container fluid>
     <v-row class="h-100">
       <v-col class="px-1" cols="4">
         <div>
@@ -78,10 +78,10 @@ onBeforeMount(async () => {
       </v-col>
       <v-col class="px-1" cols="4">
         <div>
-          <grafik-tab @grafikUpdate="(m:string)=> grafikTabs = m"/>
             <v-card class="h-500 rounded-xl elevation-6">
             <div>
               <v-card-text>
+                <grafik-tab @grafikUpdate="(m:string)=> grafikTabs = m"/>
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">Grafik aktuell</v-window-item>
                   <v-window-item value="vorher">Grafik vorher</v-window-item>
