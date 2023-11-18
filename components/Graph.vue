@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Chart as highcharts } from "highcharts-vue";
 
-const props = defineProps(["series"]);
+const props = defineProps(["series", "enddate"]);
 </script>
 
 <template>
@@ -13,8 +13,15 @@ const props = defineProps(["series"]);
           numericSymbols: null, //otherwise by default ['k', 'M', 'G', 'T', 'P', 'E']
         },
       },
+      title: {
+        text: 'Capital accumulation',
+      },
 
       xAxis: {
+        type: 'datetime',
+        labels: {
+          format: '{value:%Y}', // Fromat the year display
+        },
         title: {
           text: 'Years',
         },
@@ -32,7 +39,7 @@ const props = defineProps(["series"]);
       },
       series: [
         {
-          name: 'Capital accumulation',
+          showInLegend: false,
           data: series,
         },
       ],
