@@ -19,6 +19,30 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   financeMathInput.value = formInput
   const { data } = await useFinanceMathFetch<financeMathResult>(formInput.endpoint, formInput, API_TOKEN.value)
   financeMathResult.value = data
+
+  if (formInput.endpoint !== "capital") {
+    const result = toRaw(financeMathResult.value.value)
+    const { endValue, ...capitalSeriesInput }: financeMathInput = formInput
+
+    switch (formInput.endpoint) {
+      case "end-date":
+        capitalSeriesInput.end = result.end
+        break
+      case "interest-rate":
+        capitalSeriesInput.interestRate = result.interestRate
+        break
+      case "saving-rate":
+        capitalSeriesInput.savingRate = Math.round(result.savingRate)
+        break
+      case "saving-start-value":
+        capitalSeriesInput.oneTimeInvestment = [Math.round(result.startInvestment)]
+        capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin]
+        break
+    }
+
+    const { data } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN)
+    console.log(toRaw(data.value))
+  }
 }
 
 onBeforeMount(async () => {
