@@ -11,7 +11,7 @@ const find = ref("a");
 watch(()=> props.apiRequest.endpoint,()=>{
   switch (props.apiRequest.endpoint){
     case "saving-start-value":
-      find.value="startValue";
+      find.value="startInvestment";
       break;
     case "saving-rate":
       find.value="savingRate";
@@ -41,11 +41,9 @@ watch(()=> props.apiRequest.endpoint,()=>{
       <v-btn-toggle v-model="find" divided color="#1B7694" rounded="100">
         <v-slide-group show-arrows center-active>
           <v-btn value="startInvestment" rounded="100"><v-chip size="small">Startkapital</v-chip></v-btn>
-          <v-btn value="startValue"><v-chip size="small">Startbetrag</v-chip></v-btn>
           <v-btn value="capitalAmount" ><v-chip size="small">Endkapital</v-chip></v-btn>
           <v-btn value="savingRate"><v-chip size="small">Sparrate</v-chip></v-btn>
           <v-btn value="interestRate"><v-chip size="small">Zinssatz</v-chip></v-btn>
-          <v-btn value="compoundInterest" ><v-chip size="small">Zinseszins</v-chip></v-btn>
           <v-btn value="capitalSeries" ><v-chip size="small">Kapitalserien</v-chip></v-btn>
           <v-btn value="end" ><v-chip size="small">Enddatum</v-chip></v-btn>
           <v-btn value="begin" ><v-chip size="small">Begindatum</v-chip></v-btn>
