@@ -102,13 +102,14 @@ watch(() => sparplanInput.savingPlanEnd, () => {
   <h3 class="font-bold pb-5 py-3">Was möchten Sie berechnen?</h3>
   <v-form>
     <div>
+      <v-card class="overflow-y-auto">
       <v-radio-group
           v-model="sparplanInput.endpoint"
           @update:model-value="changeEndpoint">
 
         <v-container class="px-0 py-0">
           <!-- Startkapital Radio Button -->
-          <v-row class="py-0 ps-5">
+          <v-row class="mt-0 ps-5">
             <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio label="Startkapital" value="saving-start-value" density="compact"></v-radio>
             </v-col>
@@ -486,6 +487,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
           </v-row>
         </v-container>
       </v-radio-group>
+      </v-card>
 
         <!-- Berechnen Button -->
         <v-btn
