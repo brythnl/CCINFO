@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
 import { watch } from 'vue';
 import {
   todayDate,
@@ -16,6 +15,10 @@ const emit = defineEmits<{
 
 const einmalZahlung = ref(0);
 const dynamik = ref(false);
+
+const props = defineProps<{
+  apiResponse:financeMathResult
+}>()
 
 const entnahmeplaninput = reactive({
   begin: todayDate,
@@ -110,7 +113,11 @@ watch(()=>entnahmeplaninput.savingPlanEnd, () =>{
 
                   </v-col>
                 </v-row>
-                <v-row class="my-0">
+                <v-row v-if="entnahmeplaninput.endpoint=='saving-start-value'">
+                    <v-card v-text="props.apiResponse?props.apiResponse.startInvestment:''" :color="props.apiResponse?'#81C994':''">
+                    </v-card>
+                </v-row>
+                <v-row v-else class="my-0">
                   <v-col cols="1" class="pa-0">
                     <v-expansion-panel-title class="pa-0">
                     </v-expansion-panel-title>
@@ -235,13 +242,16 @@ watch(()=>entnahmeplaninput.savingPlanEnd, () =>{
                     </v-btn>
                   </v-col>
                 </v-row>
-
                 <v-row class="my-0">
                   <v-col cols="1" class="pa-0">
                     <v-expansion-panel-title class="pa-0">
                     </v-expansion-panel-title>
                   </v-col>
-                  <v-col class="pa-0">
+                  <v-col v-if="entnahmeplaninput.endpoint=='saving-rate'" class="pa-0">
+                    <v-card v-text="props.apiResponse?-props.apiResponse.savingRate:''" :color="props.apiResponse?'#81C994':''" class="pa-2 text-center">
+                    </v-card>
+                  </v-col>
+                  <v-col v-else class="pa-0">
                     <v-text-field
                       prefix="€"
                       style="border: 3px solid #00476B;"
@@ -297,7 +307,7 @@ watch(()=>entnahmeplaninput.savingPlanEnd, () =>{
                 <v-col class="pa-0 my-auto">
                   <v-row class="ma-0">
                     <v-col class="pa-0" cols="9">
-                      <v-radio-group v-model="dynamik" class="pa-0 ma-0" hide-details :disabled="entnahmeplaninput.endpoint==''||entnahmeplaninput.endpoint=='saving-rate'">
+                      <v-radio-group v-model="dynamik" class="pa-0 ma-0" hide-details>
                         <v-checkbox label="Dynamik" hide-details=""></v-checkbox>
                       </v-radio-group>
                     </v-col>
@@ -326,9 +336,7 @@ watch(()=>entnahmeplaninput.savingPlanEnd, () =>{
                       v-model="entnahmeplaninput.savingPlanBegin"
                       hide-details
                       type="date"
-                      class="bg-white rounded"
-                      :disabled="entnahmeplaninput.endpoint==''||entnahmeplaninput.endpoint=='saving-rate'"
-                    ></v-text-field>
+                      class="bg-white rounded"></v-text-field>
                   </v-col>
                   <v-col class="pa-0" cols="4">
                       <v-text-field
@@ -337,9 +345,7 @@ watch(()=>entnahmeplaninput.savingPlanEnd, () =>{
                         v-model="entnahmeplaninput.savingPlanEnd"
                         hide-details
                         type="date"
-                        class="bg-white rounded"
-                        :disabled="entnahmeplaninput.endpoint==''||entnahmeplaninput.endpoint=='saving-rate'"
-                      ></v-text-field>
+                        class="bg-white rounded"></v-text-field>
                   </v-col>
                   <v-col class="pa-0" cols="4">
                       <v-text-field
@@ -362,7 +368,7 @@ watch(()=>entnahmeplaninput.savingPlanEnd, () =>{
 
         <v-row class="ma-0">
           <v-col>
-          <v-radio label="Sparzins" value="interest-rate"></v-radio>
+          <v-radio disabled label="Sparzins" value="interest-rate"></v-radio>
           </v-col>
           <v-col>
             <v-btn style="background-color: inherit;" flat>
@@ -378,6 +384,7 @@ watch(()=>entnahmeplaninput.savingPlanEnd, () =>{
             </v-btn>
           </v-col>
         </v-row>
+
       <v-row class="ma-0">
         <v-col class="pa-0">
           <v-text-field
@@ -395,9 +402,10 @@ watch(()=>entnahmeplaninput.savingPlanEnd, () =>{
           ></v-text-field>
         </v-col>
       </v-row>
+
       <v-row class="ma-0">
         <v-col>
-          <v-radio label="Enddatum" value="end-date"></v-radio>
+          <v-radio disabled label="Enddatum" value="end-date"></v-radio>
         </v-col>
         <v-col class="ma-auto">
           <v-btn style="background-color: inherit;" flat>
@@ -411,7 +419,7 @@ watch(()=>entnahmeplaninput.savingPlanEnd, () =>{
           </v-btn>
         </v-col></v-row>
       <v-row class="mx-0">
-        <v-col class="pa-0">      
+        <v-col>      
           <v-text-field
             style="border: 3px solid #00476B;"
             density="compact"
@@ -441,7 +449,11 @@ watch(()=>entnahmeplaninput.savingPlanEnd, () =>{
         </v-col>
       </v-row>
       <v-row>
-        <v-col>
+        <v-col v-if="entnahmeplaninput.endpoint=='capital'"> 
+        <v-card v-text="props.apiResponse?props.apiResponse.capitalResult.capitalAmount:''" :color="props.apiResponse?'#81C994':''">
+          </v-card>
+        </v-col>
+        <v-col v-else >
           <v-text-field
             prefix="€"
             style="border: 3px solid #00476B;"
