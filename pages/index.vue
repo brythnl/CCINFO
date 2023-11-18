@@ -98,7 +98,7 @@ onBeforeMount(async () => {
                       @calculateInput="fetchFinanceMathAPI"
                       :apiResponse="financeMathResult.value"
                   /></v-window-item>
-                  <v-window-item value="comb">kombiForm</v-window-item>
+                  <v-window-item value="comb"><kombi-form/></v-window-item>
                 </v-window>
               </v-card-text>
             </div>
