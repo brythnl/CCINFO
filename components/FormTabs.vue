@@ -2,7 +2,6 @@
 const planSelect = ref("saving")
 const emit = defineEmits(['tabUpdate'])
 function tabUpdate(){
-  console.log(planSelect.value)
   emit('tabUpdate',planSelect.value);
 }
 </script>
