@@ -1,7 +1,6 @@
 <template>
   <div class="pa-5">
     <h4 class="font-bold">Änderungen</h4>
-    <v-divider></v-divider>
     <v-table >
       <thead>
       <tr>
@@ -20,7 +19,27 @@
       </tr>
       </tbody>
     </v-table>
-    <v-divider></v-divider>
+  </div>
+  <div class="pa-5">
+    <h4 class="font-bold">Änderungen</h4>
+    <v-table >
+      <thead>
+      <tr>
+        <th>Feld</th>
+        <th>Vorher</th>
+        <th>Aktuell</th>
+        <th>Differenz</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="item in itemsWithNonZeroDifference">
+        <td>{{ item.name }}</td>
+        <td>{{ format(item.vorher) }}</td>
+        <td>{{ format(item.nachher) }}</td>
+        <td :class="{ 'red-text': calculateDifference(item) < 0 }">{{ calculateDifference(item) }}</td>
+      </tr>
+      </tbody>
+    </v-table>
   </div>
 </template>
 
@@ -167,10 +186,15 @@ export default {
     calculateDifference() {
       return (item) => {
         if (item.nachher instanceof Date && item.vorher instanceof Date) {
-          //const timeDifference = item.nachher.getTime() - item.vorher.getTime();
           let date1 = dayjs(item.vorher);
           let date2 = dayjs(item.nachher);
-          return date2.diff(date1, 'month');
+          let diff = date2.diff(date1, 'month');
+          if(diff >= 12 || diff <= -12){
+            return date2.diff(date1, 'year') + " Jahre";
+          }
+          else{
+            return diff + " Monate";
+          }
         } else {
           return (item.nachher - item.vorher).toFixed(2);
         }
@@ -193,21 +217,6 @@ export default {
     },
   },
 }
-
-
-// nicht nur Response-Felder sondern unter anderem auch Request!
-
-
-// Response und Request-Felder in ein einheitliches Schema bekommen?
-// alles verschönern, besonders export default
-// Einheiten anzeigen
-// Funktion, um negativ einzufärben √ -> Datum auch??
-
-// Dezimalstellen beschränken !! √
-
-
-// Differenz zwischen Daten? -> wie erkennt der ein Datum √
-// nur Daten anzeigen, die verschieden √
 
 
 </script>
