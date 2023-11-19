@@ -106,7 +106,7 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
 <h3 class="font-bold pb-5 py-3">Was möchten Sie berechnen?</h3>
   <v-form>
     <div>
-      <v-card class="overflow-y-auto" height="600" max-height="600">
+      <v-card class="overflow-y-auto" max-height="580">
       <v-radio-group
           v-model="entnahmeplaninput.endpoint"
           @update:model-value="changeEndpoint">
@@ -269,7 +269,7 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
 
           <v-row class="py-0 ps-5">
             <v-col cols="auto" class="flex px-0 py-0">
-              <v-radio label="Sparrate" value="saving-rate" density="compact"></v-radio>
+              <v-radio label="Entnahmerate" value="saving-rate" density="compact"></v-radio>
             </v-col>
           </v-row>
 
@@ -397,7 +397,7 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
 
           <v-row class="py-0 ps-5">
             <v-col cols="auto" class="flex px-0 py-0">
-              <v-radio label="Sparzins" value="interest-rate" density="compact"></v-radio>
+              <v-radio disabled label="Entnahmezins" value="interest-rate" density="compact"></v-radio>
             </v-col>
           </v-row>
 
@@ -446,7 +446,7 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
 
           <v-row class="py-0 ps-5">
             <v-col cols="auto" class="flex px-0 py-0">
-              <v-radio label="Enddatum" value="end-date" density="compact"></v-radio>
+              <v-radio disabled label="Enddatum" value="end-date" density="compact"></v-radio>
             </v-col>
           </v-row>
 
