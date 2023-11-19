@@ -57,12 +57,15 @@ import {inTenYears, todayDate} from "../utils/formUtils";
 import {watch} from "vue";
 dayjs.extend(customParseFormat)
 
+/*
 const props = defineProps<{
   apiRequest: financeMathInput,
   apiResponse: financeMathResult
 }>()
+*/
 
-const frage = ref("a");
+const frage = "capitalAmount";
+/*
 watch(() => props.apiRequest.endpoint, () => {
   switch (props.apiRequest.endpoint) {
     case "saving-start-value":
@@ -82,23 +85,8 @@ watch(() => props.apiRequest.endpoint, () => {
       break;
   }
 })
+*/
 
-function filterFrage(obj){
-  const filtered = [];
-
-  for(const key in obj){
-    const name = obj[key].name;
-    if(name == frage.value){
-      filtered.push({
-        name: name,
-        oldValue: obj[key].oldValue,
-        newValue: obj[key].newValue,
-        difference: obj[key].difference,
-      });
-    }
-  }
-  return filtered;
-}
 
 function createCombinedArray (oldObj, newObj){
   const combinedArray = [];
@@ -239,7 +227,7 @@ const names = {
 }
 
 const combinedArray_req = createCombinedArray(old_req, new_req);
-const combinedArray_resp = filterFrage(createCombinedArray(old_resp.capitalResult, new_resp.capitalResult));
+const combinedArray_resp = createCombinedArray(old_resp.capitalResult, new_resp.capitalResult);
 
 console.log("Combined Array for old_req and new_req:", combinedArray_req);
 console.log("Combined Array for old_resp and new_resp:", combinedArray_resp);

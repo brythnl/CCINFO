@@ -7,40 +7,6 @@ import {inTenYears, todayDate} from "../utils/formUtils";
 dayjs.extend(customParseFormat)
 
 
-/*
-const props = defineProps<{
-  apiRequest: financeMathInput,
-  apiResponse: financeMathResult
-}>()
-
-const old_req = "";
-const old_resp = "";
-const new_req = "";
-const new_resp = "";
-
-
-const find = ref("a");
-watch(() => props.apiRequest.endpoint, () => {
-  switch (props.apiRequest.endpoint) {
-    case "saving-start-value":
-      find.value = "startValue";
-      break;
-    case "saving-rate":
-      find.value = "savingRate";
-      break;
-    case "interest-rate":
-      find.value = "interestRate";
-      break;
-    case "end-date":
-      find.value = "end";
-      break;
-    case "capital":
-      find.value = "capitalAmount";
-      break;
-  }
-})
-*/
-
 
 
 //Dummy Data
