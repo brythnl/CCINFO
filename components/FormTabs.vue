@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 const planSelect = ref("saving")
 const emit = defineEmits(['tabUpdate'])
-function tabUpdate(){
+
+function tabUpdate() {
   console.log(planSelect.value)
-  emit('tabUpdate',planSelect.value);
+  emit('tabUpdate', planSelect.value);
 }
 </script>
 
@@ -25,11 +26,11 @@ function tabUpdate(){
       <v-tab value="withdraw">
         <v-icon size="x-large">mdi-minus</v-icon>
         Entnahme
-        </v-tab>
+      </v-tab>
       <v-tab value="comb">
         <v-icon size="x-large">mdi-plus-minus</v-icon>
         Kombi
-        </v-tab>
+      </v-tab>
     </v-tabs>
   </div>
 </template>

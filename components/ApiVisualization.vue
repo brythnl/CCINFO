@@ -57,59 +57,6 @@ watch(() => props.apiRequest.endpoint, () => {
           <v-chip value="savingPlanEnd" size="small">Sparplansend</v-chip>
         </v-slide-group>
       </v-chip-group>
-
-
-      <!--
-            <v-btn-toggle v-model="find" divided color="red">
-              <v-slide-group show-arrows center-active>
-                <v-btn value="startInvestment" rounded="100">
-                  <v-chip size="small">Startkapital</v-chip>
-                </v-btn>
-                <v-btn value="startValue">
-                  <v-chip size="small">Startbetrag</v-chip>
-                </v-btn>
-                <v-btn value="capitalAmount">
-                  <v-chip size="small">Endkapital</v-chip>
-                </v-btn>
-                <v-btn value="savingRate">
-                  <v-chip size="small">Sparrate</v-chip>
-                </v-btn>
-                <v-btn value="interestRate">
-                  <v-chip size="small">Zinssatz</v-chip>
-                </v-btn>
-                <v-btn value="compoundInterest">
-                  <v-chip size="small">Zinseszins</v-chip>
-                </v-btn>
-                <v-btn value="capitalSeries">
-                  <v-chip size="small">Kapitalserien</v-chip>
-                </v-btn>
-                <v-btn value="end">
-                  <v-chip size="small">Enddatum</v-chip>
-                </v-btn>
-                <v-btn value="begin">
-                  <v-chip size="small">Begindatum</v-chip>
-                </v-btn>
-                <v-btn value="oneTimeInvestment">
-                  <v-chip size="small">Einmalzahlungen</v-chip>
-                </v-btn>
-                <v-btn value="oneTimeInvestmentDate">
-                  <v-chip size="small">Datum der Enmalzahlungen</v-chip>
-                </v-btn>
-                <v-btn value="dynamicSavingRateFactor">
-                  <v-chip size="small">Dynamik</v-chip>
-                </v-btn>
-                <v-btn value="interestCalculation">
-                  <v-chip size="small">Zinsberechnung</v-chip>
-                </v-btn>
-                <v-btn value="savingPlanBegin">
-                  <v-chip size="small">Sparplansstart</v-chip>
-                </v-btn>
-                <v-btn value="savingPlanEnd">
-                  <v-chip size="small">Sparplansend</v-chip>
-                </v-btn>
-              </v-slide-group>
-            </v-btn-toggle>
-      -->
     </v-sheet>
     <v-divider></v-divider>
   </div>
