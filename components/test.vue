@@ -1,31 +1,114 @@
 <template>
-
+  <div class="pa-5">
+    <h4 class="font-bold">Änderungen</h4>
+    <v-table >
+      <thead>
+      <tr>
+        <th>Feld</th>
+        <th>Vorher</th>
+        <th>Aktuell</th>
+        <th>Differenz</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="item in combinedArray_req">
+        <td>{{ item.name }}</td>
+        <td>{{ item.oldValue }}</td>
+        <td>{{ item.newValue }}</td>
+        <td :class="{ 'red-text': item.difference < 0 }">{{ item.difference }}</td>
+      </tr>
+      </tbody>
+    </v-table>
+  </div>
+  <div class="pa-5">
+    <h4 class="font-bold">Ergebnis</h4>
+    <v-table >
+      <thead>
+      <tr>
+        <th>Feld</th>
+        <th>Vorher</th>
+        <th>Aktuell</th>
+        <th>Differenz</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="item in combinedArray_resp">
+        <td>{{ item.name }}</td>
+        <td>{{ item.oldValue }}</td>
+        <td>{{ item.newValue }}</td>
+        <td :class="{ 'red-text': item.difference < 0 }">{{ item.difference }}</td>
+      </tr>
+      </tbody>
+    </v-table>
+  </div>
 </template>
-<script>
+
+<style scoped>
+.red-text {
+  color: red;
+}
+</style>
+
+<script lang="ts" setup>
 import { useDayjs } from '#dayjs' // not need if you are using auto import
 const dayjs = useDayjs()
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import {inTenYears, todayDate} from "../utils/formUtils";
+import {watch} from "vue";
 dayjs.extend(customParseFormat)
 
-function createCombinedData(req, resp) {
-  const combined = {};
-  for(const a in req){
-    for(const b in resp){
-      if(a)
+const props = defineProps<{
+  apiRequest: financeMathInput,
+  apiResponse: financeMathResult
+}>()
+
+const frage = ref("a");
+watch(() => props.apiRequest.endpoint, () => {
+  switch (props.apiRequest.endpoint) {
+    case "saving-start-value":
+      frage.value = "startValue";
+      break;
+    case "saving-rate":
+      frage.value = "savingRate";
+      break;
+    case "interest-rate":
+      frage.value = "interestRate";
+      break;
+    case "end-date":
+      frage.value = "end";
+      break;
+    case "capital":
+      frage.value = "capitalAmount";
+      break;
+  }
+})
+
+function filterFrage(obj){
+  const filtered = [];
+
+  for(const key in obj){
+    const name = obj[key].name;
+    if(name == frage.value){
+      filtered.push({
+        name: name,
+        oldValue: obj[key].oldValue,
+        newValue: obj[key].newValue,
+        difference: obj[key].difference,
+      });
     }
   }
+  return filtered;
 }
 
-const createCombinedArray = (oldObj, newObj) => {
+function createCombinedArray (oldObj, newObj){
   const combinedArray = [];
 
   for (const key in oldObj) {
-    if (Object.prototype.hasOwnProperty.call(oldObj, key)) {
-      const oldValue = oldObj[key];
-      const newValue = newObj[key];
-      const difference = calculateDifference(oldValue, newValue);
+    const oldValue = oldObj[key];
+    const newValue = newObj[key];
+    const difference = calculateDifference(oldValue, newValue);
 
+    if(difference !== 0 && difference !== ""){
       combinedArray.push({
         name: names[key],
         oldValue: formatValue(oldValue),
@@ -36,10 +119,10 @@ const createCombinedArray = (oldObj, newObj) => {
   }
 
   return combinedArray;
-};
+}
 
-const formatValue = (value, type) => {
-  if (type === 'date') {
+const formatValue = (value) => {
+  if (value === 'date') {
     return dayjs(value).format('YYYY-MM-DD');
   }
   return value;
@@ -156,7 +239,7 @@ const names = {
 }
 
 const combinedArray_req = createCombinedArray(old_req, new_req);
-const combinedArray_resp = createCombinedArray(old_resp.capitalResult, new_resp.capitalResult);
+const combinedArray_resp = filterFrage(createCombinedArray(old_resp.capitalResult, new_resp.capitalResult));
 
 console.log("Combined Array for old_req and new_req:", combinedArray_req);
 console.log("Combined Array for old_resp and new_resp:", combinedArray_resp);
