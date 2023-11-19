@@ -56,17 +56,17 @@ onBeforeMount(async () => {
 
   <v-container fluid>
     <v-row class="h-100">
-      <v-col class="px-1" cols="4">
-        <div>
-          <v-card class="h-100 rounded-xl elevation-6">
-            <div>
+      <v-col class="px-1 h-100" cols="4">
+        <div class="h-100">
+          <v-card class="h-100 rounded-xl elevation-6 pb-5">
+            <div >
               <v-card-text>
                 <div>
                   <form-tabs @tabUpdate="(n: string) => formTab = n"/>
                 </div>
                 <v-window v-model="formTab">
                   <v-window-item value="saving">
-                    <sparplan-form @calculateInput="fetchFinanceMathAPI"/>
+                    <sparplan-form @calculateInput="fetchFinanceMathAPI" :apiResponse="financeMathResult.value"/>
                   </v-window-item>
                   <v-window-item value="withdraw">entnahmeForm</v-window-item>
                   <v-window-item value="comb">kombiForm</v-window-item>
@@ -76,9 +76,9 @@ onBeforeMount(async () => {
           </v-card>
         </div>
       </v-col>
-      <v-col class="px-1" cols="4">
-        <div>
-            <v-card class="h-500 rounded-xl elevation-6">
+      <v-col class="px-1 h-100" cols="4">
+        <div class="h-100">
+            <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <div>
               <v-card-text>
                 <grafik-tab @grafikUpdate="(m:string)=> grafikTabs = m"/>
@@ -93,9 +93,9 @@ onBeforeMount(async () => {
           </v-card>
         </div>
       </v-col>
-      <v-col class="px-1" cols="4">
-        <div>
-          <v-card class="h-100 rounded-xl elevation-6">
+      <v-col class="px-1 h-100" cols="4">
+        <div class="h-100">
+          <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <v-card-text>
               <api-visualization :apiRequest="financeMathInput" :apiResponse="financeMathResult.value"/>
             </v-card-text>
