@@ -109,7 +109,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
   <h3 class="font-bold pb-5 py-3">Was möchten Sie berechnen?</h3>
   <v-form>
     <div>
-      <v-card class="overflow-y-auto" max-height="600" height="600">
+      <v-card class="overflow-y-auto" max-height="580">
       <v-radio-group
           v-model="sparplanInput.endpoint"
           @update:model-value="changeEndpoint">
