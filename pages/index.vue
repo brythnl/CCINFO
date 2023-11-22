@@ -69,21 +69,14 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
 }
 
 
-// Const and Function for Combi-Plan
-const financeMathResultSparen: financeMathResult = ref({
-// default values here
-})
-const financeMathResultEntnahme: financeMathResult = ref({
-// default values here
-})
-const financeMathInputSparen: financeMathInput = ref({
-// default values here
-})
-const financeMathInputEntnahme: financeMathInput = ref({
-// default values here
-})
-async function fetchKombiMathAPI({sparrForm,entnahmeForm}){
-  financeMathInputSparen.value = sparrForm;
+// For Kombiplan
+const financeMathResultSparen: financeMathResult = ref({})
+const financeMathResultEntnahme: financeMathResult = ref({})
+const financeMathInputSparen: financeMathInput = ref({})
+const financeMathInputEntnahme: financeMathInput = ref({})
+
+async function fetchKombiPlan({sparForm,entnahmeForm}){
+  financeMathInputSparen.value = sparForm;
   financeMathInputEntnahme.value = entnahmeForm;
 
   // Endpoint Property: [sparen/entnahme]/<API endpoint>
@@ -109,8 +102,8 @@ async function fetchKombiMathAPI({sparrForm,entnahmeForm}){
     const { data: entnahmeSeriesData } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value)
 
     // fetch capital series for sparplan
-    const result = toRaw(financeMathResultSparren.value.value)
-    const { endValue, ...capitalSeriesInput }: financeMathInput = financeMathInputSparren.value
+    const result = toRaw(financeMathResultSparen.value.value)
+    const { endValue, ...capitalSeriesInput }: financeMathInput = financeMathInputSparen.value
 
     switch (endpointType[1]) {
       case "end-date":
@@ -201,7 +194,7 @@ onBeforeMount(async () => {
                       @calculateInput="fetchFinanceMathAPI"
                       :apiResponse="financeMathResult.value"
                   /></v-window-item>
-                  <v-window-item value="comb"><kombi-form @calculateInput="fetchKombiMathAPI" :apiResponseSparen="financeMathResultSparen" :apiResponseEntnahme="financeMathResultEntnahme"/></v-window-item>
+                  <v-window-item value="comb"><kombi-form @calculateInput="fetchKombiPlan" :apiResponseSparen="financeMathResultSparen" :apiResponseEntnahme="financeMathResultEntnahme"/></v-window-item>
                 </v-window>
               </v-card-text>
             </div>
