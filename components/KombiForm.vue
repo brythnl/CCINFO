@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watch } from 'vue';
+import type { financeMathResult } from "~/types/index.d.ts"
 import {
   todayDate,
   inTenYears,
@@ -22,12 +22,12 @@ const iconStartkapital = ref("mdi-chevron-down");
 const iconSparplan = ref("mdi-chevron-down");
 const iconEntnahmeplan = ref("mdi-chevron-down");
 
-const props=defineProps<{
-  apiResponseSparren:financeMathResult,
-  apiResponseEntnahme:financeMathResult
+const props = defineProps<{
+  apiResponseSparen: financeMathResult,
+  apiResponseEntnahme: financeMathResult
 }>()
 
-const sparrInput = reactive({
+const sparInput = reactive({
   begin: todayDate,
   end: inTenYears,
   interestCalculation: "YEARLY",
@@ -42,113 +42,115 @@ const sparrInput = reactive({
   endValue: 0,
   endpoint: ""
 })
+
 const entnahmeInput = reactive({
-  begin: sparrInput.end,
+  begin: sparInput.end,
   end: "",
   interestCalculation: "YEARLY",
   interestRate: 0,
   reductionFactor: 0,
   dynamicSavingRateFactor: 0,
-  savingPlanBegin: sparrInput.end,
+  savingPlanBegin: sparInput.end,
   savingPlanEnd: inTwentyYears,
   oneTimeInvestment: [0],
-  oneTimeInvestmentDate: [sparrInput.end],
+  oneTimeInvestmentDate: [sparInput.end],
   savingRate: 0,
   endValue: 0,
   endpoint:""
 })
+
 function toggleStartkapital(){
-  if(startkapitalDetails.value==false){
+  if (startkapitalDetails.value == false){
     startkapitalDetails.value = true;
     iconStartkapital.value = "mdi-chevron-up";
-  }
-  else{
+  } else {
     startkapitalDetails.value = false;
     iconStartkapital.value = "mdi-chevron-down";
   }
 }
 
-function toggleSparplan(){
-  if(sparplanDetails.value==false){
+function toggleSparplan() {
+  if (sparplanDetails.value == false){
     sparplanDetails.value = true;
     iconSparplan.value = "mdi-chevron-up";
-  }
-  else{
+  } else {
     sparplanDetails.value = false;
     iconSparplan.value = "mdi-chevron-down";
   }
 }
-function toggleEntnahmeplan(){
-  if(entnahmeplanDetails.value==false){
+
+function toggleEntnahmeplan() {
+  if (entnahmeplanDetails.value == false){
     entnahmeplanDetails.value = true;
     iconEntnahmeplan.value = "mdi-chevron-up";
-  }
-  else{
+  } else {
     entnahmeplanDetails.value = false;
     iconEntnahmeplan.value = "mdi-chevron-down";
   }
 }
 
-function changeEndpoint(){
-  entnahmeInput.endpoint=sparrInput.endpoint
+function changeEndpoint() {
+  entnahmeInput.endpoint = sparInput.endpoint
   //resetting inputs due to change of endpoint
-  sparrInput.oneTimeInvestment=[0];
-  sparrInput.oneTimeInvestmentDate=[todayDate];
-  
-  sparrInput.end = (sparrInput.endpoint==="sparren/end-date")?"":inTenYears;
-  sparrInput.savingPlanBegin=sparrInput.begin;
-  sparrInput.savingPlanEnd= sparrInput.end;
-  
-  sparrInput.interestRate=0;
-  sparrInput.savingRate=0;
+  sparInput.oneTimeInvestment = [0];
+  sparInput.oneTimeInvestmentDate = [todayDate];
+
+  sparInput.end = (sparInput.endpoint === "sparen/end-date") ? "" : inTenYears;
+  sparInput.savingPlanBegin = sparInput.begin;
+  sparInput.savingPlanEnd = sparInput.end;
+
+  sparInput.interestRate = 0;
+  sparInput.savingRate = 0;
 
 
 
-  entnahmeInput.begin = sparrInput.end
-  entnahmeInput.end = (sparrInput.endpoint==="entnahme/end-date")?"":inTwentyYears;
-  entnahmeInput.savingPlanBegin=entnahmeInput.begin;
-  entnahmeInput.savingPlanEnd= entnahmeInput.end;
-  entnahmeInput.oneTimeInvestment=[0];
-  entnahmeInput.oneTimeInvestmentDate=[entnahmeInput.begin];
+  entnahmeInput.begin = sparInput.end
+  entnahmeInput.end = (sparInput.endpoint === "entnahme/end-date") ? "" : inTwentyYears;
+  entnahmeInput.savingPlanBegin = entnahmeInput.begin;
+  entnahmeInput.savingPlanEnd = entnahmeInput.end;
+  entnahmeInput.oneTimeInvestment = [0];
+  entnahmeInput.oneTimeInvestmentDate = [entnahmeInput.begin];
 
-  entnahmeInput.savingRate=0;
-  entnahmeInput.interestRate=0;
-  entnahmeInput.endValue=0;
+  entnahmeInput.savingRate = 0;
+  entnahmeInput.interestRate = 0;
+  entnahmeInput.endValue = 0;
 
-  einmalZahlung.value=0;
-  dynamik.value=false;
+  einmalZahlung.value = 0;
+  dynamik.value = false;
 }
 function emitData() {
-  entnahmeInput.begin = sparrInput.end;
-  entnahmeInput.oneTimeInvestmentDate=[sparrInput.end];
-  
-  const sparren = JSON.parse(JSON.stringify(sparrInput));
+  entnahmeInput.begin = sparInput.end;
+  entnahmeInput.oneTimeInvestmentDate = [sparInput.end];
+
+  const sparen = JSON.parse(JSON.stringify(sparInput));
   const entnahme = JSON.parse(JSON.stringify(entnahmeInput));
-  for(let key = 0; key<sparren.oneTimeInvestmentDate.length;key++){
-    if(new Date(sparren.oneTimeInvestmentDate[key])>new Date(sparren.end)){
-      entnahme.oneTimeInvestment.push(sparren.oneTimeInvestment[key]);
-      entnahme.oneTimeInvestmentDate.push(sparren.oneTimeInvestmentDate[key]);
-      sparren.oneTimeInvestment.splice(key,1);
-      sparren.oneTimeInvestmentDate.splice(key,1);
+  for (let key = 0; key < sparen.oneTimeInvestmentDate.length; key++) {
+    if (new Date(sparen.oneTimeInvestmentDate[key]) > new Date(sparen.end)) {
+      entnahme.oneTimeInvestment.push(sparen.oneTimeInvestment[key]);
+      entnahme.oneTimeInvestmentDate.push(sparen.oneTimeInvestmentDate[key]);
+      sparen.oneTimeInvestment.splice(key,1);
+      sparen.oneTimeInvestmentDate.splice(key,1);
     }
   }
-  if(sparrInput.endpoint!='entnahme/end-date'){
+
+  if (sparInput.endpoint!='entnahme/end-date') {
     entnahme.savingRate = -entnahme.savingRate;
   }
-  validateInput(sparren);
+
+  validateInput(sparen);
   validateInput(entnahme);
-  emit("calculateInput", {sparrForm:sparren,entnahmeForm:entnahme});
-  
+  emit("calculateInput", { sparrForm: sparen, entnahmeForm: entnahme });
+
 }
-watch(()=>sparrInput.savingPlanEnd, () =>{
-  setEndDateToBiggestDate(sparrInput)
-  if(new Date(sparrInput.savingPlanEnd)<new Date(sparrInput.savingPlanStart))
-  sparrInput.savingPlanEnd=sparrInput.savingPlanStart
+watch(() => sparInput.savingPlanEnd, () => {
+  setEndDateToBiggestDate(sparInput)
+  if (new Date(sparInput.savingPlanEnd) < new Date(sparInput.savingPlanStart))
+  sparInput.savingPlanEnd = sparInput.savingPlanStart
 })
-watch(()=>entnahmeInput.savingPlanEnd, () =>{
+watch(() => entnahmeInput.savingPlanEnd, () => {
   setEndDateToBiggestDate(entnahmeInput)
-  if(new Date(entnahmeInput.savingPlanEnd)<new Date(entnahmeInput.savingPlanStart))
-  entnahmeInput.savingPlanEnd=entnahmeInput.savingPlanStart
+  if (new Date(entnahmeInput.savingPlanEnd) < new Date(entnahmeInput.savingPlanStart))
+  entnahmeInput.savingPlanEnd = entnahmeInput.savingPlanStart
 })
 
 </script>
@@ -160,25 +162,25 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
     <div>
       <v-card class="overflow-y-auto" max-height="580">
       <v-radio-group
-          v-model="sparrInput.endpoint"
+          v-model="sparInput.endpoint"
           @update:model-value="changeEndpoint">
 
         <v-container class="px-0 py-0">
           <!-- Startkapital Radio Button -->
           <v-row class="mt-0 ps-5">
             <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio label="Startkapital" value="sparren/saving-start-value" density="compact"></v-radio>
+                <v-radio label="Startkapital" value="sparen/saving-start-value" density="compact"></v-radio>
             </v-col>
           </v-row>
 
           <!--Startkapital response slot-->
-          <v-row v-if="sparrInput.endpoint=='sparren/saving-start-value'" class="px-5">
+          <v-row v-if="sparInput.endpoint=='sparen/saving-start-value'" class="px-5">
             <v-card 
-            v-text="props.apiResponseSparren?props.apiResponseSparren.startInvestment:''" 
+            v-text="props.apiResponseSparen?props.apiResponseSparen.startInvestment:''" 
             class="text-center w-75 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparren?'#4195AC':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC':''"></v-card>
           </v-row>
         <!-- Startkapital Form -->
           <v-row v-else class="px-5">
@@ -191,12 +193,12 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                   variant="outlined"
                   density="compact"
                   prefix="€"
-                  v-model="sparrInput.oneTimeInvestment[0]"
+                  v-model="sparInput.oneTimeInvestment[0]"
                   required
                   hide-details
                   type="number"
                   step="0.01"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-start-value'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='sparen/saving-start-value'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
@@ -214,10 +216,10 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                   label="Startdatum"
                   variant="outlined"
                   density="compact"
-                  v-model="sparrInput.oneTimeInvestmentDate[0]"
+                  v-model="sparInput.oneTimeInvestmentDate[0]"
                   hide-details
                   type="date"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-start-value'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='sparen/saving-start-value'"
               ></v-text-field>
               <v-btn
                   v-if="startkapitalDetails"
@@ -249,12 +251,12 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                   :label="`${n + 1}. Einmalzahlung`"
                   variant="outlined"
                   density="compact"
-                  v-model="sparrInput.oneTimeInvestment[n]"
+                  v-model="sparInput.oneTimeInvestment[n]"
                   hide-details
                   required
                   placeholder="weitere Einmalzahlung"
                   type="number"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-start-value'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='sparen/saving-start-value'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
@@ -270,11 +272,11 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                   :label="`${n + 1}. Datum`"
                   variant="outlined"
                   density="compact"
-                  v-model="sparrInput.oneTimeInvestmentDate[n]"
+                  v-model="sparInput.oneTimeInvestmentDate[n]"
                   hide-details
                   required
                   type="date"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-start-value'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='sparen/saving-start-value'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
@@ -286,8 +288,8 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
             </v-col>
             <v-col cols="1" class="ps-2 px-0 d-flex align-center justify-start">
               <v-icon
-                  @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparrInput.oneTimeInvestment.pop();sparrInput.oneTimeInvestmentDate.pop()}"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='saving-start-value'||einmalZahlung<=0"
+                  @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparInput.oneTimeInvestment.pop();sparInput.oneTimeInvestmentDate.pop()}"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='saving-start-value'||einmalZahlung<=0"
               >
                 mdi-trash-can-outline
               </v-icon>
@@ -302,7 +304,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
             <v-col cols="auto" class="ps-2 py-0">
               <v-btn
                   @click="()=>einmalZahlung++"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-start-value'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='sparen/saving-start-value'"
                   rounded="lg"
                   variant="tonal"
                   color="#4195AC"
@@ -318,7 +320,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
 
           <v-row class="py-0 ps-5">
             <v-col cols="auto" class="flex px-0 py-0">
-              <v-radio label="Sparrate" value="sparren/saving-rate" density="compact"></v-radio>
+              <v-radio label="Sparrate" value="sparen/saving-rate" density="compact"></v-radio>
             </v-col>
           </v-row>
 
@@ -331,13 +333,13 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
             </v-col>
 
             <!--Sparrate response slot-->
-            <v-col v-if="sparrInput.endpoint=='sparren/saving-rate'" class="flex ps-2 pa-0">
+            <v-col v-if="sparInput.endpoint=='sparen/saving-rate'" class="flex ps-2 pa-0">
             <v-card 
-            v-text="props.apiResponseSparren?props.apiResponseSparren.savingRate:''" 
+            v-text="props.apiResponseSparen?props.apiResponseSparen.savingRate:''" 
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
           </v-col>
 
           <!--Sparrate input field-->
@@ -346,13 +348,13 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                   variant="outlined"
                   prefix="€"
                   density="compact"
-                  v-model="sparrInput.savingRate"
+                  v-model="sparInput.savingRate"
                   required
                   hide-details
                   placeholder="Sparrate"
                   type="number"
                   step="0.01"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-rate'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='sparen/saving-rate'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
@@ -376,7 +378,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                 label="Startdatum"
                 variant="outlined"
                 density="compact"
-                v-model="sparrInput.savingPlanBegin"
+                v-model="sparInput.savingPlanBegin"
                 hide-details
                 type="date"
             ></v-text-field>
@@ -392,7 +394,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                 label="Enddatum"
                 variant="outlined"
                 density="compact"
-                v-model="sparrInput.savingPlanEnd"
+                v-model="sparInput.savingPlanEnd"
                 hide-details
                 type="date"
                 min="sparplan"
@@ -424,7 +426,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                 variant="outlined"
                 suffix="%"
                 density="compact"
-                v-model="sparrInput.dynamicSavingRateFactor"
+                v-model="sparInput.dynamicSavingRateFactor"
                 hide-details
                 type="number"
                 step="1"
@@ -439,7 +441,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
 
           <v-row class="py-0 ps-5">
             <v-col cols="auto" class="flex px-0 py-0">
-              <v-radio label="Sparzins" value="sparren/interest-rate" density="compact"></v-radio>
+              <v-radio label="Sparzins" value="sparen/interest-rate" density="compact"></v-radio>
             </v-col>
           </v-row>
 
@@ -447,13 +449,13 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
 
           <v-row class="px-5">
              <!--Sparzins response slot-->
-            <v-col v-if="sparrInput.endpoint=='sparren/interest-rate'" class="flex ps-2 px-0"  offset="1">
+            <v-col v-if="sparInput.endpoint=='sparen/interest-rate'" class="flex ps-2 px-0"  offset="1">
             <v-card 
-            v-text="props.apiResponseSparren?props.apiResponseSparren.interestRate:''" 
+            v-text="props.apiResponseSparen?props.apiResponseSparen.interestRate:''" 
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
             </v-col>
             <!--Sparzins input field-->
             <v-col v-else class="flex ps-2 px-0" offset="1">
@@ -461,13 +463,13 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                   suffix="%"
                   variant="outlined"
                   density="compact"
-                  v-model="sparrInput.interestRate"
+                  v-model="sparInput.interestRate"
                   required
                   hide-details
                   placeholder="Sparzins"
                   type="number"
                   step="1"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/interest-rate'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='sparen/interest-rate'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
@@ -487,7 +489,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
 
         <v-row class="py-0 ps-5">
             <v-col cols="auto" class="flex px-0 py-0">
-              <v-radio disabled label="Entnahmebeginn" value="sparren/end-date" density="compact"></v-radio>
+              <v-radio disabled label="Entnahmebeginn" value="sparen/end-date" density="compact"></v-radio>
             </v-col>
           </v-row>
 
@@ -495,24 +497,24 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
         <!-- Switchdate Form -->
           <v-row class="px-5">
             <!--Switchdate response slot-->
-            <v-col v-if="sparrInput.endpoint=='sparren/end-date'" class="flex ps-2 px-0"  offset="1">
+            <v-col v-if="sparInput.endpoint=='sparen/end-date'" class="flex ps-2 px-0"  offset="1">
             <v-card 
-            v-text="props.apiResponseSparren?props.apiResponseSparren.end:''" 
+            v-text="props.apiResponseSparen?props.apiResponseSparen.end:''" 
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
             </v-col>
             <!--Switchdate input field-->
             <v-col v-else class="flex ps-2 px-0" offset="1">
               <v-text-field
                   variant="outlined"
                   density="compact"
-                  v-model="sparrInput.end"
+                  v-model="sparInput.end"
                   required
                   hide-details
                   type="date"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/end-date'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='sparen/end-date'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
@@ -542,13 +544,13 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
             </v-col>
 
             <!--Entnahmerate response slot-->
-            <v-col v-if="sparrInput.endpoint=='entnahme/saving-rate'" class="flex ps-2 pa-0">
+            <v-col v-if="sparInput.endpoint=='entnahme/saving-rate'" class="flex ps-2 pa-0">
             <v-card 
-            v-text="props.apiResponseSparren?props.apiResponseSparren.savingRate:''" 
+            v-text="props.apiResponseSparen?props.apiResponseSparen.savingRate:''" 
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
           </v-col>
 
           <!--Entnahmerate input field-->
@@ -563,7 +565,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                   placeholder="Entnahmerate"
                   type="number"
                   step="0.01"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='entnahme/saving-rate'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='entnahme/saving-rate'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
@@ -659,13 +661,13 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
 
           <v-row class="px-5">
              <!--Entnahmezins response slot-->
-            <v-col v-if="sparrInput.endpoint=='entnahme/interest-rate'" class="flex ps-2 px-0"  offset="1">
+            <v-col v-if="sparInput.endpoint=='entnahme/interest-rate'" class="flex ps-2 px-0"  offset="1">
             <v-card 
-            v-text="props.apiResponseSparren?props.apiResponseSparren.interestRate:''" 
+            v-text="props.apiResponseSparen?props.apiResponseSparen.interestRate:''" 
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
             </v-col>
             <!--Entnahmezins input field-->
             <v-col v-else class="flex ps-2 px-0" offset="1">
@@ -679,7 +681,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                   placeholder="Entnahmezins"
                   type="number"
                   step="1"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='entnahme/interest-rate'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='entnahme/interest-rate'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
@@ -705,13 +707,13 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
         <!-- Enddatum Form -->
           <v-row class="px-5">
             <!--Enddate response slot-->
-            <v-col v-if="sparrInput.endpoint=='entnahme/end-date'" class="flex ps-2 px-0"  offset="1">
+            <v-col v-if="sparInput.endpoint=='entnahme/end-date'" class="flex ps-2 px-0"  offset="1">
             <v-card 
-            v-text="props.apiResponseSparren?props.apiResponseSparren.end:''" 
+            v-text="props.apiResponseSparen?props.apiResponseSparen.end:''" 
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
             </v-col>
             <!--Enddate input field-->
             <v-col v-else class="flex ps-2 px-0" offset="1">
@@ -722,7 +724,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                   required
                   hide-details
                   type="date"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='entnahme/end-date'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='entnahme/end-date'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
@@ -748,13 +750,13 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
 
           <v-row class="px-5 pb-2">
             <!--Endkapital response slot-->
-            <v-col v-if="sparrInput.endpoint=='entnahme/capital'" class="flex ps-2 px-0"  offset="1">
+            <v-col v-if="sparInput.endpoint=='entnahme/capital'" class="flex ps-2 px-0"  offset="1">
             <v-card 
-            v-text="props.apiResponseSparren?props.apiResponseSparren.capitalResult.capitalAmount:''" 
+            v-text="props.apiResponseSparen?props.apiResponseSparen.capitalResult.capitalAmount:''" 
             class="text-center w-100 ma-auto justify-center" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
             </v-col>
             <!--Endkapital input field-->
             <v-col v-else class="flex ps-2 px-0" offset="1">
@@ -767,7 +769,7 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
                   placeholder="Endkapital"
                   type="number"
                   step="0.01"
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='capital'"
+                  :disabled="sparInput.endpoint==''||sparInput.endpoint=='capital'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
