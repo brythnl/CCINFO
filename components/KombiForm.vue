@@ -15,6 +15,12 @@ const emit = defineEmits<{
 
 const einmalZahlung = ref(0);
 const dynamik = ref(false);
+const startkapitalDetails = ref(false);
+const sparplanDetails = ref(false);
+const entnahmeplanDetails = ref(false);
+const iconStartkapital = ref("mdi-chevron-down");
+const iconSparplan = ref("mdi-chevron-down");
+const iconEntnahmeplan = ref("mdi-chevron-down");
 
 const props=defineProps<{
   apiResponseSparren:financeMathResult,
@@ -46,33 +52,64 @@ const entnahmeInput = reactive({
   savingPlanBegin: sparrInput.end,
   savingPlanEnd: inTwentyYears,
   oneTimeInvestment: [0],
-  oneTimeInvestmentDate: [""],
+  oneTimeInvestmentDate: [sparrInput.end],
   savingRate: 0,
   endValue: 0,
   endpoint:""
 })
+function toggleStartkapital(){
+  if(startkapitalDetails.value==false){
+    startkapitalDetails.value = true;
+    iconStartkapital.value = "mdi-chevron-up";
+  }
+  else{
+    startkapitalDetails.value = false;
+    iconStartkapital.value = "mdi-chevron-down";
+  }
+}
 
+function toggleSparplan(){
+  if(sparplanDetails.value==false){
+    sparplanDetails.value = true;
+    iconSparplan.value = "mdi-chevron-up";
+  }
+  else{
+    sparplanDetails.value = false;
+    iconSparplan.value = "mdi-chevron-down";
+  }
+}
+function toggleEntnahmeplan(){
+  if(entnahmeplanDetails.value==false){
+    entnahmeplanDetails.value = true;
+    iconEntnahmeplan.value = "mdi-chevron-up";
+  }
+  else{
+    entnahmeplanDetails.value = false;
+    iconEntnahmeplan.value = "mdi-chevron-down";
+  }
+}
 
-function endPointChange(){
+function changeEndpoint(){
   entnahmeInput.endpoint=sparrInput.endpoint
   //resetting inputs due to change of endpoint
   sparrInput.oneTimeInvestment=[0];
   sparrInput.oneTimeInvestmentDate=[todayDate];
   
-  sparrInput.end = (sparrInput.endpoint==="switch-date")?"":inTenYears;
+  sparrInput.end = (sparrInput.endpoint==="sparren/end-date")?"":inTenYears;
   sparrInput.savingPlanBegin=sparrInput.begin;
   sparrInput.savingPlanEnd= sparrInput.end;
   
   sparrInput.interestRate=0;
   sparrInput.savingRate=0;
 
-  entnahmeInput.oneTimeInvestment=[0];
-  entnahmeInput.oneTimeInvestmentDate=[""];
+
 
   entnahmeInput.begin = sparrInput.end
-  entnahmeInput.end = (sparrInput.endpoint==="end-date")?"":inTwentyYears;
+  entnahmeInput.end = (sparrInput.endpoint==="entnahme/end-date")?"":inTwentyYears;
   entnahmeInput.savingPlanBegin=entnahmeInput.begin;
   entnahmeInput.savingPlanEnd= entnahmeInput.end;
+  entnahmeInput.oneTimeInvestment=[0];
+  entnahmeInput.oneTimeInvestmentDate=[entnahmeInput.begin];
 
   entnahmeInput.savingRate=0;
   entnahmeInput.interestRate=0;
@@ -83,24 +120,26 @@ function endPointChange(){
 }
 function emitData() {
   entnahmeInput.begin = sparrInput.end;
-  /*
+  entnahmeInput.oneTimeInvestmentDate=[sparrInput.end];
+  
   const sparren = JSON.parse(JSON.stringify(sparrInput));
   const entnahme = JSON.parse(JSON.stringify(entnahmeInput));
+  for(let key = 0; key<sparren.oneTimeInvestmentDate.length;key++){
+    if(new Date(sparren.oneTimeInvestmentDate[key])>new Date(sparren.end)){
+      entnahme.oneTimeInvestment.push(sparren.oneTimeInvestment[key]);
+      entnahme.oneTimeInvestmentDate.push(sparren.oneTimeInvestmentDate[key]);
+      sparren.oneTimeInvestment.splice(key,1);
+      sparren.oneTimeInvestmentDate.splice(key,1);
+    }
+  }
+  if(sparrInput.endpoint!='entnahme/end-date'){
+    entnahme.savingRate = -entnahme.savingRate;
+  }
   validateInput(sparren);
   validateInput(entnahme);
-  emit("calculateInput", [sparren,entnahme]);
-  */
-  console.log(sparrInput);
- console.log(entnahmeInput);
+  emit("calculateInput", {sparrForm:sparren,entnahmeForm:entnahme});
+  
 }
-
-watch(() => sparrInput.oneTimeInvestmentDate, () => {
-    setEndDateToBiggestDate(sparrInput)
-}, { deep:true })
-watch(() => sparrInput.oneTimeInvestmentDate, () => {
-    setEndDateToBiggestDate(entnahmeInput)
-}, { deep:true })
-
 watch(()=>sparrInput.savingPlanEnd, () =>{
   setEndDateToBiggestDate(sparrInput)
   if(new Date(sparrInput.savingPlanEnd)<new Date(sparrInput.savingPlanStart))
@@ -115,638 +154,654 @@ watch(()=>entnahmeInput.savingPlanEnd, () =>{
 </script>
 
 <template>
-  <p>Was möchten Sie berechnen ?</p>
+
+  <h3 class="font-bold pb-5 py-3">Was möchten Sie berechnen?</h3>
   <v-form>
-    <v-container>
+    <div>
+      <v-card class="overflow-y-auto" max-height="580">
       <v-radio-group
-        v-model="sparrInput.endpoint"
-        @update:model-value="endPointChange">
+          v-model="sparrInput.endpoint"
+          @update:model-value="changeEndpoint">
 
-        <v-expansion-panels>
-
-          <v-expansion-panel 
-          elevation="0" 
-          bg-color="#F1F9FF">
-                <v-row class="ma-0">
-                  <v-col cols="6">
-                    <v-radio label="1. Einmalzahlung (Startkapital)" value="saving-start-value"></v-radio>
-                  </v-col>
-
-
-                  <v-col>
-                    <v-btn style="background-color: inherit;" flat>
-                    <v-avatar>
-                        <v-img src="~/assets/Information-Icon.png"></v-img>
-                    </v-avatar>
-
-                    <v-tooltip activator="parent" location="end" class="w-50">
-                      This parameter defines any number of one-time cash in- and outflows. 
-                      Positive investment amounts are interpreted as cash inflows and negative investment amounts as cash outflows.
-                      Default date for first cash inflow (start capital) is today.
-                    </v-tooltip>
-                    </v-btn>
-
-                  </v-col>
-                </v-row>
-                <v-row v-if="sparrInput.endpoint=='saving-start-value'" class="my-0">
-                  <v-card v-text="props.apiResponseSparren?props.apiResponseSparren.investmentStart:''" :color="props.apiResponseSparren?'#81C994':''"></v-card>
-                </v-row>
-                <v-row v-else class="my-0">
-                  <v-col cols="1" class="pa-0">
-                    <v-expansion-panel-title class="pa-0">
-                    </v-expansion-panel-title>
-                  </v-col>
-                  <v-col class="pa-0" cols="6">
-                    <v-text-field
-                      prefix="€"
-                      style="border: 3px solid #00476B;"
-                      density="compact"
-                      v-model="sparrInput.oneTimeInvestment[0]"
-                      required
-                      hide-details
-                      placeholder="Startkapital"
-                      type="number"
-                      step="0.01"
-                      class="bg-white rounded"
-                      :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='saving-start-value'"
-                    ></v-text-field>
-                  </v-col>
-
-                  <v-col class="pa-0 ms-2">
-                    <v-text-field
-                      style="border: 3px solid #00476B;"
-                      density="compact"
-                      v-model="sparrInput.oneTimeInvestmentDate[0]"
-                      hide-details
-                      type="date"
-                      class="bg-white rounded"
-                      :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='saving-start-value'"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-
-            <v-expansion-panel-text>
-              <v-row v-for="n in einmalZahlung" class="ma-0">
-                <v-row class="ma-0">
-                  <v-col class="pa-0">
-                    <v-label>{{ n+1 }}.te Einmalzahlung</v-label>
-                  </v-col>
-                  <v-col class="pa-0">
-                    <v-label>Datum</v-label>
-                  </v-col>
-                </v-row>
-                <v-row class="my-0">
-                  <v-col class="pa-0">
-                    <v-text-field
-                      prefix="€"
-                      style="border: 3px solid #00476B;"
-                      density="compact"
-                      v-model="sparrInput.oneTimeInvestment[n]"
-                      hide-details
-                      placeholder="weitere Einmalzahlung"
-                      type="number"
-                      class="bg-white rounded"
-                      :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='saving-start-value'"
-                    ></v-text-field>
-                  </v-col>
-
-                  <v-col class="pa-0">
-                    <v-text-field
-                      style="border: 3px solid #00476B;"
-                      density="compact"
-                      v-model="sparrInput.oneTimeInvestmentDate[n]"
-                      hide-details
-                      type="date"
-                      class="bg-white rounded"
-                      :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='saving-start-value'"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-row>
-                <v-btn-group 
-                density="compact"
-                variant="tonal"
-                class="w-100 mt-2"
-                divided>
-                  <v-btn 
-                  style="border: solid 2px black;" 
-                  @click="()=>einmalZahlung++" 
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='saving-start-value'"
-                  variant="flat"
-                  width="200"
-                  stacked
-                  class="pa-0"
-                  text="Neue Einmalzahlung hinzufügen"
-                  color="#1B7694">
-
-                  </v-btn>
-                  <v-btn 
-                  style="border: solid 2px black;" 
-                  @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparrInput.oneTimeInvestment.pop();sparrInput.oneTimeInvestmentDate.pop()}" 
-                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='saving-start-value'||einmalZahlung<=0"
-                  variant="flat"
-                  width="200"
-                  stacked
-                  class="pa-0 mx-5"
-                  text=" Einmalzahlung entfernen"
-                  color="#B2B2B2">
-                  </v-btn>
-                </v-btn-group>
-              </v-expansion-panel-text>
-          </v-expansion-panel>
-        </v-expansion-panels>
-
-        <v-expansion-panels>
-          <v-expansion-panel
-          elevation="0" 
-          bg-color="#F1F9FF">
-                <v-row class="ma-0">
-                  <v-col>
-                    <v-radio label="Sparrate" value="saving-rate">
-                    </v-radio>
-                  </v-col>
-                  <v-col>
-                    <v-btn style="background-color: inherit;" flat>
-                      <v-avatar class="ma-auto">
-                          <v-img src="~/assets/Information-Icon.png"></v-img>
-                      </v-avatar>
-                      <v-tooltip activator="parent" location="end" class="w-50">
-                        This parameter specifies the monthly savings rate.
-                      </v-tooltip>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-
-                <v-row class="my-0">
-                  <v-col cols="1" class="pa-0">
-                    <v-expansion-panel-title class="pa-0">
-                    </v-expansion-panel-title>
-                  </v-col>
-                  <v-col v-if="sparrInput.endpoint=='saving-rate'" class="pa-0">
-                    <v-card v-text="props.apiResponseSparren?props.apiResponseSparren.savingRate:''" :color="props.apiResponseSparren?'#81C994':''"></v-card>
-                  </v-col>
-                  <v-col v-else class="pa-0">
-                    <v-text-field
-                      prefix="€"
-                      style="border: 3px solid #00476B;"
-                      density="compact"
-                      v-model="sparrInput.savingRate"
-                      required
-                      hide-details
-                      placeholder="Sparrate"
-                      type="number"
-                      step="0.01"
-                      class="bg-white rounded"
-                      :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='saving-rate'"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-            
-            <v-expansion-panel-text>
-              <v-row>
-                <v-col class="pa-0 my-auto ">
-                  <v-row>
-                    <v-col>
-                      <v-label>Startdatum</v-label>
-                    </v-col>
-                    <v-col class="pa-0">
-                      <v-btn style="background-color: inherit;" flat size="20">
-                        <v-avatar class="ma-auto">
-                            <v-img src="~/assets/Information-Icon.png"></v-img>
-                        </v-avatar>
-                        <v-tooltip activator="parent" location="end" class="w-50">
-                          This parameter defines the begin of the optional saving plan. If no date is specified, the withdraws rate is applied for the total investment period.
-                        </v-tooltip>
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-col>
-                <v-col class="pa-0 my-auto">
-                  <v-row>
-                    <v-col>
-                      <v-label>Enddatum</v-label>
-                    </v-col>
-                    <v-col class="pa-0">
-                    <v-btn style="background-color: inherit;" flat size="20">
-                      <v-avatar class="ma-auto">
-                          <v-img src="~/assets/Information-Icon.png"></v-img>
-                      </v-avatar>
-                      <v-tooltip activator="parent" location="end" class="w-50">
-                        This parameter defines the end of the optional saving plan. If no date is specified, the saving rate is applied for the total investment period.
-                      </v-tooltip>
-                    </v-btn>
-                  </v-col>
-                  </v-row>
-                </v-col>
-                <v-col class="pa-0 my-auto">
-                  <v-row class="ma-0">
-                    <v-col class="pa-0" cols="9">
-                      <v-radio-group v-model="dynamik" class="pa-0 ma-0" hide-details>
-                        <v-checkbox label="Dynamik" hide-details=""></v-checkbox>
-                      </v-radio-group>
-                    </v-col>
-                    <v-col class="pa-0">
-                      <v-btn style="background-color: inherit;" flat class="pa-0 mt-1" size="30">
-                        <v-avatar class="ma-auto">
-                            <v-img src="~/assets/Information-Icon.png"></v-img>
-                        </v-avatar>
-                        <v-tooltip activator="parent" location="end" class="w-50">
-                            This parameter defines the percentage by which the monthly saving rate annually increases.
-
-                            Using this parameter, it is possible to simulate a dynamic savings rate, for instance, 
-                            to compensatethe inflation rate between 1% and 3%. If no savings rate is specified, 
-                            this field will be irrelevant for the outcome of the calculation.
-                        </v-tooltip>
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
-
-              <v-row class="my-0">
-                <v-col class="pa-0" cols="4">
-                    <v-text-field
-                      style="border: 3px solid #00476B;"
-                      density="compact"
-                      v-model="sparrInput.savingPlanBegin"
-                      hide-details
-                      type="date"
-                      class="bg-white rounded"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col class="pa-0" cols="4">
-                      <v-text-field
-                        style="border: 3px solid #00476B;"
-                        density="compact"
-                        v-model="sparrInput.savingPlanEnd"
-                        hide-details
-                        type="date"
-                        class="bg-white rounded"
-                      ></v-text-field>
-                  </v-col>
-                  <v-col class="pa-0" cols="4">
-                      <v-text-field
-                        v-if="dynamik"
-                        suffix="%"
-                        style="border: 3px solid #00476B;"
-                        density="compact"
-                        v-model="sparrInput.dynamicSavingRateFactor"
-                        hide-details
-                        placeholder="Dynamik"
-                        type="number"
-                        step="1"
-                        class="bg-white rounded"
-                      ></v-text-field>
-                  </v-col>
-              </v-row>
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-        </v-expansion-panels>
-
-        <v-row class="ma-0">
-          <v-col>
-          <v-radio label="Sparzins" value="interest-rate"></v-radio>
-          </v-col>
-          <v-col>
-            <v-btn style="background-color: inherit;" flat>
-              <v-avatar class="ma-auto">
-                  <v-img src="~/assets/Information-Icon.png"></v-img>
-              </v-avatar>
-              <v-tooltip activator="parent" location="end" class="w-50">
-                This parameter determines the interest rate or interest rates for calculations in financial mathematics. 
-                Either a constant interest rate over the entire investment period or interest rates that vary annually can be used. 
-                If several interest rates are entered, the first rate applies to the first year, the second to the second year, etc. For example, 
-                if three interest rates are specified for an investment period of five years, the third interest rate applies from the third year of the investment period onward.
-              </v-tooltip>
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row class="ma-0">
-          <v-col v-if="sparrInput.endpoint=='interest-rate'" class="pa-0">
-            <v-card v-text="props.apiResponseSparren?props.apiResponseSparren.interestRate:''" :color="props.apiResponseSparren?'#81C994':''"></v-card>
-          </v-col>
-          <v-col v-else class="pa-0">
-            <v-text-field
-              suffix="%"
-              style="border: 3px solid #00476B;"
-              density="compact"
-              v-model="sparrInput.interestRate"
-              required
-              hide-details
-              placeholder="Sparzins"
-              type="number"
-              step="1"
-              class="bg-white rounded"
-              :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='interest-rate'"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-
-        <v-row class="ma-0">
-          <v-col>
-            <v-radio label="Entnahmebeginn" value="switch-date"></v-radio>
-          </v-col>
-          <v-col class="ma-auto">
-            <v-btn style="background-color: inherit;" flat>
-              <v-avatar class="ma-auto">
-                  <v-img src="~/assets/Information-Icon.png"></v-img>
-              </v-avatar>
-              <v-tooltip activator="parent" location="end" class="w-50">
-                This parameter defines the end of the investment period
-                and the start of the withdrawals period.
-                Default is 10 years from today.
-              </v-tooltip>
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row class="ma-0">
-          <v-col v-if="sparrInput.endpoint=='switch-date'" class="pa-0">
-            <v-card v-text="props.apiResponseSparren?props.apiResponseSparren.end:''" :color="props.apiResponseSparren?'#81C994':''"></v-card>
-          </v-col>
-          <v-col v-else class="pa-0">      
-            <v-text-field
-              style="border: 3px solid #00476B;"
-              density="compact"
-              v-model="sparrInput.end"
-              required
-              hide-details
-              type="date"
-              class="bg-white rounded"
-              :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='switch-date'"
-            ></v-text-field>
-          </v-col>
-          </v-row>
-          
-          <v-expansion-panels>
-            <v-expansion-panel
-            elevation="0" 
-            bg-color="#F1F9FF">
-                  <v-row class="ma-0">
-                    <v-col>
-                      <v-radio label="Entnahmerate" value="withdraw-rate">
-                      </v-radio>
-                    </v-col>
-                    <v-col>
-                      <v-btn style="background-color: inherit;" flat>
-                        <v-avatar class="ma-auto">
-                            <v-img src="~/assets/Information-Icon.png"></v-img>
-                        </v-avatar>
-                        <v-tooltip activator="parent" location="end" class="w-50">
-                          This parameter specifies the monthly withdraws rate.
-                        </v-tooltip>
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-
-                  <v-row class="my-0">
-                    <v-col cols="1" class="pa-0">
-                      <v-expansion-panel-title class="pa-0">
-                      </v-expansion-panel-title>
-                    </v-col>
-                    <v-col v-if="sparrInput.endpoint=='withdraw-rate'" class="pa-0">
-                      <v-card v-text="props.apiResponseEntnahme?props.apiResponseEntnahme.savingRate:''" :color="props.apiResponseEntnahme?'#81C994':''"></v-card>
-                    </v-col>
-                    <v-col v-else class="pa-0">
-                      <v-text-field
-                        prefix="€"
-                        style="border: 3px solid #00476B;"
-                        density="compact"
-                        v-model="entnahmeInput.savingRate"
-                        required
-                        hide-details
-                        placeholder="Entnahmerate"
-                        type="number"
-                        step="0.01"
-                        class="bg-white rounded"
-                        :disabled="entnahmeInput.endpoint==''||entnahmeInput.endpoint=='withdraw-rate'"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-              
-              <v-expansion-panel-text>
-                <v-row>
-                  <v-col class="pa-0 my-auto ">
-                    <v-row>
-                      <v-col>
-                        <v-label>Startdatum</v-label>
-                      </v-col>
-                      <v-col class="pa-0">
-                        <v-btn style="background-color: inherit;" flat size="20">
-                          <v-avatar class="ma-auto">
-                              <v-img src="~/assets/Information-Icon.png"></v-img>
-                          </v-avatar>
-                          <v-tooltip activator="parent" location="end" class="w-50">
-                            This parameter defines the begin of the optional withdraws plan. If no date is specified, the withdraws rate is applied for the total investment period.
-                          </v-tooltip>
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                  <v-col class="pa-0 my-auto">
-                    <v-row>
-                      <v-col>
-                        <v-label>Enddatum</v-label>
-                      </v-col>
-                      <v-col class="pa-0">
-                      <v-btn style="background-color: inherit;" flat size="20">
-                        <v-avatar class="ma-auto">
-                            <v-img src="~/assets/Information-Icon.png"></v-img>
-                        </v-avatar>
-                        <v-tooltip activator="parent" location="end" class="w-50">
-                          This parameter defines the end of the optional withdraws plan. If no date is specified, the withdraws rate is applied for the total investment period.
-                        </v-tooltip>
-                      </v-btn>
-                    </v-col>
-                    </v-row>
-                  </v-col>
-                  <v-col class="pa-0 my-auto">
-                    <v-row class="ma-0">
-                      <v-col class="pa-0" cols="9">
-                        <v-radio-group v-model="dynamik" class="pa-0 ma-0" hide-details :disabled="entnahmeInput.endpoint==''||entnahmeInput.endpoint=='withdraw-rate'">
-                          <v-checkbox label="Dynamik" hide-details=""></v-checkbox>
-                        </v-radio-group>
-                      </v-col>
-                      <v-col class="pa-0">
-                        <v-btn style="background-color: inherit;" flat class="pa-0 mt-1" size="30">
-                          <v-avatar class="ma-auto">
-                              <v-img src="~/assets/Information-Icon.png"></v-img>
-                          </v-avatar>
-                          <v-tooltip activator="parent" location="end" class="w-50">
-                              This parameter defines the percentage by which the monthly withdraws rate annually increases.
-
-                              Using this parameter, it is possible to simulate a dynamic withdraws rate, for instance, 
-                              to compensatethe inflation rate between 1% and 3%. If no withdraws rate is specified, 
-                              this field will be irrelevant for the outcome of the calculation.
-                          </v-tooltip>
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                </v-row>
-                <v-row class="my-0">
-                  <v-col class="pa-0" cols="4">
-                      <v-text-field
-                        style="border: 3px solid #00476B;"
-                        density="compact"
-                        v-model="entnahmeInput.savingPlanBegin"
-                        hide-details
-                        type="date"
-                        class="bg-white rounded"
-                        :disabled="entnahmeInput.endpoint==''||entnahmeInput.endpoint=='withdraw-rate'"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col class="pa-0" cols="4">
-                        <v-text-field
-                          style="border: 3px solid #00476B;"
-                          density="compact"
-                        v-model="entnahmeInput.savingPlanEnd"
-                          hide-details
-                          type="date"
-                          class="bg-white rounded"
-                          :disabled="entnahmeInput.endpoint==''||entnahmeInput.endpoint=='withdraw-rate'"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col class="pa-0" cols="4">
-                        <v-text-field
-                          v-if="dynamik"
-                          suffix="%"
-                          style="border: 3px solid #00476B;"
-                          density="compact"
-                          v-model="entnahmeInput.dynamicSavingRateFactor"
-                          hide-details
-                          placeholder="Dynamik"
-                          type="number"
-                          step="1"
-                          class="bg-white rounded"
-                        ></v-text-field>
-                    </v-col>
-                </v-row>
-              </v-expansion-panel-text>
-            </v-expansion-panel>
-          </v-expansion-panels>
-
-          <v-row class="ma-0">
-            <v-col>
-            <v-radio disabled label="Entnahmezins" value="withdraws-interest-rate"></v-radio>
+        <v-container class="px-0 py-0">
+          <!-- Startkapital Radio Button -->
+          <v-row class="mt-0 ps-5">
+            <v-col cols="auto" class="flex px-0 py-0">
+                <v-radio label="Startkapital" value="sparren/saving-start-value" density="compact"></v-radio>
             </v-col>
-            <v-col>
-              <v-btn style="background-color: inherit;" flat>
-                <v-avatar class="ma-auto">
-                    <v-img src="~/assets/Information-Icon.png"></v-img>
-                </v-avatar>
+          </v-row>
+
+          <!--Startkapital response slot-->
+          <v-row v-if="sparrInput.endpoint=='sparren/saving-start-value'" class="px-5">
+            <v-card 
+            v-text="props.apiResponseSparren?props.apiResponseSparren.startInvestment:''" 
+            class="text-center w-75 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponseSparren?'#4195AC':''"></v-card>
+          </v-row>
+        <!-- Startkapital Form -->
+          <v-row v-else class="px-5">
+            <v-col cols="1" class="px-0">
+              <v-icon size="large" @click="toggleStartkapital">{{ iconStartkapital }}</v-icon>
+            </v-col>
+            <v-col  class="flex ps-2 px-0">
+              <v-text-field
+                  label="1. Einmalzahlung"
+                  variant="outlined"
+                  density="compact"
+                  prefix="€"
+                  v-model="sparrInput.oneTimeInvestment[0]"
+                  required
+                  hide-details
+                  type="number"
+                  step="0.01"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-start-value'"
+              ></v-text-field>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
                 <v-tooltip activator="parent" location="end" class="w-50">
-                  This parameter determines the interest rate or interest rates for calculations in financial mathematics. 
-                  Either a constant interest rate over the entire investment period or interest rates that vary annually can be used. 
-                  If several interest rates are entered, the first rate applies to the first year, the second to the second year, etc. For example, 
-                  if three interest rates are specified for an investment period of five years, the third interest rate applies from the third year of the investment period onward.
+                  This parameter defines any number of one-time cash in- and outflows.
+                  Positive investment amounts are interpreted as cash inflows and negative investment amounts as cash
+                  outflows.
+                  Default date for first cash inflow (start capital) is today.
                 </v-tooltip>
               </v-btn>
             </v-col>
-          </v-row>
-        <v-row class="ma-0">
-          <v-col v-if="sparrInput.endpoint=='withdraws-interest-rate'" class="pa-0">
-            <v-card v-text="props.apiResponseEntnahme?props.apiResponseEntnahme.interestRate:''" :color="props.apiResponseEntnahme?'#81C994':''"></v-card>
-          </v-col>
-          <v-col v-else class="pa-0">
-            <v-text-field
-              suffix="%"
-              style="border: 3px solid #00476B;"
-              density="compact"
-              v-model="entnahmeInput.interestRate"
-              required
-              hide-details
-              placeholder="Sparzins"
-              type="number"
-              step="1"
-              class="bg-white rounded"
-              :disabled="entnahmeInput.endpoint==''||entnahmeInput.endpoint=='withdraws-interest-rate'"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-
-          <v-row class="ma-0">
-          <v-col>
-            <v-radio disabled label="Enddatum" value="end-date"></v-radio>
-          </v-col>
-          <v-col class="ma-auto">
-            <v-btn style="background-color: inherit;" flat>
-              <v-avatar class="ma-auto">
-                  <v-img src="~/assets/Information-Icon.png"></v-img>
-              </v-avatar>
-              <v-tooltip activator="parent" location="end" class="w-50">
-                This parameter defines the end of the investment period.
-                Default is 10 years from today.
-              </v-tooltip>
-            </v-btn>
-          </v-col></v-row>
-        <v-row class="mx-0">
-          <v-col v-if="sparrInput.endpoint=='end-date'" class="pa-0">
-            <v-card v-text="props.apiResponseEntnahme?props.apiResponseEntnahme.end:''" :color="props.apiResponseEntnahme?'#81C994':''"></v-card>
-          </v-col>
-          <v-col class="pa-0">      
-            <v-text-field
-              style="border: 3px solid #00476B;"
-              density="compact"
-              v-model="entnahmeInput.end"
-              required
-              hide-details
-              type="date"
-              class="bg-white rounded"
-              :disabled="entnahmeInput.endpoint==''||entnahmeInput.endpoint=='end-date'"
-            ></v-text-field>
-          </v-col>
-
-        </v-row>
-        <v-row class="mx-0">
-          <v-col>
-            <v-radio label="Endkapital" value="capital"></v-radio>
-          </v-col>
-          <v-col class="ma-auto">
-            <v-btn style="background-color: inherit;" flat>
-              <v-avatar class="ma-auto">
-                  <v-img src="~/assets/Information-Icon.png"></v-img>
-              </v-avatar>
-              <v-tooltip activator="parent" location="end" class="w-50">
-                This parameter specifies the desired capital that should be available at the end of the investment period.
-              </v-tooltip>
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col v-if="sparrInput.endpoint=='capital'">
-              <v-card v-text="props.apiResponseEntnahme?props.apiResponseEntnahme.capitalResult.capitalAmount:''" :color="props.apiResponseEntnahme?'#81C994':''"></v-card>
+            <v-col class="flex ps-2 px-0">
+              <v-text-field
+                  v-if="startkapitalDetails"
+                  label="Startdatum"
+                  variant="outlined"
+                  density="compact"
+                  v-model="sparrInput.oneTimeInvestmentDate[0]"
+                  hide-details
+                  type="date"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-start-value'"
+              ></v-text-field>
+              <v-btn
+                  v-if="startkapitalDetails"
+                  icon elevation="0"
+                  variant="plain"
+                  height="auto"
+                  width="auto"
+                  class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter specifies the investment dates of the one-time cash in- or outflow (see oneTimeInvestments parameter).
+                   If the date of a cash flow is outside of the investment period, it will not be included in the calculation.
+                </v-tooltip>
+              </v-btn>
             </v-col>
-          <v-col v-else>
+            <v-col cols="1" class="px-0 py-0">
+
+            </v-col>
+          </v-row>
+
+          <!-- Startkapital Detail-Ansicht -->
+          <v-row v-if="startkapitalDetails" v-for="n in einmalZahlung" class="px-5">
+            <v-col cols="1">
+
+            </v-col>
+            <v-col class="flex ps-2 px-0">
+              <v-text-field
+                  prefix="€"
+                  :label="`${n + 1}. Einmalzahlung`"
+                  variant="outlined"
+                  density="compact"
+                  v-model="sparrInput.oneTimeInvestment[n]"
+                  hide-details
+                  required
+                  placeholder="weitere Einmalzahlung"
+                  type="number"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-start-value'"
+              ></v-text-field>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter defines any number of one-time cash in- and outflows.
+                  Positive investment amounts are interpreted as cash inflows and negative investment amounts as cash
+                  outflows.
+                </v-tooltip>
+              </v-btn>
+            </v-col>
+            <v-col class="flex ps-2 px-0">
+              <v-text-field
+                  :label="`${n + 1}. Datum`"
+                  variant="outlined"
+                  density="compact"
+                  v-model="sparrInput.oneTimeInvestmentDate[n]"
+                  hide-details
+                  required
+                  type="date"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-start-value'"
+              ></v-text-field>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter specifies the investment dates of the one-time cash in- or outflow (see oneTimeInvestments parameter).
+                   If the date of a cash flow is outside of the investment period, it will not be included in the calculation.
+                </v-tooltip>
+              </v-btn>
+            </v-col>
+            <v-col cols="1" class="ps-2 px-0 d-flex align-center justify-start">
+              <v-icon
+                  @click="()=>{einmalZahlung>0?einmalZahlung--:einmalZahlung=0;sparrInput.oneTimeInvestment.pop();sparrInput.oneTimeInvestmentDate.pop()}"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='saving-start-value'||einmalZahlung<=0"
+              >
+                mdi-trash-can-outline
+              </v-icon>
+            </v-col>
+          </v-row>
+
+          <!-- Button Neue Einmalzahlung -->
+          <v-row v-if="startkapitalDetails" class="px-5">
+            <v-col cols="1">
+
+            </v-col>
+            <v-col cols="auto" class="ps-2 py-0">
+              <v-btn
+                  @click="()=>einmalZahlung++"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-start-value'"
+                  rounded="lg"
+                  variant="tonal"
+                  color="#4195AC"
+                  text="Neue Einmalzahlung"
+                  prepend-icon="mdi-plus-circle-outline"
+                  class="text-none"
+              >
+              </v-btn>
+            </v-col>
+          </v-row>
+
+        <!-- Sparrate Radio Button -->
+
+          <v-row class="py-0 ps-5">
+            <v-col cols="auto" class="flex px-0 py-0">
+              <v-radio label="Sparrate" value="sparren/saving-rate" density="compact"></v-radio>
+            </v-col>
+          </v-row>
+
+
+        <!-- Sparrate Form -->
+
+          <v-row class="px-5">
+            <v-col cols="1" class="px-0">
+              <v-icon size="large" @click="toggleSparplan">{{ iconSparplan }}</v-icon>
+            </v-col>
+
+            <!--Sparrate response slot-->
+            <v-col v-if="sparrInput.endpoint=='sparren/saving-rate'" class="flex ps-2 pa-0">
+            <v-card 
+            v-text="props.apiResponseSparren?props.apiResponseSparren.savingRate:''" 
+            class="text-center w-100 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+          </v-col>
+
+          <!--Sparrate input field-->
+            <v-col v-else class="flex ps-2 px-0">
+              <v-text-field
+                  variant="outlined"
+                  prefix="€"
+                  density="compact"
+                  v-model="sparrInput.savingRate"
+                  required
+                  hide-details
+                  placeholder="Sparrate"
+                  type="number"
+                  step="0.01"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/saving-rate'"
+              ></v-text-field>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                 	This parameter specifies the monthly savings rate.
+                </v-tooltip>
+              </v-btn>
+            </v-col>
+            <v-col cols="1" class="px-0 py-0">
+
+            </v-col>
+          </v-row>
+
+        <!-- Sparrate Detail-Ansicht -->
+        <v-row class="px-5" v-if="sparplanDetails">
+          <v-col cols="1">
+
+          </v-col>
+          <v-col class="flex ps-2 px-0">
             <v-text-field
-              prefix="€"
-              style="border: 3px solid #00476B;"
-              density="compact"
-              v-model="entnahmeInput.endValue"
-              hide-details
-              placeholder="Endkapital"
-              type="number"
-              step="0.01"
-              class="bg-white rounded"
-              :disabled="entnahmeInput.endpoint==''||entnahmeInput.endpoint=='capital'"
+                label="Startdatum"
+                variant="outlined"
+                density="compact"
+                v-model="sparrInput.savingPlanBegin"
+                hide-details
+                type="date"
+            ></v-text-field>
+            <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+              <v-icon size="small">mdi-information-outline</v-icon>
+              <v-tooltip activator="parent" location="end" class="w-50">
+                This parameter defines the begin of the optional savings plan. If no date is specified, the savings rate is applied for the total investment period.
+              </v-tooltip>
+            </v-btn>
+          </v-col>
+          <v-col class="flex ps-2 px-0">
+            <v-text-field
+                label="Enddatum"
+                variant="outlined"
+                density="compact"
+                v-model="sparrInput.savingPlanEnd"
+                hide-details
+                type="date"
+                min="sparplan"
+            ></v-text-field>
+            <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+              <v-icon size="small">mdi-information-outline</v-icon>
+              <v-tooltip activator="parent" location="end" class="w-50">
+                This parameter defines the end of the optional savings plan. If no date is specified, the savings rate is applied for the total investment period.
+              </v-tooltip>
+            </v-btn>
+          </v-col>
+          <v-col cols="3" class="ps-2 px-0 py-0">
+            <div class="flex">
+              <v-radio-group v-model="dynamik" hide-details >
+                <v-checkbox label="Dynamik" density="compact" hide-details=""></v-checkbox>
+              </v-radio-group>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter defines the percentage by which the monthly savings rate annually increases.
+
+                  Using this parameter, it is possible to simulate a dynamic savings rate, for instance, to compensatethe inflation rate between 1% and 3%. 
+                  If no savings rate is specified, this field will be irrelevant for the outcome of the calculation.
+                </v-tooltip>
+              </v-btn>
+            </div>
+            <v-text-field
+                v-if="dynamik"
+                variant="outlined"
+                suffix="%"
+                density="compact"
+                v-model="sparrInput.dynamicSavingRateFactor"
+                hide-details
+                type="number"
+                step="1"
             ></v-text-field>
           </v-col>
+          <v-col cols="1" class="px-0 py-0">
+
+          </v-col>
         </v-row>
-    </v-radio-group>
-      <v-row>
-        <v-col>
-          <v-btn
+
+        <!-- Sparzins Radio Button -->
+
+          <v-row class="py-0 ps-5">
+            <v-col cols="auto" class="flex px-0 py-0">
+              <v-radio label="Sparzins" value="sparren/interest-rate" density="compact"></v-radio>
+            </v-col>
+          </v-row>
+
+        <!-- Sparzins Form -->
+
+          <v-row class="px-5">
+             <!--Sparzins response slot-->
+            <v-col v-if="sparrInput.endpoint=='sparren/interest-rate'" class="flex ps-2 px-0"  offset="1">
+            <v-card 
+            v-text="props.apiResponseSparren?props.apiResponseSparren.interestRate:''" 
+            class="text-center w-100 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            </v-col>
+            <!--Sparzins input field-->
+            <v-col v-else class="flex ps-2 px-0" offset="1">
+              <v-text-field
+                  suffix="%"
+                  variant="outlined"
+                  density="compact"
+                  v-model="sparrInput.interestRate"
+                  required
+                  hide-details
+                  placeholder="Sparzins"
+                  type="number"
+                  step="1"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/interest-rate'"
+              ></v-text-field>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter determines the interest rate for calculations in financial mathematics.
+                </v-tooltip>
+              </v-btn>
+            </v-col>
+            <v-col cols="1" class="px-0 py-0">
+
+            </v-col>
+          </v-row>
+
+        <!--Entnahme Form Start-->
+
+        <!-- Switchdate Radio Button -->
+
+        <v-row class="py-0 ps-5">
+            <v-col cols="auto" class="flex px-0 py-0">
+              <v-radio disabled label="Entnahmebeginn" value="sparren/end-date" density="compact"></v-radio>
+            </v-col>
+          </v-row>
+
+
+        <!-- Switchdate Form -->
+          <v-row class="px-5">
+            <!--Switchdate response slot-->
+            <v-col v-if="sparrInput.endpoint=='sparren/end-date'" class="flex ps-2 px-0"  offset="1">
+            <v-card 
+            v-text="props.apiResponseSparren?props.apiResponseSparren.end:''" 
+            class="text-center w-100 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            </v-col>
+            <!--Switchdate input field-->
+            <v-col v-else class="flex ps-2 px-0" offset="1">
+              <v-text-field
+                  variant="outlined"
+                  density="compact"
+                  v-model="sparrInput.end"
+                  required
+                  hide-details
+                  type="date"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='sparren/end-date'"
+              ></v-text-field>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter defines the end of the saving period and the start of the withdraw period.
+                </v-tooltip>
+              </v-btn>
+            </v-col>
+            <v-col cols="1" class="px-0 py-0">
+
+            </v-col>
+          </v-row>
+        <!-- Entnahmerate Radio Button -->
+
+        <v-row class="py-0 ps-5">
+            <v-col cols="auto" class="flex px-0 py-0">
+              <v-radio label="Entnahmerate" value="entnahme/saving-rate" density="compact"></v-radio>
+            </v-col>
+          </v-row>
+
+
+        <!-- Entnahmerate Form -->
+
+          <v-row class="px-5">
+            <v-col cols="1" class="px-0">
+              <v-icon size="large" @click="toggleEntnahmeplan">{{ iconEntnahmeplan }}</v-icon>
+            </v-col>
+
+            <!--Entnahmerate response slot-->
+            <v-col v-if="sparrInput.endpoint=='entnahme/saving-rate'" class="flex ps-2 pa-0">
+            <v-card 
+            v-text="props.apiResponseSparren?props.apiResponseSparren.savingRate:''" 
+            class="text-center w-100 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+          </v-col>
+
+          <!--Entnahmerate input field-->
+            <v-col v-else class="flex ps-2 px-0">
+              <v-text-field
+                  variant="outlined"
+                  prefix="€"
+                  density="compact"
+                  v-model="entnahmeInput.savingRate"
+                  required
+                  hide-details
+                  placeholder="Entnahmerate"
+                  type="number"
+                  step="0.01"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='entnahme/saving-rate'"
+              ></v-text-field>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter specifies the monthly withdraws rate.
+                </v-tooltip>
+              </v-btn>
+            </v-col>
+            <v-col cols="1" class="px-0 py-0">
+
+            </v-col>
+          </v-row>
+
+        <!-- Entnahmerate Detail-Ansicht -->
+
+        <v-row class="px-5" v-if="entnahmeplanDetails">
+          <v-col cols="1">
+
+          </v-col>
+          <v-col class="flex ps-2 px-0">
+            <v-text-field
+                label="Startdatum"
+                variant="outlined"
+                density="compact"
+                v-model="entnahmeInput.savingPlanBegin"
+                hide-details
+                type="date"
+            ></v-text-field>
+            <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+              <v-icon size="small">mdi-information-outline</v-icon>
+              <v-tooltip activator="parent" location="end" class="w-50">
+                This parameter defines the begin of the optional withdraws plan. If no date is specified, the withdraws rate is applied for the total investment period.
+              </v-tooltip>
+            </v-btn>
+          </v-col>
+          <v-col class="flex ps-2 px-0">
+            <v-text-field
+                label="Enddatum"
+                variant="outlined"
+                density="compact"
+                v-model="entnahmeInput.savingPlanEnd"
+                hide-details
+                type="date"
+                min="sparplan"
+            ></v-text-field>
+            <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+              <v-icon size="small">mdi-information-outline</v-icon>
+              <v-tooltip activator="parent" location="end" class="w-50">
+                This parameter defines the end of the optional withdraws plan. If no date is specified, the withdraws rate is applied for the total investment period.
+              </v-tooltip>
+            </v-btn>
+          </v-col>
+          <v-col cols="3" class="ps-2 px-0 py-0">
+            <div class="flex">
+              <v-radio-group v-model="dynamik" hide-details >
+                <v-checkbox label="Dynamik" density="compact" hide-details=""></v-checkbox>
+              </v-radio-group>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter defines the percentage by which the monthly withdraws rate annually increases.
+
+                  Using this parameter, it is possible to simulate a dynamic withdraws rate, for instance, to compensatethe inflation rate between 1% and 3%. 
+                  If no withdraws rate is specified, this field will be irrelevant for the outcome of the calculation.
+                </v-tooltip>
+              </v-btn>
+            </div>
+            <v-text-field
+                v-if="dynamik"
+                variant="outlined"
+                suffix="%"
+                density="compact"
+                v-model="entnahmeInput.dynamicSavingRateFactor"
+                hide-details
+                type="number"
+                step="1"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="1" class="px-0 py-0">
+
+          </v-col>
+        </v-row>
+
+        <!-- Entnahmezins Radio Button -->
+
+          <v-row class="py-0 ps-5">
+            <v-col cols="auto" class="flex px-0 py-0">
+              <v-radio disabled label="Entnahmezins" value="entnahme/interest-rate" density="compact"></v-radio>
+            </v-col>
+          </v-row>
+
+        <!-- Entnahmezins Form -->
+
+          <v-row class="px-5">
+             <!--Entnahmezins response slot-->
+            <v-col v-if="sparrInput.endpoint=='entnahme/interest-rate'" class="flex ps-2 px-0"  offset="1">
+            <v-card 
+            v-text="props.apiResponseSparren?props.apiResponseSparren.interestRate:''" 
+            class="text-center w-100 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            </v-col>
+            <!--Entnahmezins input field-->
+            <v-col v-else class="flex ps-2 px-0" offset="1">
+              <v-text-field
+                  suffix="%"
+                  variant="outlined"
+                  density="compact"
+                  v-model="entnahmeInput.interestRate"
+                  required
+                  hide-details
+                  placeholder="Entnahmezins"
+                  type="number"
+                  step="1"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='entnahme/interest-rate'"
+              ></v-text-field>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter determines the interest rate for calculations in financial mathematics.
+                </v-tooltip>
+              </v-btn>
+            </v-col>
+            <v-col cols="1" class="px-0 py-0">
+
+            </v-col>
+          </v-row>
+
+        <!-- Enddatum Radio Button -->
+
+          <v-row class="py-0 ps-5">
+            <v-col cols="auto" class="flex px-0 py-0">
+              <v-radio label="Enddatum" value="entnahme/end-date" density="compact"></v-radio>
+            </v-col>
+          </v-row>
+
+
+        <!-- Enddatum Form -->
+          <v-row class="px-5">
+            <!--Enddate response slot-->
+            <v-col v-if="sparrInput.endpoint=='entnahme/end-date'" class="flex ps-2 px-0"  offset="1">
+            <v-card 
+            v-text="props.apiResponseSparren?props.apiResponseSparren.end:''" 
+            class="text-center w-100 ma-auto" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            </v-col>
+            <!--Enddate input field-->
+            <v-col v-else class="flex ps-2 px-0" offset="1">
+              <v-text-field
+                  variant="outlined"
+                  density="compact"
+                  v-model="entnahmeInput.end"
+                  required
+                  hide-details
+                  type="date"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='entnahme/end-date'"
+              ></v-text-field>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter defines the end of the investment period.
+                </v-tooltip>
+              </v-btn>
+            </v-col>
+            <v-col cols="1" class="px-0 py-0">
+
+            </v-col>
+          </v-row>
+
+        <!-- Endkapital Radio Button -->
+
+          <v-row class="py-0 ps-5">
+            <v-col cols="auto" class="flex px-0 py-0">
+              <v-radio label="Endkapital" value="entnahme/capital" density="compact"></v-radio>
+            </v-col>
+          </v-row>
+
+        <!-- Endkapital Form -->
+
+          <v-row class="px-5 pb-2">
+            <!--Endkapital response slot-->
+            <v-col v-if="sparrInput.endpoint=='entnahme/capital'" class="flex ps-2 px-0"  offset="1">
+            <v-card 
+            v-text="props.apiResponseSparren?props.apiResponseSparren.capitalResult.capitalAmount:''" 
+            class="text-center w-100 ma-auto justify-center" 
+            height="40"
+            variant="outlined"
+            :color="props.apiResponseSparren?'#4195AC?':''"></v-card>
+            </v-col>
+            <!--Endkapital input field-->
+            <v-col v-else class="flex ps-2 px-0" offset="1">
+              <v-text-field
+                  variant="outlined"
+                  prefix="€"
+                  density="compact"
+                  v-model="entnahmeInput.endValue"
+                  hide-details
+                  placeholder="Endkapital"
+                  type="number"
+                  step="0.01"
+                  :disabled="sparrInput.endpoint==''||sparrInput.endpoint=='capital'"
+              ></v-text-field>
+              <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-tooltip activator="parent" location="end" class="w-50">
+                  This parameter specifies the desired capital that should be available at the end of the investment period.
+                </v-tooltip>
+              </v-btn>
+            </v-col>
+            <v-col cols="1" class="px-0 py-0">
+
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-radio-group>
+      </v-card>
+
+        <!-- Berechnen Button -->
+        <v-btn
             block
-            class="text-none mb-4"
-            color="#00476B"
+            class="text-none"
+            color="#16486B"
             size="x-large"
             variant="flat"
-            @click="getData">
-            Calculate
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-form> 
+            @click="emitData">
+          Berechnen
+        </v-btn>
+
+
+    </div>
+  </v-form>
 </template>
 
-<style scoped></style>
+<style scoped>
+.v-input{
+  line-height: unset;
+}
+</style>
