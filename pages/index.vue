@@ -2,6 +2,7 @@
 import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
 import { getAPIToken } from "../utils/auth";
+import { toRaw } from "vue";
 
 const grafikTabs = ref("");
 const formTab = ref("");
@@ -56,16 +57,8 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
         break;
     }
 
-    const { data } = await useFinanceMathFetch<financeMathResult>(
-      "capital",
-      capitalSeriesInput,
-      API_TOKEN.value
-    );
-
-    console.log(toRaw(data.value));
-
-    // Update the series
-    capitalSeriesResult.value.capitalSeries = data.value.capitalSeries;
+    const { data } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN.value)
+    console.log(toRaw(data.value))
   }
 }
 
@@ -86,31 +79,34 @@ const financeMathInputEntnahme: financeMathInput = ref({
 async function fetchKombiMathAPI({sparrForm,entnahmeForm}){
   financeMathInputSparen.value = sparrForm;
   financeMathInputEntnahme.value = entnahmeForm;
-  
-  let type = sparrForm.endpoint.split('/');
-  //endpoint decide
-  if(type[0]=='sparen'){
-    //endpoint each plan
-    financeMathInputSparen.value.endpoint=type[1];
-    financeMathInputEntnahme.value.endpoint='saving-start-value';
-    //fetch startInvestment from withdrawplan for the endValue of savingplan**
-    const { dataEntnahme } = await useFinanceMathFetch<financeMathResult>(financeMathInputEntnahme.value.endpoint, financeMathInputEntnahme.value, API_TOKEN.value)
-    financeMathResultEntnahme.value=dataEntnahme;
-    console.log(financeMathResultEntnahme.value)
-    //capital series from entnahmeplan
-    const { entnahmeSeries } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value)
-    console.log(toRaw(entnahmeSeries));
-    //assign fetched value**
-    financeMathInputSparen.value.endValue=financeMathResultEntnahme.value.startInvestment;
-    //fetch data for savingplan
-    const { dataSparen } = await useFinanceMathFetch<financeMathResult>(financeMathInputSparen.value.endpoint, financeMathInputSparen.value, API_TOKEN.value);
-    console.log(toRaw(dataSparen));
-    financeMathInputSparen.value = dataSparen;
 
+  // Endpoint Property: [sparen/entnahme]/<API endpoint>
+  let endpointType = sparForm.endpoint.split('/');
+
+  if (endpointType[0] == 'sparen'){
+    // assign endpoint for each plan
+    financeMathInputSparen.value.endpoint = endpointType[1];
+    financeMathInputEntnahme.value.endpoint = 'saving-start-value';
+
+    // fetch start capital from entnahmeplan for the end capital of sparplan
+    const { data: entnahmeStartCapitalData } = await useFinanceMathFetch<financeMathResult>(financeMathInputEntnahme.value.endpoint, financeMathInputEntnahme.value, API_TOKEN.value)
+    financeMathResultEntnahme.value = entnahmeStartCapitalData;
+
+    // set sparplan end capital as entnahmeplan start capital
+    financeMathInputSparen.value.endValue = Math.round(financeMathResultEntnahme.value.value.startInvestment);
+
+    // fetch data for sparplan to selected endpoint
+    const { data: sparplanData } = await useFinanceMathFetch<financeMathResult>(financeMathInputSparen.value.endpoint, financeMathInputSparen.value, API_TOKEN.value);
+    financeMathResultSparen.value = sparplanData;
+
+    // fetch capital series for entnahmeplan
+    const { data: entnahmeSeriesData } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value)
+
+    // fetch capital series for sparplan
     const result = toRaw(financeMathResultSparren.value.value)
     const { endValue, ...capitalSeriesInput }: financeMathInput = financeMathInputSparren.value
 
-    switch (type[1]) {
+    switch (endpointType[1]) {
       case "end-date":
         capitalSeriesInput.end = result.end
         break
@@ -126,22 +122,22 @@ async function fetchKombiMathAPI({sparrForm,entnahmeForm}){
         break
     }
 
-    const { sparenSeries } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN.value);
-    console.log(sparenSeries);
+    const { data: sparenSeriesData } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN.value);
+  } else if (endpointType[0] == 'entnahme'){
+    // assign endpoint each plan
+    financeMathInputSparen.value.endpoint = 'capital';
+    financeMathInputEntnahme.value.endpoint = endpointType[1];
 
-  }else if(type[0]=='entnahme'){
-    //endpoint each plan
-    financeMathInputSparen.value.endpoint='capital';
-    financeMathInputEntnahme.value.endpoint=type[1];
-    //fetch capital from savingplan for the startInvestment of withdrawplan**
-    const { dataSparen } = await useFinanceMathFetch<financeMathResult>(financeMathInputSparen.value.endpoint, financeMathInputSparen.value, API_TOKEN.value);
-    console.log(dataSparen);
-    financeMathInputSparen.value = dataSparen;
-    //assign fetched value**
-    financeMathInputEntnahme.value.oneTimeInvestment[0]=financeMathInputSparen.value.capitalResult.capitalAmount;
-    const { dataEntnahme } = await useFinanceMathFetch<financeMathResult>(financeMathInputEntnahme.value.endpoint, financeMathInputEntnahme.value, API_TOKEN.value);
-    console.log(dataEntnahme);
-    financeMathResultEntnahme.value = dataEntnahme;
+    // fetch end capital of sparplan for startInvestment of entnahmeplan
+    const { data: sparEndCapitalData } = await useFinanceMathFetch<financeMathResult>(financeMathInputSparen.value.endpoint, financeMathInputSparen.value, API_TOKEN.value);
+    financeMathInputSparen.value = sparEndCapitalData;
+
+    // set entnahmeplan start capital as sparplan end capital
+    financeMathInputEntnahme.value.oneTimeInvestment[0] = Math.round(financeMathInputSparen.value.value.capitalResult.capitalAmount);
+
+    // fetch data for entnahmeplan to selected endpoint
+    const { data: entnahmeData } = await useFinanceMathFetch<financeMathResult>(financeMathInputEntnahme.value.endpoint, financeMathInputEntnahme.value, API_TOKEN.value);
+    financeMathResultEntnahme.value = entnahmeData;
 
     if (financeMathInputEntnahme.value.endpoint !== "capital") {
       const result = toRaw(financeMathResult.value.value)
@@ -163,10 +159,8 @@ async function fetchKombiMathAPI({sparrForm,entnahmeForm}){
           break
       }
 
-      const { entnahmeSeries } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value);
-      console.log(entnahmeSeries);
+      const { data: entnahmeSeriesData } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value);
     }
-
   }
 }
 
