@@ -9,6 +9,7 @@ function grafikUpdate(){
 <template>
   <div
   class="d-flex align-center flex-column">
+  
     <v-btn-toggle
     v-model="planSelect"
     @update:model-value="grafikUpdate"
@@ -18,11 +19,13 @@ function grafikUpdate(){
     class="justify-center"
     color="#4195AC"
     mandatory>
+    <v-slide-group show-arrows center-active>
       <v-btn value="aktuell">Grafik aktuell</v-btn>
       <v-btn value="vorher">Grafik vorher</v-btn>
       <v-btn value="vergleich">Vergleich</v-btn>
       <v-btn value="tabelle">Tabelle</v-btn>
-    </v-btn-toggle>
+    </v-slide-group>
+    </v-btn-toggle> 
   </div>
 </template>
 

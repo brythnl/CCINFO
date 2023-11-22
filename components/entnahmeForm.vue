@@ -84,7 +84,12 @@ function changeEndpoint(){
 // get form data (user input)
 function emitData() {
   const toSend = JSON.parse(JSON.stringify(entnahmeplaninput))
+  if(toSend.endpoint=='interest-rate'||toSend.endpoint=='end-date'){
+    toSend.oneTimeInvestment=toSend.oneTimeInvestment.map(investment=>-investment);
+    toSend.endValue==0?toSend.endValue=1:'';
+  }else{
   toSend.savingRate = -toSend.savingRate
+  }
   validateInput(toSend);
   emit("calculateInput", toSend);
 }
@@ -122,11 +127,14 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
         <!--Startkapital response slot-->
         <v-row v-if="entnahmeplaninput.endpoint=='saving-start-value'" class="px-5">
             <v-card 
-            v-text="props.apiResponse?props.apiResponse.startInvestment:''" 
-            class="text-center w-75 ma-auto" 
+            class="w-75 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponse?'#4195AC':''"></v-card>
+            :color="props.apiResponse?'#4195AC':''">
+              <v-card-item class="py-0">
+                <v-card-title>{{ props.apiResponse?props.apiResponse.startInvestment:'' }}</v-card-title>
+              </v-card-item>
+            </v-card>
           </v-row>
         <!-- Startkapital Form -->
           <v-row v-else class="px-5">
@@ -283,11 +291,14 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
         <!--Withdrawrate response slot-->
             <v-col v-if="entnahmeplaninput.endpoint=='saving-rate'" class="flex ps-2 px-0">
                 <v-card 
-                v-text="props.apiResponse?props.apiResponse.savingRate:''" 
-                class="text-center w-100 ma-auto" 
+                class="w-100 ma-auto" 
                 height="40"
                 variant="outlined"
-                :color="props.apiResponse?'#4195AC':''"></v-card>
+                :color="props.apiResponse?'#4195AC':''">
+                  <v-card-item class="py-0">
+                    <v-card-title>{{ props.apiResponse?props.apiResponse.savingRate:'' }}</v-card-title>
+                  </v-card-item>
+                </v-card>
               </v-col>
         <!-- Withdrawrate input field -->
             <v-col v-else class="flex ps-2 px-0">
@@ -407,11 +418,14 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
             <!--Interestrate response slot-->
             <v-col v-if="entnahmeplaninput.endpoint=='interest-rate'" class="flex ps-2 px-0" offset="1">
                 <v-card 
-                v-text="props.apiResponse?props.apiResponse.interestRate:''" 
-                class="text-center w-100 ma-auto" 
+                class="w-100 ma-auto" 
                 height="40"
                 variant="outlined"
-                :color="props.apiResponse?'#4195AC':''"></v-card>
+                :color="props.apiResponse?'#4195AC':''">
+                  <v-card-item class="py-0">
+                    <v-card-title>{{ props.apiResponse?props.apiResponse.interestRate:''}}</v-card-title>
+                  </v-card-item>
+                </v-card>
               </v-col>
             <!-- Interestrate input field -->
             <v-col v-else class="flex ps-2 px-0" offset="1">
@@ -446,7 +460,7 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
 
           <v-row class="py-0 ps-5">
             <v-col cols="auto" class="flex px-0 py-0">
-              <v-radio disabled label="Enddatum" value="end-date" density="compact"></v-radio>
+              <v-radio label="Enddatum" value="end-date" density="compact"></v-radio>
             </v-col>
           </v-row>
 
@@ -456,11 +470,14 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
             <!--Enddate response slot-->
             <v-col v-if="entnahmeplaninput.endpoint=='end-date'" class="flex ps-2 px-0" offset="1"> 
                 <v-card 
-                v-text="props.apiResponse?props.apiResponse.end:''" 
-                class="text-center w-100 ma-auto" 
+                class="w-100 ma-auto" 
                 height="40"
                 variant="outlined"
-                :color="props.apiResponse?'#4195AC':''"></v-card>
+                :color="props.apiResponse?'#4195AC':''">
+                  <v-card-item class="py-0">
+                    <v-card-title>{{ props.apiResponse?props.apiResponse.end:'' }}</v-card-title>
+                  </v-card-item>
+                </v-card>
               </v-col>
         <!-- Enddate input field -->
             <v-col v-else class="flex ps-2 px-0" offset="1">
@@ -502,11 +519,15 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
             <!--Endkapital response slot-->
             <v-col v-if="entnahmeplaninput.endpoint=='capital'" class="flex ps-2 px-0" offset="1"> 
                 <v-card 
-                v-text="props.apiResponse?props.apiResponse.capitalResult.capitalAmount:''" 
-                class="text-center w-100 ma-auto" 
+                :title="props.apiResponse?props.apiResponse.capitalResult.capitalAmount:''" 
+                class="w-100 ma-auto" 
                 height="40"
                 variant="outlined"
-                :color="props.apiResponse?'#4195AC':''"></v-card>
+                :color="props.apiResponse?'#4195AC':''">
+                  <v-card-item class="py-0">
+                    <v-card-title>{{ props.apiResponse?props.apiResponse.capitalResult?props.apiResponse.capitalResult.capitalAmount:'':'' }}</v-card-title>
+                  </v-card-item>
+                </v-card>
               </v-col>
         <!-- Endkapital input field -->
             <v-col v-else class="flex ps-2 px-0" offset="1">
