@@ -12,7 +12,6 @@ const emit = defineEmits<{
   (e: "calculateInput", sparplanInput: {}): void;
 }>();
 
-
 const einmalZahlung = ref(0);
 const dynamik = ref(false);
 const startkapitalDetails = ref(false);
@@ -139,7 +138,7 @@ function emitData() {
 
   validateInput(sparen);
   validateInput(entnahme);
-  emit("calculateInput", { sparrForm: sparen, entnahmeForm: entnahme });
+  emit("calculateInput", { sparForm: sparen, entnahmeForm: entnahme });
 
 }
 watch(() => sparInput.savingPlanEnd, () => {
