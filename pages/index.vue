@@ -68,7 +68,7 @@ onBeforeMount(async () => {
                   <v-window-item value="saving">
                     <sparplan-form @calculateInput="fetchFinanceMathAPI" :apiResponse="financeMathResult.value"/>
                   </v-window-item>
-                  <v-window-item value="withdraw">entnahmeForm</v-window-item>
+                  <v-window-item value="withdraw"><entnahme-form @calculateInput="fetchFinanceMathAPI" :apiResponse="financeMathResult.value"/></v-window-item>
                   <v-window-item value="comb">kombiForm</v-window-item>
                 </v-window>
               </v-card-text>
