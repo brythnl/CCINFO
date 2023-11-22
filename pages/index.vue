@@ -9,6 +9,7 @@ const formTab = ref("");
 const API_TOKEN = ref("");
 
 const financeMathInput: financeMathInput = ref({});
+//Const and Functions for Savingplan and Entnahmeplan
 const financeMathResult: financeMathResult = ref({});
 const capitalSeriesResult: financeMathResult = ref({
   capitalSeries: [],
@@ -68,6 +69,173 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   }
 }
 
+
+//Const and Function for Combi-Plan
+const financeMathResultSparren: financeMathResult = ref({
+// default values here
+})
+const financeMathResultEntnahme: financeMathResult = ref({
+// default values here
+})
+const financeMathInputSparren: financeMathInput = ref({
+// default values here
+})
+const financeMathInputEntnahme: financeMathInput = ref({
+// default values here
+})
+async function fetchKombiMathAPI({sparrForm,entnahmeForm}){
+  financeMathInputSparren.value = sparrForm;
+  financeMathInputEntnahme.value = entnahmeForm;
+  
+  let type = sparrForm.endpoint.split('/');
+  //endpoint decide
+  if(type[0]=='sparren'){
+    //endpoint each plan
+    financeMathInputSparren.value.endpoint=type[1];
+    financeMathInputEntnahme.value.endpoint='saving-start-value';
+    //fetch startInvestment from withdrawplan for the endValue of savingplan**
+    const { dataEntnahme } = await useFinanceMathFetch<financeMathResult>(financeMathInputEntnahme.value.endpoint, financeMathInputEntnahme.value, API_TOKEN.value)
+    financeMathResultEntnahme.value=dataEntnahme;
+    console.log(financeMathResultEntnahme.value)
+    //capital series from entnahmeplan
+    const { entnahmeSeries } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value)
+    console.log(toRaw(entnahmeSeries));
+    //assign fetched value**
+    financeMathInputSparren.value.endValue=financeMathResultEntnahme.value.startInvestment;
+    //fetch data for savingplan
+    const { dataSparren } = await useFinanceMathFetch<financeMathResult>(financeMathInputSparren.value.endpoint, financeMathInputSparren.value, API_TOKEN.value);
+    console.log(toRaw(dataSparren));
+    financeMathInputSparren.value = dataSparren;
+
+    const result = toRaw(financeMathResultSparren.value.value)
+    const { endValue, ...capitalSeriesInput }: financeMathInput = financeMathInputSparren.value
+
+    switch (type[1]) {
+      case "end-date":
+        capitalSeriesInput.end = result.end;
+        break;
+      case "interest-rate":
+        capitalSeriesInput.interestRate = result.interestRate;
+        break;
+      case "saving-rate":
+        capitalSeriesInput.savingRate = Math.round(result.savingRate);
+        break;
+      case "saving-start-value":
+        capitalSeriesInput.oneTimeInvestment = [
+          Math.round(result.startInvestment),
+        ];
+        capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin];
+        break;
+    }
+
+    const { data } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN.value)
+    console.log(toRaw(data.value))
+
+  }
+}
+
+
+//Const and Function for Combi-Plan
+const financeMathResultSparren: financeMathResult = ref({
+// default values here
+})
+const financeMathResultEntnahme: financeMathResult = ref({
+// default values here
+})
+const financeMathInputSparren: financeMathInput = ref({
+// default values here
+})
+const financeMathInputEntnahme: financeMathInput = ref({
+// default values here
+})
+async function fetchKombiMathAPI({sparrForm,entnahmeForm}){
+  financeMathInputSparren.value = sparrForm;
+  financeMathInputEntnahme.value = entnahmeForm;
+  
+  let type = sparrForm.endpoint.split('/');
+  //endpoint decide
+  if(type[0]=='sparren'){
+    //endpoint each plan
+    financeMathInputSparren.value.endpoint=type[1];
+    financeMathInputEntnahme.value.endpoint='saving-start-value';
+    //fetch startInvestment from withdrawplan for the endValue of savingplan**
+    const { dataEntnahme } = await useFinanceMathFetch<financeMathResult>(financeMathInputEntnahme.value.endpoint, financeMathInputEntnahme.value, API_TOKEN.value)
+    financeMathResultEntnahme.value=dataEntnahme;
+    console.log(financeMathResultEntnahme.value)
+    //capital series from entnahmeplan
+    const { entnahmeSeries } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value)
+    console.log(toRaw(entnahmeSeries));
+    //assign fetched value**
+    financeMathInputSparren.value.endValue=financeMathResultEntnahme.value.startInvestment;
+    //fetch data for savingplan
+    const { dataSparren } = await useFinanceMathFetch<financeMathResult>(financeMathInputSparren.value.endpoint, financeMathInputSparren.value, API_TOKEN.value);
+    console.log(toRaw(dataSparren));
+    financeMathInputSparren.value = dataSparren;
+
+    const result = toRaw(financeMathResultSparren.value.value)
+    const { endValue, ...capitalSeriesInput }: financeMathInput = financeMathInputSparren.value
+
+    switch (type[1]) {
+      case "end-date":
+        capitalSeriesInput.end = result.end
+        break
+      case "interest-rate":
+        capitalSeriesInput.interestRate = result.interestRate
+        break
+      case "saving-rate":
+        capitalSeriesInput.savingRate = Math.round(result.savingRate)
+        break
+      case "saving-start-value":
+        capitalSeriesInput.oneTimeInvestment = [Math.round(result.startInvestment)]
+        capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin]
+        break
+    }
+
+    const { sparrenSeries } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN.value);
+    console.log(sparrenSeries);
+
+  }else if(type[0]=='entnahme'){
+    //endpoint each plan
+    financeMathInputSparren.value.endpoint='capital';
+    financeMathInputEntnahme.value.endpoint=type[1];
+    //fetch capital from savingplan for the startInvestment of withdrawplan**
+    const { dataSparren } = await useFinanceMathFetch<financeMathResult>(financeMathInputSparren.value.endpoint, financeMathInputSparren.value, API_TOKEN.value);
+    console.log(dataSparren);
+    financeMathInputSparren.value = dataSparren;
+    //assign fetched value**
+    financeMathInputEntnahme.value.oneTimeInvestment[0]=financeMathInputSparren.value.capitalResult.capitalAmount;
+    const { dataEntnahme } = await useFinanceMathFetch<financeMathResult>(financeMathInputEntnahme.value.endpoint, financeMathInputEntnahme.value, API_TOKEN.value);
+    console.log(dataEntnahme);
+    financeMathResultEntnahme.value = dataEntnahme;
+
+    if (financeMathInputEntnahme.value.endpoint !== "capital") {
+      const result = toRaw(financeMathResult.value.value)
+      const { endValue, ...capitalSeriesInput }: financeMathInput = financeMathInputEntnahme.value
+
+      switch (financeMathInputEntnahme.value.endpoint.endpoint) {
+        case "end-date":
+          capitalSeriesInput.end = result.end
+          break
+        case "interest-rate":
+          capitalSeriesInput.interestRate = result.interestRate
+          break
+        case "saving-rate":
+          capitalSeriesInput.savingRate = Math.round(result.savingRate)
+          break
+        case "saving-start-value":
+          capitalSeriesInput.oneTimeInvestment = [Math.round(result.startInvestment)]
+          capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin]
+          break
+      }
+
+      const { entnahmeSeries } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value);
+      console.log(entnahmeSeries);
+    }
+
+  }
+}
+
+
 onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
@@ -98,7 +266,7 @@ onBeforeMount(async () => {
                       @calculateInput="fetchFinanceMathAPI"
                       :apiResponse="financeMathResult.value"
                   /></v-window-item>
-                  <v-window-item value="comb"><kombi-form/></v-window-item>
+                  <v-window-item value="comb"><kombi-form @calculateInput="fetchKombiMathAPI" :apiResponseSparren="financeMathResultSparren" :apiResponseEntnahme="financeMathResultEntnahme"/></v-window-item>
                 </v-window>
               </v-card-text>
             </div>
