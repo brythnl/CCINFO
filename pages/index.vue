@@ -55,8 +55,8 @@ onBeforeMount(async () => {
   <h1 class="font-bold text-3xl text-center py-5">Aixigo Finanzplaner</h1>
 
   <v-container fluid>
-    <v-row class="h-100">
-      <v-col class="px-1 h-100" cols="4">
+    <v-row class="h-lg-100">
+      <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1 h-100">
         <div class="h-100">
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <div >
@@ -76,7 +76,7 @@ onBeforeMount(async () => {
           </v-card>
         </div>
       </v-col>
-      <v-col class="px-1 h-100" cols="4">
+      <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1 h-100">
         <div class="h-100">
             <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <div>
@@ -93,7 +93,7 @@ onBeforeMount(async () => {
           </v-card>
         </div>
       </v-col>
-      <v-col class="px-1 h-100" cols="4">
+      <v-col :cols="12" :sm="12" :md="12" :lg="4" class="px-1 h-100">
         <div class="h-100">
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <v-card-text>
@@ -107,5 +107,19 @@ onBeforeMount(async () => {
 </template>
 
 <style scoped>
-
+@media (min-width: 1280px) {
+    .h-lg-100 {
+        height: 100%;
+    }
+}
+@media (min-width: 960px) {
+    .h-md-100 {
+        height: 100%;
+    }
+}
+@media (min-width: 600px) {
+    .h-sm-100 {
+        height: 100%;
+    }
+}
 </style>
