@@ -2,20 +2,17 @@
 import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
 import { getAPIToken } from "../utils/auth";
-const dataGlobal = ref({
-  capitalSeries: [],
-  capitalResult: {},
-});
+
 const grafikTabs = ref("");
 const formTab = ref("");
 
 const API_TOKEN = ref("");
 
-const financeMathResult: financeMathResult = ref({
-  // default values here
-});
-const financeMathInput: financeMathInput = ref({
-  // default values here
+const financeMathInput: financeMathInput = ref({});
+const financeMathResult: financeMathResult = ref({});
+const capitalSeriesResult: financeMathResult = ref({
+  capitalSeries: [],
+  capitalResult: {},
 });
 
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
@@ -54,8 +51,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       capitalSeriesInput,
       API_TOKEN.value
     );
-    console.log(toRaw(data.value));
-    dataGlobal.value = data.value;
+    capitalSeriesResult.value = data.value;
   }
 }
 
@@ -105,8 +101,8 @@ onBeforeMount(async () => {
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
                     <graph
-                      :series="dataGlobal.capitalSeries"
-                      :result="dataGlobal.capitalResult"
+                      :series="capitalSeriesResult.capitalSeries"
+                      :result="capitalSeriesResult.capitalResult"
                     />
                   </v-window-item>
                   <v-window-item value="vorher">Grafik vorher</v-window-item>
