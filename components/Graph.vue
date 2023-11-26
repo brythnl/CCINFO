@@ -2,9 +2,7 @@
 import { Chart as highcharts } from "highcharts-vue";
 
 const props = defineProps(["series", "result"]);
-const reactiveResult = ref(props.result);
-const reactiveSeries = ref(props.series);
-const maxYAxis = ref(500000); // The maximum value of the Y Axis
+const maxYAxis = ref(props.result.capitalAmount); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
 
 const assignYearsToSeries = (series: [], result: {}) => {
@@ -38,17 +36,17 @@ onMounted(() => {
   yearsToSeries.value = assignYearsToSeries(props.series, props.result);
 });
 
-// TODO: props -> reactiveResult
-watch(props, (newValue, oldValue) => {
-  // Control the range of the y axis
-  if (newValue.result.capitalAmount < oldValue.result.capitalAmount) {
-    maxYAxis.value = oldValue.result.capitalAmount;
-  } else maxYAxis.value = newValue.result.capitalAmount;
+watch(
+  () => props,
+  (newValue, oldValue) => {
+    // Control the range of the y axis
+    if (newValue.result.capitalAmount > maxYAxis.value)
+      maxYAxis.value = newValue.result.capitalAmount;
 
-  //console.log(newValue.series);
-  // TODO: HIER WEITER!!!
-  yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
-});
+    yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
+  },
+  { deep: true }
+);
 </script>
 
 <template>
@@ -93,9 +91,9 @@ watch(props, (newValue, oldValue) => {
       ],
       tooltip: {
         formatter: function () {
-          return `After ${
+          return `After ${new Date(
             this.x
-          } years there would be a capital of ${this.y.toFixed(2)}€`;
+          ).getFullYear()} there would be a capital of ${this.y.toFixed(2)}€`;
         },
       },
     }"
