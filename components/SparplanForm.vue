@@ -126,7 +126,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
             <!--Startkapital response slot-->
             <v-row v-if="sparplanInput.endpoint=='saving-start-value'" class="px-5">
               <v-col cols="1" class="px-0"></v-col>
-              <v-col cols="10" class="flex ps-2 px-0">
+              <v-col cols="11" class="flex ps-2 px-0">
                 <v-card
                     width="100%"
                     height="44"
@@ -147,8 +147,8 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                 <v-icon size="large" @click="toggleStartkapital">{{ iconStartkapital }}</v-icon>
               </v-col>
               <v-col
-                  cols="10"
-                  :sm="startkapitalDetails ? 5 : 10"
+                  :cols="einmalZahlung == 0 ? 11 : 10"
+                  :sm="startkapitalDetails ? einmalZahlung==0 ? 6 : 5 : 11"
                   class="flex ps-2 px-0"
               >
                 <v-text-field
@@ -173,7 +173,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col v-if="startkapitalDetails" offset="1" offset-sm="0" cols="10" sm="5" class="flex ps-2 px-0">
+              <v-col v-if="startkapitalDetails" offset="1" offset-sm="0" :cols="einmalZahlung == 0 ? 11 : 10" sm="5" class="flex ps-2 px-0">
                 <v-text-field
                     label="Startdatum"
                     variant="outlined"
@@ -490,8 +490,8 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               </v-col>
             </v-row>
 
-              <!--Enddate input field-->
-            <v-row v-else class="px-5" >
+            <!--Enddate input field-->
+            <v-row v-else class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
                 <v-text-field
                     variant="outlined"
