@@ -27,6 +27,15 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   );
   financeMathResult.value = data;
 
+  if (data.value.hasOwnProperty("capitalSeries")) {
+    // Set capitalSeries
+    dataGlobal.value.capitalSeries = data.value.capitalSeries;
+    delete data.value.capitalSeries; // Delete capitalSeries from the data to have only capitalResult
+
+    // Set capitalResult
+    dataGlobal.value.capitalResult = data.value.capitalResult;
+  } else dataGlobal.value.capitalResult = data.value; // if endpoint isn't "capital"
+
   if (formInput.endpoint !== "capital") {
     const result = toRaw(financeMathResult.value.value);
     const { endValue, ...capitalSeriesInput }: financeMathInput = formInput;
@@ -55,7 +64,9 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       API_TOKEN.value
     );
     console.log(toRaw(data.value));
-    dataGlobal.value = data.value;
+
+    // Update the series
+    dataGlobal.value.capitalSeries = data.value.capitalSeries;
   }
 }
 
