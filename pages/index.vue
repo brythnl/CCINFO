@@ -60,6 +60,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       capitalSeriesInput,
       API_TOKEN.value
     );
+
     console.log(toRaw(data.value));
 
     // Update the series
