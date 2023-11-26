@@ -337,7 +337,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
             </v-row>
 
             <!-- Sparrate Detail-Ansicht -->
-            <v-row class="px-5" v-if="sparplanDetails">
+            <v-row class="px-5" v-if="sparplanInput.endpoint !== 'saving-rate' && sparplanDetails">
               <v-col offset="1" cols="11" sm="5" class="flex ps-2 px-0">
                 <v-text-field
                     label="Startdatum"
@@ -380,7 +380,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               </v-col>
             </v-row>
             <!--Dynamik Feld -->
-            <v-row class="px-5" v-if="sparplanDetails">
+            <v-row class="px-5" v-if="sparplanInput.endpoint !== 'saving-rate' && sparplanDetails">
               <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
                   <v-radio-group v-model="dynamik" hide-details>
                     <v-checkbox label="Dynamik" density="compact" hide-details=""></v-checkbox>
