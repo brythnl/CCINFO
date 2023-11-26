@@ -207,10 +207,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
             <!-- Startkapital Detail-Ansicht -->
             <v-row v-if="startkapitalDetails" v-for="n in einmalZahlung" class="px-5">
-              <v-col cols="1">
-
-              </v-col>
-              <v-col class="flex ps-2 px-0">
+              <v-col offset="1" cols="10" sm="5" class="flex ps-2 px-0">
                 <v-text-field
                     prefix="€"
                     :label="`${n + 1}. Einmalzahlung`"
@@ -232,7 +229,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col class="flex ps-2 px-0">
+              <v-col offset="1" offset-sm="0" cols="10" sm="5" class="flex ps-2 px-0">
                 <v-text-field
                     :label="`${n + 1}. Datum`"
                     variant="outlined"
