@@ -2,21 +2,22 @@
 import { Chart as highcharts } from "highcharts-vue";
 
 const props = defineProps(["series", "result"]);
+const reactiveResult = ref(props.result);
+const reactiveSeries = ref(props.series);
+const maxYAxis = ref(500000); // The maximum value of the Y Axis
+const yearsToSeries = ref([]);
 
-const assignYearsToSeries = () => {
-  const seriesCount = props.series.length; // Length of the series
-  const endYear = new Date(props.result.end).getFullYear();
+const assignYearsToSeries = (series: [], result: {}) => {
+  const seriesCount = series.length; // Length of the series
+  const endYear = new Date(result.end).getFullYear();
 
   // Calculate the appropriate year 0f the series entry
   let appropriateYear = endYear - seriesCount;
 
   //Save the Start investment
-  const startInvestment = [
-    Date.UTC(appropriateYear++),
-    props.result.startInvestment,
-  ];
+  const startInvestment = [Date.UTC(appropriateYear++), result.startInvestment];
 
-  const preparedSeries = props.series.map((element: number) => {
+  const preparedSeries = series.map((element: number) => {
     // Push the series entries to an individual array
     const arr = new Array();
     arr.push(element);
@@ -34,11 +35,19 @@ const assignYearsToSeries = () => {
 };
 
 onMounted(() => {
-  assignYearsToSeries();
+  yearsToSeries.value = assignYearsToSeries(props.series, props.result);
 });
 
+// TODO: props -> reactiveResult
 watch(props, (newValue, oldValue) => {
-  assignYearsToSeries();
+  // Control the range of the y axis
+  if (newValue.result.capitalAmount < oldValue.result.capitalAmount) {
+    maxYAxis.value = oldValue.result.capitalAmount;
+  } else maxYAxis.value = newValue.result.capitalAmount;
+
+  //console.log(newValue.series);
+  // TODO: HIER WEITER!!!
+  yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
 });
 </script>
 
@@ -66,6 +75,7 @@ watch(props, (newValue, oldValue) => {
         //categories: ['Apples', 'Bananas', 'Oranges'],
       },
       yAxis: {
+        max: maxYAxis,
         title: {
           text: 'Capital',
         },
@@ -78,7 +88,7 @@ watch(props, (newValue, oldValue) => {
       series: [
         {
           showInLegend: false,
-          data: assignYearsToSeries(),
+          data: yearsToSeries,
         },
       ],
       tooltip: {
