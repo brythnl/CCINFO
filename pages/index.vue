@@ -2,20 +2,17 @@
 import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
 import { getAPIToken } from "../utils/auth";
-const dataGlobal = ref({
-  capitalSeries: [],
-  capitalResult: {},
-});
+
 const grafikTabs = ref("");
 const formTab = ref("");
 
 const API_TOKEN = ref("");
 
-const financeMathResult: financeMathResult = ref({
-  // default values here
-});
-const financeMathInput: financeMathInput = ref({
-  // default values here
+const financeMathInput: financeMathInput = ref({});
+const financeMathResult: financeMathResult = ref({});
+const capitalSeriesResult: financeMathResult = ref({
+  capitalSeries: [],
+  capitalResult: {},
 });
 
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
@@ -29,12 +26,12 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
 
   if (data.value.hasOwnProperty("capitalSeries")) {
     // Set capitalSeries
-    dataGlobal.value.capitalSeries = data.value.capitalSeries;
+    capitalSeriesResult.value.capitalSeries = data.value.capitalSeries;
     delete data.value.capitalSeries; // Delete capitalSeries from the data to have only capitalResult
-
+    console.log(data.value);
     // Set capitalResult
-    dataGlobal.value.capitalResult = data.value.capitalResult;
-  } else dataGlobal.value.capitalResult = data.value; // if endpoint isn't "capital"
+    capitalSeriesResult.value.capitalResult = data.value.capitalResult;
+  } else capitalSeriesResult.value.capitalResult = data.value; // if endpoint isn't "capital"
 
   if (formInput.endpoint !== "capital") {
     const result = toRaw(financeMathResult.value.value);
@@ -66,7 +63,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
     console.log(toRaw(data.value));
 
     // Update the series
-    dataGlobal.value.capitalSeries = data.value.capitalSeries;
+    capitalSeriesResult.value.capitalSeries = data.value.capitalSeries;
   }
 }
 
@@ -114,15 +111,16 @@ onBeforeMount(async () => {
               <v-card-text>
                 <grafik-tab @grafikUpdate="(m: string) => (grafikTabs = m)" />
                 <v-window v-model="grafikTabs">
-                  <v-window-item value="aktuell">Grafik aktuell</v-window-item>
+                  <v-window-item value="aktuell">
+                    <graph
+                      :series="capitalSeriesResult.capitalSeries"
+                      :result="capitalSeriesResult.capitalResult"
+                    />
+                  </v-window-item>
                   <v-window-item value="vorher">Grafik vorher</v-window-item>
                   <v-window-item value="vergleich">Vergleich</v-window-item>
                   <v-window-item value="tabelle">Tabelle</v-window-item>
                 </v-window>
-                <graph
-                  :series="dataGlobal.capitalSeries"
-                  :result="dataGlobal.capitalResult"
-                />
               </v-card-text>
             </div>
           </v-card>

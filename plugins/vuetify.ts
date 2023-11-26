@@ -9,6 +9,16 @@ export default defineNuxtPlugin((app) => {
     components: {
       VDatePicker,
     },
+    theme: {
+      themes: {
+        light: {
+          /* My custom colors */
+          colors: {
+            primary: "#4195AC", // #E53935
+          }
+        }
+      },
+    }
   });
   app.vueApp.use(vuetify);
 });
