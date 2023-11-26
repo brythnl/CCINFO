@@ -338,7 +338,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
             <!-- Sparrate Detail-Ansicht -->
             <v-row class="px-5" v-if="sparplanDetails">
-              <v-col offset="1" cols="11" :sm="4" class="flex ps-2 px-0">
+              <v-col offset="1" cols="11" sm="5" class="flex ps-2 px-0">
                 <v-text-field
                     label="Startdatum"
                     variant="outlined"
@@ -357,7 +357,8 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col offset="1" offset-sm="0" cols="11" :sm="4" class="flex ps-2 px-0">
+              <v-spacer></v-spacer>
+              <v-col offset="1" offset-sm="0" cols="11" sm="5" class="flex ps-2 px-0">
                 <v-text-field
                     label="Enddatum"
                     variant="outlined"
@@ -377,24 +378,16 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col offset="1" offset-sm="0" cols="11" :sm="3" class="ps-2 px-0 py-0">
-                <div class="flex">
+            </v-row>
+            <!--Dynamik Feld -->
+            <v-row class="px-5" v-if="sparplanDetails">
+              <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
                   <v-radio-group v-model="dynamik" hide-details>
                     <v-checkbox label="Dynamik" density="compact" hide-details=""></v-checkbox>
                   </v-radio-group>
-                  <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
-                    <v-icon size="small">mdi-information-outline</v-icon>
-                    <v-tooltip activator="parent" location="end" class="w-50">
-                      This parameter defines any number of one-time cash in- and outflows.
-                      Positive investment amounts are interpreted as cash inflows and negative investment amounts as
-                      cash
-                      outflows.
-                      Default date for first cash inflow (start capital) is today.
-                    </v-tooltip>
-                  </v-btn>
-                </div>
+              </v-col>
+              <v-col v-if="dynamik" class="flex pe-0">
                 <v-text-field
-                    v-if="dynamik"
                     variant="outlined"
                     suffix="%"
                     density="compact"
@@ -403,9 +396,16 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     type="number"
                     step="1"
                 ></v-text-field>
-              </v-col>
-              <v-col cols="1" class="px-0 py-0">
-
+                <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                  <v-icon size="small">mdi-information-outline</v-icon>
+                  <v-tooltip activator="parent" location="end" class="w-50">
+                    This parameter defines any number of one-time cash in- and outflows.
+                    Positive investment amounts are interpreted as cash inflows and negative investment amounts as
+                    cash
+                    outflows.
+                    Default date for first cash inflow (start capital) is today.
+                  </v-tooltip>
+                </v-btn>
               </v-col>
             </v-row>
 
