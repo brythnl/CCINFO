@@ -338,7 +338,7 @@ watch(() => entnahmeInput.savingPlanEnd, () => {
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC':''"></v-card>
           </v-col>
 
           <!--Sparrate input field-->
@@ -454,7 +454,7 @@ watch(() => entnahmeInput.savingPlanEnd, () => {
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC':''"></v-card>
             </v-col>
             <!--Sparzins input field-->
             <v-col v-else class="flex ps-2 px-0" offset="1">
@@ -502,7 +502,7 @@ watch(() => entnahmeInput.savingPlanEnd, () => {
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC':''"></v-card>
             </v-col>
             <!--Switchdate input field-->
             <v-col v-else class="flex ps-2 px-0" offset="1">
@@ -549,7 +549,7 @@ watch(() => entnahmeInput.savingPlanEnd, () => {
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC':''"></v-card>
           </v-col>
 
           <!--Entnahmerate input field-->
@@ -666,7 +666,7 @@ watch(() => entnahmeInput.savingPlanEnd, () => {
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC':''"></v-card>
             </v-col>
             <!--Entnahmezins input field-->
             <v-col v-else class="flex ps-2 px-0" offset="1">
@@ -712,7 +712,7 @@ watch(() => entnahmeInput.savingPlanEnd, () => {
             class="text-center w-100 ma-auto" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC':''"></v-card>
             </v-col>
             <!--Enddate input field-->
             <v-col v-else class="flex ps-2 px-0" offset="1">
@@ -751,11 +751,11 @@ watch(() => entnahmeInput.savingPlanEnd, () => {
             <!--Endkapital response slot-->
             <v-col v-if="sparInput.endpoint=='entnahme/capital'" class="flex ps-2 px-0"  offset="1">
             <v-card 
-            v-text="props.apiResponseSparen?props.apiResponseSparen.capitalResult.capitalAmount:''" 
+            v-text="props.apiResponseSparen?props.apiResponseSparen.capitalResult?props.apiResponseSparen.capitalResult.capitalAmount:'':''" 
             class="text-center w-100 ma-auto justify-center" 
             height="40"
             variant="outlined"
-            :color="props.apiResponseSparen?'#4195AC?':''"></v-card>
+            :color="props.apiResponseSparen?'#4195AC':''"></v-card>
             </v-col>
             <!--Endkapital input field-->
             <v-col v-else class="flex ps-2 px-0" offset="1">
