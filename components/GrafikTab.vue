@@ -7,26 +7,30 @@ function grafikUpdate(){
 </script>
 
 <template>
-  <div
-  class="d-flex align-center flex-column">
-  
-    <v-btn-toggle
-    v-model="planSelect"
-    @update:model-value="grafikUpdate"
-    rounded="xl"
-    divided
-    density="compact"
-    class="justify-center"
-    color="#4195AC"
-    mandatory>
-    <v-slide-group show-arrows center-active>
-      <v-btn value="aktuell">Grafik aktuell</v-btn>
-      <v-btn value="vorher">Grafik vorher</v-btn>
-      <v-btn value="vergleich">Vergleich</v-btn>
-      <v-btn value="tabelle">Tabelle</v-btn>
-    </v-slide-group>
-    </v-btn-toggle> 
-  </div>
+
+  <v-tabs
+      v-model="planSelect"
+      @update:model-value="grafikUpdate"
+      density="compact"
+      grow
+      stacked
+      hide-slider
+      class="rounded-lg black-border text-primary"
+      selected-class="bg-primary"
+  >
+    <v-tab value="aktuell">Grafik<br>aktuell</v-tab>
+    <v-tab value="vorher">Grafik<br>vorher</v-tab>
+    <v-tab value="vergleich">Vergleich</v-tab>
+    <v-tab value="tabelle">Tabelle</v-tab>
+  </v-tabs>
 </template>
 
-<style scoped></style>
+<style scoped>
+.v-tab {
+  text-transform: none !important;
+}
+
+.black-border {
+  border: 1px solid #4195AC;
+}
+</style>

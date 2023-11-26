@@ -10,12 +10,12 @@ function tabUpdate(){
   <div>
     <v-tabs
         v-model="planSelect"
-        height="70"
         @update:model-value="tabUpdate"
         grow
+        hide-slider
         stacked
-        bg-color="#4195AC"
-        class="rounded-lg"
+        class="rounded-lg black-border text-primary"
+        selected-class="bg-primary"
     >
       <v-tab value="saving">
         <v-icon size="x-large">mdi-plus</v-icon>
@@ -33,4 +33,8 @@ function tabUpdate(){
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.black-border {
+  border: 1px solid #4195AC;
+}
+</style>
