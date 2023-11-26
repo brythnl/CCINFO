@@ -173,9 +173,8 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col offset="1" offset-sm="0" cols="10" sm="5" class="flex ps-2 px-0">
+              <v-col v-if="startkapitalDetails" offset="1" offset-sm="0" cols="10" sm="5" class="flex ps-2 px-0">
                 <v-text-field
-                    v-if="startkapitalDetails"
                     label="Startdatum"
                     variant="outlined"
                     density="compact"
@@ -261,10 +260,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
             <!-- Button Neue Einmalzahlung -->
             <v-row v-if="startkapitalDetails" class="px-5">
-              <v-col cols="1">
-
-              </v-col>
-              <v-col cols="auto" class="ps-2 py-0">
+              <v-col offset="1" cols="auto" class="ps-2 py-0">
                 <v-btn
                     @click="()=>einmalZahlung++"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
@@ -287,29 +283,32 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               </v-col>
             </v-row>
 
-
-            <!-- Sparrate Form -->
-
-            <v-row class="px-5">
-              <v-col cols="1" class="px-0">
-                <v-icon size="large" @click="toggleSparplan">{{ iconSparplan }}</v-icon>
-              </v-col>
-
-              <!--Sparrate response slot-->
-              <v-col v-if="sparplanInput.endpoint=='saving-rate'" class="flex ps-2 pa-0">
+            <!--Sparrate response slot-->
+            <v-row v-if="sparplanInput.endpoint=='saving-rate'" class="px-5">
+              <v-col cols="1" class="px-0"></v-col>
+              <v-col cols="11" class="flex ps-2 px-0">
                 <v-card
-                    class="w-100 ma-auto"
-                    height="40"
+                    width="100%"
+                    height="44"
                     variant="outlined"
                     :color="props.apiResponse?'#4195AC':''">
                   <v-card-item class="py-0">
                     <v-card-title>{{ props.apiResponse ? props.apiResponse.savingRate : '' }}</v-card-title>
                   </v-card-item>
                 </v-card>
+                <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
+                  <v-icon size="small">mdi-information-outline</v-icon>
+                </v-btn>
               </v-col>
+            </v-row>
 
-              <!--Sparrate input field-->
-              <v-col v-else class="flex ps-2 px-0">
+            <!-- Sparrate Form -->
+
+            <v-row v-else class="px-5">
+              <v-col cols="1" class="px-0">
+                <v-icon size="large" @click="toggleSparplan">{{ iconSparplan }}</v-icon>
+              </v-col>
+              <v-col class="flex ps-2 px-0">
                 <v-text-field
                     variant="outlined"
                     prefix="€"
@@ -336,6 +335,24 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
               </v-col>
             </v-row>
+
+              <!--Sparrate response slot
+              <v-col v-if="sparplanInput.endpoint=='saving-rate'" class="flex ps-2 pa-0">
+                <v-col cols="1" class="px-0"></v-col>
+                <v-col cols="10" class="flex ps-2 px-0">
+                  <v-card
+                      width="100%"
+                      height="44"
+                      variant="outlined"
+                      :color="props.apiResponse?'#4195AC':''">
+                    <v-card-item class="py-0">
+                      <v-card-title>{{ props.apiResponse ? props.apiResponse.savingRate : '' }}</v-card-title>
+                    </v-card-item>
+                  </v-card>
+                </v-col>
+              </v-col>
+              -->
+
 
             <!-- Sparrate Detail-Ansicht -->
             <v-row class="px-5" v-if="sparplanDetails">
