@@ -49,7 +49,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
         <div>
           <v-card class="rounded-xl elevation-6" >
             <v-card-text>
-              <test></test>
+              <vergleichstabelle></vergleichstabelle>
             </v-card-text>
           </v-card>
         </div>
