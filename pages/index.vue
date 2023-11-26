@@ -103,15 +103,16 @@ onBeforeMount(async () => {
               <v-card-text>
                 <grafik-tab @grafikUpdate="(m: string) => (grafikTabs = m)" />
                 <v-window v-model="grafikTabs">
-                  <v-window-item value="aktuell">Grafik aktuell</v-window-item>
+                  <v-window-item value="aktuell">
+                    <graph
+                      :series="dataGlobal.capitalSeries"
+                      :result="dataGlobal.capitalResult"
+                    />
+                  </v-window-item>
                   <v-window-item value="vorher">Grafik vorher</v-window-item>
                   <v-window-item value="vergleich">Vergleich</v-window-item>
                   <v-window-item value="tabelle">Tabelle</v-window-item>
                 </v-window>
-                <graph
-                  :series="dataGlobal.capitalSeries"
-                  :result="dataGlobal.capitalResult"
-                />
               </v-card-text>
             </div>
           </v-card>
