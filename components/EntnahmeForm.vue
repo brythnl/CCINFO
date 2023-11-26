@@ -519,7 +519,6 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
             <!--Endkapital response slot-->
             <v-col v-if="entnahmeplaninput.endpoint=='capital'" class="flex ps-2 px-0" offset="1"> 
                 <v-card 
-                :title="props.apiResponse?props.apiResponse.capitalResult.capitalAmount:''" 
                 class="w-100 ma-auto" 
                 height="40"
                 variant="outlined"
