@@ -308,7 +308,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               <v-col cols="1" class="px-0">
                 <v-icon size="large" @click="toggleSparplan">{{ iconSparplan }}</v-icon>
               </v-col>
-              <v-col class="flex ps-2 px-0">
+              <v-col cols="11" class="flex ps-2 px-0">
                 <v-text-field
                     variant="outlined"
                     prefix="€"
@@ -336,30 +336,9 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               </v-col>
             </v-row>
 
-              <!--Sparrate response slot
-              <v-col v-if="sparplanInput.endpoint=='saving-rate'" class="flex ps-2 pa-0">
-                <v-col cols="1" class="px-0"></v-col>
-                <v-col cols="10" class="flex ps-2 px-0">
-                  <v-card
-                      width="100%"
-                      height="44"
-                      variant="outlined"
-                      :color="props.apiResponse?'#4195AC':''">
-                    <v-card-item class="py-0">
-                      <v-card-title>{{ props.apiResponse ? props.apiResponse.savingRate : '' }}</v-card-title>
-                    </v-card-item>
-                  </v-card>
-                </v-col>
-              </v-col>
-              -->
-
-
             <!-- Sparrate Detail-Ansicht -->
             <v-row class="px-5" v-if="sparplanDetails">
-              <v-col cols="1">
-
-              </v-col>
-              <v-col class="flex ps-2 px-0">
+              <v-col offset="1" cols="11" :sm="4" class="flex ps-2 px-0">
                 <v-text-field
                     label="Startdatum"
                     variant="outlined"
@@ -378,7 +357,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col class="flex ps-2 px-0">
+              <v-col offset="1" offset-sm="0" cols="11" :sm="4" class="flex ps-2 px-0">
                 <v-text-field
                     label="Enddatum"
                     variant="outlined"
@@ -398,7 +377,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="3" class="ps-2 px-0 py-0">
+              <v-col offset="1" offset-sm="0" cols="11" :sm="3" class="ps-2 px-0 py-0">
                 <div class="flex">
                   <v-radio-group v-model="dynamik" hide-details>
                     <v-checkbox label="Dynamik" density="compact" hide-details=""></v-checkbox>
