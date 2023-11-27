@@ -72,9 +72,23 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
 // For Kombiplan
 const financeMathResultSparen: financeMathResult = ref({})
 const financeMathResultEntnahme: financeMathResult = ref({})
-const financeMathInputSparen: financeMathInput = ref({})
+const financeMathInputSparen: financeMathInput= ref({})
 const financeMathInputEntnahme: financeMathInput = ref({})
 
+/*
+*function fetchKombiPlan
+*sparForm is Parameter to save savingPlan part of the combi-plan
+*entnahmeForm is Parameter to save withdrawPlan part of the combi-plan
+*
+* this function send several API-calls related to combi-form 
+* if the wanted variable is part of the savingPlan, API calls will be sent for the withdrawPlan to find the startInvestment of withdrawPlan
+* from the result of the API call, the startInvestment variable will be assigned as endValue of the savingPlan input and another API call will be made using the savingPlan input
+*
+* if the wanted variable is part of the withdrawPlan, API calls will be sent for the savingPlan to find the endValue of savingPlan 
+* from the result of the API call, the endValue variable will be assigned as startInvestment of the withdrawPlan input and another API call will be made using the withdrawPlan input
+*
+* in each case API call for endPoint capital for both plan will be sent for the Graph, when if it has'nt been sent yet.
+*/
 async function fetchKombiPlan({sparForm,entnahmeForm}){
   financeMathInputSparen.value = sparForm;
   financeMathInputEntnahme.value = entnahmeForm;
@@ -106,7 +120,7 @@ async function fetchKombiPlan({sparForm,entnahmeForm}){
     // fetch capital series for sparplan
     const result = toRaw(financeMathResultSparen.value.value)
     const { endValue, ...capitalSeriesInput }: financeMathInput = financeMathInputSparen.value
-
+    //assign the value from the result from previous API-call in capitalSeriesInput
     switch (endpointType[1]) {
       case "end-date":
         capitalSeriesInput.end = result.end
@@ -122,9 +136,11 @@ async function fetchKombiPlan({sparForm,entnahmeForm}){
         capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin]
         break
     }
-
+    //API-call for the capitalSeries of the Savingplan for the Graph
     const { data: sparenSeriesData } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN.value);
+    //Merge the 2 capitalSeries form saving and withdrawplan for graph
     capitalSeriesResult.value.capitalSeries = sparenSeriesData.value.capitalSeries.concat(entnahmeSeriesData.value.capitalSeries);
+    //Assign needed variables for the capitalResult value for graph
     capitalSeriesResult.value.capitalResult.start=sparenSeriesData.value.capitalResult.start;
     capitalSeriesResult.value.capitalResult.startInvestment=sparenSeriesData.value.capitalResult.startInvestment;
 
@@ -143,11 +159,11 @@ async function fetchKombiPlan({sparForm,entnahmeForm}){
     // fetch data for entnahmeplan to selected endpoint
     const { data: entnahmeData } = await useFinanceMathFetch<financeMathResult>(financeMathInputEntnahme.value.endpoint, financeMathInputEntnahme.value, API_TOKEN.value);
     financeMathResultEntnahme.value = entnahmeData;
-
+    // if the endpoint is not capital
     if (financeMathInputEntnahme.value.endpoint !== "capital") {
       const result = toRaw(financeMathResultEntnahme.value.value)
       const { endValue, ...capitalSeriesInput }: financeMathInput = financeMathInputEntnahme.value
-
+      //assign the value from the result from previous API-call in capitalSeriesInput
       switch (financeMathInputEntnahme.value.endpoint.endpoint) {
         case "end-date":
           capitalSeriesInput.end = result.end
@@ -163,14 +179,19 @@ async function fetchKombiPlan({sparForm,entnahmeForm}){
           capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin]
           break
       }
-
+      //API-call for the capitalSeries of the Withdrawplan for the Graph
       const { data: entnahmeSeriesData } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value);
+      //Merge the 2 capitalSeries form saving and withdrawplan for graph
       capitalSeriesResult.value.capitalSeries =sparEndCapitalData.value.capitalSeries.concat(entnahmeSeriesData.value.capitalSeries);
+      //Assign needed variables for the capitalResult value for graph
       capitalSeriesResult.value.capitalResult=entnahmeSeriesData.value.capitalResult;
       capitalSeriesResult.value.capitalResult.start=sparEndCapitalData.value.capitalResult.start;
       capitalSeriesResult.value.capitalResult.startInvestment=sparEndCapitalData.value.capitalResult.startInvestment;
     }else{
+      //if the endPoint is capital
+      //Merge the 2 capitalSeries form saving and withdrawplan for graph
       capitalSeriesResult.value.capitalSeries =sparEndCapitalData.value.capitalSeries.concat(entnahmeData.value.capitalSeries);
+      //Assign needed variables for the capitalResult value for graph
       capitalSeriesResult.value.capitalResult=entnahmeData.value.capitalResult;
       capitalSeriesResult.value.capitalResult.start=sparEndCapitalData.value.capitalResult.start;
       capitalSeriesResult.value.capitalResult.startInvestment=sparEndCapitalData.value.capitalResult.startInvestment;
