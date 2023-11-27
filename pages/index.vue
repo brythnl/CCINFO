@@ -101,6 +101,7 @@ async function fetchKombiPlan({sparForm,entnahmeForm}){
 
     // fetch capital series for entnahmeplan
     const { data: entnahmeSeriesData } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value)
+      capitalSeriesResult.value.capitalResult=entnahmeSeriesData.value.capitalResult;
 
     // fetch capital series for sparplan
     const result = toRaw(financeMathResultSparen.value.value)
@@ -124,7 +125,8 @@ async function fetchKombiPlan({sparForm,entnahmeForm}){
 
     const { data: sparenSeriesData } = await useFinanceMathFetch<financeMathResult>("capital", capitalSeriesInput, API_TOKEN.value);
     capitalSeriesResult.value.capitalSeries = sparenSeriesData.value.capitalSeries.concat(entnahmeSeriesData.value.capitalSeries);
-    capitalSeriesResult.value.capitalResult=sparenSeriesData.value.capitalResult;
+    capitalSeriesResult.value.capitalResult.start=sparenSeriesData.value.capitalResult.start;
+    capitalSeriesResult.value.capitalResult.startInvestment=sparenSeriesData.value.capitalResult.startInvestment;
 
   } else if (endpointType[0] == 'entnahme'){
     // assign endpoint each plan
@@ -133,18 +135,17 @@ async function fetchKombiPlan({sparForm,entnahmeForm}){
 
     // fetch end capital of sparplan for startInvestment of entnahmeplan
     const { data: sparEndCapitalData } = await useFinanceMathFetch<financeMathResult>(financeMathInputSparen.value.endpoint, financeMathInputSparen.value, API_TOKEN.value);
-    financeMathInputSparen.value = sparEndCapitalData;
-    capitalSeriesResult.value.capitalResult=financeMathInputSparen.value.capitalResult;
+    financeMathResultSparen.value = sparEndCapitalData;
 
     // set entnahmeplan start capital as sparplan end capital
-    financeMathInputEntnahme.value.oneTimeInvestment[0] = Math.round(financeMathInputSparen.value.value.capitalResult.capitalAmount);
+    financeMathInputEntnahme.value.oneTimeInvestment[0] = Math.round(financeMathResultSparen.value.value.capitalResult.capitalAmount);
 
     // fetch data for entnahmeplan to selected endpoint
     const { data: entnahmeData } = await useFinanceMathFetch<financeMathResult>(financeMathInputEntnahme.value.endpoint, financeMathInputEntnahme.value, API_TOKEN.value);
     financeMathResultEntnahme.value = entnahmeData;
 
     if (financeMathInputEntnahme.value.endpoint !== "capital") {
-      const result = toRaw(financeMathResult.value.value)
+      const result = toRaw(financeMathResultEntnahme.value.value)
       const { endValue, ...capitalSeriesInput }: financeMathInput = financeMathInputEntnahme.value
 
       switch (financeMathInputEntnahme.value.endpoint.endpoint) {
@@ -164,7 +165,15 @@ async function fetchKombiPlan({sparForm,entnahmeForm}){
       }
 
       const { data: entnahmeSeriesData } = await useFinanceMathFetch<financeMathResult>('capital', financeMathInputEntnahme.value, API_TOKEN.value);
-      capitalSeriesResult.value.capitalSeries =entnahmeSeriesData.value.capitalSeries.concat(sparEndCapitalData.value.capitalSeries);
+      capitalSeriesResult.value.capitalSeries =sparEndCapitalData.value.capitalSeries.concat(entnahmeSeriesData.value.capitalSeries);
+      capitalSeriesResult.value.capitalResult=entnahmeSeriesData.value.capitalResult;
+      capitalSeriesResult.value.capitalResult.start=sparEndCapitalData.value.capitalResult.start;
+      capitalSeriesResult.value.capitalResult.startInvestment=sparEndCapitalData.value.capitalResult.startInvestment;
+    }else{
+      capitalSeriesResult.value.capitalSeries =sparEndCapitalData.value.capitalSeries.concat(entnahmeData.value.capitalSeries);
+      capitalSeriesResult.value.capitalResult=entnahmeData.value.capitalResult;
+      capitalSeriesResult.value.capitalResult.start=sparEndCapitalData.value.capitalResult.start;
+      capitalSeriesResult.value.capitalResult.startInvestment=sparEndCapitalData.value.capitalResult.startInvestment;
     }
   }
 }
@@ -202,8 +211,8 @@ onBeforeMount(async () => {
                   /></v-window-item>
                   <v-window-item value="comb">
                     <kombi-form @calculateInput="fetchKombiPlan" 
-                    :apiResponseSparen="financeMathResultSparen" 
-                    :apiResponseEntnahme="financeMathResultEntnahme"/>
+                    :apiResponseSparen="financeMathResultSparen.value" 
+                    :apiResponseEntnahme="financeMathResultEntnahme.value"/>
                   </v-window-item>
                 </v-window>
               </v-card-text>
