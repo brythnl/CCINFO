@@ -22,7 +22,6 @@ export const useFinanceMathFetch = <DataT>(
     }
   }
   url = url.slice(0, -1); // Remove trailing '&'
-  console.log(url);
 
   return useFetch<DataT>(url, {
     headers: {
