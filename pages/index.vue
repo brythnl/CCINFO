@@ -29,7 +29,6 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
     // Set capitalSeries
     capitalSeriesResult.value.capitalSeries = data.value.capitalSeries;
     delete data.value.capitalSeries; // Delete capitalSeries from the data to have only capitalResult
-    console.log(data.value);
     // Set capitalResult
     capitalSeriesResult.value.capitalResult = data.value.capitalResult;
   } else capitalSeriesResult.value.capitalResult = data.value; // if endpoint isn't "capital"
@@ -61,7 +60,6 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       capitalSeriesInput,
       API_TOKEN.value,
     );
-    console.log(toRaw(data.value));
 
     // Update the series
     capitalSeriesResult.value.capitalSeries = data.value.capitalSeries;
