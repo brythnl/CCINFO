@@ -160,7 +160,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     required
                     hide-details
                     type="number"
-                    step="0.01"
+                    step="500"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
                 ></v-text-field>
                 <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
@@ -216,6 +216,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     hide-details
                     placeholder="weitere Einmalzahlung"
                     type="number"
+                    step="500"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
                 ></v-text-field>
                 <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
@@ -318,7 +319,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     hide-details
                     placeholder="Sparrate"
                     type="number"
-                    step="0.01"
+                    step="10"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
                 ></v-text-field>
                 <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
@@ -564,7 +565,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     hide-details
                     placeholder="Endkapital"
                     type="number"
-                    step="0.01"
+                    step="1000"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='capital'"
                 ></v-text-field>
                 <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
