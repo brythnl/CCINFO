@@ -46,7 +46,7 @@ export const validateInput = (userInput: financeMathInput): void => {
     Math.round(formatNumber(investment) * 100),
   );
   // Date validation
-  let tmp: string[] = JSON.parse(
+  const tmp: string[] = JSON.parse(
     JSON.stringify(userInput.oneTimeInvestmentDate),
   );
   tmp.push(userInput.savingPlanBegin);
@@ -55,8 +55,8 @@ export const validateInput = (userInput: financeMathInput): void => {
 
 // set end date value as the latest date found from all date inputs (oneTimeInvestmentDate, savingPlanEnd, end)
 export const setEndDateToBiggestDate = (userInput: financeMathInput): void => {
-  if (userInput.endpoint == "end-date") return;
-  let tmp: string[] = JSON.parse(
+  if (userInput.endpoint === "end-date") return;
+  const tmp: string[] = JSON.parse(
     JSON.stringify(userInput.oneTimeInvestmentDate),
   );
   tmp.push(JSON.parse(JSON.stringify(userInput.savingPlanEnd)));
