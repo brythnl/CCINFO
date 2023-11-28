@@ -4,7 +4,9 @@ import {watch} from 'vue';
 
 const props = defineProps<{
   apiRequest: financeMathInput,
-  apiResponse: financeMathResult
+  apiRequest2: financeMathInput,
+  apiResponse: financeMathResult,
+  apiResponse2: financeMathResult
 }>()
 
 const find = ref("a");
@@ -86,7 +88,38 @@ watch(() => props.apiRequest.endpoint, () => {
 
           <code v-else class="ps-5" :class="index==find?'bg-red-accent-2':''">"{{ index }}": {{ item }},</code>
         </div>
+        <code>}<br><br></code>
+
+
+        <div v-if="props.apiRequest2&&props.apiResponse2">
+          <code>Request {</code>
+        <div v-for="(item,index) in props.apiRequest2">
+          <code v-if="item!=0||item!=''" class="ps-5" :class="index==find?'bg-red-accent-2':''"> "{{ index }}":
+            {{ item }} <br></code>
+        </div>
+        <code>} <br><br></code>
+
+        <code>Response {</code>
+        <div v-for="(item,index) in props.apiResponse2">
+          <div v-if="index=='capitalResult'">
+            <code class="ps-5" :class="index==find?'bg-red-accent-2':''"> "{{ index }}": { <br></code>
+            <code v-for="(subitem,subindex) in item" class="ps-10" :class="subindex==find?'bg-red-accent-2':''">
+              "{{ subindex }}": {{ subitem }},<br>
+            </code>
+            <code class="ps-5">} <br></code>
+          </div>
+          <div v-else-if="index=='capitalSeries'">
+            <code class="ps-5" :class="index==find?'bg-red-accent-2':''"> "{{ index }}": [ <br></code>
+            <code v-for="(subitem,subindex) in item" class="ps-10" :class="subindex==find?'bg-red-accent-2':''">
+              {{ subitem }},<br>
+            </code>
+            <code class="ps-5">] <br></code>
+          </div>
+
+          <code v-else class="ps-5" :class="index==find?'bg-red-accent-2':''">"{{ index }}": {{ item }},</code>
+        </div>
         <code>}</code>
+        </div>
       </v-card-text>
     </v-card-item>
   </v-card>
