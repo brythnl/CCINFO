@@ -30,6 +30,31 @@ watch(() => props.apiRequest.endpoint, () => {
 </script>
 
 <template>
+  <v-tabs
+      v-model="find"
+      density="compact"
+      grow
+      stacked
+      hide-slider
+      center-active
+      class="rounded-lg blue-border text-primary"
+      selected-class="bg-primary"
+  >
+    <v-tab value="startInvestment" size="small">Startkapital</v-tab>
+    <v-tab value="capitalAmount" size="small">Endkapital</v-tab>
+    <v-tab value="savingRate" size="small">Sparrate</v-tab>
+    <v-tab value="interestRate" size="small">Zinssatz</v-tab>
+    <v-tab value="capitalSeries" size="small">Kapitalserien</v-tab>
+    <v-tab value="end" size="small">Enddatum</v-tab>
+    <v-tab value="begin" size="small">Begindatum</v-tab>
+    <v-tab value="oneTimeInvestment" size="small">Einmalzahlungen</v-tab>
+    <v-tab value="oneTimeInvestmentDate" size="small">Datum der Enmalzahlungen</v-tab>
+    <v-tab value="dynamicSavingRateFactor" size="small">Dynamik</v-tab>
+    <v-tab value="interestCalculation" size="small">Zinsberechnung</v-tab>
+    <v-tab value="savingPlanBegin" size="small">Sparplansstart</v-tab>
+    <v-tab value="savingPlanEnd" size="small">Sparplansend</v-tab>
+  </v-tabs>
+  <!--
   <div>
     <h1 class="font-bold text-lg text-center">API</h1>
   </div>
@@ -57,6 +82,7 @@ watch(() => props.apiRequest.endpoint, () => {
     </v-sheet>
     <v-divider></v-divider>
   </div>
+  -->
   <v-card class="overflow-y-auto bg-grey-darken-4 h-100 rounded-lg" max-height="700" height="700" variant="outlined">
     <v-card-item>
       <v-card-text>
@@ -93,5 +119,11 @@ watch(() => props.apiRequest.endpoint, () => {
 </template>
 
 <style scoped>
+.v-tab {
+  text-transform: none !important;
+}
 
+.blue-border {
+  border: 1px solid #4195AC;
+}
 </style>

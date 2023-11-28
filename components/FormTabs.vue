@@ -14,7 +14,8 @@ function tabUpdate(){
         grow
         hide-slider
         stacked
-        class="rounded-lg black-border text-primary"
+        density="compact"
+        class="rounded-lg blue-border text-primary"
         selected-class="bg-primary"
     >
       <v-tab value="saving">
@@ -34,7 +35,11 @@ function tabUpdate(){
 </template>
 
 <style scoped>
-.black-border {
+.v-tab {
+  text-transform: none !important;
+}
+
+.blue-border {
   border: 1px solid #4195AC;
 }
 </style>
