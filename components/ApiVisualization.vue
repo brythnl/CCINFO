@@ -40,50 +40,22 @@ watch(() => props.apiRequest.endpoint, () => {
       class="rounded-lg blue-border text-primary"
       selected-class="bg-primary"
   >
-    <v-tab value="startInvestment" size="small">Startkapital</v-tab>
-    <v-tab value="capitalAmount" size="small">Endkapital</v-tab>
-    <v-tab value="savingRate" size="small">Sparrate</v-tab>
-    <v-tab value="interestRate" size="small">Zinssatz</v-tab>
-    <v-tab value="capitalSeries" size="small">Kapitalserien</v-tab>
-    <v-tab value="end" size="small">Enddatum</v-tab>
-    <v-tab value="begin" size="small">Begindatum</v-tab>
-    <v-tab value="oneTimeInvestment" size="small">Einmalzahlungen</v-tab>
-    <v-tab value="oneTimeInvestmentDate" size="small">Datum der Enmalzahlungen</v-tab>
-    <v-tab value="dynamicSavingRateFactor" size="small">Dynamik</v-tab>
-    <v-tab value="interestCalculation" size="small">Zinsberechnung</v-tab>
-    <v-tab value="savingPlanBegin" size="small">Sparplansstart</v-tab>
-    <v-tab value="savingPlanEnd" size="small">Sparplansend</v-tab>
+    <v-tab value="startInvestment">Startkapital</v-tab>
+    <v-tab value="capitalAmount">Endkapital</v-tab>
+    <v-tab value="savingRate" >Sparrate</v-tab>
+    <v-tab value="interestRate" >Zinssatz</v-tab>
+    <v-tab value="capitalSeries" >Kapitalserien</v-tab>
+    <v-tab value="end" >Enddatum</v-tab>
+    <v-tab value="begin" >Begindatum</v-tab>
+    <v-tab value="oneTimeInvestment" >Einmalzahlungen</v-tab>
+    <v-tab value="oneTimeInvestmentDate" >Datum der Enmalzahlungen</v-tab>
+    <v-tab value="dynamicSavingRateFactor" >Dynamik</v-tab>
+    <v-tab value="interestCalculation" >Zinsberechnung</v-tab>
+    <v-tab value="savingPlanBegin" >Sparplansstart</v-tab>
+    <v-tab value="savingPlanEnd" >Sparplansend</v-tab>
   </v-tabs>
-  <!--
-  <div>
-    <h1 class="font-bold text-lg text-center">API</h1>
-  </div>
-  <v-divider></v-divider>
-  <div>
-    <h4 class="font-bold">Suchbegriffe: </h4>
-    <v-sheet>
-      <v-chip-group v-model="find" selected-class="text-blue">
-        <v-slide-group center-active>
-          <v-chip value="startInvestment" size="small">Startkapital</v-chip>
-          <v-chip value="capitalAmount" size="small">Endkapital</v-chip>
-          <v-chip value="savingRate" size="small">Sparrate</v-chip>
-          <v-chip value="interestRate" size="small">Zinssatz</v-chip>
-          <v-chip value="capitalSeries" size="small">Kapitalserien</v-chip>
-          <v-chip value="end" size="small">Enddatum</v-chip>
-          <v-chip value="begin" size="small">Begindatum</v-chip>
-          <v-chip value="oneTimeInvestment" size="small">Einmalzahlungen</v-chip>
-          <v-chip value="oneTimeInvestmentDate" size="small">Datum der Enmalzahlungen</v-chip>
-          <v-chip value="dynamicSavingRateFactor" size="small">Dynamik</v-chip>
-          <v-chip value="interestCalculation" size="small">Zinsberechnung</v-chip>
-          <v-chip value="savingPlanBegin" size="small">Sparplansstart</v-chip>
-          <v-chip value="savingPlanEnd" size="small">Sparplansend</v-chip>
-        </v-slide-group>
-      </v-chip-group>
-    </v-sheet>
-    <v-divider></v-divider>
-  </div>
-  -->
-  <v-card class="overflow-y-auto bg-grey-darken-4 h-100 rounded-lg" max-height="700" height="700" variant="outlined">
+
+  <v-card class="overflow-y-auto bg-grey-darken-4 h-100 rounded-lg mt-5" max-height="700" height="700" variant="outlined">
     <v-card-item>
       <v-card-text>
         <code>Request {</code>

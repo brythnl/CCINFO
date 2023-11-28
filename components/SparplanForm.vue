@@ -103,7 +103,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
 <template>
 
-  <h3 class="font-bold pb-5 py-3">Was möchten Sie berechnen?</h3>
+  <h3 class="font-bold pb-5 mt-5">Was möchten Sie berechnen?</h3>
   <v-form>
     <div>
       <v-card class="overflow-y-auto" elevation="0" max-height="580">
