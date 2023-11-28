@@ -39,7 +39,7 @@ const entnahmeplaninput = reactive({
 });
 
 function toggleStartkapital() {
-  if (startkapitalDetails.value == false) {
+  if (startkapitalDetails.value === false) {
     startkapitalDetails.value = true;
     iconStartkapital.value = "mdi-chevron-up";
   } else {
@@ -49,7 +49,7 @@ function toggleStartkapital() {
 }
 
 function toggleSparplan() {
-  if (sparplanDetails.value == false) {
+  if (sparplanDetails.value === false) {
     sparplanDetails.value = true;
     iconSparplan.value = "mdi-chevron-up";
   } else {
@@ -60,8 +60,8 @@ function toggleSparplan() {
 
 // change endpoint
 function changeEndpoint() {
-  if (entnahmeplaninput.endpoint == "saving-start-value") {
-    if (startkapitalDetails.value == true) {
+  if (entnahmeplaninput.endpoint === "saving-start-value") {
+    if (startkapitalDetails.value === true) {
       toggleStartkapital();
     }
   }
@@ -70,11 +70,11 @@ function changeEndpoint() {
 // get form data (user input)
 function emitData() {
   const toSend = JSON.parse(JSON.stringify(entnahmeplaninput));
-  if (toSend.endpoint == "interest-rate" || toSend.endpoint == "end-date") {
+  if (toSend.endpoint === "interest-rate" || toSend.endpoint === "end-date") {
     toSend.oneTimeInvestment = toSend.oneTimeInvestment.map(
       (investment) => -investment,
     );
-    toSend.endValue == 0 ? (toSend.endValue = 1) : "";
+    toSend.endValue === 0 ? (toSend.endValue = 1) : "";
   } else {
     toSend.savingRate = -toSend.savingRate;
   }
