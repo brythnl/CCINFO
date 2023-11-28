@@ -11,8 +11,9 @@ const emit = defineEmits<{
   (e: "calculateInput", sparplanInput: {}): void;
 }>();
 
-//variable for the number of oneTimeInvestment and the dynamic status
+// Amount of oneTimeInvestment(s)
 const einmalZahlung = ref(0);
+// Dynamic status
 const dynamik = ref(false);
 const startkapitalDetails = ref(false);
 const sparplanDetails = ref(false);
@@ -42,7 +43,7 @@ const sparplanInput = reactive({
 });
 
 function toggleStartkapital() {
-  if (startkapitalDetails.value == false) {
+  if (startkapitalDetails.value === false) {
     startkapitalDetails.value = true;
     iconStartkapital.value = "mdi-chevron-up";
   } else {
@@ -52,7 +53,7 @@ function toggleStartkapital() {
 }
 
 function toggleSparplan() {
-  if (sparplanDetails.value == false) {
+  if (sparplanDetails.value === false) {
     sparplanDetails.value = true;
     iconSparplan.value = "mdi-chevron-up";
   } else {
@@ -63,8 +64,8 @@ function toggleSparplan() {
 
 // change endpoint
 function changeEndpoint() {
-  if (sparplanInput.endpoint == "saving-start-value") {
-    if (startkapitalDetails.value == true) {
+  if (sparplanInput.endpoint === "saving-start-value") {
+    if (startkapitalDetails.value === true) {
       toggleStartkapital();
     }
   }
