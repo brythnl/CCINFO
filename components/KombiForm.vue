@@ -59,7 +59,7 @@ const entnahmeInput = reactive({
 });
 
 function toggleStartkapital() {
-  if (startkapitalDetails.value == false) {
+  if (startkapitalDetails.value === false) {
     startkapitalDetails.value = true;
     iconStartkapital.value = "mdi-chevron-up";
   } else {
@@ -69,7 +69,7 @@ function toggleStartkapital() {
 }
 
 function toggleSparplan() {
-  if (sparplanDetails.value == false) {
+  if (sparplanDetails.value === false) {
     sparplanDetails.value = true;
     iconSparplan.value = "mdi-chevron-up";
   } else {
@@ -79,7 +79,7 @@ function toggleSparplan() {
 }
 
 function toggleEntnahmeplan() {
-  if (entnahmeplanDetails.value == false) {
+  if (entnahmeplanDetails.value === false) {
     entnahmeplanDetails.value = true;
     iconEntnahmeplan.value = "mdi-chevron-up";
   } else {
@@ -88,11 +88,11 @@ function toggleEntnahmeplan() {
   }
 }
 
-//set variable when endPoint is changed, so both variables have the same endPoint
+// set variable when endpoint is changed, so both variables have the same endpoint
 function changeEndpoint() {
   entnahmeInput.endpoint = sparInput.endpoint;
-  if (sparInput.endpoint == "sparen/saving-start-value") {
-    if (startkapitalDetails.value == true) {
+  if (sparInput.endpoint === "sparen/saving-start-value") {
+    if (startkapitalDetails.value === true) {
       toggleStartkapital();
     }
   }
@@ -113,7 +113,7 @@ function emitData() {
     }
   }
 
-  if (sparInput.endpoint != "entnahme/end-date") {
+  if (sparInput.endpoint !== "entnahme/end-date") {
     entnahme.savingRate = -entnahme.savingRate;
   }
 
