@@ -137,6 +137,7 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
     const result = toRaw(financeMathResultSparen.value.value);
     const { endValue, ...capitalSeriesInput }: financeMathInput =
       financeMathInputSparen.value;
+
     // assign the value from the result from previous API call in capitalSeriesInput
     switch (endpointType[1]) {
       case "end-date":
@@ -155,6 +156,7 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
         capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin];
         break;
     }
+
     // API call for the capitalSeries of Sparplan for the graph
     const { data: sparenSeriesData } =
       await useFinanceMathFetch<financeMathResult>(
@@ -162,16 +164,19 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
         capitalSeriesInput,
         API_TOKEN.value,
       );
+
     // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
     capitalSeriesResult.value.capitalSeries =
       sparenSeriesData.value.capitalSeries.concat(
         entnahmeSeriesData.value.capitalSeries,
       );
+
     // Assign needed variables for the capitalResult value for graph
     capitalSeriesResult.value.capitalResult.start =
       sparenSeriesData.value.capitalResult.start;
     capitalSeriesResult.value.capitalResult.startInvestment =
       sparenSeriesData.value.capitalResult.startInvestment;
+
   } else if (endpointType[0] === "entnahme") {
     // assign endpoint each plan
     financeMathInputSparen.value.endpoint = "capital";
@@ -198,11 +203,13 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
       API_TOKEN.value,
     );
     financeMathResultEntnahme.value = entnahmeData;
+
     // if the endpoint is not capital
     if (financeMathInputEntnahme.value.endpoint !== "capital") {
       const result = toRaw(financeMathResultEntnahme.value.value);
       const { endValue, ...capitalSeriesInput }: financeMathInput =
         financeMathInputEntnahme.value;
+
       // assign the value from the result from previous API call in capitalSeriesInput
       switch (financeMathInputEntnahme.value.endpoint.endpoint) {
         case "end-date":
@@ -221,6 +228,7 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
           capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin];
           break;
       }
+
       // API call for the capitalSeries of the Entnahmeplan for the graph
       const { data: entnahmeSeriesData } =
         await useFinanceMathFetch<financeMathResult>(
@@ -228,11 +236,13 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
           financeMathInputEntnahme.value,
           API_TOKEN.value,
         );
+
       // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
       capitalSeriesResult.value.capitalSeries =
         sparEndCapitalData.value.capitalSeries.concat(
           entnahmeSeriesData.value.capitalSeries,
         );
+
       // Assign needed variables for the capitalResult value for graph
       capitalSeriesResult.value.capitalResult =
         entnahmeSeriesData.value.capitalResult;
@@ -247,6 +257,7 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
         sparEndCapitalData.value.capitalSeries.concat(
           entnahmeData.value.capitalSeries,
         );
+
       // Assign needed variables for the capitalResult value for graph
       capitalSeriesResult.value.capitalResult =
         entnahmeData.value.capitalResult;
