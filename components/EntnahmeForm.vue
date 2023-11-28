@@ -102,7 +102,7 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
 <h3 class="font-bold pb-5 py-3">Was möchten Sie berechnen?</h3>
   <v-form>
     <div>
-      <v-card class="overflow-y-auto" max-height="580">
+      <v-card class="overflow-y-auto" max-height="550">
       <v-radio-group
           v-model="entnahmeplaninput.endpoint"
           @update:model-value="changeEndpoint">
@@ -163,6 +163,7 @@ watch(() => entnahmeplaninput.savingPlanEnd, () => {
                   hide-details
                   type="number"
                   step="0.01"
+                  :disabled="entnahmeplaninput.endpoint==''||entnahmeplaninput.endpoint=='saving-start-value'"
               ></v-text-field>
               <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                 <v-icon size="small">mdi-information-outline</v-icon>
