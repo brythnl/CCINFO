@@ -1,10 +1,9 @@
 <script setup>
-  import { getUserManager } from '../utils/auth';
+import { getUserManager } from "../utils/auth";
 
-  const userManager = getUserManager();
-  await userManager.signinRedirectCallback();
+const userManager = getUserManager();
+await userManager.signinRedirectCallback();
 
-  navigateTo('/')
+navigateTo("/");
 </script>
-<template>
-</template>
+<template></template>

@@ -44,7 +44,7 @@ watch(
       maxYAxis.value = newValue.result.capitalAmount;
     yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
   },
-  { deep: true }
+  { deep: true },
 );
 </script>
 
@@ -91,7 +91,7 @@ watch(
       tooltip: {
         formatter: function () {
           return `In ${new Date(
-            this.x
+            this.x,
           ).getFullYear()} there would be a capital of ${this.y.toFixed(2)}€`;
         },
       },

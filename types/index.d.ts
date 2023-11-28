@@ -17,11 +17,11 @@ export interface financeMathInput {
 
 export interface financeMathResult {
   capitalResult?: {
-    capitalAmount: number,
-    savingRate: number,
-    startInvestment: number,
-    interestRate: number,
-    end: string,
+    capitalAmount: number;
+    savingRate: number;
+    startInvestment: number;
+    interestRate: number;
+    end: string;
   };
   capitalSeries?: number[];
   begin?: string;

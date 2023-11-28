@@ -15,10 +15,10 @@ export default defineNuxtPlugin((app) => {
           /* My custom colors */
           colors: {
             primary: "#4195AC", // #E53935
-          }
-        }
+          },
+        },
       },
-    }
+    },
   });
   app.vueApp.use(vuetify);
 });
