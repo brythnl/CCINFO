@@ -390,7 +390,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               <v-col v-if="dynamik" class="flex pe-0">
                 <v-text-field
                     variant="outlined"
-                    suffix="%"
+                    prefix="%"
                     density="compact"
                     v-model="sparplanInput.dynamicSavingRateFactor"
                     hide-details
@@ -441,7 +441,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
             <v-row v-else class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
                 <v-text-field
-                    suffix="%"
+                    prefix="%"
                     variant="outlined"
                     density="compact"
                     v-model="sparplanInput.interestRate"
