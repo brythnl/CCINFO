@@ -28,7 +28,7 @@ const props = defineProps<{
 // form data (user input)
 const sparplanInput = reactive({
   begin: todayDate,
-  end: "",
+  end: inTenYears,
   interestCalculation: "YEARLY",
   interestRate: 0,
   reductionFactor: 0,

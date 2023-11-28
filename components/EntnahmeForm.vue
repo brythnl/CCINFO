@@ -27,7 +27,7 @@ const props = defineProps<{
 
 const entnahmeplaninput = reactive({
   begin: todayDate,
-  end: "",
+  end: inTenYears,
   interestCalculation: "YEARLY",
   interestRate: 0,
   reductionFactor: 0,
