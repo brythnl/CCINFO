@@ -11,7 +11,7 @@ const API_TOKEN = ref("");
 const financeMathInput: financeMathInput = ref({});
 // Const and Functions for Savingplan and Entnahmeplan
 const financeMathResult: financeMathResult = ref({});
-const capitalSeriesResult: financeMathResult = ref({
+const graphData: financeMathResult = ref({
   capitalSeries: [],
   capitalResult: {},
 });
@@ -25,13 +25,6 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   );
   financeMathResult.value = data;
 
-  if (data.value.hasOwnProperty("capitalSeries")) {
-    // Set capitalSeries
-    capitalSeriesResult.value.capitalSeries = data.value.capitalSeries;
-    delete data.value.capitalSeries; // Delete capitalSeries from the data to have only capitalResult
-    // Set capitalResult
-    capitalSeriesResult.value.capitalResult = data.value.capitalResult;
-  } else capitalSeriesResult.value.capitalResult = data.value; // if endpoint isn't "capital"
 
   if (formInput.endpoint !== "capital") {
     const result = toRaw(financeMathResult.value.value);
@@ -61,8 +54,12 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       API_TOKEN.value,
     );
 
-    // Update the series
-    capitalSeriesResult.value.capitalSeries = data.value.capitalSeries;
+    graphData.value.capitalResult = financeMathResult.value.value;
+    graphData.value.capitalSeries = data.value.capitalSeries;
+
+  } else {
+    graphData.value.capitalResult = financeMathResult.value.value.capitalResult;
+    graphData.value.capitalSeries = financeMathResult.value.value.capitalSeries;
   }
 }
 
@@ -130,7 +127,7 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
         financeMathInputEntnahme.value,
         API_TOKEN.value,
       );
-    capitalSeriesResult.value.capitalResult =
+    graphData.value.capitalResult =
       entnahmeSeriesData.value.capitalResult;
 
     // fetch capital series for sparplan
@@ -166,15 +163,15 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
       );
 
     // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
-    capitalSeriesResult.value.capitalSeries =
+    graphData.value.capitalSeries =
       sparenSeriesData.value.capitalSeries.concat(
         entnahmeSeriesData.value.capitalSeries,
       );
 
     // Assign needed variables for the capitalResult value for graph
-    capitalSeriesResult.value.capitalResult.start =
+    graphData.value.capitalResult.start =
       sparenSeriesData.value.capitalResult.start;
-    capitalSeriesResult.value.capitalResult.startInvestment =
+    graphData.value.capitalResult.startInvestment =
       sparenSeriesData.value.capitalResult.startInvestment;
 
   } else if (endpointType[0] === "entnahme") {
@@ -238,32 +235,32 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
         );
 
       // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
-      capitalSeriesResult.value.capitalSeries =
+      graphData.value.capitalSeries =
         sparEndCapitalData.value.capitalSeries.concat(
           entnahmeSeriesData.value.capitalSeries,
         );
 
       // Assign needed variables for the capitalResult value for graph
-      capitalSeriesResult.value.capitalResult =
+      graphData.value.capitalResult =
         entnahmeSeriesData.value.capitalResult;
-      capitalSeriesResult.value.capitalResult.start =
+      graphData.value.capitalResult.start =
         sparEndCapitalData.value.capitalResult.start;
-      capitalSeriesResult.value.capitalResult.startInvestment =
+      graphData.value.capitalResult.startInvestment =
         sparEndCapitalData.value.capitalResult.startInvestment;
     } else {
       // if the endpoint is /capital
       // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
-      capitalSeriesResult.value.capitalSeries =
+      graphData.value.capitalSeries =
         sparEndCapitalData.value.capitalSeries.concat(
           entnahmeData.value.capitalSeries,
         );
 
       // Assign needed variables for the capitalResult value for graph
-      capitalSeriesResult.value.capitalResult =
+      graphData.value.capitalResult =
         entnahmeData.value.capitalResult;
-      capitalSeriesResult.value.capitalResult.start =
+      graphData.value.capitalResult.start =
         sparEndCapitalData.value.capitalResult.start;
-      capitalSeriesResult.value.capitalResult.startInvestment =
+      graphData.value.capitalResult.startInvestment =
         sparEndCapitalData.value.capitalResult.startInvestment;
     }
   }
@@ -321,8 +318,8 @@ onBeforeMount(async () => {
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
                     <graph
-                      :series="capitalSeriesResult.capitalSeries"
-                      :result="capitalSeriesResult.capitalResult"
+                      :series="graphData.capitalSeries"
+                      :result="graphData.capitalResult"
                     />
                   </v-window-item>
                   <v-window-item value="vorher">Grafik vorher</v-window-item>
