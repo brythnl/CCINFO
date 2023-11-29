@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
-import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
-import { getAPIToken } from "../utils/auth";
+import type {financeMathInput, financeMathResult} from "~/types/index.d.ts";
+import {useFinanceMathFetch} from "~/composables/useFinanceMathFetch";
+import {getAPIToken} from "../utils/auth";
 
 const grafikTabs = ref("");
 const formTab = ref("");
+const api = ref(true);
 
 const API_TOKEN = ref("");
 
@@ -17,10 +18,10 @@ const capitalSeriesResult: financeMathResult = ref({
 
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
   financeMathInput.value = formInput;
-  const { data } = await useFinanceMathFetch<financeMathResult>(
-    formInput.endpoint,
-    formInput,
-    API_TOKEN.value
+  const {data} = await useFinanceMathFetch<financeMathResult>(
+      formInput.endpoint,
+      formInput,
+      API_TOKEN.value
   );
   financeMathResult.value = data;
 
@@ -35,7 +36,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
 
   if (formInput.endpoint !== "capital") {
     const result = toRaw(financeMathResult.value.value);
-    const { endValue, ...capitalSeriesInput }: financeMathInput = formInput;
+    const {endValue, ...capitalSeriesInput}: financeMathInput = formInput;
 
     switch (formInput.endpoint) {
       case "end-date":
@@ -55,10 +56,10 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
         break;
     }
 
-    const { data } = await useFinanceMathFetch<financeMathResult>(
-      "capital",
-      capitalSeriesInput,
-      API_TOKEN.value
+    const {data} = await useFinanceMathFetch<financeMathResult>(
+        "capital",
+        capitalSeriesInput,
+        API_TOKEN.value
     );
 
     console.log(toRaw(data.value));
@@ -74,28 +75,50 @@ onBeforeMount(async () => {
 </script>
 
 <template>
+  <header class="bg-white">
+    <v-row class="custom-row">
+      <v-col cols="auto" class="flex align-center">
+        <img class="pa-5 pe-0"
+             src="https://assets-global.website-files.com/60d5bca841056859df8738f0/60dec34edc0691ce3efed5f1_Logo.svg"
+             alt="logo">
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col cols="auto" class="flex align-center me-2 me-md-10">
+        <v-switch
+            v-model="api"
+            hide-details
+            inset
+            color="primary"
+            label="API"
+            width="auto"
+        ></v-switch>
+      </v-col>
+    </v-row>
+  </header>
   <v-container fluid>
-    <v-row class="h-lg-100">
+    <v-row class="h-lg-100 justify-center">
       <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1 h-100">
         <div class="h-100">
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <div>
               <v-card-text>
                 <div>
-                  <form-tabs @tabUpdate="(n: string) => (formTab = n)" />
+                  <form-tabs @tabUpdate="(n: string) => (formTab = n)"/>
                 </div>
                 <v-window v-model="formTab">
                   <v-window-item value="saving">
                     <sparplan-form
-                      @calculateInput="fetchFinanceMathAPI"
-                      :apiResponse="financeMathResult.value"
+                        @calculateInput="fetchFinanceMathAPI"
+                        :apiResponse="financeMathResult.value"
                     />
                   </v-window-item>
                   <v-window-item value="withdraw"
-                    ><entnahme-form
-                      @calculateInput="fetchFinanceMathAPI"
-                      :apiResponse="financeMathResult.value"
-                  /></v-window-item>
+                  >
+                    <entnahme-form
+                        @calculateInput="fetchFinanceMathAPI"
+                        :apiResponse="financeMathResult.value"
+                    />
+                  </v-window-item>
                   <v-window-item value="comb">kombiForm</v-window-item>
                 </v-window>
               </v-card-text>
@@ -103,17 +126,17 @@ onBeforeMount(async () => {
           </v-card>
         </div>
       </v-col>
-      <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1 h-100">
+      <v-col :cols="12" :sm="12" :md="6" :lg="api ? 4 : 6" class="px-1 h-100">
         <div class="h-100">
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <div>
               <v-card-text>
-                <grafik-tab @grafikUpdate="(m: string) => (grafikTabs = m)" />
+                <grafik-tab @grafikUpdate="(m: string) => (grafikTabs = m)"/>
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
                     <graph
-                      :series="capitalSeriesResult.capitalSeries"
-                      :result="capitalSeriesResult.capitalResult"
+                        :series="capitalSeriesResult.capitalSeries"
+                        :result="capitalSeriesResult.capitalResult"
                     />
                   </v-window-item>
                   <v-window-item value="vorher">Grafik vorher</v-window-item>
@@ -125,13 +148,13 @@ onBeforeMount(async () => {
           </v-card>
         </div>
       </v-col>
-      <v-col :cols="12" :sm="12" :md="12" :lg="4" class="px-1 h-100">
+      <v-col v-if="api" :cols="12" :sm="12" :md="12" :lg="4" class="px-1 h-100">
         <div class="h-100">
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <v-card-text>
               <api-visualization
-                :apiRequest="financeMathInput"
-                :apiResponse="financeMathResult.value"
+                  :apiRequest="financeMathInput"
+                  :apiResponse="financeMathResult.value"
               />
             </v-card-text>
           </v-card>
@@ -147,14 +170,20 @@ onBeforeMount(async () => {
     height: 100%;
   }
 }
+
 @media (min-width: 960px) {
   .h-md-100 {
     height: 100%;
   }
 }
+
 @media (min-width: 600px) {
   .h-sm-100 {
     height: 100%;
   }
+}
+
+.custom-row{
+  height: 120px;
 }
 </style>

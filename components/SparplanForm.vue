@@ -602,7 +602,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
 <!-- Zahl- und Datumsfeld gleiche Größe -->
 <style scoped>
-.v-input {
+/*.v-input {
   line-height: unset;
-}
+}*/
 </style>

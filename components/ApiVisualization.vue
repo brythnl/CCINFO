@@ -44,15 +44,15 @@ watch(() => props.apiRequest.endpoint, () => {
     <v-tab value="capitalAmount">Endkapital</v-tab>
     <v-tab value="savingRate" >Sparrate</v-tab>
     <v-tab value="interestRate" >Zinssatz</v-tab>
-    <v-tab value="capitalSeries" >Kapitalserien</v-tab>
     <v-tab value="end" >Enddatum</v-tab>
-    <v-tab value="begin" >Begindatum</v-tab>
-    <v-tab value="oneTimeInvestment" >Einmalzahlungen</v-tab>
-    <v-tab value="oneTimeInvestmentDate" >Datum der Enmalzahlungen</v-tab>
+    <v-tab value="begin" >Startdatum</v-tab>
+    <v-tab value="oneTimeInvestment" >Einmal-<br>zahlungen</v-tab>
+    <v-tab value="oneTimeInvestmentDate" >Datum<br>Enmalzahlungen</v-tab>
     <v-tab value="dynamicSavingRateFactor" >Dynamik</v-tab>
-    <v-tab value="interestCalculation" >Zinsberechnung</v-tab>
-    <v-tab value="savingPlanBegin" >Sparplansstart</v-tab>
-    <v-tab value="savingPlanEnd" >Sparplansend</v-tab>
+    <v-tab value="interestCalculation" >Zins<br>berechnung</v-tab>
+    <v-tab value="savingPlanBegin" >Sparplan-<br>Start</v-tab>
+    <v-tab value="savingPlanEnd" >Sparplan-<br>Ende</v-tab>
+    <v-tab value="capitalSeries" >Kapitalserie</v-tab>
   </v-tabs>
 
   <v-card class="overflow-y-auto bg-grey-darken-4 h-100 rounded-lg mt-5" max-height="700" height="700" variant="outlined">
