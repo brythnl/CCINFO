@@ -8,16 +8,18 @@ const formTab = ref("");
 
 const API_TOKEN = ref("");
 
-const financeMathInput: financeMathInput = ref({});
-// Const and Functions for Savingplan and Entnahmeplan
-const financeMathResult: financeMathResult = ref({});
 const graphData: financeMathResult = ref({
   capitalSeries: [],
   capitalResult: {},
 });
 
+// For Sparplan and Entnahmeplan
+const financeMathInput: financeMathInput = ref({});
+const financeMathResult: financeMathResult = ref({});
+
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
   financeMathInput.value = formInput;
+  // API call to selected endpoint
   const { data } = await useFinanceMathFetch<financeMathResult>(
     formInput.endpoint,
     formInput,
@@ -25,11 +27,12 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   );
   financeMathResult.value = data;
 
-
+  // Fetch capital series for the graph for other selected endpoints (doesn't return capital series) outside /capital
   if (formInput.endpoint !== "capital") {
     const result = toRaw(financeMathResult.value.value);
     const { endValue, ...capitalSeriesInput }: financeMathInput = formInput;
 
+    // Input preprocessing, so that it can be passed to /capital API call as query parameters
     switch (formInput.endpoint) {
       case "end-date":
         capitalSeriesInput.end = result.end;
@@ -48,16 +51,19 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
         break;
     }
 
+    // API call to /capital
     const { data } = await useFinanceMathFetch<financeMathResult>(
       "capital",
       capitalSeriesInput,
       API_TOKEN.value,
     );
 
+    // Assign result from first endpoint call as graph data
     graphData.value.capitalResult = financeMathResult.value.value;
+    // Assign result from second call to /capital to get capital series as graph data
     graphData.value.capitalSeries = data.value.capitalSeries;
 
-  } else {
+  } else { // Assign results from /capital API fetch as graph data
     graphData.value.capitalResult = financeMathResult.value.value.capitalResult;
     graphData.value.capitalSeries = financeMathResult.value.value.capitalSeries;
   }
