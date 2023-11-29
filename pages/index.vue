@@ -74,8 +74,6 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <h1 class="font-bold text-3xl text-center py-5">Aixigo Finanzplaner</h1>
-
   <v-container fluid>
     <v-row class="h-lg-100">
       <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1 h-100">
