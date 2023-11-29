@@ -8,16 +8,18 @@ const formTab = ref("");
 
 const API_TOKEN = ref("");
 
-const financeMathInput: financeMathInput = ref({});
-// Const and Functions for Savingplan and Entnahmeplan
-const financeMathResult: financeMathResult = ref({});
-const capitalSeriesResult: financeMathResult = ref({
+const graphData: financeMathResult = ref({
   capitalSeries: [],
   capitalResult: {},
 });
 
+// For Sparplan and Entnahmeplan
+const financeMathInput: financeMathInput = ref({});
+const financeMathResult: financeMathResult = ref({});
+
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
   financeMathInput.value = formInput;
+  // API call to selected endpoint
   const { data } = await useFinanceMathFetch<financeMathResult>(
     formInput.endpoint,
     formInput,
@@ -25,18 +27,12 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   );
   financeMathResult.value = data;
 
-  if (data.value.hasOwnProperty("capitalSeries")) {
-    // Set capitalSeries
-    capitalSeriesResult.value.capitalSeries = data.value.capitalSeries;
-    delete data.value.capitalSeries; // Delete capitalSeries from the data to have only capitalResult
-    // Set capitalResult
-    capitalSeriesResult.value.capitalResult = data.value.capitalResult;
-  } else capitalSeriesResult.value.capitalResult = data.value; // if endpoint isn't "capital"
-
+  // Fetch capital series for the graph for other selected endpoints (doesn't return capital series) outside /capital
   if (formInput.endpoint !== "capital") {
     const result = toRaw(financeMathResult.value.value);
     const { endValue, ...capitalSeriesInput }: financeMathInput = formInput;
 
+    // Input preprocessing, so that it can be passed to /capital API call as query parameters
     switch (formInput.endpoint) {
       case "end-date":
         capitalSeriesInput.end = result.end;
@@ -55,14 +51,21 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
         break;
     }
 
+    // API call to /capital
     const { data } = await useFinanceMathFetch<financeMathResult>(
       "capital",
       capitalSeriesInput,
       API_TOKEN.value,
     );
 
-    // Update the series
-    capitalSeriesResult.value.capitalSeries = data.value.capitalSeries;
+    // Assign result from first endpoint call as graph data
+    graphData.value.capitalResult = financeMathResult.value.value;
+    // Assign result from second call to /capital to get capital series as graph data
+    graphData.value.capitalSeries = data.value.capitalSeries;
+
+  } else { // Assign results from /capital API fetch as graph data
+    graphData.value.capitalResult = financeMathResult.value.value.capitalResult;
+    graphData.value.capitalSeries = financeMathResult.value.value.capitalSeries;
   }
 }
 
@@ -130,7 +133,7 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
         financeMathInputEntnahme.value,
         API_TOKEN.value,
       );
-    capitalSeriesResult.value.capitalResult =
+    graphData.value.capitalResult =
       entnahmeSeriesData.value.capitalResult;
 
     // fetch capital series for sparplan
@@ -166,15 +169,15 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
       );
 
     // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
-    capitalSeriesResult.value.capitalSeries =
+    graphData.value.capitalSeries =
       sparenSeriesData.value.capitalSeries.concat(
         entnahmeSeriesData.value.capitalSeries,
       );
 
     // Assign needed variables for the capitalResult value for graph
-    capitalSeriesResult.value.capitalResult.start =
+    graphData.value.capitalResult.start =
       sparenSeriesData.value.capitalResult.start;
-    capitalSeriesResult.value.capitalResult.startInvestment =
+    graphData.value.capitalResult.startInvestment =
       sparenSeriesData.value.capitalResult.startInvestment;
 
   } else if (endpointType[0] === "entnahme") {
@@ -238,32 +241,32 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
         );
 
       // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
-      capitalSeriesResult.value.capitalSeries =
+      graphData.value.capitalSeries =
         sparEndCapitalData.value.capitalSeries.concat(
           entnahmeSeriesData.value.capitalSeries,
         );
 
       // Assign needed variables for the capitalResult value for graph
-      capitalSeriesResult.value.capitalResult =
+      graphData.value.capitalResult =
         entnahmeSeriesData.value.capitalResult;
-      capitalSeriesResult.value.capitalResult.start =
+      graphData.value.capitalResult.start =
         sparEndCapitalData.value.capitalResult.start;
-      capitalSeriesResult.value.capitalResult.startInvestment =
+      graphData.value.capitalResult.startInvestment =
         sparEndCapitalData.value.capitalResult.startInvestment;
     } else {
       // if the endpoint is /capital
       // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
-      capitalSeriesResult.value.capitalSeries =
+      graphData.value.capitalSeries =
         sparEndCapitalData.value.capitalSeries.concat(
           entnahmeData.value.capitalSeries,
         );
 
       // Assign needed variables for the capitalResult value for graph
-      capitalSeriesResult.value.capitalResult =
+      graphData.value.capitalResult =
         entnahmeData.value.capitalResult;
-      capitalSeriesResult.value.capitalResult.start =
+      graphData.value.capitalResult.start =
         sparEndCapitalData.value.capitalResult.start;
-      capitalSeriesResult.value.capitalResult.startInvestment =
+      graphData.value.capitalResult.startInvestment =
         sparEndCapitalData.value.capitalResult.startInvestment;
     }
   }
@@ -321,8 +324,8 @@ onBeforeMount(async () => {
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
                     <graph
-                      :series="capitalSeriesResult.capitalSeries"
-                      :result="capitalSeriesResult.capitalResult"
+                      :series="graphData.capitalSeries"
+                      :result="graphData.capitalResult"
                     />
                   </v-window-item>
                   <v-window-item value="vorher">Grafik vorher</v-window-item>
