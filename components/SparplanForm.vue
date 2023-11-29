@@ -160,7 +160,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     required
                     hide-details
                     type="number"
-                    step="500"
+                    step="1000"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
                 ></v-text-field>
                 <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
@@ -216,7 +216,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     hide-details
                     placeholder="weitere Einmalzahlung"
                     type="number"
-                    step="500"
+                    step="1000"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-start-value'"
                 ></v-text-field>
                 <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
@@ -319,7 +319,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     hide-details
                     placeholder="Sparrate"
                     type="number"
-                    step="10"
+                    step="50"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
                 ></v-text-field>
                 <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
@@ -395,7 +395,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     v-model="sparplanInput.dynamicSavingRateFactor"
                     hide-details
                     type="number"
-                    step="1"
+                    step="0.5"
                 ></v-text-field>
                 <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
                   <v-icon size="small">mdi-information-outline</v-icon>
@@ -449,7 +449,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     hide-details
                     placeholder="Sparzins"
                     type="number"
-                    step="1"
+                    step="0.5"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='interest-rate'"
                 ></v-text-field>
                 <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
