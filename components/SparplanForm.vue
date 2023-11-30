@@ -144,7 +144,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     :value="props.apiResponse ? props.apiResponse.startInvestment.toFixed(0) : ''"
                     hide-details
                     type="number"
-                    class="test"
+                    readonly=""
                 ></v-text-field>
                 <v-text-field
                     v-else
@@ -280,26 +280,6 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               </v-col>
             </v-row>
 
-            <!--Sparrate response slot
-            <v-row v-if="sparplanInput.endpoint=='saving-rate'" class="px-5">
-              <v-col cols="1" class="px-0"></v-col>
-              <v-col cols="11" class="flex ps-2 px-0">
-                <v-card
-                    width="100%"
-                    height="44"
-                    variant="outlined"
-                    :color="props.apiResponse?'#4195AC':''">
-                  <v-card-item class="py-0">
-                    <v-card-title>{{ props.apiResponse ? props.apiResponse.savingRate : '' }}</v-card-title>
-                  </v-card-item>
-                </v-card>
-                <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
-                  <v-icon size="small">mdi-information-outline</v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>
-            -->
-
             <!-- Sparrate Form -->
 
             <v-row class="px-5">
@@ -313,10 +293,10 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     prefix="€"
                     density="compact"
                     v-model="sparplanInput.savingRate"
-                    :value="props.apiResponse ? props.apiResponse.savingRate : ''"
+                    :value="props.apiResponse ? props.apiResponse.savingRate.toFixed(0) : ''"
+                    readonly=""
                     required
                     hide-details
-                    placeholder="Sparrate"
                     type="number"
                 ></v-text-field>
                 <v-text-field
@@ -428,7 +408,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               </v-col>
             </v-row>
 
-            <!--Sparzins response slot-->
+            <!--Sparzins response slot
             <v-row v-if="sparplanInput.endpoint=='interest-rate'" class="px-5">
               <v-col cols="1" class="px-0"></v-col>
               <v-col cols="11" class="flex ps-2 px-0">
@@ -445,12 +425,25 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   <v-icon size="small">mdi-information-outline</v-icon>
                 </v-btn>
               </v-col>
-            </v-row>
+            </v-row>-->
 
             <!-- Sparzins Form -->
-            <v-row v-else class="px-5">
+            <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
                 <v-text-field
+                    v-if="sparplanInput.endpoint=='interest-rate'"
+                    prefix="%"
+                    variant="outlined"
+                    density="compact"
+                    v-model="sparplanInput.interestRate"
+                    :value="props.apiResponse ? props.apiResponse.interestRate.toFixed(2) : ''"
+                    required
+                    hide-details
+                    placeholder="Sparzins"
+                    type="number"
+                ></v-text-field>
+                <v-text-field
+                    v-else
                     prefix="%"
                     variant="outlined"
                     density="compact"
@@ -482,7 +475,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
               </v-col>
             </v-row>
 
-            <!--Enddate response slot-->
+            <!--Enddate response slot
             <v-row v-if="sparplanInput.endpoint=='end-date'" class="px-5">
               <v-col cols="1" class="px-0"></v-col>
               <v-col cols="11" class="flex ps-2 px-0">
@@ -499,12 +492,24 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   <v-icon size="small">mdi-information-outline</v-icon>
                 </v-btn>
               </v-col>
-            </v-row>
+            </v-row>-->
 
             <!--Enddate input field-->
-            <v-row v-else class="px-5">
+            <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
                 <v-text-field
+                    v-if="sparplanInput.endpoint=='end-date'"
+                    variant="outlined"
+                    density="compact"
+                    :value="props.apiResponse ? props.apiResponse.end : ''"
+                    v-model="sparplanInput.end"
+                    readonly=""
+                    required
+                    hide-details
+                    type="date"
+                ></v-text-field>
+                <v-text-field
+                    v-else
                     variant="outlined"
                     density="compact"
                     v-model="sparplanInput.end"
@@ -535,7 +540,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
 
             <!-- Endkapital Form -->
 
-            <!--Endkapital response slot-->
+            <!--Endkapital response slot
             <v-row v-if="sparplanInput.endpoint=='capital'" class="px-5">
               <v-col cols="1" class="px-0"></v-col>
               <v-col cols="11" class="flex ps-2 px-0">
@@ -562,18 +567,29 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                   </v-tooltip>
                 </v-btn>
               </v-col>
-            </v-row>
+            </v-row>-->
 
             <!--Endkapital input field-->
-            <v-row v-else class="px-5">
+            <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1" cols="11">
                 <v-text-field
+                    v-if="sparplanInput.endpoint=='capital'"
+                    variant="outlined"
+                    prefix="€"
+                    density="compact"
+                    v-model="sparplanInput.endValue"
+                    :value="props.apiResponse ? props.apiResponse.capitalResult.toFixed(0) ? props.apiResponse.capitalResult.capitalAmount.toFixed(0) : '' : ''"
+                    readonly=""
+                    hide-details
+                    type="number"
+                ></v-text-field>
+                <v-text-field
+                    v-else
                     variant="outlined"
                     prefix="€"
                     density="compact"
                     v-model="sparplanInput.endValue"
                     hide-details
-                    placeholder="Endkapital"
                     type="number"
                     step="1000"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='capital'"
