@@ -144,7 +144,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     :value="props.apiResponse ? props.apiResponse.startInvestment.toFixed(0) : ''"
                     hide-details
                     type="number"
-                    readonly=""
+                    readonly
                 ></v-text-field>
                 <v-text-field
                     v-else
@@ -294,7 +294,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     density="compact"
                     v-model="sparplanInput.savingRate"
                     :value="props.apiResponse ? props.apiResponse.savingRate.toFixed(0) : ''"
-                    readonly=""
+                    readonly
                     required
                     hide-details
                     type="number"
@@ -438,8 +438,8 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     v-model="sparplanInput.interestRate"
                     :value="props.apiResponse ? props.apiResponse.interestRate.toFixed(2) : ''"
                     required
+                    readonly
                     hide-details
-                    placeholder="Sparzins"
                     type="number"
                 ></v-text-field>
                 <v-text-field
@@ -503,7 +503,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     density="compact"
                     :value="props.apiResponse ? props.apiResponse.end : ''"
                     v-model="sparplanInput.end"
-                    readonly=""
+                    readonly
                     required
                     hide-details
                     type="date"
@@ -579,7 +579,7 @@ watch(() => sparplanInput.savingPlanEnd, () => {
                     density="compact"
                     v-model="sparplanInput.endValue"
                     :value="props.apiResponse ? props.apiResponse.capitalResult.toFixed(0) ? props.apiResponse.capitalResult.capitalAmount.toFixed(0) : '' : ''"
-                    readonly=""
+                    readonly
                     hide-details
                     type="number"
                 ></v-text-field>
