@@ -78,7 +78,8 @@ function changeEndpoint() {
 
   einmalZahlung.value = 0;
   dynamik.value = false;
-}
+
+
 
 // get form data (user input)
 function emitData() {
