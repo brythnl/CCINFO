@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Chart as highcharts} from "highcharts-vue";
+import { Chart as highcharts } from "highcharts-vue";
 
 const props = defineProps(["series", "result"]);
 const maxYAxis = ref(props.result.capitalAmount); // The maximum value of the Y Axis
@@ -44,14 +44,14 @@ watch(
       maxYAxis.value = newValue.result.capitalAmount;
     yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
   },
-  { deep: true },
+  { deep: true }
 );
 </script>
 
 <template>
   <highcharts
-      class="mt-5 text-sm"
-      :options="{
+    class="mt-5 text-sm"
+    :options="{
       chart: {
         type: 'area', // Basic area chart
         lang: {
@@ -61,8 +61,8 @@ watch(
       title: {
         text: 'Capital accumulation',
         style: {
-          fontSize: 'inherit'
-        }
+          fontSize: 'inherit',
+        },
       },
 
       xAxis: {
@@ -82,7 +82,7 @@ watch(
         },
         labels: {
           formatter: function () {
-            return this.value + ' €'; // TODO: The Currency should be variable
+            return this.value.toLocaleString('en') + ' €'; // TODO: The Currency should be variable and the 1000 seperators also (Change 'en' <-> 'de')
           },
         },
       },
@@ -95,7 +95,7 @@ watch(
       tooltip: {
         formatter: function () {
           return `In ${new Date(
-            this.x,
+            this.x
           ).getFullYear()} there would be a capital of ${this.y.toFixed(2)}€`;
         },
       },
