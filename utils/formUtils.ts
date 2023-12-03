@@ -1,4 +1,4 @@
-import type { financeMathInput } from "~/types/index.d.ts";
+import type { financeMathInput,financeMathResult } from "~/types/index.d.ts";
 
 // Date constants for form default values (todayDate, inTenYears, inTwentyYears)
 export const todayDate = formatDate(new Date());
@@ -63,3 +63,28 @@ export const setEndDateToBiggestDate = (userInput: financeMathInput): void => {
   tmp.push(JSON.parse(JSON.stringify(userInput.end)));
   userInput.end = findBiggestDate(tmp);
 };
+
+export const revertOutput = (responseOutput:financeMathResult):financeMathResult =>{
+  let apiOutput = JSON.parse(JSON.stringify(responseOutput));
+  if(apiOutput.capitalResult){
+    apiOutput.capitalResult.capitalAmount=Math.round(apiOutput.capitalResult.capitalAmount/100);
+    apiOutput.capitalResult.savingRate=Math.ceil(apiOutput.capitalResult.savingRate/100);
+    apiOutput.capitalResult.startInvestment=Math.round(apiOutput.capitalResult.startInvestment/100);
+    apiOutput.capitalResult.interestRate=Math.round(apiOutput.capitalResult.interestRate*100);
+  }
+  if(apiOutput.capitalSeries){
+    apiOutput.capitalSeries = apiOutput.capitalSeries.map((investment)=>Math.round(investment/100));}
+  if(apiOutput.interestRate){
+    apiOutput.interestRate = Math.round(apiOutput.interestRate*100); }
+  if(apiOutput.startValue){
+    apiOutput.startValue = Math.round(apiOutput.startValue/100);  }
+  if(apiOutput.compoundInterest){
+    apiOutput.compoundInterest = Math.round(apiOutput.compoundInterest*100);  }
+  if(apiOutput.capitalAmount){
+    apiOutput.capitalAmount = Math.round(apiOutput.capitalAmount/100);  }
+  if(apiOutput.savingRate){
+    apiOutput.savingRate = Math.ceil(apiOutput.savingRate/100);  }
+  if(apiOutput.startInvestment){
+    apiOutput.startInvestment = Math.round(apiOutput.startInvestment/100);  }
+  return apiOutput;
+}

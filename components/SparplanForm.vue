@@ -97,6 +97,28 @@ watch(
       sparplanInput.savingPlanEnd = sparplanInput.savingPlanStart;
   },
 );
+watch(
+  () => props.apiResponse,
+  () => {
+    switch (sparplanInput.endpoint) {
+      case "saving-start-value":
+        sparplanInput.oneTimeInvestment[0] = props.apiResponse.startInvestment;
+        break;
+      case "saving-rate":
+        sparplanInput.savingRate = props.apiResponse.savingRate;
+        break;
+      case "interest-rate":
+        sparplanInput.InterestRate =  props.apiResponse.InterestRate;
+        break;
+      case "end-date":
+        sparplanInput.end = props.apiResponse.end;
+        break;
+      case "capital":
+        sparplanInput.endValue = props.apiResponse.capitalResult.capitalAmount;
+        break;
+    }
+  },
+);
 </script>
 
 <template>
@@ -139,7 +161,7 @@ watch(
                         props.apiResponse
                           ? props.apiResponse.startInvestment
                           : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
@@ -222,6 +244,10 @@ watch(
                   v-model="sparplanInput.oneTimeInvestmentDate[0]"
                   hide-details
                   type="date"
+                  :disabled="
+                    sparplanInput.endpoint == '' ||
+                    sparplanInput.endpoint == 'saving-start-value'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -395,7 +421,7 @@ watch(
                     <v-card-title
                       >{{
                         props.apiResponse ? props.apiResponse.savingRate : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
@@ -444,6 +470,10 @@ watch(
                   v-model="sparplanInput.savingPlanBegin"
                   hide-details
                   type="date"
+                  :disabled="
+                    sparplanInput.endpoint == '' ||
+                    sparplanInput.endpoint == 'saving-rate'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -477,6 +507,10 @@ watch(
                   hide-details
                   type="date"
                   min="sparplan"
+                  :disabled="
+                    sparplanInput.endpoint == '' ||
+                    sparplanInput.endpoint == 'saving-rate'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -503,6 +537,10 @@ watch(
                     label="Dynamik"
                     density="compact"
                     hide-details=""
+                    :disabled="
+                    sparplanInput.endpoint == '' ||
+                    sparplanInput.endpoint == 'saving-rate'
+                  "
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
@@ -687,7 +725,7 @@ watch(
                             ? props.apiResponse.capitalResult.capitalAmount
                             : ""
                           : ""
-                      }}€
+                      }} €
                     </v-card-title>
                   </v-card-item>
                 </v-card>
