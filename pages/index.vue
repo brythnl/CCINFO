@@ -213,11 +213,20 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
     revertedSavingResult.value = revertOutput(sparEndCapitalData.value);
 
     // set sparplan end capital as entnahmeplan start capital
-    financeMathInputEntnahme.value.oneTimeInvestment[0] = Math.round(
-      financeMathResultSparen.value.value.capitalResult.capitalAmount,
-    );
-
+    if(financeMathInputEntnahme.value.endpoint==="end-date"){
+      financeMathInputEntnahme.value.oneTimeInvestment[0] = -Math.round(
+        financeMathResultSparen.value.value.capitalResult.capitalAmount,
+      );
+      if(financeMathInputEntnahme.endValue<=0){
+        financeMathInputEntnahme.endValue=1;
+        }
+    }else{
+      financeMathInputEntnahme.value.oneTimeInvestment[0] = Math.round(
+        financeMathResultSparen.value.value.capitalResult.capitalAmount,
+      );
+    }
     // fetch data for entnahmeplan to selected endpoint
+    console.log(financeMathInputEntnahme.value);
     const { data: entnahmeData } = await useFinanceMathFetch<financeMathResult>(
       financeMathInputEntnahme.value.endpoint,
       financeMathInputEntnahme.value,
@@ -236,6 +245,8 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
       // assign the value from the result from previous API call in capitalSeriesInput
       switch (financeMathInputEntnahme.value.endpoint) {
         case "end-date":
+          capitalSeriesInput.savingRate=-capitalSeriesInput.savingRate;
+          capitalSeriesInput.oneTimeInvestment = capitalSeriesInput.oneTimeInvestment.map((investment)=>-investment);
           capitalSeriesInput.end = result.end;
           break;
         case "interest-rate":
@@ -259,10 +270,10 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
           capitalSeriesInput,
           API_TOKEN.value,
         );
-        revertedSavingResult.value = revertOutput(entnahmeSeriesData.value);
+        entnahmeSeriesData.value = revertOutput(entnahmeSeriesData.value);
       // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
       graphData.value.capitalSeries =
-        sparEndCapitalData.value.capitalSeries.concat(
+        revertedSavingResult.value.capitalSeries.concat(
           entnahmeSeriesData.value.capitalSeries,
         );
 
@@ -270,20 +281,20 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
       graphData.value.capitalResult =
         entnahmeSeriesData.value.capitalResult;
       graphData.value.capitalResult.startInvestment =
-        sparEndCapitalData.value.capitalResult.startInvestment;
+      revertedSavingResult.value.capitalResult.startInvestment;
     } else {
       // if the endpoint is /capital
       // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
       graphData.value.capitalSeries =
-        sparEndCapitalData.value.capitalSeries.concat(
-          entnahmeData.value.capitalSeries,
+      revertedSavingResult.value.capitalSeries.concat(
+        revertedWithdrawResult.value.capitalSeries,
         );
 
       // Assign needed variables for the capitalResult value for graph
       graphData.value.capitalResult =
-        entnahmeData.value.capitalResult;
+      revertedWithdrawResult.value.capitalResult;
       graphData.value.capitalResult.startInvestment =
-        sparEndCapitalData.value.capitalResult.startInvestment;
+      revertedSavingResult.value.capitalResult.startInvestment;
     }
   }
 }

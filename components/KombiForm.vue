@@ -141,7 +141,7 @@ watch(
   },
 );
 watch(
-  () => props.apiResponseSparen,
+  () => [props.apiResponseEntnahme,props.apiResponseSparen],
   () => {
     switch (sparInput.endpoint) {
       case "sparen/saving-start-value":
@@ -166,7 +166,7 @@ watch(
         entnahmeInput.end = props.apiResponseEntnahme.end;
         break;
       case "entnahme/capital":
-        entnahmeInput.endValue = props.apiResponseEntnahme.capitalResult.capitalAmount;
+        entnahmeInput.endValue = props.apiResponseEntnahme.capitalResult.capitalAmount
         break;
     }
   },
@@ -1129,7 +1129,7 @@ watch(
                   type="number"
                   step="0.01"
                   :disabled="
-                    sparInput.endpoint == '' || sparInput.endpoint == 'capital'
+                    sparInput.endpoint == '' || sparInput.endpoint == 'entnahme/capital'
                   "
                 ></v-text-field>
                 <v-btn
