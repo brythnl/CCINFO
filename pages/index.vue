@@ -17,7 +17,7 @@ const graphData: financeMathResult = ref({
 const revertedWithdrawResult: financeMathResult = ref({});
 const revertedSavingResult: financeMathResult = ref({});
 
-// For Sparplan and Entnahmeplan
+// For Sparplan and Entnahmeplan and for API-Vis
 const financeMathInput: financeMathInput = ref({});
 const financeMathResult: financeMathResult = ref({});
 
@@ -30,9 +30,9 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
     API_TOKEN.value,
   );
   financeMathResult.value = data;
-  if(formTab.value=='saving'){
+  if(formTab.value==='saving'){
     revertedSavingResult.value=revertOutput(financeMathResult.value.value);
-  }else if(formTab.value=='withdraw'){
+  }else if(formTab.value==='withdraw'){
     revertedWithdrawResult.value=revertOutput(financeMathResult.value.value);
     revertedWithdrawResult.value.savingRate= -revertedWithdrawResult.value.savingRate;
   }
@@ -44,6 +44,10 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
     // Input preprocessing, so that it can be passed to /capital API call as query parameters
     switch (formInput.endpoint) {
       case "end-date":
+        if(formTab.value==="withdraw"){
+          capitalSeriesInput.savingRate=-capitalSeriesInput.savingRate;
+          capitalSeriesInput.oneTimeInvestment = capitalSeriesInput.oneTimeInvestment.map((investment)=>-investment);
+        }
         capitalSeriesInput.end = result.end;
         break;
       case "interest-rate":
@@ -69,6 +73,9 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
     
     // Assign result from first endpoint call as graph data
     graphData.value.capitalResult = revertOutput(financeMathResult.value.value);
+    if(formTab.value==="withdraw" && formInput.endpoint==="end-date"){
+      graphData.value.capitalResult.startInvestment=-graphData.value.capitalResult.startInvestment;
+    }
     // Assign result from second call to /capital to get capital series as graph data
     graphData.value.capitalSeries = revertOutput(data.value).capitalSeries;
 

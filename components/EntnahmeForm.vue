@@ -74,7 +74,7 @@ function emitData() {
     toSend.oneTimeInvestment = toSend.oneTimeInvestment.map(
       (investment) => -investment,
     );
-    toSend.endValue === 0 ? (toSend.endValue = 1) : "";
+    toSend.endValue === 0 ? (toSend.endValue = 0.01) : "";
   } else {
     toSend.savingRate = -toSend.savingRate;
   }
