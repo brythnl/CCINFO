@@ -91,6 +91,7 @@ watch(
         {
           showInLegend: false,
           data: yearsToSeries,
+          color: '#4195ac',
         },
       ],
       tooltip: {
