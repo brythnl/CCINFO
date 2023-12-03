@@ -76,6 +76,7 @@ watch(
         //categories: ['Apples', 'Bananas', 'Oranges'],
       },
       yAxis: {
+        // visible: false,        // Don't show the Y Axis
         max: maxYAxis,
         title: {
           text: 'Capital',
@@ -96,7 +97,7 @@ watch(
         formatter: function () {
           return `In ${new Date(
             this.x
-          ).getFullYear()} there would be a capital of ${this.y.toFixed(2)}€`;
+          ).getFullYear()} there would be a capital of ${Math.round(this.y)}€`;
         },
       },
     }"
