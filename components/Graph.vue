@@ -98,7 +98,9 @@ watch(
         formatter: function () {
           return `In ${new Date(
             this.x
-          ).getFullYear()} there would be a capital of ${Math.round(this.y)}€`;
+          ).getFullYear()} there would be a capital of ${Math.round(
+            this.y
+          ).toLocaleString('en')}€`;
         },
       },
     }"
