@@ -162,7 +162,7 @@ watch(
                     density="compact"
                     prefix="€"
                     v-model="sparplanInput.oneTimeInvestment[0]"
-                    :value="props.apiResponse ? props.apiResponse.startInvestment.toFixed(0) : ''"
+                    :value="props.apiResponse ? props.apiResponse.startInvestment : ''"
                     hide-details
                     type="number"
                     readonly
@@ -382,7 +382,7 @@ watch(
                     prefix="€"
                     density="compact"
                     v-model="sparplanInput.savingRate"
-                    :value="props.apiResponse ? props.apiResponse.savingRate.toFixed(0) : ''"
+                    :value="props.apiResponse ? props.apiResponse.savingRate : ''"
                     readonly
                     required
                     hide-details
@@ -575,7 +575,7 @@ watch(
                     variant="outlined"
                     density="compact"
                     v-model="sparplanInput.interestRate"
-                    :value="props.apiResponse ? props.apiResponse.interestRate.toFixed(2) : ''"
+                    :value="props.apiResponse ? props.apiResponse.interestRate : ''"
                     required
                     readonly
                     hide-details
@@ -740,12 +740,12 @@ watch(
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1" cols="11">
                 <v-text-field
-                    v-if="sparplanInput.endpoint=='capital'"
+                    v-if="sparplanInput.endpoint==='capital'"
                     variant="outlined"
                     prefix="€"
                     density="compact"
                     v-model="sparplanInput.endValue"
-                    :value="props.apiResponse ? props.apiResponse.capitalResult.toFixed(0) ? props.apiResponse.capitalResult.capitalAmount.toFixed(0) : '' : ''"
+                    :value="props.apiResponse ? props.apiResponse.capitalResult ? props.apiResponse.capitalResult.capitalAmount : '' : ''"
                     readonly
                     hide-details
                     type="number"
