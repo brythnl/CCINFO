@@ -74,7 +74,7 @@ function emitData() {
     toSend.oneTimeInvestment = toSend.oneTimeInvestment.map(
       (investment) => -investment,
     );
-    toSend.endValue === 0 ? (toSend.endValue = 1) : "";
+    toSend.endValue === 0 ? (toSend.endValue = 0.01) : "";
   } else {
     toSend.savingRate = -toSend.savingRate;
   }
@@ -99,6 +99,28 @@ watch(
       new Date(entnahmeplaninput.savingPlanStart)
     )
       entnahmeplaninput.savingPlanEnd = entnahmeplaninput.savingPlanStart;
+  },
+);
+watch(
+  () => props.apiResponse,
+  () => {
+    switch (entnahmeplaninput.endpoint) {
+      case "saving-start-value":
+        entnahmeplaninput.oneTimeInvestment[0] = props.apiResponse.startInvestment;
+        break;
+      case "saving-rate":
+        entnahmeplaninput.savingRate = props.apiResponse.savingRate;
+        break;
+      case "interest-rate":
+        entnahmeplaninput.InterestRate =  props.apiResponse.InterestRate;
+        break;
+      case "end-date":
+        entnahmeplaninput.end = props.apiResponse.end;
+        break;
+      case "capital":
+        entnahmeplaninput.endValue = props.apiResponse.capitalResult.capitalAmount;
+        break;
+    }
   },
 );
 </script>
@@ -143,7 +165,7 @@ watch(
                         props.apiResponse
                           ? props.apiResponse.startInvestment
                           : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
@@ -226,6 +248,10 @@ watch(
                   v-model="entnahmeplaninput.oneTimeInvestmentDate[0]"
                   hide-details
                   type="date"
+                  :disabled="
+                    entnahmeplaninput.endpoint == '' ||
+                    entnahmeplaninput.endpoint == 'saving-start-value'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -333,7 +359,7 @@ watch(
                     () => {
                       einmalZahlung > 0 ? einmalZahlung-- : (einmalZahlung = 0);
                       entnahmeplaninput.oneTimeInvestment.pop();
-                      sparplanInput.oneTimeInvestmentDate.pop();
+                      entnahmeplaninput.oneTimeInvestmentDate.pop();
                     }
                   "
                   :disabled="
@@ -400,7 +426,7 @@ watch(
                     <v-card-title
                       >{{
                         props.apiResponse ? props.apiResponse.savingRate : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
@@ -448,6 +474,10 @@ watch(
                   v-model="entnahmeplaninput.savingPlanBegin"
                   hide-details
                   type="date"
+                  :disabled="
+                    entnahmeplaninput.endpoint == '' ||
+                    entnahmeplaninput.endpoint == 'saving-rate'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -481,6 +511,10 @@ watch(
                   hide-details
                   type="date"
                   min="sparplan"
+                  :disabled="
+                    entnahmeplaninput.endpoint == '' ||
+                    entnahmeplaninput.endpoint == 'saving-rate'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -506,6 +540,10 @@ watch(
                     label="Dynamik"
                     density="compact"
                     hide-details=""
+                    :disabled="
+                    entnahmeplaninput.endpoint == '' ||
+                    entnahmeplaninput.endpoint == 'saving-rate'
+                  "
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
@@ -695,7 +733,7 @@ watch(
                             ? props.apiResponse.capitalResult.capitalAmount
                             : ""
                           : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
