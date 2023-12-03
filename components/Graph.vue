@@ -37,14 +37,14 @@ onMounted(() => {
 });
 
 watch(
-    () => props,
-    (newValue, oldValue) => {
-      // Control the range of the y axis
-      if (newValue.result.capitalAmount > maxYAxis.value)
-        maxYAxis.value = newValue.result.capitalAmount;
-      yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
-    },
-    {deep: true}
+  () => props,
+  (newValue, oldValue) => {
+    // Control the range of the y axis
+    if (newValue.result.capitalAmount > maxYAxis.value)
+      maxYAxis.value = newValue.result.capitalAmount;
+    yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
+  },
+  { deep: true },
 );
 </script>
 
@@ -95,7 +95,7 @@ watch(
       tooltip: {
         formatter: function () {
           return `In ${new Date(
-            this.x
+            this.x,
           ).getFullYear()} there would be a capital of ${this.y.toFixed(2)}€`;
         },
       },

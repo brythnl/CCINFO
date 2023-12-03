@@ -1,32 +1,36 @@
 <script lang="ts" setup>
-import {watch} from 'vue';
-
+import { watch } from "vue";
 
 const props = defineProps<{
-  apiRequest: financeMathInput,
-  apiResponse: financeMathResult
-}>()
+  apiRequest: financeMathInput;
+  apiRequest2: financeMathInput;
+  apiResponse: financeMathResult;
+  apiResponse2: financeMathResult;
+}>();
 
 const find = ref("a");
-watch(() => props.apiRequest.endpoint, () => {
-  switch (props.apiRequest.endpoint) {
-    case "saving-start-value":
-      find.value="startInvestment";
-      break;
-    case "saving-rate":
-      find.value = "savingRate";
-      break;
-    case "interest-rate":
-      find.value = "interestRate";
-      break;
-    case "end-date":
-      find.value = "end";
-      break;
-    case "capital":
-      find.value = "capitalAmount";
-      break;
-  }
-})
+watch(
+  () => props.apiRequest.endpoint,
+  () => {
+    switch (props.apiRequest.endpoint) {
+      case "saving-start-value":
+        find.value = "startInvestment";
+        break;
+      case "saving-rate":
+        find.value = "savingRate";
+        break;
+      case "interest-rate":
+        find.value = "interestRate";
+        break;
+      case "end-date":
+        find.value = "end";
+        break;
+      case "capital":
+        find.value = "capitalAmount";
+        break;
+    }
+  },
+);
 </script>
 
 <template>
@@ -59,32 +63,112 @@ watch(() => props.apiRequest.endpoint, () => {
     <v-card-item>
       <v-card-text>
         <code>Request {</code>
-        <div v-for="(item,index) in props.apiRequest">
-          <code v-if="item!=0||item!=''" class="ps-5" :class="index==find?'bg-red-accent-2':''"> "{{ index }}":
-            {{ item }} <br></code>
+        <div v-for="(item, index) in props.apiRequest">
+          <code
+            v-if="item != 0 || item != ''"
+            class="ps-5"
+            :class="index == find ? 'bg-red-accent-2' : ''"
+          >
+            "{{ index }}": {{ item }} <br
+          /></code>
         </div>
-        <code>} <br><br></code>
+        <code>} <br /><br /></code>
 
         <code>Response {</code>
-        <div v-for="(item,index) in props.apiResponse">
-          <div v-if="index=='capitalResult'">
-            <code class="ps-5" :class="index==find?'bg-red-accent-2':''"> "{{ index }}": { <br></code>
-            <code v-for="(subitem,subindex) in item" class="ps-10" :class="subindex==find?'bg-red-accent-2':''">
-              "{{ subindex }}": {{ subitem }},<br>
+        <div v-for="(item, index) in props.apiResponse">
+          <div v-if="index == 'capitalResult'">
+            <code class="ps-5" :class="index == find ? 'bg-red-accent-2' : ''">
+              "{{ index }}": { <br
+            /></code>
+            <code
+              v-for="(subitem, subindex) in item"
+              class="ps-10"
+              :class="subindex == find ? 'bg-red-accent-2' : ''"
+            >
+              "{{ subindex }}": {{ subitem }},<br />
             </code>
-            <code class="ps-5">} <br></code>
+            <code class="ps-5">} <br /></code>
           </div>
-          <div v-else-if="index=='capitalSeries'">
-            <code class="ps-5" :class="index==find?'bg-red-accent-2':''"> "{{ index }}": [ <br></code>
-            <code v-for="(subitem,subindex) in item" class="ps-10" :class="subindex==find?'bg-red-accent-2':''">
-              {{ subitem }},<br>
+          <div v-else-if="index == 'capitalSeries'">
+            <code class="ps-5" :class="index == find ? 'bg-red-accent-2' : ''">
+              "{{ index }}": [ <br
+            /></code>
+            <code
+              v-for="(subitem, subindex) in item"
+              class="ps-10"
+              :class="subindex == find ? 'bg-red-accent-2' : ''"
+            >
+              {{ subitem }},<br />
             </code>
-            <code class="ps-5">] <br></code>
+            <code class="ps-5">] <br /></code>
           </div>
 
-          <code v-else class="ps-5" :class="index==find?'bg-red-accent-2':''">"{{ index }}": {{ item }},</code>
+          <code
+            v-else
+            class="ps-5"
+            :class="index == find ? 'bg-red-accent-2' : ''"
+            >"{{ index }}": {{ item }},</code
+          >
         </div>
-        <code>}</code>
+        <code>}<br /><br /></code>
+
+        <div v-if="props.apiRequest2 && props.apiResponse2">
+          <code>Request {</code>
+          <div v-for="(item, index) in props.apiRequest2">
+            <code
+              v-if="item != 0 || item != ''"
+              class="ps-5"
+              :class="index == find ? 'bg-red-accent-2' : ''"
+            >
+              "{{ index }}": {{ item }} <br
+            /></code>
+          </div>
+          <code>} <br /><br /></code>
+
+          <code>Response {</code>
+          <div v-for="(item, index) in props.apiResponse2">
+            <div v-if="index == 'capitalResult'">
+              <code
+                class="ps-5"
+                :class="index == find ? 'bg-red-accent-2' : ''"
+              >
+                "{{ index }}": { <br
+              /></code>
+              <code
+                v-for="(subitem, subindex) in item"
+                class="ps-10"
+                :class="subindex == find ? 'bg-red-accent-2' : ''"
+              >
+                "{{ subindex }}": {{ subitem }},<br />
+              </code>
+              <code class="ps-5">} <br /></code>
+            </div>
+            <div v-else-if="index == 'capitalSeries'">
+              <code
+                class="ps-5"
+                :class="index == find ? 'bg-red-accent-2' : ''"
+              >
+                "{{ index }}": [ <br
+              /></code>
+              <code
+                v-for="(subitem, subindex) in item"
+                class="ps-10"
+                :class="subindex == find ? 'bg-red-accent-2' : ''"
+              >
+                {{ subitem }},<br />
+              </code>
+              <code class="ps-5">] <br /></code>
+            </div>
+
+            <code
+              v-else
+              class="ps-5"
+              :class="index == find ? 'bg-red-accent-2' : ''"
+              >"{{ index }}": {{ item }},</code
+            >
+          </div>
+          <code>}</code>
+        </div>
       </v-card-text>
     </v-card-item>
   </v-card>

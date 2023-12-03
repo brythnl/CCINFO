@@ -1,25 +1,24 @@
 <script lang="ts" setup>
-const planSelect = ref("aktuell")
-const emit = defineEmits(['grafikUpdate'])
-function grafikUpdate(){
-  emit('grafikUpdate',planSelect.value);
+const planSelect = ref("aktuell");
+const emit = defineEmits(["grafikUpdate"]);
+function grafikUpdate() {
+  emit("grafikUpdate", planSelect.value);
 }
 </script>
 
 <template>
-
   <v-tabs
-      v-model="planSelect"
-      @update:model-value="grafikUpdate"
-      density="compact"
-      grow
-      stacked
-      hide-slider
-      class="rounded-lg blue-border text-primary"
-      selected-class="bg-primary"
+    v-model="planSelect"
+    @update:model-value="grafikUpdate"
+    density="compact"
+    grow
+    stacked
+    hide-slider
+    class="rounded-lg blue-border text-primary"
+    selected-class="bg-primary"
   >
-    <v-tab value="aktuell">Grafik<br>aktuell</v-tab>
-    <v-tab value="vorher">Grafik<br>vorher</v-tab>
+    <v-tab value="aktuell">Grafik<br />aktuell</v-tab>
+    <v-tab value="vorher">Grafik<br />vorher</v-tab>
     <v-tab value="vergleich">Vergleich</v-tab>
     <v-tab value="tabelle">Tabelle</v-tab>
   </v-tabs>
