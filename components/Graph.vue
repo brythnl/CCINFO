@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Chart as highcharts } from "highcharts-vue";
+import {Chart as highcharts} from "highcharts-vue";
 
 const props = defineProps(["series", "result"]);
 const maxYAxis = ref(props.result.capitalAmount); // The maximum value of the Y Axis
@@ -50,7 +50,8 @@ watch(
 
 <template>
   <highcharts
-    :options="{
+      class="mt-5 text-sm"
+      :options="{
       chart: {
         type: 'area', // Basic area chart
         lang: {
@@ -59,6 +60,9 @@ watch(
       },
       title: {
         text: 'Capital accumulation',
+        style: {
+          fontSize: 'inherit'
+        }
       },
 
       xAxis: {

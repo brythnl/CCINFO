@@ -14,7 +14,7 @@ function grafikUpdate() {
     grow
     stacked
     hide-slider
-    class="rounded-lg black-border text-primary"
+    class="rounded-lg blue-border text-primary"
     selected-class="bg-primary"
   >
     <v-tab value="aktuell">Grafik<br />aktuell</v-tab>
@@ -29,7 +29,7 @@ function grafikUpdate() {
   text-transform: none !important;
 }
 
-.black-border {
-  border: 1px solid #4195ac;
+.blue-border {
+  border: 1px solid #4195AC;
 }
 </style>
