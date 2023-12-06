@@ -14,19 +14,25 @@ const props = defineProps<{
 
 const frage = "capitalAmount";
 
-const requestComparisonArray: any[] = computed(() => createCombinedArray(
-  JSON.parse(JSON.stringify(props.oldRequest)),
-  JSON.parse(JSON.stringify(props.newRequest)),
-));
+const requestComparisonArray: any[] = computed(() => {
+  if (props.oldRequest && props.newRequest) {
+    return createCombinedArray(
+      JSON.parse(JSON.stringify(props.oldRequest)),
+      JSON.parse(JSON.stringify(props.newRequest)),
+    );
+  } else return [];
+});
 
 const responseFilteredComparisonArray: any[] = computed(() => {
-  return filterCombinedArrayResp(
-    createCombinedArray(
-      JSON.parse(JSON.stringify(props.oldResponse)),
-      JSON.parse(JSON.stringify(props.newResponse))
-    ),
-    frage
-  )
+  if (props.oldResponse && props.newResponse) {
+    return filterCombinedArrayResp(
+      createCombinedArray(
+        JSON.parse(JSON.stringify(props.oldResponse)),
+        JSON.parse(JSON.stringify(props.newResponse))
+      ),
+      frage
+    )
+  } else return [];
 });
 
 </script>
