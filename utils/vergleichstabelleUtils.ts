@@ -4,6 +4,23 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 const dayjs = useDayjs()
 dayjs.extend(customParseFormat)
 
+const names = {
+  "begin": "Startdatum",
+  "end": "Enddatum",
+  "interestCalculation": "interestCalculation",
+  "interestRate": "Zinssatz",
+  "dynamicSavingRateFactor": "Dynamischer Sparplanfaktor",
+  "savingPlanBegin": "Startdatum Sparplan",
+  "savingPlanEnd": "Enddatum Sparplan",
+  "oneTimeInvestment": "Einmalzahlung",
+  "oneTimeInvestmentDate": "Datum Einmalzahlung",
+  "savingRate": "Sparrate",
+  "endValue": "Endkapital",
+  "reductionFactor": "reductionFactor",
+  "capitalAmount": "Endkapital",
+  "startInvestment": "Startkapital"
+}
+
 const calculateDifference = (oldValue, newValue) => {
   if (typeof oldValue === "number" && typeof newValue === "number") {
     const difference = newValue - oldValue;
@@ -43,7 +60,7 @@ const formatDifference = (difference, unit) => {
   return { difference: difference, unit: unit };
 };
 
-export const createCombinedArray = (names, oldObj, newObj) => {
+export const createCombinedArray = (oldObj, newObj) => {
   const combinedArray = [];
 
   for (const key in oldObj) {
@@ -51,7 +68,8 @@ export const createCombinedArray = (names, oldObj, newObj) => {
     const newValue = newObj[key];
     const { difference, unit } = calculateDifference(oldValue, newValue);
 
-    if (difference !== 0 && difference !== ""){
+    // CHANGE TO difference !== 0 && difference !== "" after vorher/nachher data saving implememented
+    if (difference !== ""){
       combinedArray.push({
         name: names[key],
         oldValue: formatValue(oldValue),
@@ -66,7 +84,7 @@ export const createCombinedArray = (names, oldObj, newObj) => {
 }
 
 // Funktion zum Filtern des combinedArray_resp nach dem Namen "capitalAmount"
-export const filterCombinedArrayResp = (names, dataArray, targetName) => {
+export const filterCombinedArrayResp = (dataArray: any[], targetName) => {
   const translation = names[targetName];
   return dataArray.filter(item => item && item.name === translation);
 };
