@@ -1,4 +1,4 @@
-import { useDayjs } from '#dayjs' // not need if you are using auto import
+import { useDayjs } from '#dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 const dayjs = useDayjs()
@@ -83,10 +83,27 @@ export const createCombinedArray = (oldObj, newObj) => {
   return combinedArray;
 }
 
-// Funktion zum Filtern des combinedArray_resp nach dem Namen "capitalAmount"
-export const filterCombinedArrayResp = (dataArray: any[], targetName) => {
-  const translation = names[targetName];
-  return dataArray.filter(item => item && item.name === translation);
+export const filterCombinedArrayResp = (comparisonArray: any[], requestEndpoint: string) => {
+  let selectedEndpoint: string;
+  switch (requestEndpoint) {
+    case "capital":
+      selectedEndpoint = names["capitalAmount"];
+      break;
+    case "end-date":
+      selectedEndpoint = names["end"];
+      break;
+    case "interest-rate":
+      selectedEndpoint = names["interestRate"];
+      break;
+    case "saving-rate":
+      selectedEndpoint = names["savingRate"];
+      break;
+    case "saving-start-value":
+      selectedEndpoint = names["startInvestment"];
+      break;
+  }
+
+  return comparisonArray.filter(item => item && item.name === selectedEndpoint);
 };
 
 const formatNumberWithThousandSeparator = (number) => {
