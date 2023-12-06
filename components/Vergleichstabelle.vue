@@ -12,8 +12,6 @@ const props = defineProps<{
   newResponse?: financeMathResult;
 }>()
 
-const frage = "capitalAmount";
-
 const requestComparisonArray: any[] = computed(() => {
   if (props.oldRequest && props.newRequest) {
     return createCombinedArray(
@@ -30,7 +28,7 @@ const responseFilteredComparisonArray: any[] = computed(() => {
         JSON.parse(JSON.stringify(props.oldResponse)),
         JSON.parse(JSON.stringify(props.newResponse))
       ),
-      frage
+      JSON.parse(JSON.stringify(props.oldRequest)).endpoint,
     )
   } else return [];
 });
