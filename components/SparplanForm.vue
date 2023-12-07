@@ -534,7 +534,7 @@ watch(
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
-                  label="Sparzins"
+                  label="Verzinsung"
                   value="interest-rate"
                   density="compact"
                 ></v-radio>
