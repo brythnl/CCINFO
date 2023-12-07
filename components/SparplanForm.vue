@@ -2,6 +2,7 @@
 import { watch } from "vue";
 import {
   todayDate,
+  nextMonthFirstDay,
   inTenYears,
   validateInput,
   setEndDateToBiggestDate,
@@ -27,16 +28,16 @@ const props = defineProps<{
 
 // form data (user input)
 const sparplanInput = reactive({
-  begin: todayDate,
+  begin: nextMonthFirstDay,
   end: inTenYears,
   interestCalculation: "YEARLY",
   interestRate: 0,
   reductionFactor: 0,
   dynamicSavingRateFactor: 0,
-  savingPlanBegin: todayDate,
+  savingPlanBegin: nextMonthFirstDay,
   savingPlanEnd: inTenYears,
   oneTimeInvestment: [0],
-  oneTimeInvestmentDate: [todayDate],
+  oneTimeInvestmentDate: [nextMonthFirstDay],
   savingRate: 0,
   endValue: 0,
   endpoint: "",
@@ -120,6 +121,8 @@ watch(
     }
   },
 );
+
+console.log(sparplanInput)
 </script>
 
 <template>

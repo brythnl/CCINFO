@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { financeMathResult } from "~/types/index.d.ts";
 import {
-  todayDate,
+  nextMonthFirstDay,
   inTenYears,
   inTwentyYears,
   validateInput,
@@ -27,16 +27,16 @@ const props = defineProps<{
 }>();
 
 const sparInput = reactive({
-  begin: todayDate,
+  begin: nextMonthFirstDay,
   end: inTenYears,
   interestCalculation: "YEARLY",
   interestRate: 0,
   reductionFactor: 0,
   dynamicSavingRateFactor: 0,
-  savingPlanBegin: todayDate,
+  savingPlanBegin: nextMonthFirstDay,
   savingPlanEnd: inTenYears,
   oneTimeInvestment: [0],
-  oneTimeInvestmentDate: [todayDate],
+  oneTimeInvestmentDate: [nextMonthFirstDay],
   savingRate: 0,
   endValue: 0,
   endpoint: "",
