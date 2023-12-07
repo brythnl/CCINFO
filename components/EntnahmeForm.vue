@@ -30,8 +30,8 @@ const entnahmeplaninput = reactive({
   interestRate: 0,
   reductionFactor: 0,
   dynamicSavingRateFactor: 0,
-  savingPlanBegin: nextMonthFirstDay,
-  savingPlanEnd: inTenYears,
+  savingPlanBegin: "",
+  savingPlanEnd: "",
   oneTimeInvestment: [0],
   oneTimeInvestmentDate: [nextMonthFirstDay],
   savingRate: 0,
@@ -92,17 +92,6 @@ watch(
 );
 
 watch(
-  () => entnahmeplaninput.savingPlanEnd,
-  () => {
-    setEndDateToBiggestDate(entnahmeplaninput);
-    if (
-      new Date(entnahmeplaninput.savingPlanEnd) <
-      new Date(entnahmeplaninput.savingPlanStart)
-    )
-      entnahmeplaninput.savingPlanEnd = entnahmeplaninput.savingPlanStart;
-  },
-);
-watch(
   () => props.apiResponse,
   () => {
     switch (entnahmeplaninput.endpoint) {
@@ -124,6 +113,18 @@ watch(
     }
   },
 );
+
+watch(entnahmeplaninput.end,
+()=>{
+  if(new Date(entnahmeplaninput.end)<new Date(entnahmeplaninput.savingPlanEnd)){
+    entnahmeplaninput.savingPlanEnd=entnahmeplaninput.end;
+  }else{
+    if(entnahmeplaninput.savingPlanEnd===inTenYears){
+
+    }
+  }
+}
+)
 </script>
 
 <template>
