@@ -58,8 +58,11 @@ watch(
     <v-tab value="savingPlanEnd" >Sparplan-<br>Ende</v-tab>
     <v-tab value="capitalSeries" >Kapitalserie</v-tab>
   </v-tabs>
-
-  <v-card class="overflow-y-auto bg-grey-darken-4 h-100 rounded-lg mt-5" max-height="700" height="700" variant="outlined">
+<!--bg-primary grey-lighten-4 bg-white mb-5 ml-3 mr-3 -->
+<!--Variante 1 <v-card class="overflow-y-auto bg-white mb-5 ml-3 mr-3 h-100 rounded-lg mt-5" max-height="700" height="700" variant="elevated" elevation="3">-->
+<!--<v-card class="overflow-y-auto bg-grey-lighten-4 h-100 rounded-lg mt-5" max-height="700" height="700" variant="elevated" elevation="1">-->
+<!--<v-card class="overflow-y-auto bg-primary h-100 rounded-lg mt-5" max-height="700" height="700" variant="outlined">-->
+  <v-card class="overflow-y-auto bg-primary h-100 rounded-lg mt-5" max-height="700" height="700" variant="outlined">
     <v-card-item>
       <v-card-text>
         <code>Request {</code>
@@ -181,5 +184,8 @@ watch(
 
 .blue-border {
   border: 1px solid #4195AC;
+}
+.aixigo{
+  background-color: #29788B;
 }
 </style>
