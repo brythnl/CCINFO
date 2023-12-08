@@ -135,7 +135,8 @@ console.log(sparplanInput)
           @update:model-value="changeEndpoint"
         >
           <v-container class="px-0 py-0">
-            <!-- Startkapital Radio Button -->
+
+            <!-- starting value radio button -->
             <v-row class="mt-0 ps-5">
               <v-col cols="12" class="flex px-0 py-0">
                 <v-radio
@@ -146,9 +147,10 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!-- Startkapital Form -->
+            <!-- starting value form -->
             
             <v-row class="px-5">
+
               <v-col cols="1" class="px-0">
                 <v-icon v-if="sparplanInput.endpoint!='saving-start-value'" size="large" @click="toggleStartkapital">{{ iconStartkapital }}</v-icon>
               </v-col>
@@ -157,7 +159,7 @@ console.log(sparplanInput)
                 :sm="startkapitalDetails ? (einmalZahlung == 0 ? 6 : 5) : 11"
                 class="flex ps-2 px-0"
               >
-                <!--Startkapital response slot-->
+                <!-- starting value response slot-->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='saving-start-value'"
                     label="1. Einmalzahlung"
@@ -170,6 +172,8 @@ console.log(sparplanInput)
                     type="number"
                     readonly
                 ></v-text-field>
+
+                <!-- starting value input field -->
                 <v-text-field
                     v-else
                     label="1. Einmalzahlung"
@@ -183,6 +187,8 @@ console.log(sparplanInput)
                     step="1000"
                     :disabled="sparplanInput.endpoint==''"
                 ></v-text-field>
+
+                <!-- starting value info button -->
                 <v-btn
                   icon
                   elevation="0"
@@ -201,6 +207,8 @@ console.log(sparplanInput)
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
+              <!-- starting value date field -->
               <v-col
                 v-if="startkapitalDetails"
                 offset="1"
@@ -221,6 +229,7 @@ console.log(sparplanInput)
                     sparplanInput.endpoint == 'saving-start-value'
                   "
                 ></v-text-field>
+                <!-- starting value date info button -->
                 <v-btn
                   icon
                   elevation="0"
@@ -242,13 +251,16 @@ console.log(sparplanInput)
               <v-col cols="1" class="px-0 py-0"> </v-col>
             </v-row>
 
-            <!-- Startkapital Detail-Ansicht -->
+            <!-- starting value details form -->
+
             <v-row
               v-if="startkapitalDetails"
               v-for="n in einmalZahlung"
               class="px-5"
             >
               <v-col offset="1" cols="10" sm="5" class="flex ps-2 px-0">
+
+                <!-- one time investment input field -->
                 <v-text-field
                   prefix="€"
                   :label="`${n + 1}. Einmalzahlung`"
@@ -262,6 +274,8 @@ console.log(sparplanInput)
                   :disabled="sparplanInput.endpoint == '' ||
                   sparplanInput.endpoint == 'saving-start-value'"
                 ></v-text-field>
+
+                <!-- one time ivestment info button -->
                 <v-btn
                   icon
                   elevation="0"
@@ -280,6 +294,7 @@ console.log(sparplanInput)
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
               <v-col
                 offset="1"
                 offset-sm="0"
@@ -287,6 +302,7 @@ console.log(sparplanInput)
                 sm="5"
                 class="flex ps-2 px-0"
               >
+                <!-- one time investment date field -->
                 <v-text-field
                   :label="`${n + 1}. Datum`"
                   variant="outlined"
@@ -299,6 +315,8 @@ console.log(sparplanInput)
                     sparplanInput.endpoint == 'saving-start-value'
                   "
                 ></v-text-field>
+
+                <!-- one time investment date info button -->
                 <v-btn
                   icon
                   elevation="0"
@@ -317,6 +335,8 @@ console.log(sparplanInput)
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
+              <!-- button to delete one time investment -->
               <v-col
                 cols="1"
                 class="ps-2 px-0 d-flex align-center justify-start"
@@ -340,7 +360,7 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!-- Button Neue Einmalzahlung -->
+            <!-- Button New one time investment -->
             <v-row v-if="startkapitalDetails" class="px-5">
               <v-col offset="1" cols="auto" class="ps-2 py-0">
                 <v-btn
@@ -360,7 +380,7 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!-- Sparrate Radio Button -->
+            <!-- saving rate radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -372,13 +392,16 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!-- Sparrate Form -->
+            <!-- saving rate form -->
 
             <v-row class="px-5">
+              <!-- saving rate toggle button -->
               <v-col cols="1" class="px-0">
                 <v-icon v-if="sparplanInput.endpoint!='saving-rate'" size="large" @click="toggleSparplan">{{ iconSparplan }}</v-icon>
               </v-col>
               <v-col cols="11" class="flex ps-2 px-0">
+
+                <!-- saving rate response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='saving-rate'"
                     variant="outlined"
@@ -391,6 +414,8 @@ console.log(sparplanInput)
                     hide-details
                     type="number"
                 ></v-text-field>
+
+                <!-- saving rate input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -404,6 +429,8 @@ console.log(sparplanInput)
                     step="50"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
                 ></v-text-field>
+
+                <!-- saving rate info button -->
                 <v-btn
                   icon
                   elevation="0"
@@ -421,9 +448,12 @@ console.log(sparplanInput)
               <v-col cols="1" class="px-0 py-0"> </v-col>
             </v-row>
 
-            <!-- Sparrate Detail-Ansicht -->
+            <!-- saving rate details form -->
+
             <v-row class="px-5" v-if="sparplanDetails">
               <v-col offset="1" cols="11" sm="5" class="flex ps-2 px-0">
+
+                <!-- saving rate begin date field -->
                 <v-text-field
                   label="Startdatum"
                   variant="outlined"
@@ -436,6 +466,8 @@ console.log(sparplanInput)
                     sparplanInput.endpoint == 'saving-rate'
                   "
                 ></v-text-field>
+
+                <!-- info button for saving rate begin date -->
                 <v-btn
                   icon
                   elevation="0"
@@ -452,7 +484,9 @@ console.log(sparplanInput)
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
               <v-spacer></v-spacer>
+
               <v-col
                 offset="1"
                 offset-sm="0"
@@ -460,6 +494,7 @@ console.log(sparplanInput)
                 sm="5"
                 class="flex ps-2 px-0"
               >
+                <!-- saving rate end date field -->
                 <v-text-field
                   label="Enddatum"
                   variant="outlined"
@@ -473,6 +508,8 @@ console.log(sparplanInput)
                     sparplanInput.endpoint == 'saving-rate'
                   "
                 ></v-text-field>
+
+                <!--info button for saving rate end date -->
                 <v-btn
                   icon
                   elevation="0"
@@ -491,8 +528,10 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
+            <!-- dynamic saving rate factor -->
             <v-row class="px-5" v-if="sparplanDetails">
               <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
+                <!-- checkbox for dynamic saving rate factor -->
                 <v-radio-group v-model="dynamik" hide-details>
                   <v-checkbox
                     label="Dynamik"
@@ -505,6 +544,7 @@ console.log(sparplanInput)
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
+              <!-- input field for dynamic saving rate factor -->
               <v-col v-if="dynamik" class="flex pe-0">
                 <v-text-field
                   variant="outlined"
@@ -515,6 +555,7 @@ console.log(sparplanInput)
                   type="number"
                   step="0.5"
                 ></v-text-field>
+                <!-- info button for dynamic saving rate factor -->
                 <v-btn
                   icon
                   elevation="0"
@@ -532,7 +573,7 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!-- Sparzins Radio Button -->
+            <!-- interest rate radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -544,9 +585,10 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!-- Sparzins Form -->
+            <!-- interest rate form -->
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
+                <!-- interest rate response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='interest-rate'"
                     prefix="%"
@@ -559,6 +601,7 @@ console.log(sparplanInput)
                     hide-details
                     type="number"
                 ></v-text-field>
+                <!-- interest rate input field -->
                 <v-text-field
                     v-else
                     prefix="%"
@@ -572,6 +615,7 @@ console.log(sparplanInput)
                     step="0.5"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='interest-rate'"
                 ></v-text-field>
+                <!-- info button for interest rate -->
                 <v-btn
                   icon
                   elevation="0"
@@ -589,7 +633,7 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!-- Enddatum Radio Button -->
+            <!-- end date radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -601,9 +645,10 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!--Enddate input field-->
+            <!--end date form -->
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
+                <!-- end date response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='end-date'"
                     variant="outlined"
@@ -615,6 +660,7 @@ console.log(sparplanInput)
                     hide-details
                     type="date"
                 ></v-text-field>
+                <!-- end date input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -625,6 +671,7 @@ console.log(sparplanInput)
                     type="date"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='end-date'"
                 ></v-text-field>
+                <!-- end date info button -->
                 <v-btn
                   icon
                   elevation="0"
@@ -641,7 +688,7 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!-- Endkapital Radio Button -->
+            <!-- capital radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -653,11 +700,11 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!-- Endkapital Form -->
+            <!-- capital form -->
 
-            <!--Endkapital input field-->
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1" cols="11">
+                <!-- capital response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint==='capital'"
                     variant="outlined"
@@ -669,6 +716,7 @@ console.log(sparplanInput)
                     hide-details
                     type="number"
                 ></v-text-field>
+                <!-- capital input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -680,6 +728,7 @@ console.log(sparplanInput)
                     step="1000"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='capital'"
                 ></v-text-field>
+                <!-- capital info button -->
                 <v-btn
                   icon
                   elevation="0"
@@ -700,7 +749,7 @@ console.log(sparplanInput)
         </v-radio-group>
       </v-card>
 
-      <!-- Berechnen Button -->
+      <!-- calculate button -->
       <v-btn
         block
         class="text-none"
@@ -715,8 +764,9 @@ console.log(sparplanInput)
   </v-form>
 </template>
 
-<!-- Zahl- und Datumsfeld gleiche Größe -->
+
 <style scoped>
+// Zahl- und Datumsfeld gleiche Größe
 /*.v-input {
   line-height: unset;
 }*/
