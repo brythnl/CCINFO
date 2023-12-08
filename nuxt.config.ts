@@ -15,12 +15,7 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }));
       });
     },
-    'nuxt-highcharts',
-    '@nuxtjs/tailwindcss',
     'dayjs-nuxt',
-    dayjs: {
-      plugins: ['customParseFormat'],
-    },
     "@nuxtjs/tailwindcss",
   ],
   vite: {
@@ -30,6 +25,9 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
+  },
+  dayjs: {
+    plugins: ['customParseFormat'],
   },
   ssr: false,
 });
