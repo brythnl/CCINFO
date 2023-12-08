@@ -7,6 +7,8 @@ const API_TOKEN = ref("");
 const grafikTabs = ref("");
 const formTab = ref("");
 const api = ref(true);
+// Check if there are already two API calls to the same endpoint
+const callsTwoSameEndpoints = ref(false);
 
 /* Query parameters of:
 * Index 0 => current API call
@@ -39,6 +41,11 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   financeMathInputs.value.unshift(formInput);
   // Remove query parameters of API call before previous API call
   if (financeMathInputs.value.length > 2) financeMathInputs.value.pop()
+  // Check if there is a previous API call and both API calls are directed to the same endpoint
+  if (financeMathInputs.value.length === 2
+    && financeMathInputs.value[0].endpoint === financeMathInputs.value[1].endpoint) {
+    callsTwoSameEndpoints.value = true;
+  } else callsTwoSameEndpoints.value = false;
 
   // API call to selected endpoint
   const { data } = await useFinanceMathFetch<financeMathResult>(
