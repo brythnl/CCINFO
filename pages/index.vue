@@ -395,15 +395,15 @@ onBeforeMount(async () => {
                     />
                   </v-window-item>
                   <v-window-item value="vorher">Grafik vorher</v-window-item>
-                  <v-window-item value="vergleich">Vergleich</v-window-item>
-                  <v-window-item value="tabelle">
+                  <v-window-item value="vergleich">
                     <vergleichstabelle
-                      :oldRequest=""
-                      :newRequest=""
-                      :oldResponse=""
-                      :newResponse=""
+                      :oldRequest="financeMathInputs[1]"
+                      :newRequest="financeMathInputs[0]"
+                      :oldResponse="financeMathResults[1].value"
+                      :newResponse="financeMathResults[0].value"
                     ></vergleichstabelle>
                   </v-window-item>
+                  <v-window-item value="tabelle">Tabelle</v-window-item>
                 </v-window>
               </v-card-text>
             </div>
