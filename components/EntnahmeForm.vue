@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { watch } from "vue";
 import {
-  todayDate,
   nextMonthFirstDay,
   inTenYears,
   validateInput,
