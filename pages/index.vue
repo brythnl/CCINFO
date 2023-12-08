@@ -3,45 +3,77 @@ import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
 import { getAPIToken } from "~/utils/auth";
 
+const API_TOKEN = ref("");
 const grafikTabs = ref("");
 const formTab = ref("");
 const api = ref(true);
+// Check if there are already two API calls to the same endpoint
+const callsTwoSameEndpoints = ref(false);
 
-const API_TOKEN = ref("");
+/* Query parameters of:
+* Index 0 => current API call
+* Index 1 => previous API call
+*/
+const financeMathInputs: financeMathInput[] = ref([{}, {}])
+/* Response results of:
+* Index 0 => current API call
+* Index 1 => previous API call
+*/
+const financeMathResults: financeMathResult[] = ref([{}, {}])
 
-//reverted Variable for Graph 
+// Processed data to pass in to graph component
+const previousGraphData: financeMathResult = ref({
+  capitalSeries: [],
+  capitalResult: {},
+});
 const graphData: financeMathResult = ref({
   capitalSeries: [],
   capitalResult: {},
 });
-//reverted Variable for Form
+
+// Reverted API response results (from Cent to Euro)
 const revertedWithdrawResult: financeMathResult = ref({});
 const revertedSavingResult: financeMathResult = ref({});
 
-// For Sparplan and Entnahmeplan and for API-Vis
-const financeMathInput: financeMathInput = ref({});
-const financeMathResult: financeMathResult = ref({});
-
+// Fetch response from Finance Math API based on user data from form
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
-  financeMathInput.value = formInput;
-  
+  // Save current query parameters on index 0 and push back previous parameters to index 1
+  financeMathInputs.value.unshift(formInput);
+  // Remove query parameters of API call before previous API call
+  if (financeMathInputs.value.length > 2) financeMathInputs.value.pop()
+  // Check if there is a previous API call and both API calls are directed to the same endpoint
+  if (financeMathInputs.value.length === 2
+    && financeMathInputs.value[0].endpoint === financeMathInputs.value[1].endpoint) {
+    callsTwoSameEndpoints.value = true;
+  } else callsTwoSameEndpoints.value = false;
+
   // API call to selected endpoint
   const { data } = await useFinanceMathFetch<financeMathResult>(
     formInput.endpoint,
     formInput,
     API_TOKEN.value,
   );
-  financeMathResult.value = data;
-  if(formTab.value==='saving'){
-    revertedSavingResult.value=revertOutput(financeMathResult.value.value);
-  }else if(formTab.value==='withdraw'){
-    revertedWithdrawResult.value=revertOutput(financeMathResult.value.value);
-    revertedWithdrawResult.value.savingRate= -revertedWithdrawResult.value.savingRate;
+
+  // Save current API response result on index 0 and push back previous result to index 1
+  financeMathResults.value.unshift(data)
+  // Remove response before previous response
+  if (financeMathResults.value.length > 2) financeMathResults.value.pop()
+
+  if (formTab.value === 'saving') {
+    revertedSavingResult.value = revertOutput(financeMathResults.value[0].value);
+  } else if (formTab.value === 'withdraw') {
+    revertedWithdrawResult.value = revertOutput(financeMathResults.value[0].value);
+    revertedWithdrawResult.value.savingRate = -revertedWithdrawResult.value.savingRate;
   }
+
+  // Save previous graph data
+  previousGraphData.value.capitalResult = graphData.value.capitalResult
+  previousGraphData.value.capitalSeries = graphData.value.capitalSeries
+
   // Fetch capital series for the graph for other selected endpoints (doesn't return capital series) outside /capital
   if (formInput.endpoint !== "capital") {
-    const result = toRaw(financeMathResult.value.value);
-    const {endValue, ...capitalSeriesInput}: financeMathInput = formInput;
+    const result = toRaw(financeMathResults.value[0].value);
+    const { endValue, ...capitalSeriesInput }: financeMathInput = formInput;
 
     // Input preprocessing, so that it can be passed to /capital API call as query parameters
     switch (formInput.endpoint) {
@@ -72,18 +104,18 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       capitalSeriesInput,
       API_TOKEN.value,
     );
-    
+
     // Assign result from first endpoint call as graph data
-    graphData.value.capitalResult = revertOutput(financeMathResult.value.value);
-    if(formTab.value==="withdraw" && formInput.endpoint==="end-date"){
-      graphData.value.capitalResult.startInvestment=-graphData.value.capitalResult.startInvestment;
+    graphData.value.capitalResult = revertOutput(financeMathResults.value[0].value);
+    if (formTab.value === "withdraw" && formInput.endpoint === "end-date") {
+      graphData.value.capitalResult.startInvestment = -graphData.value.capitalResult.startInvestment;
     }
     // Assign result from second call to /capital to get capital series as graph data
     graphData.value.capitalSeries = revertOutput(data.value).capitalSeries;
 
   } else { // Assign results from /capital API fetch as graph data
-    graphData.value.capitalResult = revertOutput(financeMathResult.value.value).capitalResult;
-    graphData.value.capitalSeries = revertOutput(financeMathResult.value.value).capitalSeries;
+    graphData.value.capitalResult = revertOutput(financeMathResults.value[0].value).capitalResult;
+    graphData.value.capitalSeries = revertOutput(financeMathResults.value[0].value).capitalSeries;
   }
 }
 
@@ -219,8 +251,8 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
       financeMathInputEntnahme.value.oneTimeInvestment[0] = -Math.round(
         financeMathResultSparen.value.value.capitalResult.capitalAmount,
       );
-      if(financeMathInputEntnahme.value.endValue<=0){
-        financeMathInputEntnahme.value.endValue=1;
+      if(financeMathInputEntnahme.endValue<=0){
+        financeMathInputEntnahme.endValue=1;
         }
     }else{
       financeMathInputEntnahme.value.oneTimeInvestment[0] = Math.round(
@@ -366,7 +398,10 @@ onBeforeMount(async () => {
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <div>
               <v-card-text>
-                <grafik-tab @grafikUpdate="(m: string) => (grafikTabs = m)"/>
+                <grafik-tab
+                  @grafikUpdate="(m: string) => (grafikTabs = m)"
+                  :callsTwoSameEndpoints="callsTwoSameEndpoints"
+                />
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
                     <graph
@@ -375,15 +410,15 @@ onBeforeMount(async () => {
                     />
                   </v-window-item>
                   <v-window-item value="vorher">Grafik vorher</v-window-item>
-                  <v-window-item value="vergleich">Vergleich</v-window-item>
-                  <v-window-item value="tabelle">
+                  <v-window-item value="vergleich">
                     <vergleichstabelle
-                      :oldRequest=""
-                      :newRequest=""
-                      :oldResponse=""
-                      :newResponse=""
+                      :oldRequest="financeMathInputs[1]"
+                      :newRequest="financeMathInputs[0]"
+                      :oldResponse="financeMathResults[1].value"
+                      :newResponse="financeMathResults[0].value"
                     ></vergleichstabelle>
                   </v-window-item>
+                  <v-window-item value="tabelle">Tabelle</v-window-item>
                 </v-window>
               </v-card-text>
             </div>
@@ -403,8 +438,8 @@ onBeforeMount(async () => {
               />
               <api-visualization
                 v-else
-                :apiRequest="financeMathInput"
-                :apiResponse="financeMathResult.value"
+                :apiRequest="financeMathInputs[0]"
+                :apiResponse="financeMathResults[0].value"
                 :apiRequest2="null"
                 :apiResponse2="null"
               />
