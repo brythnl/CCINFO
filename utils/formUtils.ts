@@ -2,12 +2,22 @@ import type { financeMathInput,financeMathResult } from "~/types/index.d.ts";
 
 // Date constants for form default values (todayDate, inTenYears, inTwentyYears)
 export const todayDate = formatDate(new Date());
+export const nextMonthFirstDay = calculateNextMonthFirstDay();
 
 function formatDate(date: Date) {
-  return date.toISOString().split("T")[0].toString().replace("/T/", "");
+  //return date.toISOString().split("T")[0].toString().replace("/T/", "");
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear().toString();
+  return `${year}-${month}-${day}`;
+}
+function calculateNextMonthFirstDay() {
+  const currentDate = new Date();
+  const nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+  return formatDate(nextMonth);
 }
 
-const date = new Date();
+const date = new Date(nextMonthFirstDay);
 date.setFullYear(date.getFullYear() + 10);
 export const inTenYears = formatDate(date);
 date.setFullYear(date.getFullYear() + 10);
