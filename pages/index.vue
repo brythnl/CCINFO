@@ -88,8 +88,7 @@ const formTab = ref("");
       </v-col>
       <v-col class="mx-2 pa-0">
         <div class="h-100 bg-cyan-darken-3 px-4 rounded-lg">
-            <v-btn @click="i++; endpoint = endpoints[i%5];" block class="text-none mb-4" color="#00476B" size="x-large" variant="flat">Testen</v-btn>
-            <SavingPlanAnswerSentence :output="output" :currency="'€'" :endpoint="endpoint"></SavingPlanAnswerSentence>
+            <SavingPlanAnswerSentence :output="output" :currency="'€'" :endpoint="endpoint" :scenario="1"></SavingPlanAnswerSentence>
         </div>
       </v-col>
       <v-col class="mx-2 pa-0">
