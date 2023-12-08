@@ -17,10 +17,10 @@ export default defineNuxtConfig({
     },
     'nuxt-highcharts',
     '@nuxtjs/tailwindcss',
-    'dayjs-nuxt'
+    'dayjs-nuxt',
     dayjs: {
       plugins: ['customParseFormat'],
-    }
+    },
     "@nuxtjs/tailwindcss",
   ],
   vite: {
