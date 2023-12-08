@@ -92,15 +92,15 @@ watch(()=>props.endpoint, ()=>{
 </script>
 <template>
     <div>
-        Wenn sie monatlich 
+        Sie investieren
+        <span :class="{'font-weight-bold bg-orange-lighten-1': isActive[2]}">{{ formattedOutput.startInvestment }} {{ currency }}</span>.
+        Von nun an sparen Sie jeden Monat
         <span :class="{'font-weight-bold bg-orange-lighten-1': isActive[0]}">{{ formattedOutput.savingRate }} {{ currency }}</span>
-         zu einem Zinssatz von 
-         <span :class="{'font-weight-bold bg-orange-lighten-1': isActive[1]}">{{ formattedOutput.interestRate }}%</span>
-         sparen und mit einem Startkapital in Höhe von 
-         <span :class="{'font-weight-bold bg-orange-lighten-1': isActive[2]}">{{ formattedOutput.startInvestment }} {{ currency }}</span>
-        beginnen, haben sie am 
-        <span :class="{'font-weight-bold bg-orange-lighten-1': isActive[3]}">{{ formattedOutput.end }} </span>
-        ein Endkapital von 
+         zu 
+         <span :class="{'font-weight-bold bg-orange-lighten-1': isActive[1]}">{{ formattedOutput.interestRate }}% Zinsen.</span>
+          Dann haben sie nach X Jahren (
+        <span :class="{'font-weight-bold bg-orange-lighten-1': isActive[3]}">{{ formattedOutput.end }} )</span>
+        ein Endkapital in Höhe von 
         <span :class="{'font-weight-bold bg-orange-lighten-1': isActive[4]}">{{ formattedOutput.capitalAmount }} {{ currency }}</span>
     </div>
 </template>
