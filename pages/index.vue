@@ -58,6 +58,11 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
     revertedWithdrawResult.value = revertOutput(financeMathResults.value[0].value);
     revertedWithdrawResult.value.savingRate = -revertedWithdrawResult.value.savingRate;
   }
+
+  // Save previous graph data
+  previousGraphData.value.capitalResult = graphData.value.capitalResult
+  previousGraphData.value.capitalSeries = graphData.value.capitalSeries
+
   // Fetch capital series for the graph for other selected endpoints (doesn't return capital series) outside /capital
   if (formInput.endpoint !== "capital") {
     const result = toRaw(financeMathResults.value[0].value);
