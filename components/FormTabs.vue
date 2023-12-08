@@ -1,23 +1,24 @@
 <script lang="ts" setup>
-const planSelect = ref("saving")
-const emit = defineEmits(['tabUpdate'])
+const emit = defineEmits(["tabUpdate"]);
+
+const planSelect = ref("saving");
 
 function tabUpdate() {
-  console.log(planSelect.value)
-  emit('tabUpdate', planSelect.value);
+  emit("tabUpdate", planSelect.value);
 }
 </script>
 
 <template>
   <div>
     <v-tabs
-        v-model="planSelect"
-        height="70"
-        @update:model-value="tabUpdate"
-        grow
-        stacked
-        bg-color="#4195AC"
-        class="rounded-lg"
+      v-model="planSelect"
+      @update:model-value="tabUpdate"
+      grow
+      hide-slider
+      stacked
+      density="compact"
+      class="rounded-lg blue-border text-primary"
+      selected-class="bg-primary"
     >
       <v-tab value="saving">
         <v-icon size="x-large">mdi-plus</v-icon>
@@ -35,4 +36,13 @@ function tabUpdate() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+.v-tab {
+  text-transform: none !important;
+}
+
+.blue-border {
+  border: 1px solid #4195AC;
+}
+</style>

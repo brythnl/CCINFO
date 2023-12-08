@@ -4,10 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#4195AC',
-      }
+        primary: "#4195AC",
+      },
     },
   },
   plugins: [],
-}
-
+};
