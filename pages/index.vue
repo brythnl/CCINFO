@@ -438,8 +438,8 @@ onBeforeMount(async () => {
               />
               <api-visualization
                 v-else
-                :apiRequest="financeMathInput"
-                :apiResponse="financeMathResult.value"
+                :apiRequest="financeMathInputs[0]"
+                :apiResponse="financeMathResults[0].value"
                 :apiRequest2="null"
                 :apiResponse2="null"
               />
