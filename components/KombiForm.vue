@@ -310,8 +310,8 @@ watch(
                     v-model="sparInput.oneTimeInvestment[n]"
                     hide-details
                     required
-                    placeholder="weitere Einmalzahlung"
                     type="number"
+                    step="1000"
                 ></v-text-field>
                 <v-btn
                     icon
@@ -887,6 +887,7 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-spacer></v-spacer>
               <v-col
                   offset="1"
                   offset-sm="0"
@@ -925,21 +926,19 @@ watch(
               </v-col>
             </v-row>
 
-            <v-row class="px-5" v-if="sparplanDetails">
+            <v-row class="px-5" v-if="entnahmeplanDetails">
               <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
-                <div class="flex">
-                  <v-radio-group v-model="dynamik" hide-details>
-                    <v-checkbox
-                        label="Dynamik"
-                        density="compact"
-                        hide-details=""
-                        :disabled="
+                <v-radio-group v-model="dynamik" hide-details>
+                  <v-checkbox
+                      label="Dynamik"
+                      density="compact"
+                      hide-details=""
+                      :disabled="
                     sparInput.endpoint == '' ||
                     sparInput.endpoint == 'entnahme/saving-rate'
                   "
-                    ></v-checkbox>
-                  </v-radio-group>
-                </div>
+                  ></v-checkbox>
+                </v-radio-group>
               </v-col>
               <v-col v-if="dynamik" class="flex pe-0">
                 <v-text-field
@@ -950,7 +949,7 @@ watch(
                     v-model="entnahmeInput.dynamicSavingRateFactor"
                     hide-details
                     type="number"
-                    step="1"
+                    step="0.5"
                 ></v-text-field>
                 <v-btn
                     icon
@@ -971,7 +970,6 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 py-0"></v-col>
             </v-row>
 
             <!-- Withdraw interest Radio Button -->
