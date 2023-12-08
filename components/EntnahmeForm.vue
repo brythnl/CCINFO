@@ -581,7 +581,7 @@ watch(
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
                   disabled
-                  label="Entnahmezins"
+                  label="Verzinsung"
                   value="interest-rate"
                   density="compact"
                 ></v-radio>
