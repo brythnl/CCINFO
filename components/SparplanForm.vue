@@ -126,7 +126,7 @@ console.log(sparplanInput)
 </script>
 
 <template>
-  <h3 class="font-bold pb-5 mt-5">Was möchten Sie berechnen?</h3>
+  <h3 class="font-bold pb-5 mt-5">Wählen Sie Ihr Berechnungsziel:</h3>
   <v-form>
     <div>
       <v-card class="overflow-y-auto" elevation="0" max-height="580">
@@ -544,31 +544,6 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!--Sparzins response slot
-            <v-row v-if="sparplanInput.endpoint=='interest-rate'" class="px-5">
-              <v-col cols="1" class="px-0"></v-col>
-              <v-col cols="11" class="flex ps-2 px-0">
-                <v-card
-                  v-if="sparplanInput.endpoint == 'interest-rate'"
-                  width="100%"
-                  height="44"
-                  variant="outlined"
-                  :color="props.apiResponse ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title
-                      >{{
-                        props.apiResponse ? props.apiResponse.interestRate : ""
-                      }}%</v-card-title
-                    >
-                  </v-card-item>
-                </v-card>
-                <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
-                  <v-icon size="small">mdi-information-outline</v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>-->
-
             <!-- Sparzins Form -->
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
@@ -626,29 +601,6 @@ console.log(sparplanInput)
               </v-col>
             </v-row>
 
-            <!--Enddate response slot
-            <v-row v-if="sparplanInput.endpoint=='end-date'" class="px-5">
-              <v-col cols="1" class="px-0"></v-col>
-              <v-col cols="11" class="flex ps-2 px-0">
-                <v-card
-                  v-if="sparplanInput.endpoint == 'end-date'"
-                  width="100%"
-                  height="44"
-                  variant="outlined"
-                  :color="props.apiResponse ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title>{{
-                      props.apiResponse ? props.apiResponse.end : ""
-                    }}</v-card-title>
-                  </v-card-item>
-                </v-card>
-                <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
-                  <v-icon size="small">mdi-information-outline</v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>-->
-
             <!--Enddate input field-->
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
@@ -702,42 +654,6 @@ console.log(sparplanInput)
             </v-row>
 
             <!-- Endkapital Form -->
-
-            <!--Endkapital response slot
-            <v-row v-if="sparplanInput.endpoint=='capital'" class="px-5">
-              <v-col cols="1" class="px-0"></v-col>
-              <v-col cols="11" class="flex ps-2 px-0">
-                <v-card
-                  v-if="sparplanInput.endpoint == 'capital'"
-                  width="100%"
-                  height="44"
-                  variant="outlined"
-                  :color="props.apiResponse ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title
-                      >{{
-                        props.apiResponse
-                          ? props.apiResponse.capitalResult
-                            ? props.apiResponse.capitalResult.capitalAmount
-                            : ""
-                          : ""
-                      }} €
-                    </v-card-title>
-                  </v-card-item>
-                </v-card>
-                <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
-                  <v-icon size="small">mdi-information-outline</v-icon>
-                  <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines any number of one-time cash in- and outflows.
-                    Positive investment amounts are interpreted as cash inflows and negative investment amounts as
-                    cash
-                    outflows.
-                    Default date for first cash inflow (start capital) is today.
-                  </v-tooltip>
-                </v-btn>
-              </v-col>
-            </v-row>-->
 
             <!--Endkapital input field-->
             <v-row class="px-5">
