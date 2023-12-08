@@ -3,11 +3,22 @@ import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
 import { getAPIToken } from "~/utils/auth";
 
+const API_TOKEN = ref("");
 const grafikTabs = ref("");
 const formTab = ref("");
 const api = ref(true);
 
-const API_TOKEN = ref("");
+/* Query parameters of:
+* Index 0 => current API call
+* Index 1 => previous API call
+*/
+const financeMathInputs: financeMathInput[] = ref([{}, {}])
+/* Response results of:
+* Index 0 => current API call
+* Index 1 => previous API call
+*/
+const financeMathResults: financeMathResult[] = ref([{}, {}])
+
 
 //reverted Variable for Graph 
 const graphData: financeMathResult = ref({
