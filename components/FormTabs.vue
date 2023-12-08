@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-const planSelect = ref("saving");
 const emit = defineEmits(["tabUpdate"]);
+
+const planSelect = ref("saving");
+
 function tabUpdate() {
   emit("tabUpdate", planSelect.value);
 }
