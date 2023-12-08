@@ -20,12 +20,18 @@ const financeMathInputs: financeMathInput[] = ref([{}, {}])
 const financeMathResults: financeMathResult[] = ref([{}, {}])
 
 
-//reverted Variable for Graph 
+
+// Processed data to pass in to graph component
+const previousGraphData: financeMathResult = ref({
+  capitalSeries: [],
+  capitalResult: {},
+});
 const graphData: financeMathResult = ref({
   capitalSeries: [],
   capitalResult: {},
 });
-//reverted Variable for Form
+
+// Reverted API response results (from Cent to Euro)
 const revertedWithdrawResult: financeMathResult = ref({});
 const revertedSavingResult: financeMathResult = ref({});
 
