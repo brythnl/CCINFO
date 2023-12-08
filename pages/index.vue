@@ -219,8 +219,8 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
       financeMathInputEntnahme.value.oneTimeInvestment[0] = -Math.round(
         financeMathResultSparen.value.value.capitalResult.capitalAmount,
       );
-      if(financeMathInputEntnahme.endValue<=0){
-        financeMathInputEntnahme.endValue=1;
+      if(financeMathInputEntnahme.value.endValue<=0){
+        financeMathInputEntnahme.value.endValue=1;
         }
     }else{
       financeMathInputEntnahme.value.oneTimeInvestment[0] = Math.round(
@@ -228,7 +228,6 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
       );
     }
     // fetch data for entnahmeplan to selected endpoint
-    console.log(financeMathInputEntnahme.value);
     const { data: entnahmeData } = await useFinanceMathFetch<financeMathResult>(
       financeMathInputEntnahme.value.endpoint,
       financeMathInputEntnahme.value,

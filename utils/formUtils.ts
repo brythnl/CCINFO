@@ -5,7 +5,6 @@ export const todayDate = formatDate(new Date());
 export const nextMonthFirstDay = calculateNextMonthFirstDay();
 
 function formatDate(date: Date) {
-  //return date.toISOString().split("T")[0].toString().replace("/T/", "");
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear().toString();
