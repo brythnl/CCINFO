@@ -398,7 +398,10 @@ onBeforeMount(async () => {
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <div>
               <v-card-text>
-                <grafik-tab @grafikUpdate="(m: string) => (grafikTabs = m)"/>
+                <grafik-tab
+                  @grafikUpdate="(m: string) => (grafikTabs = m)"
+                  :callsTwoSameEndpoints="callsTwoSameEndpoints"
+                />
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
                     <graph
