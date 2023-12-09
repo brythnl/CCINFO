@@ -43,9 +43,11 @@ const calculateDifference = (oldValue, newValue) => {
   }
 }
 
-const formatValue = (value) => {
-  if (typeof value === 'number'){
-    return value.toFixed(2);
+const formatValue = (value, key) => {
+  if (typeof value === 'number') {
+    return key === "interestRate" ?
+      `${value * 100} %`
+      : `${(value / 100).toFixed(2)} €`;
   }
   else if (dayjs(value).isValid()) {
     return dayjs(value).format('DD.MM.YYYY');
@@ -53,9 +55,11 @@ const formatValue = (value) => {
   return value;
 };
 
-const formatDifference = (difference, unit) => {
-  if(unit == '' && typeof difference === 'number'){
-    return { difference: difference.toFixed(2), unit:unit };
+const formatDifference = (difference, unit, key) => {
+  if (unit == '' && typeof difference === 'number') {
+    return key === "interestRate" ?
+      { difference: `${difference * 100} %`, unit: unit }
+      : { difference: `${(difference / 100).toFixed(2)} €`, unit: unit }
   }
   return { difference: difference, unit: unit };
 };
@@ -71,9 +75,9 @@ export const createCombinedArray = (oldObj, newObj) => {
     if (difference !== 0 && difference !== ""){
       combinedArray.push({
         name: names[key],
-        oldValue: formatValue(oldValue),
-        newValue: formatValue(newValue),
-        difference: formatDifference(difference, unit),
+        oldValue: formatValue(oldValue, key),
+        newValue: formatValue(newValue, key),
+        difference: formatDifference(difference, unit, key),
         unit: unit
       });
     }
