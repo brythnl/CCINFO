@@ -246,11 +246,8 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines any number of one-time cash in- and
-                    outflows. Positive investment amounts are interpreted as
-                    cash inflows and negative investment amounts as cash
-                    outflows. Default date for first cash inflow (start capital)
-                    is today.
+                    Trage den Betrag ein, den du zu Beginn investieren möchtest.<br>Der Standardwert für das Datum der 1. Investition ist der 1. des nächsten Monats.<br>Über
+                    das Aufklapp-Symbol kannst du zusätzliche Optionen für Einmalzahlungen festlegen.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -284,11 +281,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter specifies the investment dates of the
-                    one-time cash in- or outflow (see oneTimeInvestments
-                    parameter). If the date of a cash flow is outside of the
-                    investment period, it will not be included in the
-                    calculation.
+                    Gib das Datum ein, an dem du das Startkapital in deinen Sparplan investieren möchtest. Standardmäßig ist dieses der 1. des nächsten Monats.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -323,10 +316,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines any number of one-time cash in- and
-                    outflows. Positive investment amounts are interpreted as
-                    cash inflows and negative investment amounts as cash
-                    outflows.
+                    Gib hier den Betrag der zusätzlichen Einmalzahlung ein.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -356,11 +346,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter specifies the investment dates of the
-                    one-time cash in- or outflow (see oneTimeInvestments
-                    parameter). If the date of a cash flow is outside of the
-                    investment period, it will not be included in the
-                    calculation.
+                    Gib hier das Datum der zusätzlichen Einmalzahlung ein.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -491,7 +477,8 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter specifies the monthly savings rate.
+                    Trage den monatlichen Betrag ein, den du regelmäßig in deinen Sparplan investieren möchtest.<br>Über
+                    das Aufklapp-Symbol kannst du zusätzliche Optionen für die Sparrate festlegen.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -523,9 +510,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the begin of the optional savings
-                    plan. If no date is specified, the savings rate is applied
-                    for the total investment period.
+                    Wähle das Datum aus, an dem du mit deinen monatlichen Sparraten beginnen möchtest. Standardmäßig ist dieser auf den 1. des nächsten Monats eingestellt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -560,9 +545,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the end of the optional savings plan.
-                    If no date is specified, the savings rate is applied for the
-                    total investment period.
+                    Wähle das Datum aus, an dem du deine monatlichen Sparraten beenden möchtest. Standardmäßig ist dieses auf den 1. des nächsten Monats eingestellt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -602,8 +585,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the percentage by which the monthly
-                    savings rate annually increases.
+                    Trage einen Faktor ein, der die dynamische Anpassung der Sparrate beeinflusst. Beispiel: Bei einer monatlichen Sparrate von 50€ und einem Faktor von 150% sparst du plötzlich 75€ pro Monat.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -684,8 +666,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter determines the interest rate for calculations
-                    in financial mathematics.
+                    Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld sparst.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -759,8 +740,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the end of the saving period and the
-                    start of the withdraw period.
+                    Trage hier das Datum ein, an dem dein Sparplan enden und dein Entnahmeplan starten soll.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -849,7 +829,8 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter specifies the monthly withdraws rate.
+                    Gib hier den monatlichen Betrag ein, den du regelmäßig von deinem angesparten Kapital entnehmen
+                    möchtest. Über das Aufklapp-Symbol kannst du zusätzliche Optionen für die Entnahmerate einstellen.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -881,9 +862,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the begin of the optional withdraws
-                    plan. If no date is specified, the withdraws rate is applied
-                    for the total investment period.
+                    Wähle hier das Datum aus, an dem du mit den regelmäßigen Entnahmen beginnen möchtest. Standardmäßig ist dieser Wert auf den 1. des nächsten Monats gesetzt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -918,9 +897,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the end of the optional withdraws
-                    plan. If no date is specified, the withdraws rate is applied
-                    for the total investment period.
+                    Wähle hier das Datum aus, an dem du die regelmäßigen Entnahmen beenden möchtest. Standardmäßig ist dieser Wert auf 10 Jahre ab heute gesetzt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -961,12 +938,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the percentage by which the monthly
-                    withdraws rate annually increases. Using this parameter, it
-                    is possible to simulate a dynamic withdraws rate, for
-                    instance, to compensatethe inflation rate between 1% and 3%.
-                    If no withdraws rate is specified, this field will be
-                    irrelevant for the outcome of the calculation.
+                    ???
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -1049,8 +1021,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter determines the interest rate for calculations
-                    in financial mathematics.
+                    Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse während der Entnahmephase erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld sparst.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -1125,7 +1096,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the end of the investment period.
+                    Trage hier das Datum ein, an dem dein Entnahmeplan enden soll. Standardmäßig ist dieses auf 10 Jahre von heute eingestellt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -1210,8 +1181,7 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter specifies the desired capital that should be
-                    available at the end of the investment period.
+                    Trage hier den gewünschten Betrag ein, den du am Ende deines Entnahmeplans übrig haben möchtest.
                   </v-tooltip>
                 </v-btn>
               </v-col>
