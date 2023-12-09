@@ -425,7 +425,12 @@ onBeforeMount(async () => {
                       :result="graphData.capitalResult"
                     />
                   </v-window-item>
-                  <v-window-item value="vorher">Grafik vorher</v-window-item>
+                  <v-window-item value="vorher">
+                    <graph
+                      :series="previousGraphData.capitalSeries"
+                      :result="previousGraphData.capitalResult"
+                    />
+                  </v-window-item>
                   <v-window-item value="vergleich">
                     <vergleichstabelle
                       :oldRequest="financeMathInputs[1]"
