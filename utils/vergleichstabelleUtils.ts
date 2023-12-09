@@ -68,8 +68,7 @@ export const createCombinedArray = (oldObj, newObj) => {
     const newValue = newObj[key];
     const { difference, unit } = calculateDifference(oldValue, newValue);
 
-    // CHANGE TO difference !== 0 && difference !== "" after vorher/nachher data saving implememented
-    if (difference !== ""){
+    if (difference !== 0 && difference !== ""){
       combinedArray.push({
         name: names[key],
         oldValue: formatValue(oldValue),

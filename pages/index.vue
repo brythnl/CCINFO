@@ -13,6 +13,8 @@ const formTab = ref("");
 const api = ref(true);
 // Check if there are already two API calls to the same endpoint
 const callsTwoSameEndpoints = ref(false);
+// Check if previous and current API calls have the same query parameters
+const hasSameInputs = ref(false);
 
 /* Query parameters of:
 * Index 0 => current API call
@@ -48,11 +50,17 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   financeMathInputs.value.unshift(formInput);
   // Remove query parameters of API call before previous API call
   if (financeMathInputs.value.length > 2) financeMathInputs.value.pop()
-  // Check if there is a previous API call and both API calls are directed to the same endpoint
-  if (financeMathInputs.value.length === 2
-    && financeMathInputs.value[0].endpoint === financeMathInputs.value[1].endpoint) {
+
+  // Check if both API calls are directed to the same endpoint
+  if (financeMathInputs.value[0].endpoint === financeMathInputs.value[1].endpoint) {
     callsTwoSameEndpoints.value = true;
   } else callsTwoSameEndpoints.value = false;
+
+  // Check if previous and current API call has the same query parameters
+  if (JSON.stringify(financeMathInputs.value[0]) == JSON.stringify(financeMathInputs.value[1])) {
+    hasSameInputs.value = true;
+  } else hasSameInputs.value = false;
+
 
   // API call to selected endpoint
   const { data } = await useFinanceMathFetch<financeMathResult>(
@@ -408,6 +416,7 @@ onBeforeMount(async () => {
                 <grafik-tab
                   @grafikUpdate="(m: string) => (grafikTabs = m)"
                   :callsTwoSameEndpoints="callsTwoSameEndpoints"
+                  :hasSameInputs="hasSameInputs"
                 />
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
