@@ -2,6 +2,10 @@
 import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
 import { getAPIToken } from "~/utils/auth";
+import {
+  removeSearchedEndpointFromInput,
+  revertOutput
+} from "../utils/formUtils";
 
 const API_TOKEN = ref("");
 const grafikTabs = ref("");
@@ -37,6 +41,9 @@ const revertedSavingResult: financeMathResult = ref({});
 
 // Fetch response from Finance Math API based on user data from form
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
+  // Remove searched property from input/request
+  formInput = removeSearchedEndpointFromInput(formInput);
+
   // Save current query parameters on index 0 and push back previous parameters to index 1
   financeMathInputs.value.unshift(formInput);
   // Remove query parameters of API call before previous API call
