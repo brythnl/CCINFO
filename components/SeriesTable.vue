@@ -7,6 +7,7 @@ const props = defineProps<{
   apiRequest2: financeMathInput;
   apiResponse: financeMathResult;
   apiResponse2: financeMathResult;
+  form
 }>();
 
 console.log(props.apiResponse.capitalSeries);
@@ -26,22 +27,17 @@ function numberFormat(number){
     <thead>
       <tr>
         <th>Jahr</th>
-        <!--
-        <th>Guthaben zu<br>Jahresbeginn</th>
-        <th>Einzahlungen</th>
-        <th>Zinsgutschriften</th>-->
-        <th>Neues Guthaben</th>
+        <th>Vermögen</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(item, index) in props.apiResponse.capitalSeries" :key="index">
         <td>{{ parseInt(props.apiRequest.begin.substring(0, 4)) + index +1 }}</td>
-        <!--
-        <td>{{ index == 0 ? numberFormat(props.apiResponse.capitalResult.startInvestment) : neues_Guthaben }}</td>
-        <td>test</td>
-        <td>test</td>
-        -->
-        <td>{{ neues_Guthaben = numberFormat(item) }}</td>
+        <td>{{ numberFormat(item) }}</td>
+      </tr>
+      <tr v-if="props.apiResponse2!=null" v-for="(item, index) in props.apiResponse2.capitalSeries" :key="index">
+        <td>{{ parseInt(props.apiRequest.begin.substring(0, 4)) + index +1 }}</td>
+        <td>{{ numberFormat(item) }}</td>
       </tr>
     </tbody>
   </v-table>
