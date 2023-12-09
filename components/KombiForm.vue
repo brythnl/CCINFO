@@ -175,6 +175,7 @@ watch(
 </script>
 
 <template>
+  <!-- headline -->
   <h3 class="font-bold pb-5 mt-5">Wählen Sie Ihr Berechnungsziel:</h3>
   <v-form>
     <div>
@@ -183,8 +184,9 @@ watch(
             v-model="sparInput.endpoint"
             @update:model-value="changeEndpoint"
         >
+          <!-- form container -->
           <v-container class="px-0 py-0">
-            <!-- Startkapital Radio Button -->
+            <!-- starting value radio button -->
             <v-row class="mt-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
@@ -196,9 +198,10 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Startkapital Form -->
+            <!-- starting value form -->
             <v-row class="px-5">
               <v-col cols="1" class="px-0">
+                <!-- button to toggle starting value details form -->
                 <v-icon v-if="sparInput.endpoint!='sparen/saving-start-value'" size="large" @click="toggleStartkapital">{{
                     iconStartkapital
                   }}
@@ -209,6 +212,7 @@ watch(
                   :sm="startkapitalDetails ? (einmalZahlung == 0 ? 6 : 5) : 11"
                   class="flex ps-2 px-0"
               >
+                <!-- starting value response slot -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'sparen/saving-start-value'"
                     label="1. Einmalzahlung"
@@ -223,6 +227,7 @@ watch(
                     type="number"
                     readonly
                 ></v-text-field>
+                <!-- starting value input field -->
                 <v-text-field
                     v-else
                     label="1. Einmalzahlung"
@@ -236,6 +241,7 @@ watch(
                     step="1000"
                     :disabled="sparInput.endpoint == ''"
                 ></v-text-field>
+                <!-- starting value info button -->
                 <v-btn
                     icon
                     elevation="0"
@@ -251,6 +257,8 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
+              <!-- starting value date -->
               <v-col
                   v-if="startkapitalDetails"
                   offset="1"
@@ -259,6 +267,7 @@ watch(
                   sm="5"
                   class="flex ps-2 px-0"
               >
+                <!-- starting value date input field -->
                 <v-text-field
                     label="Startdatum"
                     variant="outlined"
@@ -271,6 +280,7 @@ watch(
                     sparInput.endpoint == 'sparen/saving-start-value'
                   "
                 ></v-text-field>
+                <!-- info button for starting value date -->
                 <v-btn
                     icon
                     elevation="0"
@@ -288,13 +298,15 @@ watch(
               <v-col cols="1" class="px-0 py-0"></v-col>
             </v-row>
 
-            <!-- Startkapital Detail-Ansicht -->
+            <!-- starting value details form -->
             <v-row
                 v-if="startkapitalDetails"
                 v-for="n in einmalZahlung"
                 class="px-5"
             >
               <v-col offset="1" cols="10" sm="5" class="flex ps-2 px-0">
+
+                <!-- one time investment input field -->
                 <v-text-field
                     prefix="€"
                     :label="`${n + 1}. Einmalzahlung`"
@@ -306,6 +318,7 @@ watch(
                     type="number"
                     step="1000"
                 ></v-text-field>
+                <!-- info button for one time investment -->
                 <v-btn
                     icon
                     elevation="0"
@@ -320,6 +333,8 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
+
               <v-col
                   offset="1"
                   offset-sm="0"
@@ -327,6 +342,7 @@ watch(
                   sm="5"
                   class="flex ps-2 px-0"
               >
+                <!-- one time investment date input field  -->
                 <v-text-field
                     :label="`${n + 1}. Datum`"
                     variant="outlined"
@@ -336,6 +352,8 @@ watch(
                     required
                     type="date"
                 ></v-text-field>
+
+                <!-- info button for one time investment date -->
                 <v-btn
                     icon
                     elevation="0"
@@ -350,10 +368,14 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
+
               <v-col
                   cols="1"
                   class="ps-2 px-0 d-flex align-center justify-start"
               >
+
+                <!-- button to delete one time investment -->
                 <v-icon
                     @click="
                     () => {
@@ -373,7 +395,7 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Button Neue Einmalzahlung -->
+            <!-- button to add new one time investment -->
             <v-row v-if="startkapitalDetails" class="px-5">
               <v-col offset="1" cols="auto" class="ps-2 py-0">
                 <v-btn
@@ -393,7 +415,7 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Sparrate Radio Button -->
+            <!-- saving rate radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -405,10 +427,12 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Sparrate Form -->
+            <!-- saving rate form -->
 
             <v-row class="px-5">
               <v-col cols="1" class="px-0">
+
+                <!-- toggle for saving rate details -->
                 <v-icon v-if="sparInput.endpoint!='sparen/saving-rate'" size="large" @click="toggleSparplan">{{
                     iconSparplan
                   }}
@@ -416,26 +440,8 @@ watch(
               </v-col>
 
               <v-col cols="11" class="flex ps-2 px-0">
-                <!--Sparrate response slot
-                <v-card
-                  v-if="sparInput.endpoint == 'sparen/saving-rate'"
-                  width="100%"
-                  height="44"
-                  variant="outlined"
-                  :color="props.apiResponseSparen ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title
-                      >{{
-                        props.apiResponseSparen
-                          ? props.apiResponseSparen.savingRate
-                          : ""
-                      }} €</v-card-title
-                    >
-                  </v-card-item>
-                </v-card>-->
 
-                <!--Sparrate input field-->
+                <!-- saving rate response slot -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'sparen/saving-rate'"
                     variant="outlined"
@@ -450,6 +456,8 @@ watch(
                     hide-details
                     type="number"
                 ></v-text-field>
+
+                <!-- saving rate input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -467,6 +475,7 @@ watch(
                   "
                 ></v-text-field>
 
+                <!-- saving rate info button -->
                 <v-btn
                     icon
                     elevation="0"
@@ -485,9 +494,11 @@ watch(
               <v-col cols="1" class="px-0 py-0"></v-col>
             </v-row>
 
-            <!-- Sparrate Detail-Ansicht -->
+            <!-- saving rate details form  -->
             <v-row class="px-5" v-if="sparplanDetails">
               <v-col offset="1" cols="11" sm="5" class="flex ps-2 px-0">
+
+                <!-- saving rate begin date -->
                 <v-text-field
                     label="Startdatum"
                     variant="outlined"
@@ -500,6 +511,8 @@ watch(
                     sparInput.endpoint == 'sparen/saving-rate'
                   "
                 ></v-text-field>
+
+                <!-- info button for saving rate begin date -->
                 <v-btn
                     icon
                     elevation="0"
@@ -514,7 +527,9 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
               <v-spacer></v-spacer>
+
               <v-col
                   offset="1"
                   offset-sm="0"
@@ -522,6 +537,7 @@ watch(
                   sm="5"
                   class="flex ps-2 px-0"
               >
+                <!-- saving rate end date input field -->
                 <v-text-field
                     label="Enddatum"
                     variant="outlined"
@@ -535,6 +551,8 @@ watch(
                     sparInput.endpoint == 'sparen/saving-rate'
                   "
                 ></v-text-field>
+
+                <!-- info button for saving rate end date -->
                 <v-btn
                     icon
                     elevation="0"
@@ -549,8 +567,11 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
+
             </v-row>
-            <!--Dynamik Feld -->
+
+            <!-- checkbox for dynamic saving rate factor -->
             <v-row class="px-5" v-if="sparplanDetails">
               <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
                 <v-radio-group v-model="dynamik" hide-details>
@@ -565,7 +586,10 @@ watch(
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
+
               <v-col v-if="dynamik" class="flex pe-0">
+
+                <!-- input field for dynamic saving rate factor -->
                 <v-text-field
                     variant="outlined"
                     prefix="%"
@@ -575,6 +599,8 @@ watch(
                     type="number"
                     step="0.5"
                 ></v-text-field>
+
+                <!-- info button for dynamic saving rate factor -->
                 <v-btn
                     icon
                     elevation="0"
@@ -591,7 +617,7 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Sparzins Radio Button -->
+            <!-- radio button for interest rate during saving period -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -603,29 +629,12 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Sparzins Form -->
+            <!-- form for interest rate during saving period -->
 
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
-                <!--Sparzins response slot
-                <v-card
-                  v-if="sparInput.endpoint == 'sparen/interest-rate'"
-                  width="100%"
-                  height="44"
-                  variant="outlined"
-                  :color="props.apiResponseSparen ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title
-                      >{{
-                        props.apiResponseSparen
-                          ? props.apiResponseSparen.interestRate
-                          : ""
-                      }}%</v-card-title
-                    >
-                  </v-card-item>
-                </v-card>-->
-                <!--Sparzins input field-->
+
+                <!-- interest rate response slot -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'sparen/interest-rate'"
                     prefix="%"
@@ -640,6 +649,8 @@ watch(
                     hide-details
                     type="number"
                 ></v-text-field>
+
+                <!-- interest rate input field -->
                 <v-text-field
                     v-else
                     prefix="%"
@@ -656,6 +667,8 @@ watch(
                     sparInput.endpoint == 'sparen/interest-rate'
                   "
                 ></v-text-field>
+
+                <!-- info button for interest rate -->
                 <v-btn
                     icon
                     elevation="0"
@@ -672,9 +685,9 @@ watch(
               </v-col>
             </v-row>
 
-            <!--Withdraw Form Start-->
+            <!-- Withdrawal Form Start -->
 
-            <!-- Switchdate/Withdrawbegin Radio Button -->
+            <!-- Switch date Radio Button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -687,25 +700,11 @@ watch(
               </v-col>
             </v-row>
 
-            <!--Withdraw begin Form -->
+            <!-- Withdrawal begin Form -->
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
-                <!--Withdraw begin response slot
-                <v-card
-                    v-if="sparInput.endpoint == 'sparen/end-date'"
-                    width="100%"
-                    height="44"
-                    variant="outlined"
-                    :color="props.apiResponseSparen ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title>{{
-                        props.apiResponseSparen ? props.apiResponseSparen.end : ""
-                      }}
-                    </v-card-title>
-                  </v-card-item>
-                </v-card>-->
-                <!--Withdraw begin input field-->
+
+                <!-- switch date response slot -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'sparen/end-date'"
                     variant="outlined"
@@ -717,6 +716,8 @@ watch(
                     hide-details
                     type="date"
                 ></v-text-field>
+
+                <!-- switch date input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -730,6 +731,8 @@ watch(
                     sparInput.endpoint == 'sparen/end-date'
                   "
                 ></v-text-field>
+
+                <!-- info button for switch date -->
                 <v-btn
                     icon
                     elevation="0"
@@ -745,7 +748,9 @@ watch(
                 </v-btn>
               </v-col>
             </v-row>
-            <!-- Withdraws rate Radio Button -->
+
+
+            <!-- withdrawal rate Radio Button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -757,39 +762,21 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Withdraws rate Form -->
+            <!-- Withdrawal rate form -->
 
             <v-row class="px-5">
               <v-col cols="1" class="px-0">
+
+                <!-- toggle for withdrawal rate details -->
                 <v-icon v-if="entnahmeInput.endpoint!='entnahme/saving-rate'" size="large" @click="toggleEntnahmeplan">{{
                     iconEntnahmeplan
                   }}
                 </v-icon>
               </v-col>
 
-              <!--Withdraws rate input field-->
               <v-col class="flex ps-2 px-0">
-                <!--Withdraws rate response slot
-                <v-card
-                    v-if="sparInput.endpoint == 'entnahme/saving-rate'"
-                    width="100%"
-                    height="44"
-                    variant="outlined"
-                    :color="props.apiResponseSparen ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title
-                    >{{
-                        props.apiResponseEntnahme
-                            ? props.apiResponseEntnahme.savingRate
-                            : ""
-                      }} €
-                    </v-card-title
-                    >
-                  </v-card-item>
-                </v-card>-->
 
-                <!--Withdraws rate response slot-->
+                <!--withdrawal rate response slot-->
                 <v-text-field
                     v-if="sparInput.endpoint == 'entnahme/saving-rate'"
                     variant="outlined"
@@ -803,6 +790,8 @@ watch(
                     type="number"
                     readonly
                 ></v-text-field>
+
+                <!-- withdrawal rate input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -819,6 +808,8 @@ watch(
                     sparInput.endpoint == 'entnahme/saving-rate'
                   "
                 ></v-text-field>
+
+                <!-- withdrawal rate info button -->
                 <v-btn
                     icon
                     elevation="0"
@@ -836,10 +827,12 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Withdraws rate Detail-Ansicht -->
+            <!-- withdrawal rate details form -->
 
             <v-row class="px-5" v-if="entnahmeplanDetails">
               <v-col offset="1" cols="11" sm="5" class="flex ps-2 px-0">
+
+                <!-- withdrawal rate begin date -->
                 <v-text-field
                     label="Startdatum"
                     variant="outlined"
@@ -852,6 +845,8 @@ watch(
                     sparInput.endpoint == 'entnahme/saving-rate'
                   "
                 ></v-text-field>
+
+                <!-- info button for withdrawal rate begin date -->
                 <v-btn
                     icon
                     elevation="0"
@@ -866,7 +861,9 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
               <v-spacer></v-spacer>
+
               <v-col
                   offset="1"
                   offset-sm="0"
@@ -874,6 +871,8 @@ watch(
                   sm="5"
                   class="flex ps-2 px-0"
               >
+
+                <!-- withdrawal rate end date -->
                 <v-text-field
                     label="Enddatum"
                     variant="outlined"
@@ -887,6 +886,8 @@ watch(
                     sparInput.endpoint == 'entnahme/saving-rate'
                   "
                 ></v-text-field>
+
+                <!-- info button for withdrawal rate end date -->
                 <v-btn
                     icon
                     elevation="0"
@@ -903,8 +904,11 @@ watch(
               </v-col>
             </v-row>
 
+            <!-- dynamic withrawal rate factor ??? -->
             <v-row class="px-5" v-if="entnahmeplanDetails">
               <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
+
+                <!-- checkbox for dynamic withdrawal rate factor -->
                 <v-radio-group v-model="dynamik" hide-details>
                   <v-checkbox
                       label="Dynamik"
@@ -917,7 +921,11 @@ watch(
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
+
+
               <v-col v-if="dynamik" class="flex pe-0">
+
+                <!-- input field for dynamic withdrawal rate factor -->
                 <v-text-field
                     v-if="dynamik"
                     variant="outlined"
@@ -928,6 +936,8 @@ watch(
                     type="number"
                     step="0.5"
                 ></v-text-field>
+
+                <!-- info button for dynamic withdrawal rate factor -->
                 <v-btn
                     icon
                     elevation="0"
@@ -944,7 +954,7 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Withdraw interest Radio Button -->
+            <!-- radio button for interest rate during withrawal period -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -957,31 +967,12 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Withdraw interest Form -->
+            <!-- interest rate form -->
 
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
-                <!--Withdraw interest response slot
-                <v-card
-                    v-if="sparInput.endpoint == 'entnahme/interest-rate'"
-                    width="100%"
-                    height="44"
-                    variant="outlined"
-                    :color="props.apiResponseSparen ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title
-                    >{{
-                        props.apiResponseEntnahme
-                            ? props.apiResponseEntnahme.interestRate
-                            : ""
-                      }}%
-                    </v-card-title
-                    >
-                  </v-card-item>
-                </v-card>-->
 
-                <!--Withdraw interest input field-->
+                <!-- interest rate response slot (withdrawal period) -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'entnahme/interest-rate'"
                     prefix="%"
@@ -995,6 +986,8 @@ watch(
                     type="number"
                     readonly
                 ></v-text-field>
+
+                <!-- interest rate input field (withdrawal period) -->
                 <v-text-field
                     v-else
                     prefix="%"
@@ -1011,6 +1004,8 @@ watch(
                     sparInput.endpoint == 'entnahme/interest-rate'
                   "
                 ></v-text-field>
+
+                <!-- info button for interest rate (withdrawal period) -->
                 <v-btn
                     icon
                     elevation="0"
@@ -1027,7 +1022,8 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- End date Radio Button -->
+
+            <!-- end date radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -1042,23 +1038,6 @@ watch(
             <!-- End date Form -->
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
-                <!--End date response slot
-                <v-card
-                    v-if="sparInput.endpoint == 'entnahme/end-date'"
-                    width="100%"
-                    height="44"
-                    variant="outlined"
-                    :color="props.apiResponseSparen ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title>{{
-                        props.apiResponseEntnahme
-                            ? props.apiResponseEntnahme.end
-                            : ""
-                      }}
-                    </v-card-title>
-                  </v-card-item>
-                </v-card>-->
 
                 <!--End date response slot-->
                 <v-text-field
@@ -1073,6 +1052,8 @@ watch(
                     readonly
                     type="date"
                 ></v-text-field>
+
+                <!-- end date input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -1086,6 +1067,8 @@ watch(
                     sparInput.endpoint == 'entnahme/end-date'
                   "
                 ></v-text-field>
+
+                <!-- end date info button -->
                 <v-btn
                     icon
                     elevation="0"
@@ -1102,7 +1085,7 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- End capital Radio Button -->
+            <!-- final capital radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
@@ -1114,34 +1097,12 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- End capital Form -->
+            <!-- final capital Form -->
 
             <v-row class="px-5 pb-2">
               <v-col class="flex ps-2 px-0" offset="1">
-                <!--End capital response slot
-                <v-card
-                    v-if="sparInput.endpoint == 'entnahme/capital'"
-                    width="100%"
-                    height="44"
-                    variant="outlined"
-                    :color="props.apiResponseSparen ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title
-                    >{{
-                        props.apiResponseEntnahme
-                            ? props.apiResponseEntnahme.capitalResult
-                                ? props.apiResponseEntnahme.capitalResult
-                                    .capitalAmount
-                                : ""
-                            : ""
-                      }} €
-                    </v-card-title
-                    >
-                  </v-card-item>
-                </v-card>-->
 
-                <!--End capital input field-->
+                <!-- final capital response slot -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'entnahme/capital'"
                     variant="outlined"
@@ -1157,6 +1118,8 @@ watch(
                     type="number"
                     readonly
                 ></v-text-field>
+
+                <!-- final capital input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -1171,6 +1134,8 @@ watch(
                     sparInput.endpoint == '' || sparInput.endpoint == 'entnahme/capital'
                   "
                 ></v-text-field>
+
+                <!-- final capital info button -->
                 <v-btn
                     icon
                     elevation="0"
@@ -1190,7 +1155,7 @@ watch(
         </v-radio-group>
       </v-card>
 
-      <!-- Berechnen Button -->
+      <!-- calculate button -->
       <v-btn
           block
           class="text-none"
@@ -1206,7 +1171,4 @@ watch(
 </template>
 
 <style scoped>
-.v-input {
-  line-height: unset;
-}
 </style>
