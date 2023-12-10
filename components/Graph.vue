@@ -70,13 +70,24 @@ watch(
         labels: {
           format: '{value:%Y}', // Fromat the year display
         },
+        // To spend the first and last year in any case
+        tickPositioner: function () {
+          var positions = [],
+            dataMin = yearsToSeries[0][0],
+            dataMax = yearsToSeries[yearsToSeries.length - 1][0];
+
+          // Add the first and last year to the list of positions
+          positions.push(dataMin);
+          positions.push(dataMax);
+
+          return positions;
+        },
         title: {
           text: 'Years',
         },
-        //categories: ['Apples', 'Bananas', 'Oranges'],
       },
       yAxis: {
-        // visible: false,        // Don't show the Y Axis
+        //visible: false, // Don't show the Y Axis
         max: maxYAxis,
         title: {
           text: 'Capital',
