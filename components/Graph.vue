@@ -2,7 +2,7 @@
 import { Chart as highcharts } from "highcharts-vue";
 
 const props = defineProps(["series", "result"]);
-const maxYAxis = ref(props.result.capitalAmount); // The maximum value of the Y Axis
+const maxYAxis = ref(50000); //ref(props.result.capitalAmount); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
 
 const assignYearsToSeries = (series: [], result: {}) => {
