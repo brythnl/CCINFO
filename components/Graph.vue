@@ -2,7 +2,7 @@
 import { Chart as highcharts } from "highcharts-vue";
 
 const props = defineProps(["series", "result"]);
-const maxYAxis = ref(50000); //ref(props.result.capitalAmount); // The maximum value of the Y Axis
+const maxYAxis = ref(props.result.capitalAmount); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
 
 const assignYearsToSeries = (series: [], result: {}) => {
@@ -42,6 +42,9 @@ watch(
     // Control the range of the y axis
     if (newValue.result.capitalAmount > maxYAxis.value)
       maxYAxis.value = newValue.result.capitalAmount;
+    else if (maxYAxis.value === undefined)
+      maxYAxis.value = newValue.result.capitalAmount; // Set max of Y Axis if it's null
+
     yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
   },
   { deep: true }
@@ -76,12 +79,17 @@ watch(
             dataMin = yearsToSeries[0][0],
             dataMax = yearsToSeries[yearsToSeries.length - 1][0];
 
-          // Add the first and last year to the list of positions
+          // yearsToSeries.forEach((element) => {
+          //   positions.push(element[0]);
+          // });
+
+          //Add the first and last year to the list of positions
           positions.push(dataMin);
           positions.push(dataMax);
 
           return positions;
         },
+        tickInterval: 1,
         title: {
           text: 'Years',
         },
