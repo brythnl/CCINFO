@@ -4,7 +4,7 @@ import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
 import { getAPIToken } from "~/utils/auth";
 import {
   removeSearchedEndpointFromInput,
-  revertOutput
+  revertOutput,
 } from "../utils/formUtils";
 
 const API_TOKEN = ref("");
@@ -17,15 +17,15 @@ const callsTwoSameEndpoints = ref(false);
 const hasSameInputs = ref(false);
 
 /* Query parameters of:
-* Index 0 => current API call
-* Index 1 => previous API call
-*/
-const financeMathInputs: financeMathInput[] = ref([{}, {}])
+ * Index 0 => current API call
+ * Index 1 => previous API call
+ */
+const financeMathInputs: financeMathInput[] = ref([{}, {}]);
 /* Response results of:
-* Index 0 => current API call
-* Index 1 => previous API call
-*/
-const financeMathResults: financeMathResult[] = ref([{}, {}])
+ * Index 0 => current API call
+ * Index 1 => previous API call
+ */
+const financeMathResults: financeMathResult[] = ref([{}, {}]);
 
 // Processed data to pass in to graph component
 const previousGraphData: financeMathResult = ref({
@@ -49,41 +49,50 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   // Save current query parameters on index 0 and push back previous parameters to index 1
   financeMathInputs.value.unshift(formInput);
   // Remove query parameters of API call before previous API call
-  if (financeMathInputs.value.length > 2) financeMathInputs.value.pop()
+  if (financeMathInputs.value.length > 2) financeMathInputs.value.pop();
 
   // Check if both API calls are directed to the same endpoint
-  if (financeMathInputs.value[0].endpoint === financeMathInputs.value[1].endpoint) {
+  if (
+    financeMathInputs.value[0].endpoint === financeMathInputs.value[1].endpoint
+  ) {
     callsTwoSameEndpoints.value = true;
   } else callsTwoSameEndpoints.value = false;
 
   // Check if previous and current API call has the same query parameters
-  if (JSON.stringify(financeMathInputs.value[0]) == JSON.stringify(financeMathInputs.value[1])) {
+  if (
+    JSON.stringify(financeMathInputs.value[0]) ==
+    JSON.stringify(financeMathInputs.value[1])
+  ) {
     hasSameInputs.value = true;
   } else hasSameInputs.value = false;
 
-
   // API call to selected endpoint
-  const {data} = await useFinanceMathFetch<financeMathResult>(
-      formInput.endpoint,
-      formInput,
-      API_TOKEN.value,
+  const { data } = await useFinanceMathFetch<financeMathResult>(
+    formInput.endpoint,
+    formInput,
+    API_TOKEN.value
   );
 
   // Save current API response result on index 0 and push back previous result to index 1
-  financeMathResults.value.unshift(data)
+  financeMathResults.value.unshift(data);
   // Remove response before previous response
-  if (financeMathResults.value.length > 2) financeMathResults.value.pop()
+  if (financeMathResults.value.length > 2) financeMathResults.value.pop();
 
-  if (formTab.value === 'saving') {
-    revertedSavingResult.value = revertOutput(financeMathResults.value[0].value);
-  } else if (formTab.value === 'withdraw') {
-    revertedWithdrawResult.value = revertOutput(financeMathResults.value[0].value);
-    revertedWithdrawResult.value.savingRate = -revertedWithdrawResult.value.savingRate;
+  if (formTab.value === "saving") {
+    revertedSavingResult.value = revertOutput(
+      financeMathResults.value[0].value
+    );
+  } else if (formTab.value === "withdraw") {
+    revertedWithdrawResult.value = revertOutput(
+      financeMathResults.value[0].value
+    );
+    revertedWithdrawResult.value.savingRate =
+      -revertedWithdrawResult.value.savingRate;
   }
 
   // Save previous graph data
-  previousGraphData.value.capitalResult = graphData.value.capitalResult
-  previousGraphData.value.capitalSeries = graphData.value.capitalSeries
+  previousGraphData.value.capitalResult = graphData.value.capitalResult;
+  previousGraphData.value.capitalSeries = graphData.value.capitalSeries;
 
   // Fetch capital series for the graph for other selected endpoints (doesn't return capital series) outside /capital
   if (formInput.endpoint !== "capital") {
@@ -93,9 +102,12 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
     // Input preprocessing, so that it can be passed to /capital API call as query parameters
     switch (formInput.endpoint) {
       case "end-date":
-        if(formTab.value==="withdraw"){
-          capitalSeriesInput.savingRate=-capitalSeriesInput.savingRate;
-          capitalSeriesInput.oneTimeInvestment = capitalSeriesInput.oneTimeInvestment.map((investment)=>-investment);
+        if (formTab.value === "withdraw") {
+          capitalSeriesInput.savingRate = -capitalSeriesInput.savingRate;
+          capitalSeriesInput.oneTimeInvestment =
+            capitalSeriesInput.oneTimeInvestment.map(
+              (investment) => -investment
+            );
         }
         capitalSeriesInput.end = result.end;
         break;
@@ -114,23 +126,30 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
     }
 
     // API call to /capital
-    const {data} = await useFinanceMathFetch<financeMathResult>(
-        "capital",
-        capitalSeriesInput,
-        API_TOKEN.value,
+    const { data } = await useFinanceMathFetch<financeMathResult>(
+      "capital",
+      capitalSeriesInput,
+      API_TOKEN.value
     );
 
     // Assign result from first endpoint call as graph data
-    graphData.value.capitalResult = revertOutput(financeMathResults.value[0].value);
+    graphData.value.capitalResult = revertOutput(
+      financeMathResults.value[0].value
+    );
     if (formTab.value === "withdraw" && formInput.endpoint === "end-date") {
-      graphData.value.capitalResult.startInvestment = -graphData.value.capitalResult.startInvestment;
+      graphData.value.capitalResult.startInvestment =
+        -graphData.value.capitalResult.startInvestment;
     }
     // Assign result from second call to /capital to get capital series as graph data
     graphData.value.capitalSeries = revertOutput(data.value).capitalSeries;
-
-  } else { // Assign results from /capital API fetch as graph data
-    graphData.value.capitalResult = revertOutput(financeMathResults.value[0].value).capitalResult;
-    graphData.value.capitalSeries = revertOutput(financeMathResults.value[0].value).capitalSeries;
+  } else {
+    // Assign results from /capital API fetch as graph data
+    graphData.value.capitalResult = revertOutput(
+      financeMathResults.value[0].value
+    ).capitalResult;
+    graphData.value.capitalSeries = revertOutput(
+      financeMathResults.value[0].value
+    ).capitalSeries;
   }
 }
 
@@ -154,7 +173,7 @@ const financeMathInputEntnahme: financeMathInput = ref({});
  *
  * in each case API call for endPoint capital for both plan will be sent for the Graph, when if it has'nt been sent yet.
  */
-async function fetchKombiPlan({sparForm, entnahmeForm}) {
+async function fetchKombiPlan({ sparForm, entnahmeForm }) {
   financeMathInputSparen.value = sparForm;
   financeMathInputEntnahme.value = entnahmeForm;
 
@@ -167,47 +186,48 @@ async function fetchKombiPlan({sparForm, entnahmeForm}) {
     financeMathInputEntnahme.value.endpoint = "saving-start-value";
 
     // fetch start capital from entnahmeplan for the end capital of sparplan
-    const {data: entnahmeStartCapitalData} =
-        await useFinanceMathFetch<financeMathResult>(
-            financeMathInputEntnahme.value.endpoint,
-            financeMathInputEntnahme.value,
-            API_TOKEN.value,
-        );
+    const { data: entnahmeStartCapitalData } =
+      await useFinanceMathFetch<financeMathResult>(
+        financeMathInputEntnahme.value.endpoint,
+        financeMathInputEntnahme.value,
+        API_TOKEN.value
+      );
     financeMathResultEntnahme.value = entnahmeStartCapitalData;
-    revertedWithdrawResult.value= revertOutput(entnahmeStartCapitalData.value);
-    revertedWithdrawResult.value.savingRate=-revertedWithdrawResult.value.savingRate;
+    revertedWithdrawResult.value = revertOutput(entnahmeStartCapitalData.value);
+    revertedWithdrawResult.value.savingRate =
+      -revertedWithdrawResult.value.savingRate;
 
     // set entnahmeplan start capital as sparplan end capital
     financeMathInputSparen.value.endValue = Math.round(
-        financeMathResultEntnahme.value.value.startInvestment,
+      financeMathResultEntnahme.value.value.startInvestment
     );
     financeMathInputEntnahme.value.oneTimeInvestment[0] = Math.round(
-        financeMathResultEntnahme.value.value.startInvestment,
+      financeMathResultEntnahme.value.value.startInvestment
     );
-
 
     // fetch data for sparplan to selected endpoint
-    const {data: sparplanData} = await useFinanceMathFetch<financeMathResult>(
-        financeMathInputSparen.value.endpoint,
-        financeMathInputSparen.value,
-        API_TOKEN.value,
+    const { data: sparplanData } = await useFinanceMathFetch<financeMathResult>(
+      financeMathInputSparen.value.endpoint,
+      financeMathInputSparen.value,
+      API_TOKEN.value
     );
     financeMathResultSparen.value = sparplanData;
-    revertedSavingResult.value= revertOutput(financeMathResultSparen.value.value);
-
+    revertedSavingResult.value = revertOutput(
+      financeMathResultSparen.value.value
+    );
 
     // fetch capital series for entnahmeplan
     const { data: entnahmeSeriesData } =
       await useFinanceMathFetch<financeMathResult>(
         "capital",
         financeMathInputEntnahme.value,
-        API_TOKEN.value,
+        API_TOKEN.value
       );
-      entnahmeSeriesData.value = revertOutput(entnahmeSeriesData.value);
+    entnahmeSeriesData.value = revertOutput(entnahmeSeriesData.value);
     // fetch capital series for sparplan
     const result = toRaw(financeMathResultSparen.value.value);
-    const {endValue, ...capitalSeriesInput}: financeMathInput =
-        financeMathInputSparen.value;
+    const { endValue, ...capitalSeriesInput }: financeMathInput =
+      financeMathInputSparen.value;
 
     // assign the value from the result from previous API call in capitalSeriesInput
     switch (endpointType[1]) {
@@ -233,68 +253,70 @@ async function fetchKombiPlan({sparForm, entnahmeForm}) {
       await useFinanceMathFetch<financeMathResult>(
         "capital",
         capitalSeriesInput,
-        API_TOKEN.value,
+        API_TOKEN.value
       );
-      sparenSeriesData.value = revertOutput(sparenSeriesData.value);
+    sparenSeriesData.value = revertOutput(sparenSeriesData.value);
     // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
-    graphData.value.capitalSeries =
-      sparenSeriesData.value.capitalSeries.concat(
-        entnahmeSeriesData.value.capitalSeries,
-      );
+    graphData.value.capitalSeries = sparenSeriesData.value.capitalSeries.concat(
+      entnahmeSeriesData.value.capitalSeries
+    );
     graphData.value.capitalResult = entnahmeSeriesData.value.capitalResult;
     // Assign needed variables for the capitalResult value for graph
     graphData.value.capitalResult.startInvestment =
-        sparenSeriesData.value.capitalResult.startInvestment;
-
+      sparenSeriesData.value.capitalResult.startInvestment;
   } else if (endpointType[0] === "entnahme") {
     // assign endpoint each plan
     financeMathInputSparen.value.endpoint = "capital";
     financeMathInputEntnahme.value.endpoint = endpointType[1];
 
     // fetch end capital of sparplan for startInvestment of entnahmeplan
-    const {data: sparEndCapitalData} =
-        await useFinanceMathFetch<financeMathResult>(
-            financeMathInputSparen.value.endpoint,
-            financeMathInputSparen.value,
-            API_TOKEN.value,
-        );
+    const { data: sparEndCapitalData } =
+      await useFinanceMathFetch<financeMathResult>(
+        financeMathInputSparen.value.endpoint,
+        financeMathInputSparen.value,
+        API_TOKEN.value
+      );
     financeMathResultSparen.value = sparEndCapitalData;
     revertedSavingResult.value = revertOutput(sparEndCapitalData.value);
 
     // set sparplan end capital as entnahmeplan start capital
-    if(financeMathInputEntnahme.value.endpoint==="end-date"){
+    if (financeMathInputEntnahme.value.endpoint === "end-date") {
       financeMathInputEntnahme.value.oneTimeInvestment[0] = -Math.round(
-        financeMathResultSparen.value.value.capitalResult.capitalAmount,
+        financeMathResultSparen.value.value.capitalResult.capitalAmount
       );
-      if(financeMathInputEntnahme.value.endValue<=0){
-        financeMathInputEntnahme.value.endValue=1;
-        }
-    }else{
+      if (financeMathInputEntnahme.value.endValue <= 0) {
+        financeMathInputEntnahme.value.endValue = 1;
+      }
+    } else {
       financeMathInputEntnahme.value.oneTimeInvestment[0] = Math.round(
-        financeMathResultSparen.value.value.capitalResult.capitalAmount,
+        financeMathResultSparen.value.value.capitalResult.capitalAmount
       );
     }
     // fetch data for entnahmeplan to selected endpoint
-    const {data: entnahmeData} = await useFinanceMathFetch<financeMathResult>(
-        financeMathInputEntnahme.value.endpoint,
-        financeMathInputEntnahme.value,
-        API_TOKEN.value,
+    const { data: entnahmeData } = await useFinanceMathFetch<financeMathResult>(
+      financeMathInputEntnahme.value.endpoint,
+      financeMathInputEntnahme.value,
+      API_TOKEN.value
     );
     financeMathResultEntnahme.value = entnahmeData;
     revertedWithdrawResult.value = revertOutput(entnahmeData.value);
-    revertedWithdrawResult.value.savingRate=-revertedWithdrawResult.value.savingRate;
+    revertedWithdrawResult.value.savingRate =
+      -revertedWithdrawResult.value.savingRate;
 
     // if the endpoint is not capital
     if (financeMathInputEntnahme.value.endpoint !== "capital") {
       const result = toRaw(financeMathResultEntnahme.value.value);
-      const {endValue, ...capitalSeriesInput}: financeMathInput =
-          financeMathInputEntnahme.value;
+      const { endValue, ...capitalSeriesInput }: financeMathInput =
+        financeMathInputEntnahme.value;
 
       // assign the value from the result from previous API call in capitalSeriesInput
       switch (financeMathInputEntnahme.value.endpoint) {
         case "end-date":
-          capitalSeriesInput.savingRate=-capitalSeriesInput.savingRate;
-          capitalSeriesInput.oneTimeInvestment = capitalSeriesInput.oneTimeInvestment.map((investment)=>-investment);
+          capitalSeriesInput.savingRate = -capitalSeriesInput.savingRate;
+          capitalSeriesInput.oneTimeInvestment =
+            capitalSeriesInput.oneTimeInvestment.map(
+              (investment) => -investment
+            );
           capitalSeriesInput.end = result.end;
           break;
         case "interest-rate":
@@ -316,33 +338,32 @@ async function fetchKombiPlan({sparForm, entnahmeForm}) {
         await useFinanceMathFetch<financeMathResult>(
           "capital",
           capitalSeriesInput,
-          API_TOKEN.value,
+          API_TOKEN.value
         );
-        entnahmeSeriesData.value = revertOutput(entnahmeSeriesData.value);
+      entnahmeSeriesData.value = revertOutput(entnahmeSeriesData.value);
       // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
       graphData.value.capitalSeries =
         revertedSavingResult.value.capitalSeries.concat(
-          entnahmeSeriesData.value.capitalSeries,
+          entnahmeSeriesData.value.capitalSeries
         );
 
       // Assign needed variables for the capitalResult value for graph
-      graphData.value.capitalResult =
-        entnahmeSeriesData.value.capitalResult;
+      graphData.value.capitalResult = entnahmeSeriesData.value.capitalResult;
       graphData.value.capitalResult.startInvestment =
-      revertedSavingResult.value.capitalResult.startInvestment;
+        revertedSavingResult.value.capitalResult.startInvestment;
     } else {
       // if the endpoint is /capital
       // Merge the 2 capitalSeries form Spar- and Entnahmeplan for graph
       graphData.value.capitalSeries =
-      revertedSavingResult.value.capitalSeries.concat(
-        revertedWithdrawResult.value.capitalSeries,
+        revertedSavingResult.value.capitalSeries.concat(
+          revertedWithdrawResult.value.capitalSeries
         );
 
       // Assign needed variables for the capitalResult value for graph
       graphData.value.capitalResult =
-      revertedWithdrawResult.value.capitalResult;
+        revertedWithdrawResult.value.capitalResult;
       graphData.value.capitalResult.startInvestment =
-      revertedSavingResult.value.capitalResult.startInvestment;
+        revertedSavingResult.value.capitalResult.startInvestment;
     }
   }
 }
@@ -356,19 +377,21 @@ onBeforeMount(async () => {
   <header class="bg-white">
     <v-row class="custom-row">
       <v-col cols="auto" class="flex align-center">
-        <img class="pa-5 pe-0"
-             src="https://assets-global.website-files.com/60d5bca841056859df8738f0/60dec34edc0691ce3efed5f1_Logo.svg"
-             alt="logo">
+        <img
+          class="pa-5 pe-0"
+          src="https://assets-global.website-files.com/60d5bca841056859df8738f0/60dec34edc0691ce3efed5f1_Logo.svg"
+          alt="logo"
+        />
       </v-col>
       <v-spacer></v-spacer>
       <v-col cols="auto" class="flex align-center me-2 me-md-10">
         <v-switch
-            v-model="api"
-            hide-details
-            inset
-            color="primary"
-            label="API"
-            width="auto"
+          v-model="api"
+          hide-details
+          inset
+          color="primary"
+          label="API"
+          width="auto"
         ></v-switch>
       </v-col>
     </v-row>
@@ -381,7 +404,7 @@ onBeforeMount(async () => {
             <div>
               <v-card-text>
                 <div>
-                  <form-tabs @tabUpdate="(n: string) => (formTab = n)"/>
+                  <form-tabs @tabUpdate="(n: string) => (formTab = n)" />
                 </div>
                 <v-window v-model="formTab">
                   <v-window-item value="saving">
@@ -421,8 +444,8 @@ onBeforeMount(async () => {
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
                     <graph
-                        :series="graphData.capitalSeries"
-                        :result="graphData.capitalResult"
+                      :series="graphData.capitalSeries"
+                      :result="graphData.capitalResult"
                     />
                   </v-window-item>
                   <v-window-item value="vorher">
@@ -447,32 +470,38 @@ onBeforeMount(async () => {
         </div>
       </v-col>
       <v-slide-x-reverse-transition leave-absolute>
-      <v-col :cols="12" :sm="12" :md="12" :lg="4" class="px-1 h-100" v-if="api">  
-        <div class="h-100" >
-          <v-card class="h-100 rounded-xl elevation-6 pb-5">
-            <v-card-text>
-              <api-visualization
+        <v-col
+          :cols="12"
+          :sm="12"
+          :md="12"
+          :lg="4"
+          class="px-1 h-100"
+          v-if="api"
+        >
+          <div class="h-100">
+            <v-card class="h-100 rounded-xl elevation-6 pb-5">
+              <v-card-text>
+                <api-visualization
                   v-if="formTab == 'comb'"
                   :apiRequest="financeMathInputSparen"
                   :apiRequest2="financeMathInputEntnahme"
                   :apiResponse="financeMathResultSparen.value"
                   :apiResponse2="financeMathResultEntnahme.value"
-              />
-              <api-visualization
-                v-else
-                :apiRequest="financeMathInputs[0]"
-                :apiResponse="financeMathResults[0].value"
-                :apiRequest2="null"
-                :apiResponse2="null"
-              />
-            </v-card-text>
-          </v-card>
-        </div>
-      </v-col>
-    </v-slide-x-reverse-transition>
+                />
+                <api-visualization
+                  v-else
+                  :apiRequest="financeMathInputs[0]"
+                  :apiResponse="financeMathResults[0].value"
+                  :apiRequest2="null"
+                  :apiResponse2="null"
+                />
+              </v-card-text>
+            </v-card>
+          </div>
+        </v-col>
+      </v-slide-x-reverse-transition>
     </v-row>
   </v-container>
-
 </template>
 
 <style scoped>
@@ -494,7 +523,7 @@ onBeforeMount(async () => {
   }
 }
 
-.custom-row{
+.custom-row {
   height: 120px;
 }
 </style>

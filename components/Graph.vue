@@ -42,6 +42,9 @@ watch(
     // Control the range of the y axis
     if (newValue.result.capitalAmount > maxYAxis.value)
       maxYAxis.value = newValue.result.capitalAmount;
+    else if (maxYAxis.value === undefined)
+      maxYAxis.value = newValue.result.capitalAmount; // Set max of Y Axis if it's null
+
     yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
   },
   { deep: true }
@@ -70,13 +73,29 @@ watch(
         labels: {
           format: '{value:%Y}', // Fromat the year display
         },
+        // To spend the first and last year in any case
+        tickPositioner: function () {
+          var positions = [],
+            dataMin = yearsToSeries[0][0],
+            dataMax = yearsToSeries[yearsToSeries.length - 1][0];
+
+          // yearsToSeries.forEach((element) => {
+          //   positions.push(element[0]);
+          // });
+
+          //Add the first and last year to the list of positions
+          positions.push(dataMin);
+          positions.push(dataMax);
+
+          return positions;
+        },
+        tickInterval: 1,
         title: {
           text: 'Years',
         },
-        //categories: ['Apples', 'Bananas', 'Oranges'],
       },
       yAxis: {
-        // visible: false,        // Don't show the Y Axis
+        //visible: false, // Don't show the Y Axis
         max: maxYAxis,
         title: {
           text: 'Capital',
