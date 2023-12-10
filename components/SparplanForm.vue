@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watch } from "vue";
+import {watch} from "vue";
 import {
   nextMonthFirstDay,
   inTenYears,
@@ -80,81 +80,96 @@ function emitData() {
 }
 
 watch(
-  () => sparplanInput.oneTimeInvestmentDate,
-  () => {
-    setEndDateToBiggestDate(sparplanInput);
-  },
-  { deep: true },
+    () => sparplanInput.oneTimeInvestmentDate,
+    () => {
+      setEndDateToBiggestDate(sparplanInput);
+    },
+    {deep: true},
 );
 
 watch(
-  () => sparplanInput.savingPlanEnd,
-  () => {
-    setEndDateToBiggestDate(sparplanInput);
-    if (
-      new Date(sparplanInput.savingPlanEnd) <
-      new Date(sparplanInput.savingPlanStart)
-    )
-      sparplanInput.savingPlanEnd = sparplanInput.savingPlanStart;
-  },
+    () => sparplanInput.savingPlanEnd,
+    () => {
+      setEndDateToBiggestDate(sparplanInput);
+      if (
+          new Date(sparplanInput.savingPlanEnd) <
+          new Date(sparplanInput.savingPlanStart)
+      )
+        sparplanInput.savingPlanEnd = sparplanInput.savingPlanStart;
+    },
 );
 watch(
-  () => props.apiResponse,
-  () => {
-    switch (sparplanInput.endpoint) {
-      case "saving-start-value":
-        sparplanInput.oneTimeInvestment[0] = props.apiResponse.startInvestment;
-        break;
-      case "saving-rate":
-        sparplanInput.savingRate = props.apiResponse.savingRate;
-        break;
-      case "interest-rate":
-        sparplanInput.InterestRate =  props.apiResponse.InterestRate;
-        break;
-      case "end-date":
-        sparplanInput.end = props.apiResponse.end;
-        break;
-      case "capital":
-        sparplanInput.endValue = props.apiResponse.capitalResult.capitalAmount;
-        break;
-    }
-  },
+    () => props.apiResponse,
+    () => {
+      switch (sparplanInput.endpoint) {
+        case "saving-start-value":
+          sparplanInput.oneTimeInvestment[0] = props.apiResponse.startInvestment;
+          break;
+        case "saving-rate":
+          sparplanInput.savingRate = props.apiResponse.savingRate;
+          break;
+        case "interest-rate":
+          sparplanInput.InterestRate = props.apiResponse.InterestRate;
+          break;
+        case "end-date":
+          sparplanInput.end = props.apiResponse.end;
+          break;
+        case "capital":
+          sparplanInput.endValue = props.apiResponse.capitalResult.capitalAmount;
+          break;
+      }
+    },
 );
+watch(sparplanInput.end,
+()=>{
+  if(new Date(sparplanInput.end)<new Date(sparplanInput.savingPlanEnd)){
+    sparplanInput.savingPlanEnd=sparplanInput.end;
+  }else{
+    if(sparplanInput.savingPlanEnd===inTenYears){
+
+    }
+  }
+}
+)
 </script>
 
 <template>
-  <h3 class="font-bold pb-5 mt-5">Was möchten Sie berechnen?</h3>
+  <h3 class="font-bold pb-5 mt-5">Wählen Sie Ihr Berechnungsziel:</h3>
   <v-form>
     <div>
       <v-card class="overflow-y-auto" elevation="0" max-height="580">
         <v-radio-group
-          v-model="sparplanInput.endpoint"
-          @update:model-value="changeEndpoint"
+            v-model="sparplanInput.endpoint"
+            @update:model-value="changeEndpoint"
         >
           <v-container class="px-0 py-0">
-            <!-- Startkapital Radio Button -->
+
+            <!-- starting value radio button -->
             <v-row class="mt-0 ps-5">
               <v-col cols="12" class="flex px-0 py-0">
                 <v-radio
-                  label="Startkapital"
-                  value="saving-start-value"
-                  density="compact"
+                    label="Startkapital"
+                    value="saving-start-value"
+                    density="compact"
                 ></v-radio>
               </v-col>
             </v-row>
 
-            <!-- Startkapital Form -->
-            
+            <!-- starting value form -->
+
             <v-row class="px-5">
+
               <v-col cols="1" class="px-0">
-                <v-icon v-if="sparplanInput.endpoint!='saving-start-value'" size="large" @click="toggleStartkapital">{{ iconStartkapital }}</v-icon>
+                <v-icon v-if="sparplanInput.endpoint!='saving-start-value'" size="large" @click="toggleStartkapital">
+                  {{ iconStartkapital }}
+                </v-icon>
               </v-col>
               <v-col
-                :cols="einmalZahlung == 0 ? 11 : 10"
-                :sm="startkapitalDetails ? (einmalZahlung == 0 ? 6 : 5) : 11"
-                class="flex ps-2 px-0"
+                  :cols="einmalZahlung == 0 ? 11 : 10"
+                  :sm="startkapitalDetails ? (einmalZahlung == 0 ? 6 : 5) : 11"
+                  class="flex ps-2 px-0"
               >
-                <!--Startkapital response slot-->
+                <!-- starting value response slot-->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='saving-start-value'"
                     label="1. Einmalzahlung"
@@ -167,6 +182,8 @@ watch(
                     type="number"
                     readonly
                 ></v-text-field>
+
+                <!-- starting value input field -->
                 <v-text-field
                     v-else
                     label="1. Einmalzahlung"
@@ -180,153 +197,154 @@ watch(
                     step="1000"
                     :disabled="sparplanInput.endpoint==''"
                 ></v-text-field>
+
+                <!-- starting value info button -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines any number of one-time cash in- and
-                    outflows. Positive investment amounts are interpreted as
-                    cash inflows and negative investment amounts as cash
-                    outflows. Default date for first cash inflow (start capital)
-                    is today.
+                    Trage den Betrag ein, den du zu Beginn investieren möchtest.<br>Der Standardwert für das Datum der 1. Investition ist der 1. des nächsten Monats.<br>Über
+                    das Aufklapp-Symbol kannst du zusätzliche Optionen für Einmalzahlungen festlegen.
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
+              <!-- starting value date field -->
               <v-col
-                v-if="startkapitalDetails"
-                offset="1"
-                offset-sm="0"
-                :cols="einmalZahlung == 0 ? 11 : 10"
-                sm="5"
-                class="flex ps-2 px-0"
+                  v-if="startkapitalDetails"
+                  offset="1"
+                  offset-sm="0"
+                  :cols="einmalZahlung == 0 ? 11 : 10"
+                  sm="5"
+                  class="flex ps-2 px-0"
               >
                 <v-text-field
-                  label="Startdatum"
-                  variant="outlined"
-                  density="compact"
-                  v-model="sparplanInput.oneTimeInvestmentDate[0]"
-                  hide-details
-                  type="date"
-                  :disabled="
+                    label="Startdatum"
+                    variant="outlined"
+                    density="compact"
+                    v-model="sparplanInput.oneTimeInvestmentDate[0]"
+                    hide-details
+                    type="date"
+                    :disabled="
                     sparplanInput.endpoint == '' ||
                     sparplanInput.endpoint == 'saving-start-value'
                   "
                 ></v-text-field>
+                <!-- starting value date info button -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines any number of one-time cash in- and
-                    outflows. Positive investment amounts are interpreted as
-                    cash inflows and negative investment amounts as cash
-                    outflows. Default date for first cash inflow (start capital)
-                    is today.
+                    Gib das Datum ein, an dem du das Startkapital in deinen Sparplan investieren möchtest. Standardmäßig ist dieses der 1. des nächsten Monats.
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 py-0"> </v-col>
+              <v-col cols="1" class="px-0 py-0"></v-col>
             </v-row>
 
-            <!-- Startkapital Detail-Ansicht -->
+            <!-- starting value details form -->
+
             <v-row
-              v-if="startkapitalDetails"
-              v-for="n in einmalZahlung"
-              class="px-5"
+                v-if="startkapitalDetails"
+                v-for="n in einmalZahlung"
+                class="px-5"
             >
               <v-col offset="1" cols="10" sm="5" class="flex ps-2 px-0">
+
+                <!-- one time investment input field -->
                 <v-text-field
-                  prefix="€"
-                  :label="`${n + 1}. Einmalzahlung`"
-                  variant="outlined"
-                  density="compact"
-                  v-model="sparplanInput.oneTimeInvestment[n]"
-                  hide-details
-                  placeholder="weitere Einmalzahlung"
-                  type="number"
-                  step="1000"
-                  :disabled="sparplanInput.endpoint == '' ||
+                    prefix="€"
+                    :label="`${n + 1}. Einmalzahlung`"
+                    variant="outlined"
+                    density="compact"
+                    v-model="sparplanInput.oneTimeInvestment[n]"
+                    hide-details
+                    placeholder="weitere Einmalzahlung"
+                    type="number"
+                    step="1000"
+                    :disabled="sparplanInput.endpoint == '' ||
                   sparplanInput.endpoint == 'saving-start-value'"
                 ></v-text-field>
+
+                <!-- one time ivestment info button -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines any number of one-time cash in- and
-                    outflows. Positive investment amounts are interpreted as
-                    cash inflows and negative investment amounts as cash
-                    outflows. Default date for first cash inflow (start capital)
-                    is today.
+                    Gib hier den Betrag der zusätzlichen Einmalzahlung ein.
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
               <v-col
-                offset="1"
-                offset-sm="0"
-                cols="10"
-                sm="5"
-                class="flex ps-2 px-0"
+                  offset="1"
+                  offset-sm="0"
+                  cols="10"
+                  sm="5"
+                  class="flex ps-2 px-0"
               >
+                <!-- one time investment date field -->
                 <v-text-field
-                  :label="`${n + 1}. Datum`"
-                  variant="outlined"
-                  density="compact"
-                  v-model="sparplanInput.oneTimeInvestmentDate[n]"
-                  hide-details
-                  type="date"
-                  :disabled="
+                    :label="`${n + 1}. Datum`"
+                    variant="outlined"
+                    density="compact"
+                    v-model="sparplanInput.oneTimeInvestmentDate[n]"
+                    hide-details
+                    type="date"
+                    :disabled="
                     sparplanInput.endpoint == '' ||
                     sparplanInput.endpoint == 'saving-start-value'
                   "
                 ></v-text-field>
+
+                <!-- one time investment date info button -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines any number of one-time cash in- and
-                    outflows. Positive investment amounts are interpreted as
-                    cash inflows and negative investment amounts as cash
-                    outflows. Default date for first cash inflow (start capital)
-                    is today.
+                    Gib hier das Datum der zusätzlichen Einmalzahlung ein.
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
+              <!-- button to delete one time investment -->
               <v-col
-                cols="1"
-                class="ps-2 px-0 d-flex align-center justify-start"
+                  cols="1"
+                  class="ps-2 px-0 d-flex align-center justify-start"
               >
                 <v-icon
-                  @click="
+                    @click="
                     () => {
                       einmalZahlung > 0 ? einmalZahlung-- : (einmalZahlung = 0);
                       sparplanInput.oneTimeInvestment.pop();
                       sparplanInput.oneTimeInvestmentDate.pop();
                     }
                   "
-                  :disabled="
+                    :disabled="
                     sparplanInput.endpoint == '' ||
                     sparplanInput.endpoint == 'saving-start-value' ||
                     einmalZahlung <= 0
@@ -337,45 +355,50 @@ watch(
               </v-col>
             </v-row>
 
-            <!-- Button Neue Einmalzahlung -->
+            <!-- Button New one time investment -->
             <v-row v-if="startkapitalDetails" class="px-5">
               <v-col offset="1" cols="auto" class="ps-2 py-0">
                 <v-btn
-                  @click="() => einmalZahlung++"
-                  :disabled="
+                    @click="() => einmalZahlung++"
+                    :disabled="
                     sparplanInput.endpoint == '' ||
                     sparplanInput.endpoint == 'saving-start-value'
                   "
-                  rounded="lg"
-                  variant="tonal"
-                  color="#4195AC"
-                  text="Neue Einmalzahlung"
-                  prepend-icon="mdi-plus-circle-outline"
-                  class="text-none"
+                    rounded="lg"
+                    variant="tonal"
+                    color="#4195AC"
+                    text="Neue Einmalzahlung"
+                    prepend-icon="mdi-plus-circle-outline"
+                    class="text-none"
                 >
                 </v-btn>
               </v-col>
             </v-row>
 
-            <!-- Sparrate Radio Button -->
+            <!-- saving rate radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
-                  label="Sparrate"
-                  value="saving-rate"
-                  density="compact"
+                    label="Sparrate"
+                    value="saving-rate"
+                    density="compact"
                 ></v-radio>
               </v-col>
             </v-row>
 
-            <!-- Sparrate Form -->
+            <!-- saving rate form -->
 
             <v-row class="px-5">
+              <!-- saving rate toggle button -->
               <v-col cols="1" class="px-0">
-                <v-icon v-if="sparplanInput.endpoint!='saving-rate'" size="large" @click="toggleSparplan">{{ iconSparplan }}</v-icon>
+                <v-icon v-if="sparplanInput.endpoint!='saving-rate'" size="large" @click="toggleSparplan">
+                  {{ iconSparplan }}
+                </v-icon>
               </v-col>
               <v-col cols="11" class="flex ps-2 px-0">
+
+                <!-- saving rate response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='saving-rate'"
                     variant="outlined"
@@ -388,6 +411,8 @@ watch(
                     hide-details
                     type="number"
                 ></v-text-field>
+
+                <!-- saving rate input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -401,174 +426,162 @@ watch(
                     step="50"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
                 ></v-text-field>
+
+                <!-- saving rate info button -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter specifies the monthly savings rate.
+                    Trage den monatlichen Betrag ein, den du regelmäßig in deinen Sparplan investieren möchtest.<br>Über
+                    das Aufklapp-Symbol kannst du zusätzliche Optionen für die Sparrate festlegen.
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 py-0"> </v-col>
+              <v-col cols="1" class="px-0 py-0"></v-col>
             </v-row>
 
-            <!-- Sparrate Detail-Ansicht -->
+            <!-- saving rate details form -->
+
             <v-row class="px-5" v-if="sparplanDetails">
               <v-col offset="1" cols="11" sm="5" class="flex ps-2 px-0">
+
+                <!-- saving rate begin date field -->
                 <v-text-field
-                  label="Startdatum"
-                  variant="outlined"
-                  density="compact"
-                  v-model="sparplanInput.savingPlanBegin"
-                  hide-details
-                  type="date"
-                  :disabled="
+                    label="Startdatum"
+                    variant="outlined"
+                    density="compact"
+                    v-model="sparplanInput.savingPlanBegin"
+                    hide-details
+                    type="date"
+                    :disabled="
                     sparplanInput.endpoint == '' ||
                     sparplanInput.endpoint == 'saving-rate'
                   "
                 ></v-text-field>
+
+                <!-- info button for saving rate begin date -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the begin of the optional savings
-                    plan. If no date is specified, the savings rate is applied
-                    for the total investment period.
+                    Wähle das Datum aus, an dem du mit deinen monatlichen Sparraten beginnen möchtest. Standardmäßig ist dieser auf den 1. des nächsten Monats eingestellt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
+
               <v-spacer></v-spacer>
+
               <v-col
-                offset="1"
-                offset-sm="0"
-                cols="11"
-                sm="5"
-                class="flex ps-2 px-0"
+                  offset="1"
+                  offset-sm="0"
+                  cols="11"
+                  sm="5"
+                  class="flex ps-2 px-0"
               >
+                <!-- saving rate end date field -->
                 <v-text-field
-                  label="Enddatum"
-                  variant="outlined"
-                  density="compact"
-                  v-model="sparplanInput.savingPlanEnd"
-                  hide-details
-                  type="date"
-                  min="sparplan"
-                  :disabled="
+                    label="Enddatum"
+                    variant="outlined"
+                    density="compact"
+                    v-model="sparplanInput.savingPlanEnd"
+                    hide-details
+                    type="date"
+                    min="sparplan"
+                    :disabled="
                     sparplanInput.endpoint == '' ||
                     sparplanInput.endpoint == 'saving-rate'
                   "
                 ></v-text-field>
+
+                <!--info button for saving rate end date -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the end of the optional savings plan.
-                    If no date is specified, the savings rate is applied for the
-                    total investment period.
+                    Wähle das Datum aus, an dem du deine monatlichen Sparraten beenden möchtest. Standardmäßig ist dieses auf den 1. des nächsten Monats eingestellt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
             </v-row>
 
+            <!-- dynamic saving rate factor -->
             <v-row class="px-5" v-if="sparplanDetails">
               <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
+                <!-- checkbox for dynamic saving rate factor -->
                 <v-radio-group v-model="dynamik" hide-details>
                   <v-checkbox
-                    label="Dynamik"
-                    density="compact"
-                    hide-details=""
-                    :disabled="
+                      label="Dynamik"
+                      density="compact"
+                      hide-details=""
+                      :disabled="
                     sparplanInput.endpoint == '' ||
                     sparplanInput.endpoint == 'saving-rate'
                   "
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
+              <!-- input field for dynamic saving rate factor -->
               <v-col v-if="dynamik" class="flex pe-0">
                 <v-text-field
-                  variant="outlined"
-                  prefix="%"
-                  density="compact"
-                  v-model="sparplanInput.dynamicSavingRateFactor"
-                  hide-details
-                  type="number"
-                  step="0.5"
+                    variant="outlined"
+                    prefix="%"
+                    density="compact"
+                    v-model="sparplanInput.dynamicSavingRateFactor"
+                    hide-details
+                    type="number"
+                    step="0.5"
                 ></v-text-field>
+                <!-- info button for dynamic saving rate factor -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the percentage by which the monthly
-                    savings rate annually increases.
+                    Trage einen Faktor ein, der die dynamische Anpassung der Sparrate beeinflusst. Beispiel: Bei einer monatlichen Sparrate von 50€ und einem Faktor von 150% sparst du plötzlich 75€ pro Monat.
                   </v-tooltip>
                 </v-btn>
               </v-col>
             </v-row>
 
-            <!-- Sparzins Radio Button -->
+            <!-- interest rate radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
-                  label="Verzinsung"
-                  value="interest-rate"
-                  density="compact"
+                    label="Sparzins"
+                    value="interest-rate"
+                    density="compact"
                 ></v-radio>
               </v-col>
             </v-row>
 
-            <!--Sparzins response slot
-            <v-row v-if="sparplanInput.endpoint=='interest-rate'" class="px-5">
-              <v-col cols="1" class="px-0"></v-col>
-              <v-col cols="11" class="flex ps-2 px-0">
-                <v-card
-                  v-if="sparplanInput.endpoint == 'interest-rate'"
-                  width="100%"
-                  height="44"
-                  variant="outlined"
-                  :color="props.apiResponse ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title
-                      >{{
-                        props.apiResponse ? props.apiResponse.interestRate : ""
-                      }}%</v-card-title
-                    >
-                  </v-card-item>
-                </v-card>
-                <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
-                  <v-icon size="small">mdi-information-outline</v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>-->
-
-            <!-- Sparzins Form -->
+            <!-- interest rate form -->
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
+                <!-- interest rate response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='interest-rate'"
                     prefix="%"
@@ -581,6 +594,7 @@ watch(
                     hide-details
                     type="number"
                 ></v-text-field>
+                <!-- interest rate input field -->
                 <v-text-field
                     v-else
                     prefix="%"
@@ -594,61 +608,39 @@ watch(
                     step="0.5"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='interest-rate'"
                 ></v-text-field>
+                <!-- info button for interest rate -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter determines the interest rate for calculations
-                    in financial mathematics.
+                    Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld sparst.
                   </v-tooltip>
                 </v-btn>
               </v-col>
             </v-row>
 
-            <!-- Enddatum Radio Button -->
+            <!-- end date radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
-                  label="Enddatum"
-                  value="end-date"
-                  density="compact"
+                    label="Enddatum"
+                    value="end-date"
+                    density="compact"
                 ></v-radio>
               </v-col>
             </v-row>
 
-            <!--Enddate response slot
-            <v-row v-if="sparplanInput.endpoint=='end-date'" class="px-5">
-              <v-col cols="1" class="px-0"></v-col>
-              <v-col cols="11" class="flex ps-2 px-0">
-                <v-card
-                  v-if="sparplanInput.endpoint == 'end-date'"
-                  width="100%"
-                  height="44"
-                  variant="outlined"
-                  :color="props.apiResponse ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title>{{
-                      props.apiResponse ? props.apiResponse.end : ""
-                    }}</v-card-title>
-                  </v-card-item>
-                </v-card>
-                <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
-                  <v-icon size="small">mdi-information-outline</v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>-->
-
-            <!--Enddate input field-->
+            <!--end date form -->
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1">
+                <!-- end date response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='end-date'"
                     variant="outlined"
@@ -660,6 +652,7 @@ watch(
                     hide-details
                     type="date"
                 ></v-text-field>
+                <!-- end date input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -670,75 +663,40 @@ watch(
                     type="date"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='end-date'"
                 ></v-text-field>
+                <!-- end date info button -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines the end of the investment period.
+                    Trage hier das Datum ein, an dem dein Sparplan enden soll. Standardmäßig ist dieses auf 10 Jahre von heute eingestellt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
             </v-row>
 
-            <!-- Endkapital Radio Button -->
+            <!-- capital radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
-                  label="Endkapital"
-                  value="capital"
-                  density="compact"
+                    label="Endkapital"
+                    value="capital"
+                    density="compact"
                 ></v-radio>
               </v-col>
             </v-row>
 
-            <!-- Endkapital Form -->
+            <!-- capital form -->
 
-            <!--Endkapital response slot
-            <v-row v-if="sparplanInput.endpoint=='capital'" class="px-5">
-              <v-col cols="1" class="px-0"></v-col>
-              <v-col cols="11" class="flex ps-2 px-0">
-                <v-card
-                  v-if="sparplanInput.endpoint == 'capital'"
-                  width="100%"
-                  height="44"
-                  variant="outlined"
-                  :color="props.apiResponse ? '#4195AC' : ''"
-                >
-                  <v-card-item class="py-0">
-                    <v-card-title
-                      >{{
-                        props.apiResponse
-                          ? props.apiResponse.capitalResult
-                            ? props.apiResponse.capitalResult.capitalAmount
-                            : ""
-                          : ""
-                      }} €
-                    </v-card-title>
-                  </v-card-item>
-                </v-card>
-                <v-btn icon elevation="0" variant="plain" height="auto" width="auto" class="ps-2">
-                  <v-icon size="small">mdi-information-outline</v-icon>
-                  <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter defines any number of one-time cash in- and outflows.
-                    Positive investment amounts are interpreted as cash inflows and negative investment amounts as
-                    cash
-                    outflows.
-                    Default date for first cash inflow (start capital) is today.
-                  </v-tooltip>
-                </v-btn>
-              </v-col>
-            </v-row>-->
-
-            <!--Endkapital input field-->
             <v-row class="px-5">
               <v-col class="flex ps-2 px-0" offset="1" cols="11">
+                <!-- capital response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint==='capital'"
                     variant="outlined"
@@ -750,6 +708,7 @@ watch(
                     hide-details
                     type="number"
                 ></v-text-field>
+                <!-- capital input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
@@ -761,18 +720,18 @@ watch(
                     step="1000"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='capital'"
                 ></v-text-field>
+                <!-- capital info button -->
                 <v-btn
-                  icon
-                  elevation="0"
-                  variant="plain"
-                  height="auto"
-                  width="auto"
-                  class="ps-2"
+                    icon
+                    elevation="0"
+                    variant="plain"
+                    height="auto"
+                    width="auto"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    This parameter specifies the desired capital that should be
-                    available at the end of the investment period.
+                    Gib hier den Betrag an, den du am Ende deines Sparplans erreichen möchtest. Das Endkapital ist dein finanzielles Ziel.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -781,14 +740,14 @@ watch(
         </v-radio-group>
       </v-card>
 
-      <!-- Berechnen Button -->
+      <!-- calculate button -->
       <v-btn
-        block
-        class="text-none"
-        color="#16486B"
-        size="x-large"
-        variant="flat"
-        @click="emitData"
+          block
+          class="text-none"
+          color="#16486B"
+          size="x-large"
+          variant="flat"
+          @click="emitData"
       >
         Berechnen
       </v-btn>
@@ -796,10 +755,7 @@ watch(
   </v-form>
 </template>
 
-<!-- Zahl- und Datumsfeld gleiche Größe -->
+
 <style scoped>
-/*.v-input {
-  line-height: unset;
-}*/
 
 </style>

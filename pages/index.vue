@@ -284,8 +284,8 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
       financeMathInputEntnahme.value.oneTimeInvestment[0] = -Math.round(
         financeMathResultSparen.value.value.capitalResult.capitalAmount
       );
-      if (financeMathInputEntnahme.endValue <= 0) {
-        financeMathInputEntnahme.endValue = 1;
+      if (financeMathInputEntnahme.value.endValue <= 0) {
+        financeMathInputEntnahme.value.endValue = 1;
       }
     } else {
       financeMathInputEntnahme.value.oneTimeInvestment[0] = Math.round(
@@ -469,28 +469,37 @@ onBeforeMount(async () => {
           </v-card>
         </div>
       </v-col>
-      <v-col v-if="api" :cols="12" :sm="12" :md="12" :lg="4" class="px-1 h-100">
-        <div class="h-100">
-          <v-card class="h-100 rounded-xl elevation-6 pb-5">
-            <v-card-text>
-              <api-visualization
-                v-if="formTab == 'comb'"
-                :apiRequest="financeMathInputSparen"
-                :apiRequest2="financeMathInputEntnahme"
-                :apiResponse="financeMathResultSparen.value"
-                :apiResponse2="financeMathResultEntnahme.value"
-              />
-              <api-visualization
-                v-else
-                :apiRequest="financeMathInputs[0]"
-                :apiResponse="financeMathResults[0].value"
-                :apiRequest2="null"
-                :apiResponse2="null"
-              />
-            </v-card-text>
-          </v-card>
-        </div>
-      </v-col>
+      <v-slide-x-reverse-transition leave-absolute>
+        <v-col
+          :cols="12"
+          :sm="12"
+          :md="12"
+          :lg="4"
+          class="px-1 h-100"
+          v-if="api"
+        >
+          <div class="h-100">
+            <v-card class="h-100 rounded-xl elevation-6 pb-5">
+              <v-card-text>
+                <api-visualization
+                  v-if="formTab == 'comb'"
+                  :apiRequest="financeMathInputSparen"
+                  :apiRequest2="financeMathInputEntnahme"
+                  :apiResponse="financeMathResultSparen.value"
+                  :apiResponse2="financeMathResultEntnahme.value"
+                />
+                <api-visualization
+                  v-else
+                  :apiRequest="financeMathInputs[0]"
+                  :apiResponse="financeMathResults[0].value"
+                  :apiRequest2="null"
+                  :apiResponse2="null"
+                />
+              </v-card-text>
+            </v-card>
+          </div>
+        </v-col>
+      </v-slide-x-reverse-transition>
     </v-row>
   </v-container>
 </template>
