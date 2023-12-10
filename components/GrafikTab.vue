@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 const planSelect = ref("aktuell");
+
+const props = defineProps(["callsTwoSameEndpoints", "hasSameInputs"])
+
 const emit = defineEmits(["grafikUpdate"]);
+
 function grafikUpdate() {
   emit("grafikUpdate", planSelect.value);
 }
@@ -14,12 +18,12 @@ function grafikUpdate() {
     grow
     stacked
     hide-slider
-    class="rounded-lg black-border text-primary"
+    class="rounded-lg blue-border text-primary"
     selected-class="bg-primary"
   >
     <v-tab value="aktuell">Grafik<br />aktuell</v-tab>
-    <v-tab value="vorher">Grafik<br />vorher</v-tab>
-    <v-tab value="vergleich">Vergleich</v-tab>
+    <v-tab value="vorher" :disabled="!callsTwoSameEndpoints">Grafik<br />vorher</v-tab>
+    <v-tab value="vergleich" :disabled="!callsTwoSameEndpoints || hasSameInputs">Vergleich</v-tab>
     <v-tab value="tabelle">Tabelle</v-tab>
   </v-tabs>
 </template>
@@ -29,7 +33,7 @@ function grafikUpdate() {
   text-transform: none !important;
 }
 
-.black-border {
-  border: 1px solid #4195ac;
+.blue-border {
+  border: 1px solid #4195AC;
 }
 </style>

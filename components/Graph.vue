@@ -44,12 +44,13 @@ watch(
       maxYAxis.value = newValue.result.capitalAmount;
     yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
   },
-  { deep: true },
+  { deep: true }
 );
 </script>
 
 <template>
   <highcharts
+    class="mt-5 text-sm"
     :options="{
       chart: {
         type: 'area', // Basic area chart
@@ -59,6 +60,9 @@ watch(
       },
       title: {
         text: 'Capital accumulation',
+        style: {
+          fontSize: 'inherit',
+        },
       },
 
       xAxis: {
@@ -72,13 +76,14 @@ watch(
         //categories: ['Apples', 'Bananas', 'Oranges'],
       },
       yAxis: {
+        // visible: false,        // Don't show the Y Axis
         max: maxYAxis,
         title: {
           text: 'Capital',
         },
         labels: {
           formatter: function () {
-            return this.value + ' €'; // TODO: The Currency should be variable
+            return this.value.toLocaleString('en') + ' €'; // TODO: The Currency should be variable and the 1000 seperators also (Change 'en' <-> 'de')
           },
         },
       },
@@ -86,13 +91,16 @@ watch(
         {
           showInLegend: false,
           data: yearsToSeries,
+          color: '#4195ac',
         },
       ],
       tooltip: {
         formatter: function () {
           return `In ${new Date(
-            this.x,
-          ).getFullYear()} there would be a capital of ${this.y.toFixed(2)}€`;
+            this.x
+          ).getFullYear()} there would be a capital of ${Math.round(
+            this.y
+          ).toLocaleString('en')}€`;
         },
       },
     }"

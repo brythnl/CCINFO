@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { watch } from "vue";
 import {
-  todayDate,
+  nextMonthFirstDay,
   inTenYears,
   validateInput,
   setEndDateToBiggestDate,
@@ -23,16 +23,16 @@ const props = defineProps<{
 }>();
 
 const entnahmeplaninput = reactive({
-  begin: todayDate,
+  begin: nextMonthFirstDay,
   end: inTenYears,
   interestCalculation: "YEARLY",
   interestRate: 0,
   reductionFactor: 0,
   dynamicSavingRateFactor: 0,
-  savingPlanBegin: todayDate,
-  savingPlanEnd: inTenYears,
+  savingPlanBegin: "",
+  savingPlanEnd: "",
   oneTimeInvestment: [0],
-  oneTimeInvestmentDate: [todayDate],
+  oneTimeInvestmentDate: [nextMonthFirstDay],
   savingRate: 0,
   endValue: 0,
   endpoint: "",
@@ -74,7 +74,7 @@ function emitData() {
     toSend.oneTimeInvestment = toSend.oneTimeInvestment.map(
       (investment) => -investment,
     );
-    toSend.endValue === 0 ? (toSend.endValue = 1) : "";
+    toSend.endValue === 0 ? (toSend.endValue = 0.01) : "";
   } else {
     toSend.savingRate = -toSend.savingRate;
   }
@@ -91,16 +91,39 @@ watch(
 );
 
 watch(
-  () => entnahmeplaninput.savingPlanEnd,
+  () => props.apiResponse,
   () => {
-    setEndDateToBiggestDate(entnahmeplaninput);
-    if (
-      new Date(entnahmeplaninput.savingPlanEnd) <
-      new Date(entnahmeplaninput.savingPlanStart)
-    )
-      entnahmeplaninput.savingPlanEnd = entnahmeplaninput.savingPlanStart;
+    switch (entnahmeplaninput.endpoint) {
+      case "saving-start-value":
+        entnahmeplaninput.oneTimeInvestment[0] = props.apiResponse.startInvestment;
+        break;
+      case "saving-rate":
+        entnahmeplaninput.savingRate = props.apiResponse.savingRate;
+        break;
+      case "interest-rate":
+        entnahmeplaninput.InterestRate =  props.apiResponse.InterestRate;
+        break;
+      case "end-date":
+        entnahmeplaninput.end = props.apiResponse.end;
+        break;
+      case "capital":
+        entnahmeplaninput.endValue = props.apiResponse.capitalResult.capitalAmount;
+        break;
+    }
   },
 );
+
+watch(entnahmeplaninput.end,
+()=>{
+  if(new Date(entnahmeplaninput.end)<new Date(entnahmeplaninput.savingPlanEnd)){
+    entnahmeplaninput.savingPlanEnd=entnahmeplaninput.end;
+  }else{
+    if(entnahmeplaninput.savingPlanEnd===inTenYears){
+
+    }
+  }
+}
+)
 </script>
 
 <template>
@@ -143,7 +166,7 @@ watch(
                         props.apiResponse
                           ? props.apiResponse.startInvestment
                           : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
@@ -226,6 +249,10 @@ watch(
                   v-model="entnahmeplaninput.oneTimeInvestmentDate[0]"
                   hide-details
                   type="date"
+                  :disabled="
+                    entnahmeplaninput.endpoint == '' ||
+                    entnahmeplaninput.endpoint == 'saving-start-value'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -333,7 +360,7 @@ watch(
                     () => {
                       einmalZahlung > 0 ? einmalZahlung-- : (einmalZahlung = 0);
                       entnahmeplaninput.oneTimeInvestment.pop();
-                      sparplanInput.oneTimeInvestmentDate.pop();
+                      entnahmeplaninput.oneTimeInvestmentDate.pop();
                     }
                   "
                   :disabled="
@@ -400,7 +427,7 @@ watch(
                     <v-card-title
                       >{{
                         props.apiResponse ? props.apiResponse.savingRate : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
@@ -448,6 +475,10 @@ watch(
                   v-model="entnahmeplaninput.savingPlanBegin"
                   hide-details
                   type="date"
+                  :disabled="
+                    entnahmeplaninput.endpoint == '' ||
+                    entnahmeplaninput.endpoint == 'saving-rate'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -481,6 +512,10 @@ watch(
                   hide-details
                   type="date"
                   min="sparplan"
+                  :disabled="
+                    entnahmeplaninput.endpoint == '' ||
+                    entnahmeplaninput.endpoint == 'saving-rate'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -506,6 +541,10 @@ watch(
                     label="Dynamik"
                     density="compact"
                     hide-details=""
+                    :disabled="
+                    entnahmeplaninput.endpoint == '' ||
+                    entnahmeplaninput.endpoint == 'saving-rate'
+                  "
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
@@ -542,7 +581,7 @@ watch(
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
                   disabled
-                  label="Entnahmezins"
+                  label="Verzinsung"
                   value="interest-rate"
                   density="compact"
                 ></v-radio>
@@ -695,7 +734,7 @@ watch(
                             ? props.apiResponse.capitalResult.capitalAmount
                             : ""
                           : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { financeMathResult } from "~/types/index.d.ts";
 import {
-  todayDate,
+  nextMonthFirstDay,
   inTenYears,
   inTwentyYears,
   validateInput,
@@ -27,16 +27,16 @@ const props = defineProps<{
 }>();
 
 const sparInput = reactive({
-  begin: todayDate,
+  begin: nextMonthFirstDay,
   end: inTenYears,
   interestCalculation: "YEARLY",
   interestRate: 0,
   reductionFactor: 0,
   dynamicSavingRateFactor: 0,
-  savingPlanBegin: todayDate,
-  savingPlanEnd: inTenYears,
+  savingPlanBegin: "",
+  savingPlanEnd: "",
   oneTimeInvestment: [0],
-  oneTimeInvestmentDate: [todayDate],
+  oneTimeInvestmentDate: [nextMonthFirstDay],
   savingRate: 0,
   endValue: 0,
   endpoint: "",
@@ -49,8 +49,8 @@ const entnahmeInput = reactive({
   interestRate: 0,
   reductionFactor: 0,
   dynamicSavingRateFactor: 0,
-  savingPlanBegin: sparInput.end,
-  savingPlanEnd: inTwentyYears,
+  savingPlanBegin: "",
+  savingPlanEnd: "",
   oneTimeInvestment: [0],
   oneTimeInvestmentDate: [sparInput.end],
   savingRate: 0,
@@ -140,6 +140,37 @@ watch(
       entnahmeInput.savingPlanEnd = entnahmeInput.savingPlanStart;
   },
 );
+watch(
+  () => [props.apiResponseEntnahme,props.apiResponseSparen],
+  () => {
+    switch (sparInput.endpoint) {
+      case "sparen/saving-start-value":
+        sparInput.oneTimeInvestment[0] = props.apiResponseSparen.startInvestment;
+        break;
+      case "sparen/saving-rate":
+        sparInput.savingRate = props.apiResponseSparen.savingRate;
+        break;
+      case "sparen/interest-rate":
+        sparInput.InterestRate =  props.apiResponseSparen.InterestRate;
+        break;
+      case "sparen/end-date":
+        sparInput.end = props.apiResponseSparen.end;
+        break;
+      case "entnahme/saving-rate":
+        entnahmeInput.savingRate = props.apiResponseEntnahme.savingRate;
+        break;
+      case "entnahme/interest-rate":
+        entnahmeInput.InterestRate =  props.apiResponseEntnahme.InterestRate;
+        break;
+      case "entnahme/end-date":
+        entnahmeInput.end = props.apiResponseEntnahme.end;
+        break;
+      case "entnahme/capital":
+        entnahmeInput.endValue = props.apiResponseEntnahme.capitalResult.capitalAmount
+        break;
+    }
+  },
+);
 </script>
 
 <template>
@@ -183,7 +214,7 @@ watch(
                         props.apiResponseSparen
                           ? props.apiResponseSparen.startInvestment
                           : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
@@ -267,6 +298,10 @@ watch(
                   v-model="sparInput.oneTimeInvestmentDate[0]"
                   hide-details
                   type="date"
+                  :disabled="
+                    sparInput.endpoint == '' ||
+                    sparInput.endpoint == 'sparen/saving-start-value'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -392,6 +427,10 @@ watch(
                   text="Neue Einmalzahlung"
                   prepend-icon="mdi-plus-circle-outline"
                   class="text-none"
+                  :disabled="
+                    sparInput.endpoint == '' ||
+                    sparInput.endpoint == 'sparen/saving-start-value'
+                  "
                 >
                 </v-btn>
               </v-col>
@@ -433,7 +472,7 @@ watch(
                         props.apiResponseSparen
                           ? props.apiResponseSparen.savingRate
                           : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
@@ -483,6 +522,10 @@ watch(
                   v-model="sparInput.savingPlanBegin"
                   hide-details
                   type="date"
+                  :disabled="
+                    sparInput.endpoint == '' ||
+                    sparInput.endpoint == 'sparen/saving-rate'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -516,6 +559,10 @@ watch(
                   hide-details
                   type="date"
                   min="sparplan"
+                  :disabled="
+                    sparInput.endpoint == '' ||
+                    sparInput.endpoint == 'sparen/saving-rate'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -542,6 +589,10 @@ watch(
                     label="Dynamik"
                     density="compact"
                     hide-details=""
+                    :disabled="
+                    sparInput.endpoint == '' ||
+                    sparInput.endpoint == 'sparen/saving-rate'
+                  "
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
@@ -739,7 +790,7 @@ watch(
                         props.apiResponseEntnahme
                           ? props.apiResponseEntnahme.savingRate
                           : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
@@ -788,6 +839,10 @@ watch(
                   v-model="entnahmeInput.savingPlanBegin"
                   hide-details
                   type="date"
+                  :disabled="
+                    sparInput.endpoint == '' ||
+                    sparInput.endpoint == 'entnahme/saving-rate'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -820,6 +875,10 @@ watch(
                   hide-details
                   type="date"
                   min="sparplan"
+                  :disabled="
+                    sparInput.endpoint == '' ||
+                    sparInput.endpoint == 'entnahme/saving-rate'
+                  "
                 ></v-text-field>
                 <v-btn
                   icon
@@ -847,6 +906,10 @@ watch(
                       label="Dynamik"
                       density="compact"
                       hide-details=""
+                      :disabled="
+                    sparInput.endpoint == '' ||
+                    sparInput.endpoint == 'entnahme/saving-rate'
+                  "
                     ></v-checkbox>
                   </v-radio-group>
                 </div>
@@ -1049,7 +1112,7 @@ watch(
                                 .capitalAmount
                             : ""
                           : ""
-                      }}€</v-card-title
+                      }} €</v-card-title
                     >
                   </v-card-item>
                 </v-card>
@@ -1066,7 +1129,7 @@ watch(
                   type="number"
                   step="0.01"
                   :disabled="
-                    sparInput.endpoint == '' || sparInput.endpoint == 'capital'
+                    sparInput.endpoint == '' || sparInput.endpoint == 'entnahme/capital'
                   "
                 ></v-text-field>
                 <v-btn
