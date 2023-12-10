@@ -120,6 +120,17 @@ watch(
       }
     },
 );
+watch(sparplanInput.end,
+()=>{
+  if(new Date(sparplanInput.end)<new Date(sparplanInput.savingPlanEnd)){
+    sparplanInput.savingPlanEnd=sparplanInput.end;
+  }else{
+    if(sparplanInput.savingPlanEnd===inTenYears){
+
+    }
+  }
+}
+)
 </script>
 
 <template>
