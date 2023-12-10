@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import {watch} from "vue";
 import {
-  todayDate,
   nextMonthFirstDay,
   inTenYears,
   validateInput,
@@ -34,8 +33,8 @@ const sparplanInput = reactive({
   interestRate: 0,
   reductionFactor: 0,
   dynamicSavingRateFactor: 0,
-  savingPlanBegin: nextMonthFirstDay,
-  savingPlanEnd: inTenYears,
+  savingPlanBegin: "",
+  savingPlanEnd: "",
   oneTimeInvestment: [0],
   oneTimeInvestmentDate: [nextMonthFirstDay],
   savingRate: 0,
@@ -121,8 +120,6 @@ watch(
       }
     },
 );
-
-console.log(sparplanInput)
 </script>
 
 <template>

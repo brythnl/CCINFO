@@ -15,6 +15,7 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }));
       });
     },
+    'dayjs-nuxt',
     "@nuxtjs/tailwindcss",
   ],
   vite: {
@@ -24,6 +25,9 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
+  },
+  dayjs: {
+    plugins: ['customParseFormat'],
   },
   ssr: false,
 });

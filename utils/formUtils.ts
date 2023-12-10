@@ -5,7 +5,6 @@ export const todayDate = formatDate(new Date());
 export const nextMonthFirstDay = calculateNextMonthFirstDay();
 
 function formatDate(date: Date) {
-  //return date.toISOString().split("T")[0].toString().replace("/T/", "");
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear().toString();
@@ -97,4 +96,33 @@ export const revertOutput = (responseOutput:financeMathResult):financeMathResult
   if(apiOutput.startInvestment){
     apiOutput.startInvestment = Math.round(apiOutput.startInvestment/100);  }
   return apiOutput;
+}
+
+/**
+ * Remove searched API endpoint from the input
+ * @param {financeMathInput} formInput - User data for API query parameters
+ * @return {financeMathInput}
+ */
+export const removeSearchedEndpointFromInput = (formInput: financeMathInput): financeMathInput => {
+  const processedFormInput = formInput;
+
+  switch (processedFormInput.endpoint) {
+    case "capital":
+      delete processedFormInput.endValue;
+      break;
+    case "end-date":
+      delete processedFormInput.end;
+      break;
+    case "interest-rate":
+      delete processedFormInput.interestRate;
+      break;
+    case "saving-rate":
+      delete processedFormInput.savingRate;
+      break;
+    case "saving-start-value":
+      delete processedFormInput.startInvestment;
+      break;
+  }
+
+  return processedFormInput;
 }
