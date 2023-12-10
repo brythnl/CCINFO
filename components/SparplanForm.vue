@@ -109,7 +109,7 @@ watch(
           sparplanInput.savingRate = props.apiResponse.savingRate;
           break;
         case "interest-rate":
-          sparplanInput.InterestRate = props.apiResponse.InterestRate;
+          sparplanInput.interestRate = props.apiResponse.InterestRate;
           break;
         case "end-date":
           sparplanInput.end = props.apiResponse.end;

@@ -4,21 +4,8 @@ import { watch } from "vue";
 
 const props = defineProps<{
   apiRequest: financeMathInput;
-  apiRequest2: financeMathInput;
-  apiResponse: financeMathResult;
-  apiResponse2: financeMathResult;
-  form
+  apiResponse;
 }>();
-
-console.log(props.apiResponse.capitalSeries);
-console.log(new Intl.NumberFormat().format(1000))
-
-function numberFormat(number){
-  const fixed = (number / 100).toFixed(0);
-  return new Intl.NumberFormat().format(fixed);
-}
-
-
 </script>
 
 <template>
@@ -33,11 +20,7 @@ function numberFormat(number){
     <tbody>
       <tr v-for="(item, index) in props.apiResponse.capitalSeries" :key="index">
         <td>{{ parseInt(props.apiRequest.begin.substring(0, 4)) + index +1 }}</td>
-        <td>{{ numberFormat(item) }}</td>
-      </tr>
-      <tr v-if="props.apiResponse2!=null" v-for="(item, index) in props.apiResponse2.capitalSeries" :key="index">
-        <td>{{ parseInt(props.apiRequest.begin.substring(0, 4)) + index +1 }}</td>
-        <td>{{ numberFormat(item) }}</td>
+        <td>{{ item }}</td>
       </tr>
     </tbody>
   </v-table>

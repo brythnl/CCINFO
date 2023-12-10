@@ -462,7 +462,11 @@ onBeforeMount(async () => {
                       :newResponse="financeMathResults[0].value"
                     ></vergleichstabelle>
                   </v-window-item>
-                  <v-window-item value="tabelle">Tabelle</v-window-item>
+                  <v-window-item value="tabelle">
+                    <series-table
+                    :apiRequest="financeMathInputs[0]"
+                    :apiResponse="graphData"/>
+                  </v-window-item>
                 </v-window>
               </v-card-text>
             </div>
