@@ -20,7 +20,7 @@ const props = defineProps<{
     <tbody>
       <tr v-for="(item, index) in props.apiResponse.capitalSeries" :key="index">
         <td>{{ parseInt(props.apiRequest.begin.substring(0, 4)) + index +1 }}</td>
-        <td>{{ item }}</td>
+        <td>{{ new Intl.NumberFormat().format(item) }}</td>
       </tr>
     </tbody>
   </v-table>

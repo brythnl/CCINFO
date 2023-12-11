@@ -464,7 +464,7 @@ onBeforeMount(async () => {
                   </v-window-item>
                   <v-window-item value="tabelle">
                     <series-table
-                    :apiRequest="financeMathInputs[0]"
+                    :apiRequest="formTab==='comb'?financeMathInputSparen:financeMathInputs[0]"
                     :apiResponse="graphData"/>
                   </v-window-item>
                 </v-window>
