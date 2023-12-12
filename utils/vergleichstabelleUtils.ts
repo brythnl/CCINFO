@@ -116,6 +116,3 @@ export const filterCombinedArrayResp = (comparisonArray: any[], requestEndpoint:
   return comparisonArray.filter(item => item && item.name === selectedEndpoint);
 };
 
-const formatNumberWithThousandSeparator = (number) => {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-};
