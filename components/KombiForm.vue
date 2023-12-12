@@ -622,7 +622,7 @@ watch(
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
-                    label="Sparzins"
+                    label="Zins"
                     value="sparen/interest-rate"
                     density="compact"
                 ></v-radio>
@@ -960,7 +960,7 @@ watch(
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
                     disabled
-                    label="Entnahmezins"
+                    label="Zins"
                     value="entnahme/interest-rate"
                     density="compact"
                 ></v-radio>

@@ -579,7 +579,7 @@ watch(entnahmeplaninput.end,
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-radio
                     disabled
-                    label="Verzinsung"
+                    label="Zins"
                     value="interest-rate"
                     density="compact"
                 ></v-radio>
