@@ -16,6 +16,7 @@ const callsTwoSameEndpoints = ref(false);
 // Check if previous and current API calls have the same query parameters
 const hasSameInputs = ref(false);
 
+
 /* Query parameters of:
  * Index 0 => current API call
  * Index 1 => previous API call
@@ -407,18 +408,18 @@ onBeforeMount(async () => {
                   <form-tabs @tabUpdate="(n: string) => (formTab = n)" />
                 </div>
                 <v-window v-model="formTab">
-                  <v-window-item value="saving">
+                  <v-window-item value="saving" :transition="false" :reverse-transition="false">
                     <sparplan-form
                       @calculateInput="fetchFinanceMathAPI"
                       :apiResponse="revertedSavingResult"
                     />
                   </v-window-item>
-                  <v-window-item value="withdraw"
+                  <v-window-item value="withdraw" :transition="false" :reverse-transition="false"
                     ><entnahme-form
                       @calculateInput="fetchFinanceMathAPI"
                       :apiResponse="revertedWithdrawResult"
                   /></v-window-item>
-                  <v-window-item value="comb">
+                  <v-window-item value="comb" :transition="false" :reverse-transition="false">
                     <kombi-form
                       @calculateInput="fetchKombiPlan"
                       :apiResponseSparen="revertedSavingResult"
@@ -441,20 +442,20 @@ onBeforeMount(async () => {
                   :callsTwoSameEndpoints="callsTwoSameEndpoints"
                   :hasSameInputs="hasSameInputs"
                 />
-                <v-window v-model="grafikTabs">
-                  <v-window-item value="aktuell">
+                <v-window v-model="grafikTabs" >
+                  <v-window-item value="aktuell" :transition="false" :reverse-transition="false">
                     <graph
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
                     />
                   </v-window-item>
-                  <v-window-item value="vorher">
+                  <v-window-item value="vorher" :transition="false" :reverse-transition="false">
                     <graph
                       :series="previousGraphData.capitalSeries"
                       :result="previousGraphData.capitalResult"
                     />
                   </v-window-item>
-                  <v-window-item value="vergleich">
+                  <v-window-item value="vergleich" :transition="false" :reverse-transition="false">
                     <vergleichstabelle
                       :oldRequest="financeMathInputs[1]"
                       :newRequest="financeMathInputs[0]"
@@ -462,7 +463,7 @@ onBeforeMount(async () => {
                       :newResponse="financeMathResults[0].value"
                     ></vergleichstabelle>
                   </v-window-item>
-                  <v-window-item value="tabelle">
+                  <v-window-item value="tabelle" :transition="false" :reverse-transition="false">
                     <series-table
                     :apiRequest="formTab==='comb'?financeMathInputSparen:financeMathInputs[0]"
                     :apiResponse="graphData"/>
