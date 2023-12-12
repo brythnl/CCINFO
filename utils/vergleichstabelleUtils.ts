@@ -46,7 +46,7 @@ const calculateDifference = (oldValue, newValue) => {
 const formatValue = (value, key) => {
   if (typeof value === 'number') {
     return key === "interestRate" ?
-      `${value * 100} %`
+      `${(value * 100).toFixed(2)} %`
       : `${(value / 100).toFixed(2)} €`;
   }
   else if (dayjs(value).isValid()) {
@@ -58,7 +58,7 @@ const formatValue = (value, key) => {
 const formatDifference = (difference, unit, key) => {
   if (unit == '' && typeof difference === 'number') {
     return key === "interestRate" ?
-      { difference: `${difference * 100} %`, unit: unit }
+      { difference: `${(difference * 100).toFixed(2)} %`, unit: unit }
       : { difference: `${(difference / 100).toFixed(2)} €`, unit: unit }
   }
   return { difference: difference, unit: unit };
