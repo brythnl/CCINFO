@@ -1,8 +1,15 @@
+import type { financeMathInput, financeMathResult } from '~/types/index.d.ts'
+
 import { useDayjs } from '#dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 const dayjs = useDayjs()
 dayjs.extend(customParseFormat)
+
+interface differenceAndUnit {
+  difference: string | number;
+  unit: string;
+}
 
 const names = {
   "begin": "Startdatum",
@@ -21,13 +28,13 @@ const names = {
   "startInvestment": "Startkapital"
 }
 
-const calculateDifference = (oldValue, newValue) => {
+const calculateDifference = (oldValue: number | Date, newValue: number | Date): differenceAndUnit => {
   if (typeof oldValue === "number" && typeof newValue === "number") {
     const difference = newValue - oldValue;
     return { difference, unit: '' };
   }
 
-  // überprüft, ob Werte Daten sind
+  // calculate difference for date values
   else if (dayjs(oldValue).isValid()) {
     let old_date = dayjs(oldValue);
     let new_date = dayjs(newValue);
@@ -43,10 +50,10 @@ const calculateDifference = (oldValue, newValue) => {
   }
 }
 
-const formatValue = (value, key) => {
+const formatValue = (value: number | Date, key: string): string | typeof value => {
   if (typeof value === 'number') {
     return key === "interestRate" ?
-      `${value * 100} %`
+      `${(value * 100).toFixed(2)} %`
       : `${(value / 100).toFixed(2)} €`;
   }
   else if (dayjs(value).isValid()) {
@@ -55,16 +62,16 @@ const formatValue = (value, key) => {
   return value;
 };
 
-const formatDifference = (difference, unit, key) => {
+const formatDifference = (difference: string | number , unit: string, key: string): differenceAndUnit => {
   if (unit == '' && typeof difference === 'number') {
     return key === "interestRate" ?
-      { difference: `${difference * 100} %`, unit: unit }
+      { difference: `${(difference * 100).toFixed(2)} %`, unit: unit }
       : { difference: `${(difference / 100).toFixed(2)} €`, unit: unit }
   }
   return { difference: difference, unit: unit };
 };
 
-export const createCombinedArray = (oldObj, newObj) => {
+export const createCombinedArray = (oldObj: financeMathInput | financeMathResult, newObj: financeMathInput | financeMathResult): any[] => {
   const combinedArray = [];
 
   for (const key in oldObj) {
@@ -86,7 +93,7 @@ export const createCombinedArray = (oldObj, newObj) => {
   return combinedArray;
 }
 
-export const filterCombinedArrayResp = (comparisonArray: any[], requestEndpoint: string) => {
+export const filterCombinedArrayResp = (comparisonArray: any[], requestEndpoint: string): any[] => {
   let selectedEndpoint: string;
   switch (requestEndpoint) {
     case "capital":
@@ -109,6 +116,3 @@ export const filterCombinedArrayResp = (comparisonArray: any[], requestEndpoint:
   return comparisonArray.filter(item => item && item.name === selectedEndpoint);
 };
 
-const formatNumberWithThousandSeparator = (number) => {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-};
