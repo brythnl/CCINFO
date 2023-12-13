@@ -709,8 +709,8 @@ watch(entnahmeplaninput.end,
 
             <!-- capital form -->
 
-            <v-row class="ps-5 pe-2 pb-5">
-              <v-col class="flex pe-2 px-0">
+            <v-row class="ps-5 pe-2 pb-0">
+              <v-col class="flex pe-2 px-0 py-0">
 
                 <!-- capital response slot -->
                 <v-text-field
@@ -751,7 +751,7 @@ watch(entnahmeplaninput.end,
                     variant="plain"
                     height="auto"
                     width="auto"
-                    class="ps-2"
+                    class="ps-2s"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
