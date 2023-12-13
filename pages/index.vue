@@ -6,6 +6,7 @@ import {
   removeSearchedEndpointFromInput,
   revertOutput,
 } from "../utils/formUtils";
+import AnswerSentence from "../components/AnswerSentence.vue";
 
 const API_TOKEN = ref("");
 const grafikTabs = ref("");
@@ -40,10 +41,14 @@ const graphData: financeMathResult = ref({
 // Reverted API response results (from Cent to Euro)
 const revertedWithdrawResult: financeMathResult = ref({});
 const revertedSavingResult: financeMathResult = ref({});
+const endpoint:string = ref('')
+const startDate:string = ref('')
 
 // Fetch response from Finance Math API based on user data from form
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
   // Remove searched property from input/request
+  endpoint.value = formInput.endpoint;
+  startDate.value = formInput.begin;
   formInput = removeSearchedEndpointFromInput(formInput);
 
   // Save current query parameters on index 0 and push back previous parameters to index 1
@@ -151,6 +156,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       financeMathResults.value[0].value
     ).capitalSeries;
   }
+  console.log(graphData.value.capitalResult)
 }
 
 // For Kombiplan
@@ -443,6 +449,7 @@ onBeforeMount(async () => {
                 />
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
+                    <AnswerSentence :output="graphData.capitalResult" :currency="'€'" :endpoint="endpoint" :scenario="0" :startDate="startDate"></AnswerSentence>
                     <graph
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
