@@ -137,16 +137,17 @@ watch(sparplanInput.end,
   <h1 class="flex justify-center py-5 font-bold">Wählen Sie Ihr Berechnungsziel:</h1>
   <v-form>
     <div>
-      <v-card class="overflow-y-auto" elevation="0" max-height="580">
+      <v-card elevation="0" >
         <v-chip-group
             v-model="sparplanInput.endpoint"
             @update:model-value="changeEndpoint"
             selected-class="text-primary"
+            class="overflow-hidden"
         >
           <v-container class="px-0 py-0">
 
             <!-- starting value radio button -->
-            <v-row class="mt-0 ps-5">
+            <v-row class="ps-5 mt-0">
               <v-col cols="12" class="flex px-0 py-0">
                 <v-chip
                     value="saving-start-value"
@@ -157,17 +158,11 @@ watch(sparplanInput.end,
 
             <!-- starting value form -->
 
-            <v-row class="px-5">
-
-              <v-col cols="1" class="px-0">
-                <v-icon v-if="sparplanInput.endpoint!='saving-start-value'" size="large" @click="toggleStartkapital">
-                  {{ iconStartkapital }}
-                </v-icon>
-              </v-col>
+            <v-row class="ps-5 pe-2">
               <v-col
                   :cols="einmalZahlung == 0 ? 11 : 10"
-                  :sm="startkapitalDetails ? (einmalZahlung == 0 ? 6 : 5) : 11"
-                  class="flex ps-2 px-0"
+                  :sm="startkapitalDetails ? 6 : 11"
+                  class="flex pe-2 px-0"
               >
                 <!-- starting value response slot-->
                 <v-text-field
@@ -214,15 +209,18 @@ watch(sparplanInput.end,
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col v-if="!startkapitalDetails" cols="1" class="px-0 flex align-center justify-center">
+                <v-icon v-if="sparplanInput.endpoint!='saving-start-value'" size="large" @click="toggleStartkapital">
+                  {{ iconStartkapital }}
+                </v-icon>
+              </v-col>
 
               <!-- starting value date field -->
               <v-col
                   v-if="startkapitalDetails"
-                  offset="1"
-                  offset-sm="0"
                   :cols="einmalZahlung == 0 ? 11 : 10"
                   sm="5"
-                  class="flex ps-2 px-0"
+                  class="flex px-2 px-0"
               >
                 <v-text-field
                     label="Startdatum"
@@ -251,7 +249,11 @@ watch(sparplanInput.end,
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 py-0"></v-col>
+              <v-col v-if="startkapitalDetails" cols="1" class="px-0 flex align-center justify-center">
+                <v-icon v-if="sparplanInput.endpoint!='saving-start-value'" size="large" @click="toggleStartkapital">
+                  {{ iconStartkapital }}
+                </v-icon>
+              </v-col>
             </v-row>
 
             <!-- starting value details form -->
@@ -259,9 +261,9 @@ watch(sparplanInput.end,
             <v-row
                 v-if="startkapitalDetails"
                 v-for="n in einmalZahlung"
-                class="px-5"
+                class="ps-5 pe-2"
             >
-              <v-col offset="1" cols="10" sm="5" class="flex ps-2 px-0">
+              <v-col cols="10" sm="6" class="flex pe-2 px-0">
 
                 <!-- one time investment input field -->
                 <v-text-field
@@ -295,11 +297,9 @@ watch(sparplanInput.end,
               </v-col>
 
               <v-col
-                  offset="1"
-                  offset-sm="0"
                   cols="10"
                   sm="5"
-                  class="flex ps-2 px-0"
+                  class="flex px-2"
               >
                 <!-- one time investment date field -->
                 <v-text-field
@@ -334,7 +334,7 @@ watch(sparplanInput.end,
               <!-- button to delete one time investment -->
               <v-col
                   cols="1"
-                  class="ps-2 px-0 d-flex align-center justify-start"
+                  class="px-0 flex align-center justify-center"
               >
                 <v-icon
                     @click="
@@ -356,8 +356,8 @@ watch(sparplanInput.end,
             </v-row>
 
             <!-- Button New one time investment -->
-            <v-row v-if="startkapitalDetails" class="px-5">
-              <v-col offset="1" cols="auto" class="ps-2 py-0">
+            <v-row v-if="startkapitalDetails" class="ps-5 pe-2 pb-2">
+              <v-col cols="auto" class="px-0 py-0">
                 <v-btn
                     @click="() => einmalZahlung++"
                     :disabled="
@@ -377,7 +377,7 @@ watch(sparplanInput.end,
 
             <!-- saving rate radio button -->
 
-            <v-row class="py-0 ps-5">
+            <v-row class="py-0 ps-5 pe-2">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
                     value="saving-rate"
@@ -388,14 +388,8 @@ watch(sparplanInput.end,
 
             <!-- saving rate form -->
 
-            <v-row class="px-5">
-              <!-- saving rate toggle button -->
-              <v-col cols="1" class="px-0">
-                <v-icon v-if="sparplanInput.endpoint!='saving-rate'" size="large" @click="toggleSparplan">
-                  {{ iconSparplan }}
-                </v-icon>
-              </v-col>
-              <v-col cols="11" class="flex ps-2 px-0">
+            <v-row class="ps-5 pe-2">
+              <v-col cols="11" class="flex pe-2 px-0">
 
                 <!-- saving rate response slot -->
                 <v-text-field
@@ -442,13 +436,18 @@ watch(sparplanInput.end,
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 py-0"></v-col>
+              <!-- saving rate toggle button -->
+              <v-col cols="1" class="px-0 flex justify-center align-center">
+                <v-icon v-if="sparplanInput.endpoint!='saving-rate'" size="large" @click="toggleSparplan">
+                  {{ iconSparplan }}
+                </v-icon>
+              </v-col>
             </v-row>
 
             <!-- saving rate details form -->
 
-            <v-row class="px-5" v-if="sparplanDetails">
-              <v-col offset="1" cols="11" sm="5" class="flex ps-2 px-0">
+            <v-row class="ps-5 pe-2" v-if="sparplanDetails">
+              <v-col cols="11" sm="6" class="flex pe-2 px-0">
 
                 <!-- saving rate begin date field -->
                 <v-text-field
@@ -480,14 +479,11 @@ watch(sparplanInput.end,
                 </v-btn>
               </v-col>
 
-              <v-spacer></v-spacer>
 
               <v-col
-                  offset="1"
-                  offset-sm="0"
                   cols="11"
                   sm="5"
-                  class="flex ps-2 px-0"
+                  class="flex px-2 px-0"
               >
                 <!-- saving rate end date field -->
                 <v-text-field
@@ -522,8 +518,8 @@ watch(sparplanInput.end,
             </v-row>
 
             <!-- dynamic saving rate factor -->
-            <v-row class="px-5" v-if="sparplanDetails">
-              <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
+            <v-row class="ps-5 pe-2" v-if="sparplanDetails">
+              <v-col cols="auto" class="flex px-0 align-center">
                 <!-- checkbox for dynamic saving rate factor -->
                 <v-radio-group v-model="dynamik" hide-details>
                   <v-checkbox
@@ -538,7 +534,7 @@ watch(sparplanInput.end,
                 </v-radio-group>
               </v-col>
               <!-- input field for dynamic saving rate factor -->
-              <v-col v-if="dynamik" class="flex pe-0">
+              <v-col v-if="dynamik" class="flex px-2">
                 <v-text-field
                     variant="outlined"
                     prefix="%"
@@ -563,11 +559,14 @@ watch(sparplanInput.end,
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1">
+
+              </v-col>
             </v-row>
 
             <!-- interest rate radio button -->
 
-            <v-row class="py-0 ps-5">
+            <v-row class="py-0 ps-5 pe-2">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
                     value="interest-rate"
@@ -577,8 +576,8 @@ watch(sparplanInput.end,
             </v-row>
 
             <!-- interest rate form -->
-            <v-row class="px-5">
-              <v-col class="flex ps-2 px-0" offset="1">
+            <v-row class="ps-5 pe-2">
+              <v-col class="flex pe-2 px-0">
                 <!-- interest rate response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='interest-rate'"
@@ -621,11 +620,12 @@ watch(sparplanInput.end,
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1  "></v-col>
             </v-row>
 
             <!-- end date radio button -->
 
-            <v-row class="py-0 ps-5">
+            <v-row class="py-0 ps-5 pe-2">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
                     value="end-date"
@@ -635,8 +635,8 @@ watch(sparplanInput.end,
             </v-row>
 
             <!--end date form -->
-            <v-row class="px-5">
-              <v-col class="flex ps-2 px-0" offset="1">
+            <v-row class="ps-5 pe-2">
+              <v-col class="flex pe-2 px-0">
                 <!-- end date response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='end-date'"
@@ -675,11 +675,12 @@ watch(sparplanInput.end,
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
 
             <!-- capital radio button -->
 
-            <v-row class="py-0 ps-5">
+            <v-row class="py-0 ps-5 pe-2">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
                     value="capital"
@@ -690,8 +691,8 @@ watch(sparplanInput.end,
 
             <!-- capital form -->
 
-            <v-row class="px-5">
-              <v-col class="flex ps-2 px-0" offset="1" cols="11">
+            <v-row class="ps-5 pe-2 pb-5">
+              <v-col class="flex pe-2 px-0" cols="11">
                 <!-- capital response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint==='capital'"
@@ -731,6 +732,7 @@ watch(sparplanInput.end,
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
           </v-container>
         </v-chip-group>
