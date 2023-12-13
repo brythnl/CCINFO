@@ -1158,7 +1158,7 @@ watch(
       <!-- calculate button -->
       <v-btn
           block
-          class="text-none"
+          class="text-none rounded-lg"
           color="#16486B"
           size="x-large"
           variant="flat"
