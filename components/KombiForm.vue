@@ -176,7 +176,7 @@ watch(
 
 <template>
   <!-- headline -->
-  <h3 class="font-bold pb-5 mt-5">Wählen Sie Ihr Berechnungsziel:</h3>
+  <h1 class="flex justify-center py-5 font-bold">Definieren Sie die Spar- und Entnahmephase:</h1>
   <v-form>
     <div>
       <v-card class="overflow-y-auto" elevation="0" max-height="580">

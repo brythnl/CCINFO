@@ -59,7 +59,8 @@ watch(
     <v-tab value="capitalSeries" >Kapitalserie</v-tab>
   </v-tabs>
 
-  <v-card class="overflow-y-auto bg-grey-darken-4 h-100 rounded-lg mt-5" max-height="700" height="700" variant="outlined">
+  <h1 class="flex justify-center my-5 font-bold">API Aufruf</h1>
+  <v-card class="overflow-y-auto bg-grey-darken-4 rounded-lg mx-5" max-height="650" height="600" variant="outlined">
     <v-card-item>
       <v-card-text>
         <code>Request {</code>
