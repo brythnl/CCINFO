@@ -192,7 +192,7 @@ watch(entnahmeplaninput.end,
                     prefix="€"
                     v-model="entnahmeplaninput.oneTimeInvestment[0]"
                     required
-                    hide-details
+                    :rules="[value => value > 0 || 'Bitte geben Sie einen Wert größer als 0 ein']"
                     type="number"
                     step="1000"
                     :disabled="entnahmeplaninput.endpoint == ''"

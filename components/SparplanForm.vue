@@ -160,7 +160,7 @@ watch(sparplanInput.end,
 
             <v-row class="ps-5 pe-2">
               <v-col
-                  :cols="einmalZahlung == 0 ? 11 : 10"
+                  cols="11"
                   :sm="startkapitalDetails ? 6 : 11"
                   class="flex pe-2 px-0"
               >
@@ -218,9 +218,9 @@ watch(sparplanInput.end,
               <!-- starting value date field -->
               <v-col
                   v-if="startkapitalDetails"
-                  :cols="einmalZahlung == 0 ? 11 : 10"
+                  cols="11"
                   sm="5"
-                  class="flex px-2 px-0"
+                  class="flex ps-0 pe-2"
               >
                 <v-text-field
                     label="Startdatum"
@@ -263,7 +263,7 @@ watch(sparplanInput.end,
                 v-for="n in einmalZahlung"
                 class="ps-5 pe-2"
             >
-              <v-col cols="10" sm="6" class="flex pe-2 px-0">
+              <v-col cols="11" sm="6" class="flex pe-2 px-0">
 
                 <!-- one time investment input field -->
                 <v-text-field
@@ -297,9 +297,9 @@ watch(sparplanInput.end,
               </v-col>
 
               <v-col
-                  cols="10"
+                  cols="11"
                   sm="5"
-                  class="flex px-2"
+                  class="flex ps-0 pe-2"
               >
                 <!-- one time investment date field -->
                 <v-text-field
@@ -483,7 +483,7 @@ watch(sparplanInput.end,
               <v-col
                   cols="11"
                   sm="5"
-                  class="flex px-2 px-0"
+                  class="flex ps-0 pe-2"
               >
                 <!-- saving rate end date field -->
                 <v-text-field
@@ -707,15 +707,16 @@ watch(sparplanInput.end,
                 ></v-text-field>
                 <!-- capital input field -->
                 <v-text-field
+                    ref="capital"
                     v-else
                     variant="outlined"
                     prefix="€"
                     density="compact"
                     v-model="sparplanInput.endValue"
-                    hide-details
                     type="number"
                     step="1000"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='capital'"
+                    :rules="[value => value > 0 || 'Bitte geben Sie einen Wert größer als 0 ein']"
                 ></v-text-field>
                 <!-- capital info button -->
                 <v-btn
