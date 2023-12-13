@@ -138,20 +138,20 @@ watch(sparplanInput.end,
   <v-form>
     <div>
       <v-card class="overflow-y-auto" elevation="0" max-height="580">
-        <v-radio-group
+        <v-chip-group
             v-model="sparplanInput.endpoint"
             @update:model-value="changeEndpoint"
+            selected-class="text-primary"
         >
           <v-container class="px-0 py-0">
 
             <!-- starting value radio button -->
             <v-row class="mt-0 ps-5">
               <v-col cols="12" class="flex px-0 py-0">
-                <v-radio
-                    label="Startkapital"
+                <v-chip
                     value="saving-start-value"
                     density="compact"
-                ></v-radio>
+                >Startkapital</v-chip>
               </v-col>
             </v-row>
 
@@ -379,11 +379,10 @@ watch(sparplanInput.end,
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Sparrate"
+                <v-chip
                     value="saving-rate"
                     density="compact"
-                ></v-radio>
+                >Sparrate</v-chip>
               </v-col>
             </v-row>
 
@@ -570,11 +569,10 @@ watch(sparplanInput.end,
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Zins"
+                <v-chip
                     value="interest-rate"
                     density="compact"
-                ></v-radio>
+                >Zins</v-chip>
               </v-col>
             </v-row>
 
@@ -629,11 +627,10 @@ watch(sparplanInput.end,
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Enddatum"
+                <v-chip
                     value="end-date"
                     density="compact"
-                ></v-radio>
+                >Enddatum</v-chip>
               </v-col>
             </v-row>
 
@@ -684,11 +681,10 @@ watch(sparplanInput.end,
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Endkapital"
+                <v-chip
                     value="capital"
                     density="compact"
-                ></v-radio>
+                >Endkapital</v-chip>
               </v-col>
             </v-row>
 
@@ -737,7 +733,7 @@ watch(sparplanInput.end,
               </v-col>
             </v-row>
           </v-container>
-        </v-radio-group>
+        </v-chip-group>
       </v-card>
 
       <!-- calculate button -->
