@@ -144,9 +144,11 @@ watch(entnahmeplaninput.end,
   <v-form>
     <div>
       <v-card class="overflow-y-auto" elevation="0" max-height="580">
-        <v-radio-group
+        <v-chip-group
             v-model="entnahmeplaninput.endpoint"
             @update:model-value="changeEndpoint"
+            selected-class="text-primary"
+            class="overflow-hidden"
         >
           <v-container class="px-0 py-0">
 
@@ -154,11 +156,10 @@ watch(entnahmeplaninput.end,
 
             <v-row class="mt-0 ps-5">
               <v-col cols="12" class="flex px-0 py-0">
-                <v-radio
-                    label="Startkapital"
+                <v-chip
                     value="saving-start-value"
                     density="compact"
-                ></v-radio>
+                >Startkapital</v-chip>
               </v-col>
             </v-row>
 
@@ -387,11 +388,10 @@ watch(entnahmeplaninput.end,
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Entnahmerate"
+                <v-chip
                     value="saving-rate"
                     density="compact"
-                ></v-radio>
+                >Entnahmerate</v-chip>
               </v-col>
             </v-row>
 
@@ -577,12 +577,11 @@ watch(entnahmeplaninput.end,
             <!-- interest rate radio button -->
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
+                <v-chip
                     disabled
-                    label="Zins"
                     value="interest-rate"
                     density="compact"
-                ></v-radio>
+                >Zins</v-chip>
               </v-col>
             </v-row>
 
@@ -645,11 +644,10 @@ watch(entnahmeplaninput.end,
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Enddatum"
+                <v-chip
                     value="end-date"
                     density="compact"
-                ></v-radio>
+                >Enddatum</v-chip>
               </v-col>
             </v-row>
 
@@ -706,11 +704,10 @@ watch(entnahmeplaninput.end,
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Endkapital"
+                <v-chip
                     value="capital"
                     density="compact"
-                ></v-radio>
+                >Endkapital</v-chip>
               </v-col>
             </v-row>
 
@@ -768,7 +765,7 @@ watch(entnahmeplaninput.end,
               </v-col>
             </v-row>
           </v-container>
-        </v-radio-group>
+        </v-chip-group>
       </v-card>
 
       <!-- calculate button -->
