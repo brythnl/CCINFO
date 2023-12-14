@@ -192,7 +192,7 @@ watch(entnahmeplaninput.end,
                     prefix="€"
                     v-model="entnahmeplaninput.oneTimeInvestment[0]"
                     required
-                    :rules="[value => value > 0 || 'Bitte geben Sie einen Wert größer als 0 ein']"
+                    hide-details
                     type="number"
                     step="1000"
                     :disabled="entnahmeplaninput.endpoint == ''"
@@ -709,8 +709,8 @@ watch(entnahmeplaninput.end,
 
             <!-- capital form -->
 
-            <v-row class="ps-5 pe-2 pb-0">
-              <v-col class="flex pe-2 px-0 py-0">
+            <v-row class="ps-5 pe-2 pb-5">
+              <v-col class="flex pe-2 px-0" cols="11">
 
                 <!-- capital response slot -->
                 <v-text-field
@@ -735,9 +735,9 @@ watch(entnahmeplaninput.end,
                     prefix="€"
                     density="compact"
                     v-model="entnahmeplaninput.endValue"
-                    hide-details
                     type="number"
                     step="1000"
+                    hide-details
                     :disabled="
                     entnahmeplaninput.endpoint == '' ||
                     entnahmeplaninput.endpoint == 'capital'
@@ -751,7 +751,7 @@ watch(entnahmeplaninput.end,
                     variant="plain"
                     height="auto"
                     width="auto"
-                    class="ps-2s"
+                    class="ps-2"
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">

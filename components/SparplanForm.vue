@@ -691,7 +691,7 @@ watch(sparplanInput.end,
 
             <!-- capital form -->
 
-            <v-row class="ps-5 pe-2 ">
+            <v-row class="ps-5 pe-2 pb-5">
               <v-col class="flex pe-2 px-0" cols="11">
                 <!-- capital response slot -->
                 <v-text-field
@@ -702,6 +702,7 @@ watch(sparplanInput.end,
                     v-model="sparplanInput.endValue"
                     :value="props.apiResponse ? props.apiResponse.capitalResult ? props.apiResponse.capitalResult.capitalAmount : '' : ''"
                     readonly
+                    hide-details
                     type="number"
                 ></v-text-field>
                 <!-- capital input field -->
@@ -715,7 +716,7 @@ watch(sparplanInput.end,
                     type="number"
                     step="1000"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='capital'"
-                    :rules="[value => value > 0 || 'Bitte geben Sie einen Wert größer als 0 ein']"
+                    hide-details
                 ></v-text-field>
                 <!-- capital info button -->
                 <v-btn
@@ -726,7 +727,7 @@ watch(sparplanInput.end,
                     width="auto"
                     class="ps-2"
                 >
-                  <v-icon class="mb-5" size="small">mdi-information-outline</v-icon>
+                  <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
                     Gib hier den Betrag an, den du am Ende deines Sparplans erreichen möchtest. Das Endkapital ist dein finanzielles Ziel.
                   </v-tooltip>
