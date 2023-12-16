@@ -75,6 +75,7 @@ function changeEndpoint() {
 // get form data (user input)
 function emitData() {
   const toSend = JSON.parse(JSON.stringify(sparplanInput));
+  console.log(toSend)
   validateInput(toSend);
   emit("calculateInput", toSend);
 }
@@ -109,7 +110,7 @@ watch(
           sparplanInput.savingRate = props.apiResponse.savingRate;
           break;
         case "interest-rate":
-          sparplanInput.interestRate = props.apiResponse.InterestRate;
+          sparplanInput.interestRate = props.apiResponse.interestRate;
           break;
         case "end-date":
           sparplanInput.end = props.apiResponse.end;
