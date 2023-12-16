@@ -75,7 +75,6 @@ function changeEndpoint() {
 // get form data (user input)
 function emitData() {
   const toSend = JSON.parse(JSON.stringify(sparplanInput));
-  console.log(toSend)
   validateInput(toSend);
   emit("calculateInput", toSend);
 }

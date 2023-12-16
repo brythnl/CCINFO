@@ -156,7 +156,6 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       financeMathResults.value[0].value
     ).capitalSeries;
   }
-  console.log(graphData.value.capitalResult)
 }
 
 // For Kombiplan
