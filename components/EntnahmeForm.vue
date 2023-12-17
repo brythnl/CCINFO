@@ -128,7 +128,7 @@ watch(
           entnahmeplaninput.savingRate = props.apiResponse.savingRate;
           break;
         case "interest-rate":
-          entnahmeplaninput.InterestRate = props.apiResponse.InterestRate;
+          entnahmeplaninput.interestRate = props.apiResponse.interestRate;
           break;
         case "end-date":
           entnahmeplaninput.end = props.apiResponse.end;
