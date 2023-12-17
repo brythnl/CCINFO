@@ -139,7 +139,7 @@ watch(entnahmeplaninput.end,
 
 <template>
   <!-- headline -->
-  <h1 class="flex justify-center py-5 font-bold">Wählen Sie Ihr Berechnungsziel:</h1>
+  <h1 class="flex justify-center pt-5 pb-2 font-bold">Wählen Sie Ihr Berechnungsziel:</h1>
   <!-- form container -->
   <v-form>
     <div>

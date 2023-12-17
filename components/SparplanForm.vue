@@ -134,7 +134,7 @@ watch(sparplanInput.end,
 </script>
 
 <template>
-  <h1 class="flex justify-center py-5 font-bold">Wählen Sie Ihr Berechnungsziel:</h1>
+  <h1 class="flex justify-center pt-5 pb-2 font-bold">Wählen Sie Ihr Berechnungsziel:</h1>
   <v-form>
     <div>
       <v-card elevation="0" >
