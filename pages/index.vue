@@ -477,7 +477,6 @@ onBeforeMount(async () => {
                 <grafik-tab
                   @grafikUpdate="(m: string) => (grafikTabs = m)"
                   :callsTwoSameEndpoints="callsTwoSameEndpoints"
-                  :hasSameInputs="hasSameInputs"
                 />
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
