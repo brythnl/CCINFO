@@ -11,14 +11,19 @@ const emit = defineEmits<{
   (e: "calculateInput", sparplanInput: {}): void;
 }>();
 
+//dialog for error inputs
+const dialog = ref(false);
+const dialogText =ref("");
 // Amount of oneTimeInvestment(s)
 const einmalZahlung = ref(0);
 // Dynamic status
 const dynamik = ref(false);
+//details status for start capital and saving
 const startkapitalDetails = ref(false);
 const sparplanDetails = ref(false);
 const iconStartkapital = ref("mdi-chevron-down");
 const iconSparplan = ref("mdi-chevron-down");
+
 
 //prop to show the result of selected field
 const props = defineProps<{
@@ -74,9 +79,20 @@ function changeEndpoint() {
 
 // get form data (user input)
 function emitData() {
+  if(parseInt(sparplanInput.endValue)<=0){
+    dialog.value=true;
+    dialogText.value = "Der Betrag vom Endkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein."
+      
+  }else if(parseInt(sparplanInput.endValue)<=parseInt(sparplanInput.oneTimeInvestment[0])){
+    dialog.value=true;
+    dialogText.value = "Beim Sparplan kann das Startkapital nicht grösser als das Endkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Entnahmeplan."
+  }
+  else
+  {
   const toSend = JSON.parse(JSON.stringify(sparplanInput));
   validateInput(toSend);
   emit("calculateInput", toSend);
+  }
 }
 
 watch(
@@ -753,6 +769,20 @@ watch(sparplanInput,
       </v-btn>
     </div>
   </v-form>
+
+  <v-dialog v-model="dialog" width="auto">
+      <v-card>
+        <v-card-title>
+          Eingabe Fehler bei den Berechnungen
+        </v-card-title>
+        <v-card-text v-text="dialogText"></v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" block @click="dialog = false"
+            >Close Dialog</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 </template>
 
 

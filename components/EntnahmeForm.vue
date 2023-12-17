@@ -10,9 +10,14 @@ import {
 const emit = defineEmits<{
   (e: "calculateInput", sparplanInput: {}): void;
 }>();
-
+//dialog for error inputs
+const dialog = ref(false);
+const dialogText =ref("");
+// Amount of oneTimeInvestment(s)
 const einmalZahlung = ref(0);
+// Dynamic status
 const dynamik = ref(false);
+//details status for start capital and withdraw rate
 const startkapitalDetails = ref(false);
 const sparplanDetails = ref(false);
 const iconStartkapital = ref("mdi-chevron-down");
@@ -69,17 +74,28 @@ function changeEndpoint() {
 
 // get form data (user input)
 function emitData() {
-  const toSend = JSON.parse(JSON.stringify(entnahmeplaninput));
-  if (toSend.endpoint === "interest-rate" || toSend.endpoint === "end-date") {
-    toSend.oneTimeInvestment = toSend.oneTimeInvestment.map(
-        (investment) => -investment,
-    );
-    toSend.endValue === 0 ? (toSend.endValue = 0.01) : "";
-  } else {
-    toSend.savingRate = -toSend.savingRate;
+  if(parseInt(entnahmeplaninput.oneTimeInvestment[0])<=0){
+    dialog.value=true;
+    dialogText.value = "Der Betrag vom Startkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein."
+      
+  }else if(parseInt(entnahmeplaninput.endValue)>=parseInt(entnahmeplaninput.oneTimeInvestment[0])){
+    dialog.value=true;
+    dialogText.value = "Beim Sparplan kann das Endkapital nicht grösser als das Startkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Entnahmeplan."
   }
-  validateInput(toSend);
-  emit("calculateInput", toSend);
+  else 
+  {
+    const toSend = JSON.parse(JSON.stringify(entnahmeplaninput));
+    if (toSend.endpoint === "interest-rate" || toSend.endpoint === "end-date") {
+      toSend.oneTimeInvestment = toSend.oneTimeInvestment.map(
+          (investment) => -investment,
+      );
+      toSend.endValue === 0 ? (toSend.endValue = 0.01) : "";
+    } else {
+      toSend.savingRate = -toSend.savingRate;
+    }
+    validateInput(toSend);
+    emit("calculateInput", toSend);
+    }
 }
 
 watch(
@@ -784,6 +800,19 @@ watch(entnahmeplaninput,
       </v-btn>
     </div>
   </v-form>
+  <v-dialog v-model="dialog" width="auto">
+      <v-card>
+        <v-card-title>
+          Eingabe Fehler bei den Berechnungen
+        </v-card-title>
+        <v-card-text v-text="dialogText"></v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" block @click="dialog = false"
+            >Close Dialog</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 </template>
 
 
