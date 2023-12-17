@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const planSelect = ref("aktuell");
 
-const props = defineProps(["callsTwoSameEndpoints", "hasSameInputs"])
+const props = defineProps(["callsTwoSameEndpoints"])
 
 const emit = defineEmits(["grafikUpdate"]);
 
@@ -23,7 +23,7 @@ function grafikUpdate() {
   >
     <v-tab value="aktuell">Grafik<br />aktuell</v-tab>
     <v-tab value="vorher" :disabled="!callsTwoSameEndpoints">Grafik<br />vorher</v-tab>
-    <v-tab value="vergleich" :disabled="!callsTwoSameEndpoints || hasSameInputs">Vergleich</v-tab>
+    <v-tab value="vergleich" :disabled="!callsTwoSameEndpoints">Vergleich</v-tab>
     <v-tab value="tabelle">Tabelle</v-tab>
   </v-tabs>
 </template>
