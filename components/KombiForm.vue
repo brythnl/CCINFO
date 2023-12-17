@@ -214,7 +214,7 @@ watch(
               <v-col
                   cols="11"
                   :sm="startkapitalDetails ? 6 : 11"
-                  class="flex pe-2 px-0"
+                  class="flex pe-2 px-0 order-1"
               >
                 <!-- starting value response slot -->
                 <v-text-field
@@ -268,7 +268,7 @@ watch(
                   v-if="startkapitalDetails"
                   cols="11"
                   sm="5"
-                  class="flex ps-0 pe-2"
+                  class="flex ps-0 pe-2 order-3 order-sm-2"
               >
                 <!-- starting value date input field -->
                 <v-text-field
@@ -299,7 +299,7 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 flex justify-center align-center">
+              <v-col cols="1" class="px-0 flex justify-start align-center order-2 order-sm-3">
                 <!-- button to toggle starting value details form -->
                 <v-icon v-if="sparInput.endpoint!='sparen/saving-start-value'" size="large" @click="toggleStartkapital">
                   {{
@@ -381,11 +381,12 @@ watch(
 
               <v-col
                   cols="1"
-                  class="px-0 flex align-center justify-center"
+                  class="px-0 flex align-center justify-start"
               >
 
                 <!-- button to delete one time investment -->
                 <v-icon
+                    size="large"
                     @click="
                     () => {
                       einmalZahlung > 0 ? einmalZahlung-- : (einmalZahlung = 0);
@@ -492,7 +493,7 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 flex justify-center align-center">
+              <v-col cols="1" class="px-0 flex justify-start align-center">
 
                 <!-- toggle for saving rate details -->
                 <v-icon v-if="sparInput.endpoint!='sparen/saving-rate'" size="large" @click="toggleSparplan">{{
@@ -838,7 +839,7 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 flex align-center justify-center">
+              <v-col cols="1" class="px-0 flex align-center justify-start">
 
                 <!-- toggle for withdrawal rate details -->
                 <v-icon v-if="entnahmeInput.endpoint!='entnahme/saving-rate'" size="large" @click="toggleEntnahmeplan">

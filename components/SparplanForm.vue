@@ -162,7 +162,7 @@ watch(sparplanInput.end,
               <v-col
                   cols="11"
                   :sm="startkapitalDetails ? 6 : 11"
-                  class="flex pe-2 px-0"
+                  class="flex pe-2 px-0 order-1"
               >
                 <!-- starting value response slot-->
                 <v-text-field
@@ -209,7 +209,7 @@ watch(sparplanInput.end,
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col v-if="!startkapitalDetails" cols="1" class="px-0 flex align-center justify-center">
+              <v-col cols="1" class="px-0 flex align-center justify-center order-2 order-sm-3">
                 <v-icon v-if="sparplanInput.endpoint!='saving-start-value'" size="large" @click="toggleStartkapital">
                   {{ iconStartkapital }}
                 </v-icon>
@@ -220,7 +220,7 @@ watch(sparplanInput.end,
                   v-if="startkapitalDetails"
                   cols="11"
                   sm="5"
-                  class="flex ps-0 pe-2"
+                  class="flex ps-0 pe-2 order-3 order-sm-2"
               >
                 <v-text-field
                     label="Startdatum"
@@ -248,11 +248,6 @@ watch(sparplanInput.end,
                     Gib das Datum ein, an dem du das Startkapital in deinen Sparplan investieren möchtest. Standardmäßig ist dieses der 1. des nächsten Monats.
                   </v-tooltip>
                 </v-btn>
-              </v-col>
-              <v-col v-if="startkapitalDetails" cols="1" class="px-0 flex align-center justify-center">
-                <v-icon v-if="sparplanInput.endpoint!='saving-start-value'" size="large" @click="toggleStartkapital">
-                  {{ iconStartkapital }}
-                </v-icon>
               </v-col>
             </v-row>
 

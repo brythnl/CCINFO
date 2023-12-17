@@ -168,7 +168,7 @@ watch(entnahmeplaninput.end,
               <v-col
                   :cols="einmalZahlung == 0 ? 11 : 10"
                   :sm="startkapitalDetails ? 6 : 11"
-                  class="flex pe-2 px-0"
+                  class="flex pe-2 px-0 order-1"
               >
                 <!-- starting value response slot -->
                 <v-text-field
@@ -221,7 +221,7 @@ watch(entnahmeplaninput.end,
                   v-if="startkapitalDetails"
                   :cols="einmalZahlung == 0 ? 11 : 10"
                   sm="5"
-                  class="flex px-2"
+                  class="flex px-2 order-3 order-sm-2"
               >
                 <v-text-field
                     label="Startdatum"
@@ -252,7 +252,7 @@ watch(entnahmeplaninput.end,
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 flex align-center justify-center">
+              <v-col cols="1" class="px-0 flex align-center justify-center order-2 order-sm-3">
                 <!-- starting value toggle button -->
                 <v-icon v-if="entnahmeplaninput.endpoint!='saving-start-value'" size="large"
                         @click="toggleStartkapital">{{
