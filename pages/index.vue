@@ -507,11 +507,21 @@ onBeforeMount(async () => {
                     />
                   </v-window-item>
                   <v-window-item value="vergleich">
+                    <h2 v-if="formTab === 'comb'" class="font-bold pt-3 pb-3 text-lg"> Sparen</h2>
                     <vergleichstabelle
                       :oldRequest="formTab === 'comb' ? financeMathInputsSparen[1] : financeMathInputs[1]"
                       :newRequest="formTab === 'comb' ? financeMathInputsSparen[0] : financeMathInputs[0]"
                       :oldResponse="formTab === 'comb' ? financeMathResultsSparen[1].value : financeMathResults[1].value"
                       :newResponse="formTab === 'comb' ? financeMathResultsSparen[0].value : financeMathResults[0].value"
+                    ></vergleichstabelle>
+
+                    <h2 v-if="formTab === 'comb'" class="font-bold pt-3 pb-3 text-lg border-solid border-gray-300 border-t-4"> Entnahme</h2>
+                    <vergleichstabelle
+                      v-if="formTab === 'comb'"
+                      :oldRequest="financeMathInputsEntnahme[1]"
+                      :newRequest="financeMathInputsEntnahme[0]"
+                      :oldResponse="financeMathResultsEntnahme[1].value"
+                      :newResponse="financeMathResultsEntnahme[0].value"
                     ></vergleichstabelle>
                   </v-window-item>
                   <v-window-item value="tabelle">
