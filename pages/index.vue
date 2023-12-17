@@ -14,8 +14,6 @@ const formTab = ref("");
 const api = ref(true);
 // Check if there are already two API calls to the same endpoint
 const callsTwoSameEndpoints = ref(false);
-// Check if previous and current API calls have the same query parameters
-const hasSameInputs = ref(false);
 
 /* Query parameters of:
  * Index 0 => current API call
@@ -41,14 +39,16 @@ const graphData: financeMathResult = ref({
 // Reverted API response results (from Cent to Euro)
 const revertedWithdrawResult: financeMathResult = ref({});
 const revertedSavingResult: financeMathResult = ref({});
-const endpoint:string = ref('')
-const startDate:string = ref('')
+const endpoint: string = ref('')
+const startDate: string = ref('')
 
 // Fetch response from Finance Math API based on user data from form
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
   // Remove searched property from input/request
   endpoint.value = formInput.endpoint;
   startDate.value = formInput.begin;
+
+  // Remove searched property from input/request
   formInput = removeSearchedEndpointFromInput(formInput);
 
   // Save current query parameters on index 0 and push back previous parameters to index 1
@@ -62,14 +62,6 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   ) {
     callsTwoSameEndpoints.value = true;
   } else callsTwoSameEndpoints.value = false;
-
-  // Check if previous and current API call has the same query parameters
-  if (
-    JSON.stringify(financeMathInputs.value[0]) ==
-    JSON.stringify(financeMathInputs.value[1])
-  ) {
-    hasSameInputs.value = true;
-  } else hasSameInputs.value = false;
 
   // API call to selected endpoint
   const { data } = await useFinanceMathFetch<financeMathResult>(
