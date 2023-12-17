@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Chart as highcharts } from "highcharts-vue";
 
-const props = defineProps(["series", "result"]);
-const maxYAxis = ref(props.result.capitalAmount); // The maximum value of the Y Axis
+const props = defineProps(["series", "result", "prevSeries", "prevResult", "maxYaxis", "actualVisibility","prevVisibility"]);
+const maxYAxis = ref(props.maxYaxis); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
+const yearsToSeriesPrev = ref([]);
 
 const assignYearsToSeries = (series: [], result: {}) => {
   const seriesCount = series.length; // Length of the series
@@ -40,11 +41,8 @@ watch(
   () => props,
   (newValue, oldValue) => {
     // Control the range of the y axis
-    if (newValue.result.capitalAmount > maxYAxis.value)
-      maxYAxis.value = newValue.result.capitalAmount;
-    else if (maxYAxis.value === undefined)
-      maxYAxis.value = newValue.result.capitalAmount; // Set max of Y Axis if it's null
-
+    maxYAxis.value = newValue.maxYaxis;
+    yearsToSeriesPrev.value = assignYearsToSeries(newValue.prevSeries, newValue.prevResult);
     yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
   },
   { deep: true }
@@ -107,10 +105,19 @@ watch(
         },
       },
       series: [
+      {
+          name: 'previous Graph',
+          showInLegend: false,
+          data: yearsToSeriesPrev,
+          color: '#24A06D',
+          visible : prevVisibility
+        },
         {
+          name: 'actual Graph',
           showInLegend: false,
           data: yearsToSeries,
           color: '#4195ac',
+          visible : actualVisibility
         },
       ],
       tooltip: {

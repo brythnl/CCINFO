@@ -99,8 +99,6 @@ watch(()=>props.output, ()=>{
     years.value=calculateTimeDifference(props.startDate, props.output.end)
 })
 
-console.log(props)
-
 </script>
 <template>
     <div v-if="scenario == 0">
