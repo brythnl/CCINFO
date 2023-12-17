@@ -15,6 +15,9 @@ const api = ref(true);
 // Check if there are already two API calls to the same endpoint
 const callsTwoSameEndpoints = ref(false);
 
+//Maximal y-axis value of graph for both, to avoid inconsistency
+const graphMaxYAxis= ref(0);
+
 /* Query parameters of:
  * Index 0 => current API call
  * Index 1 => previous API call
@@ -146,6 +149,10 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
     graphData.value.capitalSeries = revertOutput(
       financeMathResults.value[0].value
     ).capitalSeries;
+  }
+  const max = Math.max(...graphData.value.capitalSeries);
+  if(Math.max(max,graphData.value.capitalResult.startInvestment)>graphMaxYAxis.value){
+    graphMaxYAxis.value = Math.max(max,graphData.value.capitalResult.startInvestment);
   }
 }
 
@@ -404,6 +411,11 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
 
   // Remove searched property from input/request for API visualization
   financeMathInputsSparen.value[0] = removeSearchedEndpointFromInput(financeMathInputsSparen.value[0]);
+
+  const max = Math.max(...graphData.value.capitalSeries);
+  if(Math.max(max,graphData.value.capitalResult.startInvestment)>graphMaxYAxis.value){
+    graphMaxYAxis.value = Math.max(max,graphData.value.capitalResult.startInvestment);
+  }
 }
 
 onBeforeMount(async () => {
@@ -484,12 +496,14 @@ onBeforeMount(async () => {
                     <graph
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
+                      :maxYaxis="graphMaxYAxis"
                     />
                   </v-window-item>
                   <v-window-item value="vorher">
                     <graph
                       :series="previousGraphData.capitalSeries"
                       :result="previousGraphData.capitalResult"
+                      :maxYaxis="graphMaxYAxis"
                     />
                   </v-window-item>
                   <v-window-item value="vergleich">
