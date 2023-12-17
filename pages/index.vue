@@ -181,8 +181,15 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
 
   if (endpointType[0] === "sparen") {
     // assign endpoint for each plan
-    financeMathInputSparen.value.endpoint = endpointType[1];
-    financeMathInputEntnahme.value.endpoint = "saving-start-value";
+    financeMathInputsSparen.value[0].endpoint = endpointType[1];
+    financeMathInputsEntnahme.value[0].endpoint = "saving-start-value";
+
+    // Check if both API calls are directed to the same endpoint
+    if (
+      financeMathInputsSparen.value[0].endpoint === financeMathInputsSparen.value[1].endpoint
+    ) {
+      callsTwoSameEndpoints.value = true;
+    } else callsTwoSameEndpoints.value = false;
 
     // fetch start capital from entnahmeplan for the end capital of sparplan
     const { data: entnahmeStartCapitalData } =
@@ -282,8 +289,15 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
 
   } else if (endpointType[0] === "entnahme") {
     // assign endpoint each plan
-    financeMathInputSparen.value.endpoint = "capital";
-    financeMathInputEntnahme.value.endpoint = endpointType[1];
+    financeMathInputsSparen.value[0].endpoint = "capital";
+    financeMathInputsEntnahme.value[0].endpoint = endpointType[1];
+
+    // Check if both API calls are directed to the same endpoint
+    if (
+      financeMathInputsEntnahme.value[0].endpoint === financeMathInputsEntnahme.value[1].endpoint
+    ) {
+      callsTwoSameEndpoints.value = true;
+    } else callsTwoSameEndpoints.value = false;
 
     // fetch end capital of sparplan for startInvestment of entnahmeplan
     const { data: sparEndCapitalData } =
