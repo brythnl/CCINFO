@@ -419,7 +419,9 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     graphMaxYAxis.value = Math.max(max,graphData.value.capitalResult.startInvestment);
   }
 }
-
+watch(formTab =>{
+  console.log(formTab)
+})
 onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
@@ -494,7 +496,7 @@ onBeforeMount(async () => {
                 />
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
-                    <AnswerSentence :output="graphData.capitalResult" :currency="'€'" :endpoint="endpoint" :scenario="0" :startDate="startDate"></AnswerSentence>
+                    <AnswerSentence :output="graphData.capitalResult" :currency="'€'" :endpoint="endpoint" :scenario="formTab" :startDate="startDate"></AnswerSentence>
                     <graph
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
