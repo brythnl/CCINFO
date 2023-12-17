@@ -74,11 +74,11 @@ function changeEndpoint() {
 
 // get form data (user input)
 function emitData() {
-  if(parseInt(entnahmeplaninput.oneTimeInvestment[0])<=0){
+  if(parseInt(entnahmeplaninput.oneTimeInvestment[0])<=0 && entnahmeplaninput.endpoint!="saving-start-value"){
     dialog.value=true;
     dialogText.value = "Der Betrag vom Startkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein."
       
-  }else if(parseInt(entnahmeplaninput.endValue)>=parseInt(entnahmeplaninput.oneTimeInvestment[0])){
+  }else if(parseInt(entnahmeplaninput.endValue)>=parseInt(entnahmeplaninput.oneTimeInvestment[0]) && entnahmeplaninput.endpoint!="capital" && entnahmeplaninput.endpoint!="saving-start-value"){
     dialog.value=true;
     dialogText.value = "Beim Sparplan kann das Endkapital nicht grösser als das Startkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Entnahmeplan."
   }
