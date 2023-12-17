@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const planSelect = ref("aktuell");
 
-const props = defineProps(["callsTwoSameEndpoints])
+const props = defineProps(["callsTwoSameEndpoints"])
 
 const emit = defineEmits(["grafikUpdate"]);
 
