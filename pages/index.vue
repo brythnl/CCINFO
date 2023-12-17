@@ -401,6 +401,9 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
         revertedSavingResult.value.capitalResult.startInvestment;
     }
   }
+
+  // Remove searched property from input/request for API visualization
+  financeMathInputsSparen.value[0] = removeSearchedEndpointFromInput(financeMathInputsSparen.value[0]);
 }
 
 onBeforeMount(async () => {
