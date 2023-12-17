@@ -179,38 +179,42 @@ watch(
   <h1 class="flex justify-center py-5 font-bold">Definieren Sie die Spar- und Entnahmephase:</h1>
   <v-form>
     <div>
-      <v-card class="overflow-y-auto" elevation="0" max-height="580">
-        <v-radio-group
+      <v-card class="overflow-y-auto" elevation="0" max-height="500">
+        <v-chip-group
             v-model="sparInput.endpoint"
             @update:model-value="changeEndpoint"
+            selected-class="text-primary"
+            class="overflow-hidden"
         >
           <!-- form container -->
           <v-container class="px-0 py-0">
+
+            <v-row class="py-0">
+              <v-col class="pb-5">
+                <v-sheet class="rounded-lg elevation-0 bg-primary py-2">
+                  <h1 class="text-white ps-5 font-bold">Sparphase</h1>
+                </v-sheet>
+              </v-col>
+            </v-row>
+
             <!-- starting value radio button -->
-            <v-row class="mt-0 ps-5">
+            <v-row class="mt-0 ps-5 pt-2">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Startkapital"
+                <v-chip
                     value="sparen/saving-start-value"
                     density="compact"
-                >
-                </v-radio>
+                >Startkapital
+                </v-chip>
               </v-col>
             </v-row>
 
             <!-- starting value form -->
-            <v-row class="px-5">
-              <v-col cols="1" class="px-0">
-                <!-- button to toggle starting value details form -->
-                <v-icon v-if="sparInput.endpoint!='sparen/saving-start-value'" size="large" @click="toggleStartkapital">{{
-                    iconStartkapital
-                  }}
-                </v-icon>
-              </v-col>
+            <v-row class="ps-5 pe-2">
+
               <v-col
                   :cols="einmalZahlung == 0 ? 11 : 10"
-                  :sm="startkapitalDetails ? (einmalZahlung == 0 ? 6 : 5) : 11"
-                  class="flex ps-2 px-0"
+                  :sm="startkapitalDetails ? 6 : 11"
+                  class="flex pe-2 px-0"
               >
                 <!-- starting value response slot -->
                 <v-text-field
@@ -252,7 +256,8 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Trage den Betrag ein, den du zu Beginn investieren möchtest.<br>Der Standardwert für das Datum der 1. Investition ist der 1. des nächsten Monats.<br>Über
+                    Trage den Betrag ein, den du zu Beginn investieren möchtest.<br>Der Standardwert für das Datum der
+                    1. Investition ist der 1. des nächsten Monats.<br>Über
                     das Aufklapp-Symbol kannst du zusätzliche Optionen für Einmalzahlungen festlegen.
                   </v-tooltip>
                 </v-btn>
@@ -265,7 +270,7 @@ watch(
                   offset-sm="0"
                   :cols="einmalZahlung == 0 ? 11 : 10"
                   sm="5"
-                  class="flex ps-2 px-0"
+                  class="flex px-2"
               >
                 <!-- starting value date input field -->
                 <v-text-field
@@ -291,20 +296,28 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Gib das Datum ein, an dem du das Startkapital in deinen Sparplan investieren möchtest. Standardmäßig ist dieses der 1. des nächsten Monats.
+                    Gib das Datum ein, an dem du das Startkapital in deinen Sparplan investieren möchtest. Standardmäßig
+                    ist dieses der 1. des nächsten Monats.
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 py-0"></v-col>
+              <v-col cols="1" class="px-0 flex justify-center align-center">
+                <!-- button to toggle starting value details form -->
+                <v-icon v-if="sparInput.endpoint!='sparen/saving-start-value'" size="large" @click="toggleStartkapital">
+                  {{
+                    iconStartkapital
+                  }}
+                </v-icon>
+              </v-col>
             </v-row>
 
             <!-- starting value details form -->
             <v-row
                 v-if="startkapitalDetails"
                 v-for="n in einmalZahlung"
-                class="px-5"
+                class="ps-5 pe-2"
             >
-              <v-col offset="1" cols="10" sm="5" class="flex ps-2 px-0">
+              <v-col cols="11" sm="6" class="flex pe-2 px-0">
 
                 <!-- one time investment input field -->
                 <v-text-field
@@ -338,9 +351,9 @@ watch(
               <v-col
                   offset="1"
                   offset-sm="0"
-                  cols="10"
+                  cols="11"
                   sm="5"
-                  class="flex ps-2 px-0"
+                  class="flex px-2"
               >
                 <!-- one time investment date input field  -->
                 <v-text-field
@@ -372,7 +385,7 @@ watch(
 
               <v-col
                   cols="1"
-                  class="ps-2 px-0 d-flex align-center justify-start"
+                  class="px-0 flex align-center justify-center"
               >
 
                 <!-- button to delete one time investment -->
@@ -396,8 +409,8 @@ watch(
             </v-row>
 
             <!-- button to add new one time investment -->
-            <v-row v-if="startkapitalDetails" class="px-5">
-              <v-col offset="1" cols="auto" class="ps-2 py-0">
+            <v-row v-if="startkapitalDetails" class="ps-2 pb-2">
+              <v-col cols="auto" class="pe-2 py-0">
                 <v-btn
                     @click="() => einmalZahlung++"
                     rounded="lg"
@@ -419,27 +432,19 @@ watch(
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Sparrate"
+                <v-chip
                     value="sparen/saving-rate"
                     density="compact"
-                ></v-radio>
+                >Sparrate
+                </v-chip>
               </v-col>
             </v-row>
 
             <!-- saving rate form -->
 
-            <v-row class="px-5">
-              <v-col cols="1" class="px-0">
+            <v-row class="ps-5 pe-2">
 
-                <!-- toggle for saving rate details -->
-                <v-icon v-if="sparInput.endpoint!='sparen/saving-rate'" size="large" @click="toggleSparplan">{{
-                    iconSparplan
-                  }}
-                </v-icon>
-              </v-col>
-
-              <v-col cols="11" class="flex ps-2 px-0">
+              <v-col cols="11" class="flex pe-2 px-0">
 
                 <!-- saving rate response slot -->
                 <v-text-field
@@ -491,12 +496,19 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 py-0"></v-col>
+              <v-col cols="1" class="px-0 flex justify-center align-center">
+
+                <!-- toggle for saving rate details -->
+                <v-icon v-if="sparInput.endpoint!='sparen/saving-rate'" size="large" @click="toggleSparplan">{{
+                    iconSparplan
+                  }}
+                </v-icon>
+              </v-col>
             </v-row>
 
             <!-- saving rate details form  -->
-            <v-row class="px-5" v-if="sparplanDetails">
-              <v-col offset="1" cols="11" sm="5" class="flex ps-2 px-0">
+            <v-row class="ps-5 pe-2" v-if="sparplanDetails">
+              <v-col cols="11" sm="6" class="flex pe-2 px-0">
 
                 <!-- saving rate begin date -->
                 <v-text-field
@@ -523,19 +535,17 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Wähle das Datum aus, an dem du mit deinen monatlichen Sparraten beginnen möchtest. Standardmäßig ist dieser auf den 1. des nächsten Monats eingestellt.
+                    Wähle das Datum aus, an dem du mit deinen monatlichen Sparraten beginnen möchtest. Standardmäßig ist
+                    dieser auf den 1. des nächsten Monats eingestellt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
 
-              <v-spacer></v-spacer>
 
               <v-col
-                  offset="1"
-                  offset-sm="0"
                   cols="11"
                   sm="5"
-                  class="flex ps-2 px-0"
+                  class="flex px-2"
               >
                 <!-- saving rate end date input field -->
                 <v-text-field
@@ -563,7 +573,8 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Wähle das Datum aus, an dem du deine monatlichen Sparraten beenden möchtest. Standardmäßig ist dieses auf den 1. des nächsten Monats eingestellt.
+                    Wähle das Datum aus, an dem du deine monatlichen Sparraten beenden möchtest. Standardmäßig ist
+                    dieses auf den 1. des nächsten Monats eingestellt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -572,8 +583,8 @@ watch(
             </v-row>
 
             <!-- checkbox for dynamic saving rate factor -->
-            <v-row class="px-5" v-if="sparplanDetails">
-              <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
+            <v-row class="ps-5 pe-2" v-if="sparplanDetails">
+              <v-col cols="auto" class="flex pe-2 px-0 align-center">
                 <v-radio-group v-model="dynamik" hide-details>
                   <v-checkbox
                       label="Dynamik"
@@ -587,7 +598,7 @@ watch(
                 </v-radio-group>
               </v-col>
 
-              <v-col v-if="dynamik" class="flex pe-0">
+              <v-col v-if="dynamik" class="flex pe-2">
 
                 <!-- input field for dynamic saving rate factor -->
                 <v-text-field
@@ -611,28 +622,30 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Trage einen Faktor ein, der die dynamische Anpassung der Sparrate beeinflusst. Beispiel: Bei einer monatlichen Sparrate von 50€ und einem Faktor von 150% sparst du plötzlich 75€ pro Monat.
+                    Trage einen Faktor ein, der die dynamische Anpassung der Sparrate beeinflusst. Beispiel: Bei einer
+                    monatlichen Sparrate von 50€ und einem Faktor von 150% sparst du plötzlich 75€ pro Monat.
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
 
             <!-- radio button for interest rate during saving period -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Zins"
+                <v-chip
                     value="sparen/interest-rate"
                     density="compact"
-                ></v-radio>
+                >Zins
+                </v-chip>
               </v-col>
             </v-row>
 
             <!-- form for interest rate during saving period -->
 
-            <v-row class="px-5">
-              <v-col class="flex ps-2 px-0" offset="1">
+            <v-row class="ps-5 pe-2">
+              <v-col class="flex pe-2 px-0">
 
                 <!-- interest rate response slot -->
                 <v-text-field
@@ -679,30 +692,40 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld sparst.
+                    Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse erwartest. Zinsen sind
+                    zusätzliches Geld, das du bekommst, wenn du Geld sparst.
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
 
             <!-- Withdrawal Form Start -->
+
+            <v-row class="py-0">
+              <v-col class="pt-2 pb-5">
+                <v-sheet class="rounded-lg elevation-0 bg-primary py-2">
+                  <h1 class="text-white ps-5 font-bold">Entnahmephase</h1>
+                </v-sheet>
+              </v-col>
+            </v-row>
 
             <!-- Switch date Radio Button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
+                <v-chip
                     disabled
-                    label="Entnahmebeginn"
                     value="sparen/end-date"
                     density="compact"
-                ></v-radio>
+                >Entnahmebeginn
+                </v-chip>
               </v-col>
             </v-row>
 
             <!-- Withdrawal begin Form -->
-            <v-row class="px-5">
-              <v-col class="flex ps-2 px-0" offset="1">
+            <v-row class="ps-5 pe-2">
+              <v-col class="flex pe-2 px-0">
 
                 <!-- switch date response slot -->
                 <v-text-field
@@ -747,6 +770,7 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
 
 
@@ -754,27 +778,20 @@ watch(
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Entnahmerate"
+                <v-chip
                     value="entnahme/saving-rate"
                     density="compact"
-                ></v-radio>
+                >Entnahmerate
+                </v-chip>
               </v-col>
             </v-row>
 
             <!-- Withdrawal rate form -->
 
-            <v-row class="px-5">
-              <v-col cols="1" class="px-0">
+            <v-row class="ps-5 pe-2">
 
-                <!-- toggle for withdrawal rate details -->
-                <v-icon v-if="entnahmeInput.endpoint!='entnahme/saving-rate'" size="large" @click="toggleEntnahmeplan">{{
-                    iconEntnahmeplan
-                  }}
-                </v-icon>
-              </v-col>
 
-              <v-col class="flex ps-2 px-0">
+              <v-col class="flex pe-2 px-0">
 
                 <!--withdrawal rate response slot-->
                 <v-text-field
@@ -825,12 +842,21 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1" class="px-0 flex align-center justify-center">
+
+                <!-- toggle for withdrawal rate details -->
+                <v-icon v-if="entnahmeInput.endpoint!='entnahme/saving-rate'" size="large" @click="toggleEntnahmeplan">
+                  {{
+                    iconEntnahmeplan
+                  }}
+                </v-icon>
+              </v-col>
             </v-row>
 
             <!-- withdrawal rate details form -->
 
-            <v-row class="px-5" v-if="entnahmeplanDetails">
-              <v-col offset="1" cols="11" sm="5" class="flex ps-2 px-0">
+            <v-row class="ps-5 pe-2" v-if="entnahmeplanDetails">
+              <v-col cols="11" sm="6" class="flex pe-2 px-0">
 
                 <!-- withdrawal rate begin date -->
                 <v-text-field
@@ -857,19 +883,17 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Wähle hier das Datum aus, an dem du mit den regelmäßigen Entnahmen beginnen möchtest. Standardmäßig ist dieser Wert auf den 1. des nächsten Monats gesetzt.
+                    Wähle hier das Datum aus, an dem du mit den regelmäßigen Entnahmen beginnen möchtest. Standardmäßig
+                    ist dieser Wert auf den 1. des nächsten Monats gesetzt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
 
-              <v-spacer></v-spacer>
-
               <v-col
-                  offset="1"
-                  offset-sm="0"
+
                   cols="11"
                   sm="5"
-                  class="flex ps-2 px-0"
+                  class="flex px-2"
               >
 
                 <!-- withdrawal rate end date -->
@@ -898,15 +922,16 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Wähle hier das Datum aus, an dem du die regelmäßigen Entnahmen beenden möchtest. Standardmäßig ist dieser Wert auf 10 Jahre ab heute gesetzt.
+                    Wähle hier das Datum aus, an dem du die regelmäßigen Entnahmen beenden möchtest. Standardmäßig ist
+                    dieser Wert auf 10 Jahre ab heute gesetzt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
             </v-row>
 
             <!-- dynamic withrawal rate factor ??? -->
-            <v-row class="px-5" v-if="entnahmeplanDetails">
-              <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
+            <v-row class="ps-5 pe-2" v-if="entnahmeplanDetails">
+              <v-col cols="auto" class="flex pe-2 px-0 align-center">
 
                 <!-- checkbox for dynamic withdrawal rate factor -->
                 <v-radio-group v-model="dynamik" hide-details>
@@ -923,7 +948,7 @@ watch(
               </v-col>
 
 
-              <v-col v-if="dynamik" class="flex pe-0">
+              <v-col v-if="dynamik" class="flex pe-2">
 
                 <!-- input field for dynamic withdrawal rate factor -->
                 <v-text-field
@@ -952,25 +977,26 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
 
             <!-- radio button for interest rate during withrawal period -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
+                <v-chip
                     disabled
-                    label="Zins"
                     value="entnahme/interest-rate"
                     density="compact"
-                ></v-radio>
+                >Zins
+                </v-chip>
               </v-col>
             </v-row>
 
             <!-- interest rate form -->
 
-            <v-row class="px-5">
-              <v-col class="flex ps-2 px-0" offset="1">
+            <v-row class="ps-5 pe-2">
+              <v-col class="flex pe-2 px-0">
 
                 <!-- interest rate response slot (withdrawal period) -->
                 <v-text-field
@@ -1016,10 +1042,12 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse während der Entnahmephase erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld sparst.
+                    Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse während der Entnahmephase
+                    erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld sparst.
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
 
 
@@ -1027,17 +1055,17 @@ watch(
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Enddatum"
+                <v-chip
                     value="entnahme/end-date"
                     density="compact"
-                ></v-radio>
+                >Enddatum
+                </v-chip>
               </v-col>
             </v-row>
 
             <!-- End date Form -->
-            <v-row class="px-5">
-              <v-col class="flex ps-2 px-0" offset="1">
+            <v-row class="ps-5 pe-2">
+              <v-col class="flex pe-2 px-0">
 
                 <!--End date response slot-->
                 <v-text-field
@@ -1079,28 +1107,30 @@ watch(
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Trage hier das Datum ein, an dem dein Entnahmeplan enden soll. Standardmäßig ist dieses auf 10 Jahre von heute eingestellt.
+                    Trage hier das Datum ein, an dem dein Entnahmeplan enden soll. Standardmäßig ist dieses auf 10 Jahre
+                    von heute eingestellt.
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
 
             <!-- final capital radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Endkapital"
+                <v-chip
                     value="entnahme/capital"
                     density="compact"
-                ></v-radio>
+                >Endkapital
+                </v-chip>
               </v-col>
             </v-row>
 
             <!-- final capital Form -->
 
-            <v-row class="px-5 pb-2">
-              <v-col class="flex ps-2 px-0" offset="1">
+            <v-row class="ps-5 pe-2 pb-5">
+              <v-col class="flex pe-2 px-0">
 
                 <!-- final capital response slot -->
                 <v-text-field
@@ -1150,9 +1180,10 @@ watch(
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
           </v-container>
-        </v-radio-group>
+        </v-chip-group>
       </v-card>
 
       <!-- calculate button -->
