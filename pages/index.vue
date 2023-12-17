@@ -158,7 +158,6 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
       financeMathResults.value[0].value
     ).capitalSeries;
   }
-  console.log(graphData.value.capitalResult.startInvestment)
   const max = Math.max(...graphData.value.capitalSeries);
   if(Math.max(max,graphData.value.capitalResult.startInvestment)>graphMaxYAxis.value){
     graphMaxYAxis.value = Math.max(max,graphData.value.capitalResult.startInvestment);
@@ -377,6 +376,10 @@ async function fetchKombiPlan({ sparForm, entnahmeForm }) {
       graphData.value.capitalResult.startInvestment =
         revertedSavingResult.value.capitalResult.startInvestment;
     }
+  }
+  const max = Math.max(...graphData.value.capitalSeries);
+  if(Math.max(max,graphData.value.capitalResult.startInvestment)>graphMaxYAxis.value){
+    graphMaxYAxis.value = Math.max(max,graphData.value.capitalResult.startInvestment);
   }
 }
 
