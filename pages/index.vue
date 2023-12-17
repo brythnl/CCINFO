@@ -17,6 +17,8 @@ const callsTwoSameEndpoints = ref(false);
 
 //Maximal y-axis value of graph for both, to avoid inconsistency
 const graphMaxYAxis= ref(0);
+//visibiliti of previos graph in actual graph
+const prevGraphshow = ref(false);
 
 /* Query parameters of:
  * Index 0 => current API call
@@ -496,14 +498,24 @@ onBeforeMount(async () => {
                     <graph
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
+                      :prevSeries="previousGraphData.capitalSeries"
+                      :prevResult="previousGraphData.capitalResult"
                       :maxYaxis="graphMaxYAxis"
+                      :actualVisibility="true"
+                      :prevVisibility="prevGraphshow"
                     />
+                    <v-switch v-model="prevGraphshow" label="Vorher Grafik zeigen" :disabled="!previousGraphData.capitalSeries.length">
+                    </v-switch>
                   </v-window-item>
                   <v-window-item value="vorher">
                     <graph
+                      :prevSeries="previousGraphData.capitalSeries"
+                      :prevResult="previousGraphData.capitalResult"
                       :series="previousGraphData.capitalSeries"
                       :result="previousGraphData.capitalResult"
                       :maxYaxis="graphMaxYAxis"
+                      :actualVisibility="false"
+                      :prevVisibility="true"
                     />
                   </v-window-item>
                   <v-window-item value="vergleich">
