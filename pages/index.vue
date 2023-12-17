@@ -156,9 +156,8 @@ const financeMathInputsSparen: financeMathInput[] = ref([{}, {}]);
 const financeMathInputsEntnahme: financeMathInput[] = ref([{}, {}]);
 
 /*
- *function fetchKombiPlan
- *sparForm is Parameter to save savingPlan part of the combi-plan
- *entnahmeForm is Parameter to save withdrawPlan part of the combi-plan
+ * sparFormInput is Parameter to save savingPlan part of the combi-plan
+ * entnahmeFormInput is Parameter to save withdrawPlan part of the combi-plan
  *
  * this function send several API-calls related to combi-form
  * if the wanted variable is part of the savingPlan, API calls will be sent for the withdrawPlan to find the startInvestment of withdrawPlan
@@ -178,7 +177,7 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
   if (financeMathInputsEntnahme.value.length > 2) financeMathInputsEntnahme.value.pop();
 
   // Endpoint Property: [sparen/entnahme]/<API endpoint>
-  const endpointType = sparForm.endpoint.split("/");
+  const endpointType = sparFormInput.endpoint.split("/");
 
   if (endpointType[0] === "sparen") {
     // assign endpoint for each plan
