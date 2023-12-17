@@ -808,7 +808,7 @@ watch(entnahmeplaninput,
         <v-card-text v-text="dialogText"></v-card-text>
         <v-card-actions>
           <v-btn color="primary" block @click="dialog = false"
-            >Close Dialog</v-btn
+            >Schließen</v-btn
           >
         </v-card-actions>
       </v-card>
