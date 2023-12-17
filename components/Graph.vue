@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Chart as highcharts } from "highcharts-vue";
 
-const props = defineProps(["series", "result"]);
-const maxYAxis = ref(props.result.capitalAmount); // The maximum value of the Y Axis
+const props = defineProps(["series", "result", "maxYaxis"]);
+const maxYAxis = ref(props.maxYaxis); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
 
 const assignYearsToSeries = (series: [], result: {}) => {
@@ -40,11 +40,7 @@ watch(
   () => props,
   (newValue, oldValue) => {
     // Control the range of the y axis
-    if (newValue.result.capitalAmount > maxYAxis.value)
-      maxYAxis.value = newValue.result.capitalAmount;
-    else if (maxYAxis.value === undefined)
-      maxYAxis.value = newValue.result.capitalAmount; // Set max of Y Axis if it's null
-
+      maxYAxis.value = newValue.maxYaxis;
     yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
   },
   { deep: true }

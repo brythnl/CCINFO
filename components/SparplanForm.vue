@@ -120,7 +120,7 @@ watch(
       }
     },
 );
-watch(sparplanInput.end,
+watch(sparplanInput,
 ()=>{
   if(new Date(sparplanInput.end)<new Date(sparplanInput.savingPlanEnd)){
     sparplanInput.savingPlanEnd=sparplanInput.end;
