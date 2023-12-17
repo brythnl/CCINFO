@@ -106,7 +106,11 @@ export const revertOutput = (responseOutput:financeMathResult):financeMathResult
 export const removeSearchedEndpointFromInput = (formInput: financeMathInput): financeMathInput => {
   const processedFormInput = formInput;
 
-  switch (processedFormInput.endpoint) {
+  // Get "pure" endpoint from Kombi Form inputs (remove "sparen/" or "entnahme/")
+  const splitEndpoint = formInput.endpoint.split("/");
+  const endpoint = splitEndpoint[splitEndpoint.length - 1]
+
+  switch (endpoint) {
     case "capital":
       delete processedFormInput.endValue;
       break;
