@@ -106,7 +106,7 @@ export const revertOutput = (responseOutput:financeMathResult):financeMathResult
 export const removeSearchedEndpointFromInput = (formInput: financeMathInput): financeMathInput => {
   const processedFormInput = formInput;
 
-  switch (processedFormInput.endpoint) {
+  switch (formInput.endpoint) {
     case "capital":
       delete processedFormInput.endValue;
       break;

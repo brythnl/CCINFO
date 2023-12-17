@@ -9,7 +9,7 @@ import {
 } from "~/utils/formUtils";
 
 const emit = defineEmits<{
-  (e: "calculateInput", sparplanInput: {}): void;
+  (e: "calculateInput", kombiplanInput: {}): void;
 }>();
 
 const einmalZahlung = ref(0);
@@ -119,7 +119,7 @@ function emitData() {
 
   validateInput(sparen);
   validateInput(entnahme);
-  emit("calculateInput", {sparForm: sparen, entnahmeForm: entnahme});
+  emit("calculateInput", { sparFormInput: sparen, entnahmeFormInput: entnahme });
 }
 
 watch(
@@ -152,7 +152,7 @@ watch(
           sparInput.savingRate = props.apiResponseSparen.savingRate;
           break;
         case "sparen/interest-rate":
-          sparInput.InterestRate = props.apiResponseSparen.InterestRate;
+          sparInput.interestRate = props.apiResponseSparen.interestRate;
           break;
         case "sparen/end-date":
           sparInput.end = props.apiResponseSparen.end;
@@ -161,7 +161,7 @@ watch(
           entnahmeInput.savingRate = props.apiResponseEntnahme.savingRate;
           break;
         case "entnahme/interest-rate":
-          entnahmeInput.InterestRate = props.apiResponseEntnahme.InterestRate;
+          entnahmeInput.interestRate = props.apiResponseEntnahme.interestRate;
           break;
         case "entnahme/end-date":
           entnahmeInput.end = props.apiResponseEntnahme.end;

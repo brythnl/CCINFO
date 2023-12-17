@@ -60,8 +60,12 @@ watch(
   </v-tabs>
 
   <h1 class="flex justify-center my-5 font-bold">API Aufruf</h1>
-  <v-card class="overflow-y-auto bg-grey-darken-4 rounded-lg ma-2" max-height="650" height="600" variant="outlined">
-    <v-card-item>
+<!--bg-primary grey-lighten-4 bg-white mb-5 ml-3 mr-3 -->
+<!--Variante 1 <v-card class="overflow-y-auto bg-white mb-5 ml-3 mr-3 h-100 rounded-lg mt-5" max-height="700" height="700" variant="elevated" elevation="3">-->
+<!--<v-card class="overflow-y-auto bg-grey-lighten-4 h-100 rounded-lg mt-5" max-height="700" height="700" variant="elevated" elevation="1">-->
+<!--<v-card class="overflow-y-auto bg-primary h-100 rounded-lg mt-5" max-height="700" height="700" variant="outlined">-->
+<v-card class="overflow-y-auto bg-grey-lighten-4 h-100 rounded-lg mt-5" max-height="700" height="700" variant="">    
+  <v-card-item>
       <v-card-text>
         <code>Request {</code>
         <div v-for="(item, index) in props.apiRequest">
@@ -182,5 +186,8 @@ watch(
 
 .blue-border {
   border: 1px solid #4195AC;
+}
+.aixigo{
+  background-color: #29788B;
 }
 </style>
