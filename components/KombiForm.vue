@@ -119,7 +119,7 @@ function emitData() {
 
   validateInput(sparen);
   validateInput(entnahme);
-  emit("calculateInput", {sparForm: sparen, entnahmeForm: entnahme});
+  emit("calculateInput", { sparFormInput: sparen, entnahmeFormInput: entnahme });
 }
 
 watch(
