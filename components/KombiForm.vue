@@ -9,7 +9,7 @@ import {
 } from "~/utils/formUtils";
 
 const emit = defineEmits<{
-  (e: "calculateInput", sparplanInput: {}): void;
+  (e: "calculateInput", kombiplanInput: {}): void;
 }>();
 
 const einmalZahlung = ref(0);

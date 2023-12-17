@@ -8,7 +8,7 @@ import {
 } from "~/utils/formUtils";
 
 const emit = defineEmits<{
-  (e: "calculateInput", sparplanInput: {}): void;
+  (e: "calculateInput", entnahmeplanInput: {}): void;
 }>();
 //dialog for error inputs
 const dialog = ref(false);
