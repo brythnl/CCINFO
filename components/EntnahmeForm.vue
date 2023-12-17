@@ -124,7 +124,7 @@ watch(
     },
 );
 
-watch(entnahmeplaninput.end,
+watch(entnahmeplaninput,
 ()=>{
   if(new Date(entnahmeplaninput.end)<new Date(entnahmeplaninput.savingPlanEnd)){
     entnahmeplaninput.savingPlanEnd=entnahmeplaninput.end;
