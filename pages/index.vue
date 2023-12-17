@@ -20,6 +20,7 @@ const graphMaxYAxis= ref(0);
 //visibiliti of previos graph in actual graph
 const prevGraphshow = ref(false);
 
+
 /* Query parameters of:
  * Index 0 => current API call
  * Index 1 => previous API call
@@ -459,18 +460,18 @@ onBeforeMount(async () => {
                   <form-tabs @tabUpdate="(n: string) => (formTab = n)" />
                 </div>
                 <v-window v-model="formTab">
-                  <v-window-item value="saving">
+                  <v-window-item value="saving" transition="false" reverse-transition="false" >
                     <sparplan-form
                       @calculateInput="fetchFinanceMathAPI"
                       :apiResponse="revertedSavingResult"
                     />
                   </v-window-item>
-                  <v-window-item value="withdraw"
+                  <v-window-item value="withdraw" transition="false" reverse-transition="false"
                     ><entnahme-form
                       @calculateInput="fetchFinanceMathAPI"
                       :apiResponse="revertedWithdrawResult"
                   /></v-window-item>
-                  <v-window-item value="comb">
+                  <v-window-item value="comb" transition="false" reverse-transition="false">
                     <kombi-form
                       @calculateInput="fetchKombiPlan"
                       :apiResponseSparen="revertedSavingResult"
@@ -507,7 +508,7 @@ onBeforeMount(async () => {
                     <v-switch v-model="prevGraphshow" label="Vorher Grafik zeigen" :disabled="!previousGraphData.capitalSeries.length">
                     </v-switch>
                   </v-window-item>
-                  <v-window-item value="vorher">
+                  <v-window-item value="vorher" transition="false" reverse-transition="false">
                     <graph
                       :prevSeries="previousGraphData.capitalSeries"
                       :prevResult="previousGraphData.capitalResult"
@@ -536,7 +537,7 @@ onBeforeMount(async () => {
                       :newResponse="financeMathResultsEntnahme[0].value"
                     ></vergleichstabelle>
                   </v-window-item>
-                  <v-window-item value="tabelle">
+                  <v-window-item value="tabelle" transition="false" reverse-transition="false">
                     <series-table
                     :apiRequest="formTab==='comb'?financeMathInputsSparen[0]:financeMathInputs[0]"
                     :apiResponse="graphData"/>

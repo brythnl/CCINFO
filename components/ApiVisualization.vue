@@ -58,6 +58,8 @@ watch(
     <v-tab value="savingPlanEnd" >Sparplan-<br>Ende</v-tab>
     <v-tab value="capitalSeries" >Kapitalserie</v-tab>
   </v-tabs>
+
+  <h1 class="flex justify-center my-5 font-bold">API Aufruf</h1>
 <!--bg-primary grey-lighten-4 bg-white mb-5 ml-3 mr-3 -->
 <!--Variante 1 <v-card class="overflow-y-auto bg-white mb-5 ml-3 mr-3 h-100 rounded-lg mt-5" max-height="700" height="700" variant="elevated" elevation="3">-->
 <!--<v-card class="overflow-y-auto bg-grey-lighten-4 h-100 rounded-lg mt-5" max-height="700" height="700" variant="elevated" elevation="1">-->

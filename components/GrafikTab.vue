@@ -36,4 +36,6 @@ function grafikUpdate() {
 .blue-border {
   border: 1px solid #4195AC;
 }
+
+
 </style>

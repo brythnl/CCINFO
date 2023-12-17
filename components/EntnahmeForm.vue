@@ -155,14 +155,16 @@ watch(entnahmeplaninput,
 
 <template>
   <!-- headline -->
-  <h3 class="font-bold pb-5 mt-5">Wählen Sie Ihr Berechnungsziel:</h3>
+  <h1 class="flex justify-center pt-5 pb-2 font-bold">Wählen Sie Ihr Berechnungsziel:</h1>
   <!-- form container -->
   <v-form>
     <div>
-      <v-card class="overflow-y-auto" elevation="0" max-height="580">
-        <v-radio-group
+      <v-card  elevation="0">
+        <v-chip-group
             v-model="entnahmeplaninput.endpoint"
             @update:model-value="changeEndpoint"
+            selected-class="text-primary"
+            class="overflow-hidden"
         >
           <v-container class="px-0 py-0">
 
@@ -170,28 +172,19 @@ watch(entnahmeplaninput,
 
             <v-row class="mt-0 ps-5">
               <v-col cols="12" class="flex px-0 py-0">
-                <v-radio
-                    label="Startkapital"
+                <v-chip
                     value="saving-start-value"
                     density="compact"
-                ></v-radio>
+                >Startkapital</v-chip>
               </v-col>
             </v-row>
 
             <!-- starting value form -->
-            <v-row class="px-5">
-              <v-col cols="1" class="px-0">
-                <!-- starting value toggle button -->
-                <v-icon v-if="entnahmeplaninput.endpoint!='saving-start-value'" size="large"
-                        @click="toggleStartkapital">{{
-                    iconStartkapital
-                  }}
-                </v-icon>
-              </v-col>
+            <v-row class="ps-5 pe-2">
               <v-col
-                  :cols="einmalZahlung == 0 ? 11 : 10"
-                  :sm="startkapitalDetails ? (einmalZahlung == 0 ? 6 : 5) : 11"
-                  class="flex ps-2 px-0"
+                  cols="11"
+                  :sm="startkapitalDetails ? 6 : 11"
+                  class="flex pe-2 px-0 order-1"
               >
                 <!-- starting value response slot -->
                 <v-text-field
@@ -236,16 +229,15 @@ watch(entnahmeplaninput,
                     das Aufklapp-Symbol kannst du zusätzliche Optionen für Einmalzahlungen festlegen.
                   </v-tooltip>
                 </v-btn>
+
               </v-col>
 
               <!-- starting value date input field -->
               <v-col
                   v-if="startkapitalDetails"
-                  offset="1"
-                  offset-sm="0"
-                  :cols="einmalZahlung == 0 ? 11 : 10"
+                  cols="11"
                   sm="5"
-                  class="flex ps-2 px-0"
+                  class="flex ps-0 pe-2 order-3 order-sm-2"
               >
                 <v-text-field
                     label="Startdatum"
@@ -276,16 +268,23 @@ watch(entnahmeplaninput,
                   </v-tooltip>
                 </v-btn>
               </v-col>
-              <v-col cols="1" class="px-0 py-0"></v-col>
+              <v-col cols="1" class="px-0 flex align-center justify-center order-2 order-sm-3">
+                <!-- starting value toggle button -->
+                <v-icon v-if="entnahmeplaninput.endpoint!='saving-start-value'" size="large"
+                        @click="toggleStartkapital">{{
+                    iconStartkapital
+                  }}
+                </v-icon>
+              </v-col>
             </v-row>
 
             <!-- starting value details form -->
             <v-row
                 v-if="startkapitalDetails"
                 v-for="n in einmalZahlung"
-                class="px-5"
+                class="ps-5 pe-2"
             >
-              <v-col offset="1" cols="10" sm="5" class="flex ps-2 px-0">
+              <v-col cols="11" sm="6" class="flex pe-2 px-0">
 
                 <!-- one time investment input field -->
                 <v-text-field
@@ -321,11 +320,9 @@ watch(entnahmeplaninput,
 
               <!-- one time investment date input field -->
               <v-col
-                  offset="1"
-                  offset-sm="0"
-                  cols="10"
+                  cols="11"
                   sm="5"
-                  class="flex ps-2 px-0"
+                  class="flex ps-0 pe-2"
               >
                 <v-text-field
                     :label="`${n + 1}. Datum`"
@@ -358,7 +355,7 @@ watch(entnahmeplaninput,
               <!-- button to delete one time investment -->
               <v-col
                   cols="1"
-                  class="ps-2 px-0 d-flex align-center justify-start"
+                  class="px-0 flex align-center justify-center"
               >
                 <v-icon
                     @click="
@@ -380,8 +377,8 @@ watch(entnahmeplaninput,
             </v-row>
 
             <!-- button for new one time investment -->
-            <v-row v-if="startkapitalDetails" class="px-5">
-              <v-col offset="1" cols="auto" class="ps-2 py-0">
+            <v-row v-if="startkapitalDetails" class="ps-5 pe-2 pb-2">
+              <v-col cols="auto" class=" px-0 py-0">
                 <v-btn
                     @click="() => einmalZahlung++"
                     :disabled="
@@ -403,27 +400,18 @@ watch(entnahmeplaninput,
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Entnahmerate"
+                <v-chip
                     value="saving-rate"
                     density="compact"
-                ></v-radio>
+                >Entnahmerate</v-chip>
               </v-col>
             </v-row>
 
             <!-- withdrawal rate form -->
 
-            <v-row class="px-5">
+            <v-row class="ps-5 pe-2">
 
-              <v-col cols="1" class="px-0">
-                <!-- toggle for withdrawal rate details -->
-                <v-icon v-if="entnahmeplaninput.endpoint!='saving-rate'" size="large" @click="toggleSparplan">{{
-                    iconSparplan
-                  }}
-                </v-icon>
-              </v-col>
-
-              <v-col class="flex ps-2 px-0">
+              <v-col cols="11"  class="flex pe-2 px-0">
                 <!-- withdrawal rate response slot -->
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'saving-rate'"
@@ -470,11 +458,18 @@ watch(entnahmeplaninput,
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1" class="px-0 flex justify-center align-center" >
+                <!-- toggle for withdrawal rate details -->
+                <v-icon v-if="entnahmeplaninput.endpoint!='saving-rate'"  size="large" @click="toggleSparplan">{{
+                    iconSparplan
+                  }}
+                </v-icon>
+              </v-col>
             </v-row>
 
             <!-- withdrawal rate details form -->
-            <v-row class="px-5" v-if="sparplanDetails">
-              <v-col offset="1" cols="11" sm="5" class="flex ps-2 px-0">
+            <v-row class="ps-5 pe-2" v-if="sparplanDetails">
+              <v-col cols="11" sm="6" class="flex pe-2 px-0">
 
                 <!-- starting date of withdrawal input field -->
                 <v-text-field
@@ -505,14 +500,11 @@ watch(entnahmeplaninput,
                 </v-btn>
               </v-col>
 
-              <v-spacer></v-spacer>
 
               <v-col
-                  offset="1"
-                  offset-sm="0"
                   cols="11"
                   sm="5"
-                  class="flex ps-2 px-0"
+                  class="flex ps-0 pe-2"
               >
                 <!-- input field for end date of withdrawal rate -->
                 <v-text-field
@@ -546,8 +538,8 @@ watch(entnahmeplaninput,
 
               <!-- dynamic withdrawal rate factor -->
             </v-row>
-            <v-row class="px-5" v-if="sparplanDetails">
-              <v-col offset="1" cols="auto" class="flex ps-2 px-0 align-center">
+            <v-row class="ps-5 pe-2" v-if="sparplanDetails">
+              <v-col cols="auto" class="flex px-0 align-center">
                 <!-- checkbox for dynamic rate factor -->
                 <v-radio-group v-model="dynamik" hide-details>
                   <v-checkbox
@@ -563,7 +555,7 @@ watch(entnahmeplaninput,
               </v-col>
 
               <!-- input field for dynamic rate factor -->
-              <v-col v-if="dynamik" class="flex pe-0">
+              <v-col v-if="dynamik" class="flex px-2">
                 <v-text-field
                     variant="outlined"
                     suffix="%"
@@ -584,28 +576,28 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    ???
+                    Trage einen Faktor ein, der die dynamische Anpassung der Entnahmerate beeinflusst. Beispiel: Bei einer monatlichen Sparrate von 50€ und einem Faktor von 150% sparst du plötzlich 75€ pro Monat.
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
 
             <!-- interest rate radio button -->
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
+                <v-chip
                     disabled
-                    label="Verzinsung"
                     value="interest-rate"
                     density="compact"
-                ></v-radio>
+                >Zins</v-chip>
               </v-col>
             </v-row>
 
             <!-- interest rate Form -->
 
-            <v-row class="px-5">
-              <v-col class="flex ps-2 px-0" offset="1">
+            <v-row class="ps-5 pe-2">
+              <v-col class="flex pe-2 px-0">
 
                 <!-- interest rate response slot -->
                 <v-text-field
@@ -654,6 +646,7 @@ watch(entnahmeplaninput,
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
 
 
@@ -661,17 +654,16 @@ watch(entnahmeplaninput,
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Enddatum"
+                <v-chip
                     value="end-date"
                     density="compact"
-                ></v-radio>
+                >Enddatum</v-chip>
               </v-col>
             </v-row>
 
             <!-- end date Form -->
-            <v-row class="px-5">
-              <v-col class="flex ps-2 px-0" offset="1">
+            <v-row class="ps-5 pe-2">
+              <v-col class="flex pe-2 px-0">
 
                 <!-- end date response slot -->
                 <v-text-field
@@ -716,24 +708,24 @@ watch(entnahmeplaninput,
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
 
             <!-- capital radio button -->
 
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
-                <v-radio
-                    label="Endkapital"
+                <v-chip
                     value="capital"
                     density="compact"
-                ></v-radio>
+                >Endkapital</v-chip>
               </v-col>
             </v-row>
 
             <!-- capital form -->
 
-            <v-row class="px-5">
-              <v-col class="flex ps-2 px-0" offset="1">
+            <v-row class="ps-5 pe-2 pb-5">
+              <v-col class="flex pe-2 px-0" cols="11">
 
                 <!-- capital response slot -->
                 <v-text-field
@@ -758,9 +750,9 @@ watch(entnahmeplaninput,
                     prefix="€"
                     density="compact"
                     v-model="entnahmeplaninput.endValue"
-                    hide-details
                     type="number"
                     step="1000"
+                    hide-details
                     :disabled="
                     entnahmeplaninput.endpoint == '' ||
                     entnahmeplaninput.endpoint == 'capital'
@@ -782,15 +774,16 @@ watch(entnahmeplaninput,
                   </v-tooltip>
                 </v-btn>
               </v-col>
+              <v-col cols="1"></v-col>
             </v-row>
           </v-container>
-        </v-radio-group>
+        </v-chip-group>
       </v-card>
 
       <!-- calculate button -->
       <v-btn
           block
-          class="text-none"
+          class="text-none rounded-lg"
           color="#16486B"
           size="x-large"
           variant="flat"
