@@ -166,7 +166,7 @@ watch(entnahmeplaninput.end,
             <!-- starting value form -->
             <v-row class="ps-5 pe-2">
               <v-col
-                  :cols="einmalZahlung == 0 ? 11 : 10"
+                  cols="11"
                   :sm="startkapitalDetails ? 6 : 11"
                   class="flex pe-2 px-0 order-1"
               >
@@ -219,9 +219,9 @@ watch(entnahmeplaninput.end,
               <!-- starting value date input field -->
               <v-col
                   v-if="startkapitalDetails"
-                  :cols="einmalZahlung == 0 ? 11 : 10"
+                  cols="11"
                   sm="5"
-                  class="flex px-2 order-3 order-sm-2"
+                  class="flex ps-0 pe-2 order-3 order-sm-2"
               >
                 <v-text-field
                     label="Startdatum"
@@ -304,10 +304,9 @@ watch(entnahmeplaninput.end,
 
               <!-- one time investment date input field -->
               <v-col
-                  offset-sm="0"
-                  cols="10"
+                  cols="11"
                   sm="5"
-                  class="flex px-2 px-0"
+                  class="flex ps-0 pe-2"
               >
                 <v-text-field
                     :label="`${n + 1}. Datum`"
@@ -362,8 +361,8 @@ watch(entnahmeplaninput.end,
             </v-row>
 
             <!-- button for new one time investment -->
-            <v-row v-if="startkapitalDetails" class="ps-2 pb-2">
-              <v-col cols="auto" class=" py-0">
+            <v-row v-if="startkapitalDetails" class="ps-5 pe-2 pb-2">
+              <v-col cols="auto" class=" px-0 py-0">
                 <v-btn
                     @click="() => einmalZahlung++"
                     :disabled="
@@ -396,7 +395,7 @@ watch(entnahmeplaninput.end,
 
             <v-row class="ps-5 pe-2">
 
-              <v-col class="flex pe-2 px-0">
+              <v-col cols="11"  class="flex pe-2 px-0">
                 <!-- withdrawal rate response slot -->
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'saving-rate'"
@@ -489,7 +488,7 @@ watch(entnahmeplaninput.end,
               <v-col
                   cols="11"
                   sm="5"
-                  class="flex px-2"
+                  class="flex ps-0 pe-2"
               >
                 <!-- input field for end date of withdrawal rate -->
                 <v-text-field
@@ -524,7 +523,7 @@ watch(entnahmeplaninput.end,
               <!-- dynamic withdrawal rate factor -->
             </v-row>
             <v-row class="ps-5 pe-2" v-if="sparplanDetails">
-              <v-col cols="auto" class="flex pe-2 px-0 align-center">
+              <v-col cols="auto" class="flex px-0 align-center">
                 <!-- checkbox for dynamic rate factor -->
                 <v-radio-group v-model="dynamik" hide-details>
                   <v-checkbox
@@ -540,7 +539,7 @@ watch(entnahmeplaninput.end,
               </v-col>
 
               <!-- input field for dynamic rate factor -->
-              <v-col v-if="dynamik" class="flex pa-2">
+              <v-col v-if="dynamik" class="flex px-2">
                 <v-text-field
                     variant="outlined"
                     suffix="%"
@@ -561,7 +560,7 @@ watch(entnahmeplaninput.end,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    ???
+                    Trage einen Faktor ein, der die dynamische Anpassung der Entnahmerate beeinflusst. Beispiel: Bei einer monatlichen Sparrate von 50€ und einem Faktor von 150% sparst du plötzlich 75€ pro Monat.
                   </v-tooltip>
                 </v-btn>
               </v-col>
