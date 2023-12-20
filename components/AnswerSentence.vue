@@ -20,11 +20,12 @@ const props = defineProps<{
  currency: string,
  endpoint: string,
  scenario: string,
- startDate: string
+ startDate: string,
+ seperator: string
 }>()
 
 const formattedOutput = reactive({
-    capitalAmount: 0,
+    capitalAmount: '',
     savingRate: 0,
     startInvestment: 0,
     interestRate: 0,
@@ -46,11 +47,13 @@ function calculateTimeDifference(dateString1, dateString2) {
 }
 
 function formatOutput(output:Output){
-    formattedOutput.savingRate = output.savingRate > 0 ? props.output.savingRate : props.output.savingRate *-1;
-    formattedOutput.capitalAmount = output.capitalAmount;
-    formattedOutput.startInvestment = output.startInvestment;
+    formattedOutput.savingRate = output.savingRate > 0 ? addThousandSeparator(props.output.savingRate, props.seperator) : addThousandSeparator(props.output.savingRate *-1, props.seperator);
+    formattedOutput.capitalAmount = addThousandSeparator(output.capitalAmount, props.seperator);
+    formattedOutput.startInvestment = addThousandSeparator(output.startInvestment, props.seperator);
     formattedOutput.interestRate = output.interestRate
     formattedOutput.end = formatDate(output.end)
+
+    console.log(output.capitalAmount);
 
 }
 
@@ -65,6 +68,24 @@ function formatDate(inputDateStr: string) {
 
   // Create the formatted date string
   return `${day  < 10 ? '0' : ''}${day}.${month < 10 ? '0' : ''}${month}.${year}`;
+}
+
+function addThousandSeparator(amount:number, separator:string) {
+  // Convert the number to a string and split the integer and decimal parts
+  console.log(typeof amount);
+  if (typeof amount == 'undefined') {
+    return 0;
+  }else
+  {
+    const parts = amount.toString().split('.');
+    // Add thousand separators to the integer part
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+
+    // Join the integer and decimal parts with the separator if the number has a decimal part
+    return  parts.join('.');
+
+  }
+
 }
 
 function highlightSetence(endpoint: string){
@@ -118,65 +139,64 @@ watch(()=>props.output, ()=>{
             Wenn Sie monatlich
             <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
             zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}% Zinsen
-            </span>
+            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%Zinsen</span><br>
             über {{ years }} Jahre
             <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>
-            anlegen, kommen Sie auf ein Endkapital von 
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}.</span>
+            anlegen,<br> kommen Sie auf ein Endkapital von 
+            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}.</span><br>
             Sie investieren am {{ formatDate(startDate) }}
             <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span>.
         </div>
 
         <div v-if="isActive[1]">
             Wenn Sie zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}% Zinsen</span>
+            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%</span> Zinsen
             monatlich
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
+            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span><br>
             über {{ years }} Jahre
             <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>
-            anlegen, kommen Sie auf ein Endkapital von 
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}.</span>
+            anlegen,<br> kommen Sie auf ein Endkapital von 
+            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}.</span><br>
             Sie investieren am {{ formatDate(startDate) }}
             <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span>.
         </div>
 
         <div v-if="isActive[2]">
             Sie müssen am {{ formatDate(startDate) }}
-            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span> investieren.
+            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span> investieren.<br>
             Wenn sie nun über  {{ years }} Jahre
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>
+            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span><br>
             monatlich 
             <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
             zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}% Zinsen</span>
-            anlegen, kommen Sie auf ein Endkapital von 
+            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%</span> Zinsen
+            anlegen,<br> kommen Sie auf ein Endkapital von 
             <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>.
         </div>
 
         <div v-if="isActive[3]">
-            Wenn Sie über  {{ years }} Jahre 
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>
+            Wenn Sie über  {{ years }} Jahre
+            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span><br>
             monatlich 
             <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
             zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}% Zinsen</span>
-            anlegen, kommen Sie auf ein Endkapital von 
+            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%</span> Zinsen
+            anlegen, <br>kommen Sie auf ein Endkapital von 
             <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>.
-            Sie investieren am {{ formatDate(startDate) }}
+            <br>Sie investieren am {{ formatDate(startDate) }}
             <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span>.
         </div>
 
         <div v-if="isActive[4]">
             Sie kommen auf ein Endkapital von 
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>,
+            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>,<br>
             wenn Sie über {{ years }} Jahre
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>
+            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span><br>
             monatlich
             <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
             zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}% Zinsen</span>
-            anlegen und am 
+            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%</span> Zinsen
+            anlegen <br> und am 
             {{ formatDate(startDate) }}
             <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span> investieren.
         </div>
@@ -194,7 +214,7 @@ watch(()=>props.output, ()=>{
             starten und jeden Monat
             <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
             zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}% Zinsen</span>
+            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%</span> Zinsen
             entnehmen.
         </div>
 
