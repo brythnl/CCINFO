@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Chart as highcharts } from "highcharts-vue";
 
-const props = defineProps(["series", "result", "prevSeries", "prevResult", "maxYaxis", "actualVisibility","prevVisibility"]);
+const props = defineProps(["series", "result", "prevSeries", "prevResult", "maxYaxis"]);
 const maxYAxis = ref(props.maxYaxis); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
 const yearsToSeriesPrev = ref([]);
@@ -107,17 +107,14 @@ watch(
       series: [
       {
           name: 'previous Graph',
-          showInLegend: false,
+          showInLegend: prevSeries.length,
           data: yearsToSeriesPrev,
-          color: '#24A06D',
-          visible : prevVisibility
+          color: '#00476B',
         },
         {
           name: 'actual Graph',
-          showInLegend: false,
           data: yearsToSeries,
           color: '#4195ac',
-          visible : actualVisibility
         },
       ],
       tooltip: {
