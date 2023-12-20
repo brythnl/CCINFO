@@ -497,7 +497,7 @@ onBeforeMount(async () => {
                 />
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
-                    <AnswerSentence :output="graphData.capitalResult" :currency="'€'" :endpoint="endpoint" :scenario="formTab" :startDate="startDate"></AnswerSentence>
+                    <AnswerSentence :output="graphData.capitalResult" :currency="'€'" :endpoint="endpoint" :scenario="formTab" :startDate="startDate" :seperator="'.'"></AnswerSentence>
                     <graph
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
