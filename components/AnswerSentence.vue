@@ -31,7 +31,7 @@ const formattedOutput = reactive({
     end: '',
 })
 
-let isActive=[true, true, true, true, true];
+let isActive=[false, false, false, false, false];
 
 function calculateTimeDifference(dateString1, dateString2) {
   const date1 = new Date(dateString1);
