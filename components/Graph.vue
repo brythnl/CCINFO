@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Chart as highcharts } from "highcharts-vue";
 
-const props = defineProps(["series", "result", "prevSeries", "prevResult", "maxYaxis", "actualVisibility","prevVisibility"]);
+const props = defineProps(["series", "result", "prevSeries", "prevResult", "maxYaxis"]);
 const maxYAxis = ref(props.maxYaxis); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
 const yearsToSeriesPrev = ref([]);
@@ -60,7 +60,7 @@ watch(
         },
       },
       title: {
-        text: 'Capital accumulation',
+        text: 'Kapital Akkumulierung',
         style: {
           fontSize: 'inherit',
         },
@@ -106,18 +106,16 @@ watch(
       },
       series: [
       {
-          name: 'previous Graph',
-          showInLegend: false,
+          name: 'Grafik vorher',
+          showInLegend: prevSeries.length,
           data: yearsToSeriesPrev,
-          color: '#24A06D',
-          visible : prevVisibility
+          color: '#00476B',
         },
         {
-          name: 'actual Graph',
-          showInLegend: false,
+          name: 'Grafik aktuell',
+          showInLegend: series.length,
           data: yearsToSeries,
           color: '#4195ac',
-          visible : actualVisibility
         },
       ],
       tooltip: {
