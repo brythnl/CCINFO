@@ -60,7 +60,7 @@ watch(
         },
       },
       title: {
-        text: 'Capital accumulation',
+        text: 'Kapital Akkumulierung',
         style: {
           fontSize: 'inherit',
         },
@@ -106,13 +106,13 @@ watch(
       },
       series: [
       {
-          name: 'previous Graph',
+          name: 'Grafik vorher',
           showInLegend: prevSeries.length,
           data: yearsToSeriesPrev,
           color: '#00476B',
         },
         {
-          name: 'actual Graph',
+          name: 'Grafik aktuell',
           showInLegend: series.length,
           data: yearsToSeries,
           color: '#4195ac',
