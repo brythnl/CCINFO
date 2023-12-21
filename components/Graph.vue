@@ -113,6 +113,7 @@ watch(
         },
         {
           name: 'actual Graph',
+          showInLegend: series.length,
           data: yearsToSeries,
           color: '#4195ac',
         },
