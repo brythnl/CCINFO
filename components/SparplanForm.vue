@@ -159,6 +159,7 @@ watch(sparplanInput,
             @update:model-value="changeEndpoint"
             selected-class="bg-primary"
             class="overflow-hidden"
+            mandatory
         >
           <v-container class="px-0 py-0">
 

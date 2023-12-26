@@ -185,6 +185,7 @@ watch(
             @update:model-value="changeEndpoint"
             selected-class="bg-primary"
             class="overflow-hidden"
+            mandatory
         >
           <!-- form container -->
           <v-container class="px-0 py-0">
