@@ -163,7 +163,7 @@ watch(entnahmeplaninput,
         <v-chip-group
             v-model="entnahmeplaninput.endpoint"
             @update:model-value="changeEndpoint"
-            selected-class="text-primary"
+            selected-class="bg-primary"
             class="overflow-hidden"
         >
           <v-container class="px-0 py-0">
@@ -189,14 +189,12 @@ watch(entnahmeplaninput,
                 <!-- starting value response slot -->
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'saving-start-value'"
-                    label="1. Einmalzahlung"
-                    variant="outlined"
+                    variant="filled"
                     density="compact"
                     prefix="€"
                     v-model="entnahmeplaninput.oneTimeInvestment[0]"
                     :value="props.apiResponse ? props.apiResponse.startInvestment : ''"
                     hide-details
-                    type="number"
                     readonly
                 ></v-text-field>
                 <!-- starting value input field -->
@@ -415,7 +413,7 @@ watch(entnahmeplaninput,
                 <!-- withdrawal rate response slot -->
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'saving-rate'"
-                    variant="outlined"
+                    variant="filled"
                     prefix="€"
                     density="compact"
                     v-model="entnahmeplaninput.savingRate"
@@ -423,7 +421,6 @@ watch(entnahmeplaninput,
                     readonly
                     required
                     hide-details
-                    type="number"
                 ></v-text-field>
                 <!-- withdrawal rate input field -->
                 <v-text-field
@@ -603,14 +600,13 @@ watch(entnahmeplaninput,
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'interest-rate'"
                     prefix="%"
-                    variant="outlined"
+                    variant="filled"
                     density="compact"
                     v-model="entnahmeplaninput.interestRate"
                     :value="props.apiResponse ? props.apiResponse.interestRate : ''"
                     required
                     readonly
                     hide-details
-                    type="number"
                 ></v-text-field>
 
                 <!-- interest rater input field -->
@@ -668,7 +664,7 @@ watch(entnahmeplaninput,
                 <!-- end date response slot -->
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'end-date'"
-                    variant="outlined"
+                    variant="filled"
                     density="compact"
                     v-model="entnahmeplaninput.end"
                     :value="props.apiResponse ? props.apiResponse.end : ''"
@@ -730,7 +726,7 @@ watch(entnahmeplaninput,
                 <!-- capital response slot -->
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'capital'"
-                    variant="outlined"
+                    variant="filled"
                     prefix="€"
                     density="compact"
                     v-model="entnahmeplaninput.endValue"
@@ -740,7 +736,6 @@ watch(entnahmeplaninput,
                                 : '' : ''"
                     readonly
                     hide-details
-                    type="number"
                 ></v-text-field>
 
                 <!-- capital input field -->

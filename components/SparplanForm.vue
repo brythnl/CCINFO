@@ -157,7 +157,7 @@ watch(sparplanInput,
         <v-chip-group
             v-model="sparplanInput.endpoint"
             @update:model-value="changeEndpoint"
-            selected-class="text-primary"
+            selected-class="bg-primary"
             class="overflow-hidden"
         >
           <v-container class="px-0 py-0">
@@ -183,14 +183,12 @@ watch(sparplanInput,
                 <!-- starting value response slot-->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='saving-start-value'"
-                    label="1. Einmalzahlung"
-                    variant="outlined"
+                    variant="filled"
                     density="compact"
                     prefix="€"
                     v-model="sparplanInput.oneTimeInvestment[0]"
                     :value="props.apiResponse ? props.apiResponse.startInvestment : ''"
                     hide-details
-                    type="number"
                     readonly
                 ></v-text-field>
 
@@ -405,7 +403,7 @@ watch(sparplanInput,
                 <!-- saving rate response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='saving-rate'"
-                    variant="outlined"
+                    variant="filled"
                     prefix="€"
                     density="compact"
                     v-model="sparplanInput.savingRate"
@@ -413,7 +411,6 @@ watch(sparplanInput,
                     readonly
                     required
                     hide-details
-                    type="number"
                 ></v-text-field>
 
                 <!-- saving rate input field -->
@@ -593,14 +590,13 @@ watch(sparplanInput,
                 <v-text-field
                     v-if="sparplanInput.endpoint=='interest-rate'"
                     prefix="%"
-                    variant="outlined"
+                    variant="filled"
                     density="compact"
                     v-model="sparplanInput.interestRate"
                     :value="props.apiResponse ? props.apiResponse.interestRate : ''"
                     required
                     readonly
                     hide-details
-                    type="number"
                 ></v-text-field>
                 <!-- interest rate input field -->
                 <v-text-field
@@ -651,7 +647,7 @@ watch(sparplanInput,
                 <!-- end date response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='end-date'"
-                    variant="outlined"
+                    variant="filled"
                     density="compact"
                     :value="props.apiResponse ? props.apiResponse.end : ''"
                     v-model="sparplanInput.end"
@@ -707,14 +703,13 @@ watch(sparplanInput,
                 <!-- capital response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint==='capital'"
-                    variant="outlined"
+                    variant="filled"
                     prefix="€"
                     density="compact"
                     v-model="sparplanInput.endValue"
                     :value="props.apiResponse ? props.apiResponse.capitalResult ? props.apiResponse.capitalResult.capitalAmount : '' : ''"
                     readonly
                     hide-details
-                    type="number"
                 ></v-text-field>
                 <!-- capital input field -->
                 <v-text-field

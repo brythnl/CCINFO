@@ -36,9 +36,9 @@ const responseFilteredComparisonArray: any[] = computed(() => {
 </script>
 
 <template>
-  <div class="pb-10">
-    <h4 class="font-bold pb-3"><v-icon>mdi-swap-horizontal</v-icon> Ihre Änderungen</h4>
-    <v-table class="border-2 rounded-lg">
+  <div>
+    <h4 class="flex justify-center pt-5 pb-3 font-bold"><v-icon>mdi-swap-horizontal</v-icon> Ihre Änderungen</h4>
+    <v-table class="border rounded-lg">
       <thead>
       <tr>
         <th>Feld</th>
@@ -58,8 +58,8 @@ const responseFilteredComparisonArray: any[] = computed(() => {
     </v-table>
   </div>
   <div>
-    <h4 class="font-bold pb-3"><v-icon>mdi-equal-box</v-icon> Ergebnis</h4>
-    <v-table class="border-2 rounded-lg">
+    <h4 class="flex justify-center pb-3 pt-5 font-bold"><v-icon>mdi-equal-box</v-icon> Ergebnis</h4>
+    <v-table class="border rounded-lg">
       <thead>
       <tr>
         <th>Feld</th>

@@ -59,12 +59,12 @@ watch(
     <v-tab value="capitalSeries" >Kapitalserie</v-tab>
   </v-tabs>
 
-  <h1 class="flex justify-center my-5 font-bold">API Aufruf</h1>
+  <h1 class="flex justify-center pt-5 pb-3 font-bold">API Aufruf</h1>
 <!--bg-primary grey-lighten-4 bg-white mb-5 ml-3 mr-3 -->
 <!--Variante 1 <v-card class="overflow-y-auto bg-white mb-5 ml-3 mr-3 h-100 rounded-lg mt-5" max-height="700" height="700" variant="elevated" elevation="3">-->
 <!--<v-card class="overflow-y-auto bg-grey-lighten-4 h-100 rounded-lg mt-5" max-height="700" height="700" variant="elevated" elevation="1">-->
 <!--<v-card class="overflow-y-auto bg-primary h-100 rounded-lg mt-5" max-height="700" height="700" variant="outlined">-->
-<v-card class="overflow-y-auto bg-grey-lighten-4 h-100 rounded-lg mt-5" max-height="700" height="700" variant="">    
+<v-card class="overflow-y-auto bg-grey-lighten-4 h-100 rounded-lg" max-height="530" height="530" variant="">
   <v-card-item>
       <v-card-text>
         <code>Request {</code>
