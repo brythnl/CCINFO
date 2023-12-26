@@ -505,15 +505,6 @@ onBeforeMount(async () => {
                       :maxYaxis="graphMaxYAxis"
                     />
                   </v-window-item>
-                  <v-window-item value="vorher" transition="false" reverse-transition="false">
-                    <graph
-                      :prevSeries="previousGraphData.capitalSeries"
-                      :prevResult="previousGraphData.capitalResult"
-                      :series="previousGraphData.capitalSeries"
-                      :result="previousGraphData.capitalResult"
-                      :maxYaxis="graphMaxYAxis"
-                    />
-                  </v-window-item>
                   <v-window-item value="vergleich">
                     <h2 v-if="formTab === 'comb'" class="font-bold pt-3 pb-3 text-lg"> Sparen</h2>
                     <vergleichstabelle

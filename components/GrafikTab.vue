@@ -21,8 +21,7 @@ function grafikUpdate() {
     class="rounded-lg blue-border text-primary"
     selected-class="bg-primary"
   >
-    <v-tab value="aktuell">Grafik<br />aktuell</v-tab>
-    <v-tab value="vorher" :disabled="!callsTwoSameEndpoints">Grafik<br />vorher</v-tab>
+    <v-tab value="aktuell">Grafik</v-tab>
     <v-tab value="vergleich" :disabled="!callsTwoSameEndpoints">Vergleich</v-tab>
     <v-tab value="tabelle">Tabelle</v-tab>
   </v-tabs>
