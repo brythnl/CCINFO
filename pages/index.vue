@@ -450,7 +450,7 @@ onBeforeMount(async () => {
       </v-col>
     </v-row>
   </header>
-  <v-container fluid>
+  <v-container fluid class="font-display">
     <v-row class="h-lg-100 justify-center">
       <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1 h-100">
         <div class="h-100">
@@ -590,5 +590,9 @@ onBeforeMount(async () => {
 
 .custom-row {
   height: 120px;
+}
+
+.font-display {
+  font-family: 'Poppins', 'sans-serif';
 }
 </style>

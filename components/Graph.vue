@@ -63,6 +63,7 @@ watch(
         text: 'Kapital Akkumulierung',
         style: {
           fontSize: '14',
+          fontFamily: 'Poppins',
         },
       },
 

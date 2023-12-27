@@ -153,6 +153,7 @@ watch(sparplanInput,
   <h1 class="flex justify-center pt-5 pb-2 font-bold">Wählen Sie Ihr Berechnungsziel:</h1>
   <v-form>
     <div>
+      <v-hover>
       <v-card elevation="0" >
         <v-chip-group
             v-model="sparplanInput.endpoint"
@@ -756,6 +757,7 @@ watch(sparplanInput,
       >
         Berechnen
       </v-btn>
+      </v-hover>
     </div>
   </v-form>
 
