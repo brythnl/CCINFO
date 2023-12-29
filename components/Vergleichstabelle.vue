@@ -70,7 +70,7 @@ const responseFilteredComparisonArray: combinedData[] = computed(() => {
           }"
           v-if="item.valueDifference.value !== 'array'"
         >
-          {{ item.valueDifference.sign }}{{ item.valueDifference.value.toFixed(2) }} {{ item.valueDifference.unit }}
+          {{ item.valueDifference.sign }}{{ item.valueDifference.value }} {{ item.valueDifference.unit }}
         </td>
         <td v-else></td>
       </tr>
@@ -99,7 +99,7 @@ const responseFilteredComparisonArray: combinedData[] = computed(() => {
             'green-text': item.valueDifference.value > 0,
           }"
         >
-          {{ item.valueDifference.sign }}{{ item.valueDifference.value.toFixed(2) }} {{ item.valueDifference.unit }}
+          {{ item.valueDifference.sign }}{{ item.valueDifference.value }} {{ item.valueDifference.unit }}
         </td>
       </tr>
       </tbody>

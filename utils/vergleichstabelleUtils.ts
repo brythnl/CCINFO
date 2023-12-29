@@ -86,7 +86,7 @@ const calculateDifference = (
       }
 
       return {
-        sign: difference > 0 ? '+' : '-',
+        sign: difference > 0 ? '+' : '',
         value: difference,
         unit: unit,
       };
@@ -148,6 +148,9 @@ export const createCombinedArray = (
     const valueDifference = calculateDifference(previousData[key], currentData[key], key, '€');
 
     if (valueDifference.value !== 0 && valueDifference.value !== ""){
+      // Round numbers to 2 decimal points
+      if (typeof valueDifference.value === 'number') valueDifference.value = valueDifference.value.toFixed(2);
+
       combinedArray.push({
         name: fieldNames[key],
         previousValue: previousValue,
