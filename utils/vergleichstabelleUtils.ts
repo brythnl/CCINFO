@@ -6,24 +6,33 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 const dayjs = useDayjs()
 dayjs.extend(customParseFormat)
 
-interface differenceAndUnit {
-  difference: string | number;
+interface difference {
+  sign: string;
+  value: string | number;
   unit: string;
 }
 
-const names = {
+interface combinedData {
+  name: string;
+  previousValue: string | string[];
+  currentValue: string | string[];
+  difference: string;
+  unit: string;
+}
+
+const fieldNames = {
   "begin": "Startdatum",
   "end": "Enddatum",
-  "interestCalculation": "interestCalculation",
   "interestRate": "Zinssatz",
-  "dynamicSavingRateFactor": "Dynamischer Sparplanfaktor",
-  "savingPlanBegin": "Startdatum Sparplan",
-  "savingPlanEnd": "Enddatum Sparplan",
   "oneTimeInvestment": "Einmalzahlung",
-  "oneTimeInvestmentDate": "Datum Einmalzahlung",
+  "oneTimeInvestmentDate": "Einmalzahlungsdatum",
   "savingRate": "Sparrate",
   "endValue": "Endkapital",
-  "reductionFactor": "reductionFactor",
+  "interestCalculation": "",
+  "dynamicSavingRateFactor": "",
+  "reductionFactor": "",
+  "savingPlanBegin": "",
+  "savingPlanEnd": "",
   "capitalAmount": "Endkapital",
   "startInvestment": "Startkapital"
 }
@@ -93,23 +102,27 @@ export const createCombinedArray = (oldObj: financeMathInput | financeMathResult
   return combinedArray;
 }
 
-export const filterCombinedArrayResp = (comparisonArray: any[], requestEndpoint: string): any[] => {
+export const filterCombinedArrayResp = (
+  comparisonArray: combinedData[],
+  requestEndpoint: string,
+): combinedData[] => {
   let selectedEndpoint: string;
+
   switch (requestEndpoint) {
     case "capital":
-      selectedEndpoint = names["capitalAmount"];
+      selectedEndpoint = fieldNames["capitalAmount"];
       break;
     case "end-date":
-      selectedEndpoint = names["end"];
+      selectedEndpoint = fieldNames["end"];
       break;
     case "interest-rate":
-      selectedEndpoint = names["interestRate"];
+      selectedEndpoint = fieldNames["interestRate"];
       break;
     case "saving-rate":
-      selectedEndpoint = names["savingRate"];
+      selectedEndpoint = fieldNames["savingRate"];
       break;
     case "saving-start-value":
-      selectedEndpoint = names["startInvestment"];
+      selectedEndpoint = fieldNames["startInvestment"];
       break;
   }
 
