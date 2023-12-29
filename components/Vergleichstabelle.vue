@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { financeMathInput, financeMathResult } from '~/types/index.d.ts'
+import type { combinedData } from '../utils/vergleichstabelleUtils';
 import {
   createCombinedArray,
   filterCombinedArrayResp
@@ -12,7 +13,7 @@ const props = defineProps<{
   newResponse?: financeMathResult;
 }>()
 
-const requestComparisonArray: any[] = computed(() => {
+const requestComparisonArray: combinedData[] = computed(() => {
   if (props.oldRequest && props.newRequest) {
     return createCombinedArray(
       JSON.parse(JSON.stringify(props.oldRequest)),
@@ -21,7 +22,7 @@ const requestComparisonArray: any[] = computed(() => {
   } else return [];
 });
 
-const responseFilteredComparisonArray: any[] = computed(() => {
+const responseFilteredComparisonArray: combinedData[] = computed(() => {
   if (props.oldResponse && props.newResponse) {
     return filterCombinedArrayResp(
       createCombinedArray(

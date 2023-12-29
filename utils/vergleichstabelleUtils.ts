@@ -12,7 +12,7 @@ interface difference {
   unit: string;
 }
 
-interface combinedData {
+export interface combinedData {
   name: string;
   previousValue: string | string[];
   currentValue: string | string[];
