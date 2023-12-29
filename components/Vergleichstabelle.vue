@@ -29,7 +29,7 @@ const responseFilteredComparisonArray: any[] = computed(() => {
         JSON.parse(JSON.stringify(props.newResponse))
       ),
       JSON.parse(JSON.stringify(props.oldRequest)).endpoint,
-    )
+    );
   } else return [];
 });
 
@@ -50,9 +50,28 @@ const responseFilteredComparisonArray: any[] = computed(() => {
       <tbody>
       <tr v-for="item in requestComparisonArray">
         <td>{{ item.name }}</td>
-        <td>{{ item.oldValue }}</td>
-        <td>{{ item.newValue }}</td>
-        <td :class="{ 'red-text': item.difference.difference < 0 }">{{ item.difference.difference > 0 ? '+' : '' }}{{ item.difference.difference }} {{ item.difference.unit}}</td>
+        <td v-if="!Array.isArray(item.previousValue)">{{ item.previousValue }}</td>
+        <td v-else>
+          <tr v-for="(element, index) in item.previousValue">
+            <td>{{ index + 1 }} : {{ element }}</td>
+          </tr>
+        </td>
+        <td v-if="!Array.isArray(item.currentValue)">{{ item.currentValue }}</td>
+        <td v-else>
+          <tr v-for="(element, index) in item.currentValue">
+            <td>{{ index + 1 }} : {{ element }}</td>
+          </tr>
+        </td>
+        <td
+          :class="{
+            'red-text': item.valueDifference.value < 0,
+            'green-text': item.valueDifference.value > 0,
+          }"
+          v-if="item.valueDifference.value !== 'array'"
+        >
+          {{ item.valueDifference.sign }}{{ item.valueDifference.value.toFixed(2) }} {{ item.valueDifference.unit }}
+        </td>
+        <td v-else></td>
       </tr>
       </tbody>
     </v-table>
@@ -71,9 +90,16 @@ const responseFilteredComparisonArray: any[] = computed(() => {
       <tbody>
       <tr v-for="item in responseFilteredComparisonArray">
         <td>{{ item.name }}</td>
-        <td>{{ item.oldValue }}</td>
-        <td>{{ item.newValue }}</td>
-        <td :class="{ 'red-text': item.difference.difference < 0, 'green-text': item.difference.difference > 0 }">{{ item.difference.difference > 0 ? '+' : '' }}{{ item.difference.difference }} {{ item.difference.unit}}</td>
+        <td>{{ item.previousValue }}</td>
+        <td>{{ item.currentValue }}</td>
+        <td
+          :class="{
+            'red-text': item.valueDifference.value < 0,
+            'green-text': item.valueDifference.value > 0,
+          }"
+        >
+          {{ item.valueDifference.sign }}{{ item.valueDifference.value.toFixed(2) }} {{ item.valueDifference.unit }}
+        </td>
       </tr>
       </tbody>
     </v-table>
