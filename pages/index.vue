@@ -188,7 +188,7 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
       financeMathInputsEntnahme.value[0],
       API_TOKEN.value
     );
-    financeMathResultsEntnahme.value[0] = entnahmeData;
+    shiftStoredData(financeMathResultsEntnahme, entnahmeData);
     revertAPIResult(true, entnahmeData);
 
     savePreviousGraphData();
@@ -509,21 +509,23 @@ onBeforeMount(async () => {
                     />
                   </v-window-item>
                   <v-window-item value="vergleich">
-                    <h2 v-if="formTab === 'comb'" class="font-bold pt-3 pb-3 text-lg"> Sparen</h2>
-                    <vergleichstabelle
-                      :oldRequest="formTab === 'comb' ? financeMathInputsSparen[1] : financeMathInputs[1]"
-                      :newRequest="formTab === 'comb' ? financeMathInputsSparen[0] : financeMathInputs[0]"
-                      :oldResponse="formTab === 'comb' ? financeMathResultsSparen[1].value : financeMathResults[1].value"
-                      :newResponse="formTab === 'comb' ? financeMathResultsSparen[0].value : financeMathResults[0].value"
+                    <vergleichstabelle v-if="formTab === 'comb'"
+                      :oldRequest="financeMathInputsSparen[1]"
+                      :newRequest="financeMathInputsSparen[0]"
+                      :oldRequestEntnahme="financeMathInputsEntnahme[1]"
+                      :newRequestEntnahme="financeMathInputsEntnahme[0]"
+                      :oldResponse="endpoint[0] === 'sparen' ? financeMathResultsSparen[1].value : financeMathInputsEntnahme[1]"
+                      :newResponse="endpoint[0] === 'sparen' ? financeMathResultsSparen[0].value : financeMathInputsEntnahme[0]"
+                      :endpoint="endpoint[1]"
+                      :isKombiplan="true"
                     ></vergleichstabelle>
-
-                    <h2 v-if="formTab === 'comb'" class="font-bold pt-3 pb-3 text-lg border-solid border-gray-300 border-t-4"> Entnahme</h2>
-                    <vergleichstabelle
-                      v-if="formTab === 'comb'"
-                      :oldRequest="financeMathInputsEntnahme[1]"
-                      :newRequest="financeMathInputsEntnahme[0]"
-                      :oldResponse="financeMathResultsEntnahme[1].value"
-                      :newResponse="financeMathResultsEntnahme[0].value"
+                    <vergleichstabelle v-else
+                      :oldRequest="financeMathInputs[1]"
+                      :newRequest="financeMathInputs[0]"
+                      :oldResponse="financeMathResults[1].value"
+                      :newResponse="financeMathResults[0].value"
+                      :endpoint="endpoint"
+                      :isKombiplan="false"
                     ></vergleichstabelle>
                   </v-window-item>
                   <v-window-item value="tabelle" transition="false" reverse-transition="false">
