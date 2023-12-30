@@ -6,86 +6,156 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 const dayjs = useDayjs()
 dayjs.extend(customParseFormat)
 
-interface differenceAndUnit {
-  difference: string | number;
+interface difference {
+  sign: string;
+  value: string | number;
   unit: string;
 }
 
-const names = {
+export interface combinedData {
+  name: string;
+  previousValue: string | string[];
+  currentValue: string | string[];
+  valueDifference: difference;
+}
+
+const fieldNames = {
   "begin": "Startdatum",
   "end": "Enddatum",
-  "interestCalculation": "interestCalculation",
   "interestRate": "Zinssatz",
-  "dynamicSavingRateFactor": "Dynamischer Sparplanfaktor",
-  "savingPlanBegin": "Startdatum Sparplan",
-  "savingPlanEnd": "Enddatum Sparplan",
   "oneTimeInvestment": "Einmalzahlung",
-  "oneTimeInvestmentDate": "Datum Einmalzahlung",
+  "oneTimeInvestmentDate": "Einmalzahlungsdatum",
   "savingRate": "Sparrate",
   "endValue": "Endkapital",
-  "reductionFactor": "reductionFactor",
+  "interestCalculation": "",
+  "dynamicSavingRateFactor": "",
+  "reductionFactor": "",
+  "savingPlanBegin": "",
+  "savingPlanEnd": "",
   "capitalAmount": "Endkapital",
   "startInvestment": "Startkapital"
 }
 
-const calculateDifference = (oldValue: number | Date, newValue: number | Date): differenceAndUnit => {
-  if (typeof oldValue === "number" && typeof newValue === "number") {
-    const difference = newValue - oldValue;
-    return { difference, unit: '' };
+const formatValue = (
+  value: string | number | Array<string | number>,
+  key: string,
+  currency: string
+): string | string[] => {
+  const formatSingleValue = (value: string | number): string => {
+    if (typeof value === 'string' && dayjs(value).isValid()) {
+      return dayjs(value).format('DD.MM.YYYY');
+    }
+
+    if (typeof value === 'number') {
+      return key === "interestRate" ?
+        `${(value * 100).toFixed(2)} %`
+      : `${(value / 100).toFixed(2)} ${currency}`;
+    }
+
+    return value;
   }
 
-  // calculate difference for date values
-  else if (dayjs(oldValue).isValid()) {
-    let old_date = dayjs(oldValue);
-    let new_date = dayjs(newValue);
-    let diff = new_date.diff(old_date, 'month');
-    if (diff >= 12 || diff <= -12) {
-      return { difference: new_date.diff(old_date, 'year'), unit: 'Jahre' };
-    } else {
-      return { difference: diff, unit: 'Monate' };
+  if (Array.isArray(value)) {
+    if (value.length === 1) {
+      return formatSingleValue(value[0] as string | number);
+    }
+
+    return value.map(formatSingleValue);
+  }
+
+  return formatSingleValue(value as string | number);
+};
+
+const calculateDifference = (
+  previousValue: string | number | Array<string | number>,
+  currentValue: string | number | Array<string | number>,
+  key: string,
+  currency: string
+): difference => {
+  const calculateSingleDifference = (previousValue: string | number, currentValue: string | number): difference  => {
+    if (typeof previousValue === "number" && typeof currentValue === "number") {
+      let difference: number = currentValue - previousValue;
+      let unit: string;
+
+      if (key === "interestRate") {
+        difference *= 100;
+        unit = '%';
+      } else {
+        difference /= 100;
+        unit = currency;
+      }
+
+      return {
+        sign: difference > 0 ? '+' : '',
+        value: difference,
+        unit: unit,
+      };
+    }
+
+    if (typeof previousValue === 'string' && dayjs(previousValue).isValid()) {
+      const previousDate = dayjs(previousValue);
+      const currentDate = dayjs(currentValue);
+      const monthDifference = currentDate.diff(previousDate, 'month');
+      const sign = monthDifference > 0 ? '+' : '-';
+
+      if (monthDifference >= 12 || monthDifference <= -12) {
+        return {
+          sign,
+          value: currentDate.diff(previousDate, 'year'),
+          unit: 'Jahre'
+        };
+      } else {
+        return {
+          sign,
+          value: monthDifference,
+          unit: 'Monate',
+        };
+      }
+    }
+
+    return {
+      sign: '',
+      value: '',
+      unit: ''
     }
   }
-  else {
-    return { difference: "", unit: '' };
+
+  if (Array.isArray(previousValue) && Array.isArray(currentValue)) {
+    if (previousValue.length === 1 && currentValue.length === 1) {
+      return calculateSingleDifference(previousValue[0] as string | number, currentValue[0] as string | number)
+    }
+
+    // This is a placeholder. Real solution for finding the difference for Startkapital (Array) not yet found.
+    return {
+      sign: '',
+      value: 'array',
+      unit: '',
+    }
   }
+
+  return calculateSingleDifference(previousValue as string | number, currentValue as string | number);
 }
 
-const formatValue = (value: number | Date, key: string): string | typeof value => {
-  if (typeof value === 'number') {
-    return key === "interestRate" ?
-      `${(value * 100).toFixed(2)} %`
-      : `${(value / 100).toFixed(2)} €`;
-  }
-  else if (dayjs(value).isValid()) {
-    return dayjs(value).format('DD.MM.YYYY');
-  }
-  return value;
-};
-
-const formatDifference = (difference: string | number , unit: string, key: string): differenceAndUnit => {
-  if (unit == '' && typeof difference === 'number') {
-    return key === "interestRate" ?
-      { difference: `${(difference * 100).toFixed(2)} %`, unit: unit }
-      : { difference: `${(difference / 100).toFixed(2)} €`, unit: unit }
-  }
-  return { difference: difference, unit: unit };
-};
-
-export const createCombinedArray = (oldObj: financeMathInput | financeMathResult, newObj: financeMathInput | financeMathResult): any[] => {
+export const createCombinedArray = (
+  previousData: financeMathInput | financeMathResult,
+  currentData: financeMathInput | financeMathResult
+): combinedData[] => {
   const combinedArray = [];
 
-  for (const key in oldObj) {
-    const oldValue = oldObj[key];
-    const newValue = newObj[key];
-    const { difference, unit } = calculateDifference(oldValue, newValue);
+  for (const key in previousData) {
+    const previousValue = formatValue(previousData[key], key, '€');
+    const currentValue = formatValue(currentData[key], key, '€');
+    const valueDifference = calculateDifference(previousData[key], currentData[key], key, '€');
 
-    if (difference !== 0 && difference !== ""){
+    if (valueDifference.value !== 0 && valueDifference.value !== ""){
+      // Round numbers to 2 decimal points
+      if (typeof valueDifference.value === 'number') valueDifference.value = valueDifference.value.toFixed(2);
+
       combinedArray.push({
-        name: names[key],
-        oldValue: formatValue(oldValue, key),
-        newValue: formatValue(newValue, key),
-        difference: formatDifference(difference, unit, key),
-        unit: unit
+        name: fieldNames[key],
+        previousValue: previousValue,
+        currentValue: currentValue,
+        valueDifference: valueDifference,
       });
     }
   }
@@ -93,23 +163,27 @@ export const createCombinedArray = (oldObj: financeMathInput | financeMathResult
   return combinedArray;
 }
 
-export const filterCombinedArrayResp = (comparisonArray: any[], requestEndpoint: string): any[] => {
+export const filterCombinedArrayResp = (
+  comparisonArray: combinedData[],
+  requestEndpoint: string,
+): combinedData[] => {
   let selectedEndpoint: string;
+
   switch (requestEndpoint) {
     case "capital":
-      selectedEndpoint = names["capitalAmount"];
+      selectedEndpoint = fieldNames["capitalAmount"];
       break;
     case "end-date":
-      selectedEndpoint = names["end"];
+      selectedEndpoint = fieldNames["end"];
       break;
     case "interest-rate":
-      selectedEndpoint = names["interestRate"];
+      selectedEndpoint = fieldNames["interestRate"];
       break;
     case "saving-rate":
-      selectedEndpoint = names["savingRate"];
+      selectedEndpoint = fieldNames["savingRate"];
       break;
     case "saving-start-value":
-      selectedEndpoint = names["startInvestment"];
+      selectedEndpoint = fieldNames["startInvestment"];
       break;
   }
 
