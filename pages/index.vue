@@ -20,7 +20,7 @@ const API_TOKEN = ref(""); // Authenticate access to aixigo's API
 const grafikTabs = ref(""); // Toggle between displays (middle component): Grafik aktuell, Grafik vorher, Vergleich, Tabelle
 const formTab = ref(""); // Toggle between forms (leftmost component) for different plans: Sparplan, Entnahmeplan, Kombiplan
 const api = ref(true); // Toggle API Visualization display
-const endpoint = ref("") // Current selected endpoint
+const endpoint: Ref<string | string[]> = ref("") // Current selected endpoint
 const startDate = ref("") // Current start date
 const callsTwoSameEndpoints = ref(false); // Check if there are already two API calls to the same endpoint
 const graphMaxYAxis = ref(0); // Maximal y-axis value of graph for both, to avoid inconsistency
@@ -111,6 +111,7 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
 
   // Get "pure" endpoint from Endpoint property: [sparen/entnahme]/<API endpoint>
   const endpointType = sparFormInput.endpoint.split("/");
+  endpoint.value = endpointType;
 
   if (endpointType[0] === "sparen") {
     // Assign endpoint for each plan
