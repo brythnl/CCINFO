@@ -514,8 +514,8 @@ onBeforeMount(async () => {
                       :newRequest="financeMathInputsSparen[0]"
                       :oldRequestEntnahme="financeMathInputsEntnahme[1]"
                       :newRequestEntnahme="financeMathInputsEntnahme[0]"
-                      :oldResponse="endpoint[0] === 'sparen' ? financeMathResultsSparen[1].value : financeMathInputsEntnahme[1]"
-                      :newResponse="endpoint[0] === 'sparen' ? financeMathResultsSparen[0].value : financeMathInputsEntnahme[0]"
+                     :oldResponse="endpoint[0] === 'sparen' ? financeMathResultsSparen[1].value : financeMathResultsEntnahme[1].value"
+                      :newResponse="endpoint[0] === 'sparen' ? financeMathResultsSparen[0].value : financeMathResultsEntnahme[0].value"
                       :endpoint="endpoint[1]"
                       :isKombiplan="true"
                     ></vergleichstabelle>
