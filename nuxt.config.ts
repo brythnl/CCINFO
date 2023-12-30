@@ -11,13 +11,16 @@ export default defineNuxtConfig({
       // Change vite config
       nuxt.hooks.hook("vite:extendConfig", (config) => {
         // Add vuetify plugin to array of vite plugins
-        // @ts-expect-error
         config.plugins.push(vuetify({ autoImport: true }));
       });
     },
-    'dayjs-nuxt',
+    "dayjs-nuxt",
     "@nuxtjs/tailwindcss",
+    "@nuxtjs/i18n",
   ],
+  i18n: {
+    vueI18n: './i18n.config.ts'
+  },
   vite: {
     vue: {
       template: {
