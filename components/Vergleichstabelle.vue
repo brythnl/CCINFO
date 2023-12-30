@@ -9,8 +9,12 @@ import {
 const props = defineProps<{
   oldRequest?: financeMathInput;
   newRequest?: financeMathInput;
+  oldRequestEntnahme?: financeMathInput;
+  newRequestEntnahme?: financeMathInput;
   oldResponse?: financeMathResult;
   newResponse?: financeMathResult;
+  endpoint?: string;
+  isKombiplan?: boolean;
 }>()
 
 const requestComparisonArray: combinedData[] = computed(() => {
@@ -22,6 +26,15 @@ const requestComparisonArray: combinedData[] = computed(() => {
   } else return [];
 });
 
+const requestComparisonArrayEntnahme: combinedData[] = computed(() => {
+  if (props.oldRequestEntnahme && props.newRequestEntnahme) {
+    return createCombinedArray(
+      JSON.parse(JSON.stringify(props.oldRequestEntnahme)),
+      JSON.parse(JSON.stringify(props.newRequestEntnahme)),
+    );
+  } else return [];
+});
+
 const responseFilteredComparisonArray: combinedData[] = computed(() => {
   if (props.oldResponse && props.newResponse) {
     return filterCombinedArrayResp(
@@ -29,7 +42,7 @@ const responseFilteredComparisonArray: combinedData[] = computed(() => {
         JSON.parse(JSON.stringify(props.oldResponse)),
         JSON.parse(JSON.stringify(props.newResponse))
       ),
-      JSON.parse(JSON.stringify(props.oldRequest)).endpoint,
+      props.endpoint
     );
   } else return [];
 });
@@ -38,80 +51,27 @@ const responseFilteredComparisonArray: combinedData[] = computed(() => {
 
 <template>
   <div class="pb-10">
-    <h4 class="font-bold pb-3"><v-icon>mdi-swap-horizontal</v-icon> Ihre Änderungen</h4>
-    <v-table class="border-2 rounded-lg">
-      <thead>
-      <tr>
-        <th>Feld</th>
-        <th>Vorher</th>
-        <th>Aktuell</th>
-        <th>Differenz</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="item in requestComparisonArray">
-        <td>{{ item.name }}</td>
-        <td v-if="!Array.isArray(item.previousValue)">{{ item.previousValue }}</td>
-        <td v-else>
-          <tr v-for="(element, index) in item.previousValue">
-            <td>{{ index + 1 }} : {{ element }}</td>
-          </tr>
-        </td>
-        <td v-if="!Array.isArray(item.currentValue)">{{ item.currentValue }}</td>
-        <td v-else>
-          <tr v-for="(element, index) in item.currentValue">
-            <td>{{ index + 1 }} : {{ element }}</td>
-          </tr>
-        </td>
-        <td
-          :class="{
-            'red-text': item.valueDifference.value < 0,
-            'green-text': item.valueDifference.value > 0,
-          }"
-          v-if="item.valueDifference.value !== 'array'"
-        >
-          {{ item.valueDifference.sign }}{{ item.valueDifference.value }} {{ item.valueDifference.unit }}
-        </td>
-        <td v-else></td>
-      </tr>
-      </tbody>
-    </v-table>
+    <h4 class="font-bold pb-3 mt-5"><v-icon>mdi-swap-horizontal</v-icon> Ihre Änderungen</h4>
+    <div>
+      <v-sheet
+        class="rounded-lg elevation-0 bg-primary py-2 mb-3"
+        v-if="isKombiplan"
+      >
+        <h1 class="text-white ps-5 font-bold">Sparphase</h1>
+      </v-sheet>
+      <VergleichsSubtabelle :combinedArray="requestComparisonArray" />
+    </div>
+    <div v-if="isKombiplan">
+      <v-sheet
+        class="rounded-lg elevation-0 bg-primary py-2 mt-5 mb-3"
+      >
+        <h1 class="text-white ps-5 font-bold">Entnahmephase</h1>
+      </v-sheet>
+      <VergleichsSubtabelle :combinedArray="requestComparisonArrayEntnahme" />
+    </div>
   </div>
   <div>
     <h4 class="font-bold pb-3"><v-icon>mdi-equal-box</v-icon> Ergebnis</h4>
-    <v-table class="border-2 rounded-lg">
-      <thead>
-      <tr>
-        <th>Feld</th>
-        <th>Vorher</th>
-        <th>Aktuell</th>
-        <th>Differenz</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="item in responseFilteredComparisonArray">
-        <td>{{ item.name }}</td>
-        <td>{{ item.previousValue }}</td>
-        <td>{{ item.currentValue }}</td>
-        <td
-          :class="{
-            'red-text': item.valueDifference.value < 0,
-            'green-text': item.valueDifference.value > 0,
-          }"
-        >
-          {{ item.valueDifference.sign }}{{ item.valueDifference.value }} {{ item.valueDifference.unit }}
-        </td>
-      </tr>
-      </tbody>
-    </v-table>
+    <VergleichsSubtabelle :combinedArray="responseFilteredComparisonArray" />
   </div>
 </template>
-
-<style scoped>
-.red-text {
-  color: red;
-}
-.green-text {
-  color: green;
-}
-</style>
