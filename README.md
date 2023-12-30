@@ -1,4 +1,4 @@
-# CCINFO
+# Customer Centric Investment Forecast
 > A finance planner app to calculate investments
 
 ## Installation
