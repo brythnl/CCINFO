@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   build: {
@@ -14,7 +15,8 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }));
       });
     },
-    'nuxt-highcharts'
+    'dayjs-nuxt',
+    "@nuxtjs/tailwindcss",
   ],
   vite: {
     vue: {
@@ -24,4 +26,8 @@ export default defineNuxtConfig({
       },
     },
   },
+  dayjs: {
+    plugins: ['customParseFormat'],
+  },
+  ssr: false,
 });
