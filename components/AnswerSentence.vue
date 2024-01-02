@@ -52,9 +52,6 @@ function formatOutput(output:Output){
     formattedOutput.startInvestment = addThousandSeparator(output.startInvestment, props.seperator);
     formattedOutput.interestRate = output.interestRate
     formattedOutput.end = formatDate(output.end)
-
-    console.log(output.capitalAmount);
-
 }
 
 function formatDate(inputDateStr: string) {
@@ -72,7 +69,6 @@ function formatDate(inputDateStr: string) {
 
 function addThousandSeparator(amount:number, separator:string) {
   // Convert the number to a string and split the integer and decimal parts
-  console.log(typeof amount);
   if (typeof amount == 'undefined') {
     return 0;
   }else
