@@ -7,7 +7,9 @@
     "feld": "Field",
     "vorher": "Before",
     "aktuell": "Current",
-    "differenz": "Difference"
+    "differenz": "Difference",
+    "jahre": "years",
+    "monate": "months"
   },
   "fieldNames": {
     "begin": "Start Date",
@@ -19,5 +21,6 @@
     "endValue": "End Capital",
     "capitalAmount": "End Capital",
     "startInvestment": "Start Capital"
-  }
+  },
+  "currency": "£"
 }
