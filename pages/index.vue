@@ -527,7 +527,8 @@ onBeforeMount(async () => {
             </div>
           </v-card>
       </v-col>
-      <v-slide-x-reverse-transition leave-absolute>
+      <!--hide on leave to solve transition issue -->
+      <v-slide-x-reverse-transition leave-absolute hide-on-leave="">
         <v-col
           :cols="12"
           :sm="12"
