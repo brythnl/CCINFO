@@ -220,7 +220,7 @@ watch(
                 <!-- starting value response slot -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'sparen/saving-start-value'"
-                    variant="filled"
+                    variant="outlined"
                     density="compact"
                     prefix="€"
                     v-model="sparInput.oneTimeInvestment[0]"
@@ -229,6 +229,9 @@ watch(
                           : ''"
                     hide-details
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- starting value input field -->
                 <v-text-field
@@ -445,7 +448,7 @@ watch(
                 <!-- saving rate response slot -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'sparen/saving-rate'"
-                    variant="filled"
+                    variant="outlined"
                     prefix="€"
                     density="compact"
                     v-model="sparInput.savingRate"
@@ -455,6 +458,9 @@ watch(
                     required
                     readonly
                     hide-details
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- saving rate input field -->
@@ -646,7 +652,7 @@ watch(
                 <v-text-field
                     v-if="sparInput.endpoint == 'sparen/interest-rate'"
                     prefix="%"
-                    variant="filled"
+                    variant="outlined"
                     density="compact"
                     v-model="sparInput.interestRate"
                     :value="props.apiResponseSparen
@@ -655,6 +661,9 @@ watch(
                     required
                     readonly
                     hide-details
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- interest rate input field -->
@@ -724,7 +733,7 @@ watch(
                 <!-- switch date response slot -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'sparen/end-date'"
-                    variant="filled"
+                    variant="outlined"
                     density="compact"
                     v-model="sparInput.end"
                     :value="props.apiResponseSparen ? props.apiResponseSparen.end : ''"
@@ -732,6 +741,9 @@ watch(
                     readonly
                     hide-details
                     type="date"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- switch date input field -->
@@ -790,7 +802,7 @@ watch(
                 <!--withdrawal rate response slot-->
                 <v-text-field
                     v-if="sparInput.endpoint == 'entnahme/saving-rate'"
-                    variant="filled"
+                    variant="outlined"
                     prefix="€"
                     density="compact"
                     v-model="entnahmeInput.savingRate"
@@ -799,6 +811,9 @@ watch(
                             : ''"
                     hide-details
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- withdrawal rate input field -->
@@ -995,7 +1010,7 @@ watch(
                 <v-text-field
                     v-if="sparInput.endpoint == 'entnahme/interest-rate'"
                     prefix="%"
-                    variant="filled"
+                    variant="outlined"
                     density="compact"
                     v-model="entnahmeInput.interestRate"
                     :value="props.apiResponseEntnahme
@@ -1003,6 +1018,9 @@ watch(
                             : ''"
                     hide-details
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- interest rate input field (withdrawal period) -->
@@ -1062,7 +1080,7 @@ watch(
                 <!--End date response slot-->
                 <v-text-field
                     v-if="sparInput.endpoint == 'entnahme/end-date'"
-                    variant="filled"
+                    variant="outlined"
                     density="compact"
                     v-model="entnahmeInput.end"
                     :value="props.apiResponseEntnahme
@@ -1071,6 +1089,9 @@ watch(
                     hide-details
                     readonly
                     type="date"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- end date input field -->
@@ -1127,7 +1148,7 @@ watch(
                 <!-- final capital response slot -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'entnahme/capital'"
-                    variant="filled"
+                    variant="outlined"
                     prefix="€"
                     density="compact"
                     v-model="entnahmeInput.endValue"
@@ -1138,6 +1159,9 @@ watch(
                                 : '' : ''"
                     hide-details
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- final capital input field -->
