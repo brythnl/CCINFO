@@ -428,8 +428,6 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <NuxtLink :to="switchLocalePath('en-GB')">English</NuxtLink>
-  <NuxtLink :to="switchLocalePath('de-DE')">Deutsch</NuxtLink>
   <header class="bg-white">
     <v-row class="custom-row">
       <v-col cols="auto" class="flex align-center">
@@ -440,6 +438,12 @@ onBeforeMount(async () => {
         />
       </v-col>
       <v-spacer></v-spacer>
+      <v-col cols="auto" class="flex align-center">
+        <NuxtLink :to="switchLocalePath('en-GB')">English - UK</NuxtLink>
+      </v-col>
+      <v-col cols="auto" class="flex align-center">
+        <NuxtLink :to="switchLocalePath('de-DE')">Deutsch - Deutschland</NuxtLink>
+      </v-col>
       <v-col cols="auto" class="flex align-center me-2 me-md-10">
         <v-switch
           v-model="api"
