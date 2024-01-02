@@ -179,12 +179,13 @@ watch(
   <h1 class="flex justify-center pt-5 pb-2 font-bold">Definieren Sie die Spar- und Entnahmephase:</h1>
   <v-form>
     <div>
-      <v-card class="overflow-y-auto" elevation="0" max-height="500">
+      <v-card class="overflow-y-auto" elevation="0" max-height="504">
         <v-chip-group
             v-model="sparInput.endpoint"
             @update:model-value="changeEndpoint"
-            selected-class="text-primary"
+            selected-class="bg-primary"
             class="overflow-hidden"
+            mandatory
         >
           <!-- form container -->
           <v-container class="px-0 py-0">
@@ -219,7 +220,6 @@ watch(
                 <!-- starting value response slot -->
                 <v-text-field
                     v-if="sparInput.endpoint == 'sparen/saving-start-value'"
-                    label="1. Einmalzahlung"
                     variant="outlined"
                     density="compact"
                     prefix="€"
@@ -228,8 +228,10 @@ watch(
                           ? props.apiResponseSparen.startInvestment
                           : ''"
                     hide-details
-                    type="number"
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- starting value input field -->
                 <v-text-field
@@ -456,7 +458,9 @@ watch(
                     required
                     readonly
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- saving rate input field -->
@@ -657,7 +661,9 @@ watch(
                     required
                     readonly
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- interest rate input field -->
@@ -735,6 +741,9 @@ watch(
                     readonly
                     hide-details
                     type="date"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- switch date input field -->
@@ -801,8 +810,10 @@ watch(
                             ? props.apiResponseEntnahme.savingRate
                             : ''"
                     hide-details
-                    type="number"
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- withdrawal rate input field -->
@@ -1006,8 +1017,10 @@ watch(
                             ? props.apiResponseEntnahme.interestRate
                             : ''"
                     hide-details
-                    type="number"
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- interest rate input field (withdrawal period) -->
@@ -1076,6 +1089,9 @@ watch(
                     hide-details
                     readonly
                     type="date"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- end date input field -->
@@ -1142,8 +1158,10 @@ watch(
                                     .capitalAmount
                                 : '' : ''"
                     hide-details
-                    type="number"
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- final capital input field -->

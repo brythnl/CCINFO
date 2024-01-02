@@ -129,7 +129,8 @@ watch(()=>props.output, ()=>{
 
 </script>
 <template>
-    <div class="pa-5 fs-12">
+    <div class="px-5">
+      <h4 class="flex justify-center pt-5 pb-3 font-bold">Ihr Ergebnis</h4>
         <div v-if="scenario == 'saving'">
         <div v-if="isActive[0]">
             Wenn Sie monatlich

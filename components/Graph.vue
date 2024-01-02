@@ -62,7 +62,8 @@ watch(
       title: {
         text: 'Kapital Akkumulierung',
         style: {
-          fontSize: 'inherit',
+          fontSize: '14',
+          fontFamily: 'Poppins',
         },
       },
 
@@ -96,7 +97,7 @@ watch(
         //visible: false, // Don't show the Y Axis
         max: maxYAxis,
         title: {
-          text: 'Capital',
+          text: null,
         },
         labels: {
           formatter: function () {

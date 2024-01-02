@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     "dayjs-nuxt",
     "@nuxtjs/tailwindcss",
     "@nuxtjs/i18n",
+    "@nuxtjs/google-fonts",
   ],
   i18n: {
     locales: ["de-DE", "en-GB"],
@@ -34,6 +35,14 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
+  },
+  googleFonts: {
+    families: {
+      // a simple name
+      Poppins: true,
+      Lato: true,
+      Roboto: true,
+    }
   },
   dayjs: {
     plugins: ['customParseFormat'],

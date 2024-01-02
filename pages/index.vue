@@ -451,17 +451,14 @@ onBeforeMount(async () => {
           inset
           color="primary"
           label="API"
-          width="auto"
         ></v-switch>
       </v-col>
     </v-row>
   </header>
-  <v-container fluid>
-    <v-row class="h-lg-100 justify-center">
-      <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1 h-100">
-        <div class="h-100">
+  <v-container fluid class="font-display">
+    <v-row class="justify-center">
+      <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1">
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
-            <div>
               <v-card-text>
                 <div>
                   <form-tabs @tabUpdate="(n: string) => (formTab = n)" />
@@ -487,12 +484,9 @@ onBeforeMount(async () => {
                   </v-window-item>
                 </v-window>
               </v-card-text>
-            </div>
           </v-card>
-        </div>
       </v-col>
-      <v-col :cols="12" :sm="12" :md="6" :lg="api ? 4 : 6" class="px-1 h-100">
-        <div class="h-100">
+      <v-col :cols="12" :sm="12" :md="6" :lg="api ? 4 : 6" class="px-1">
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <div>
               <v-card-text>
@@ -508,15 +502,6 @@ onBeforeMount(async () => {
                       :result="graphData.capitalResult"
                       :prevSeries="previousGraphData.capitalSeries"
                       :prevResult="previousGraphData.capitalResult"
-                      :maxYaxis="graphMaxYAxis"
-                    />
-                  </v-window-item>
-                  <v-window-item value="vorher" transition="false" reverse-transition="false">
-                    <graph
-                      :prevSeries="previousGraphData.capitalSeries"
-                      :prevResult="previousGraphData.capitalResult"
-                      :series="previousGraphData.capitalSeries"
-                      :result="previousGraphData.capitalResult"
                       :maxYaxis="graphMaxYAxis"
                     />
                   </v-window-item>
@@ -549,18 +534,17 @@ onBeforeMount(async () => {
               </v-card-text>
             </div>
           </v-card>
-        </div>
       </v-col>
-      <v-slide-x-reverse-transition leave-absolute>
+      <!--hide on leave to solve transition issue -->
+      <v-slide-x-reverse-transition leave-absolute hide-on-leave="">
         <v-col
           :cols="12"
           :sm="12"
           :md="12"
           :lg="4"
-          class="px-1 h-100"
+          class="px-1"
           v-if="api"
         >
-          <div class="h-100">
             <v-card class="h-100 rounded-xl elevation-6 pb-5">
               <v-card-text>
                 <api-visualization
@@ -579,7 +563,6 @@ onBeforeMount(async () => {
                 />
               </v-card-text>
             </v-card>
-          </div>
         </v-col>
       </v-slide-x-reverse-transition>
     </v-row>
@@ -606,6 +589,10 @@ onBeforeMount(async () => {
 }
 
 .custom-row {
-  height: 120px;
+  height: 90px;
+}
+
+.font-display {
+  font-family: 'Poppins', 'sans-serif';
 }
 </style>

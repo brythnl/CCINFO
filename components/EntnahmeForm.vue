@@ -163,8 +163,9 @@ watch(entnahmeplaninput,
         <v-chip-group
             v-model="entnahmeplaninput.endpoint"
             @update:model-value="changeEndpoint"
-            selected-class="text-primary"
+            selected-class="bg-primary"
             class="overflow-hidden"
+            mandatory
         >
           <v-container class="px-0 py-0">
 
@@ -189,15 +190,16 @@ watch(entnahmeplaninput,
                 <!-- starting value response slot -->
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'saving-start-value'"
-                    label="1. Einmalzahlung"
                     variant="outlined"
                     density="compact"
                     prefix="€"
                     v-model="entnahmeplaninput.oneTimeInvestment[0]"
                     :value="props.apiResponse ? props.apiResponse.startInvestment : ''"
                     hide-details
-                    type="number"
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- starting value input field -->
                 <v-text-field
@@ -423,7 +425,9 @@ watch(entnahmeplaninput,
                     readonly
                     required
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- withdrawal rate input field -->
                 <v-text-field
@@ -610,7 +614,9 @@ watch(entnahmeplaninput,
                     required
                     readonly
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- interest rater input field -->
@@ -676,6 +682,9 @@ watch(entnahmeplaninput,
                     readonly
                     hide-details
                     type="date"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- end date input field -->
@@ -740,7 +749,9 @@ watch(entnahmeplaninput,
                                 : '' : ''"
                     readonly
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- capital input field -->

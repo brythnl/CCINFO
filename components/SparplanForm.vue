@@ -153,12 +153,14 @@ watch(sparplanInput,
   <h1 class="flex justify-center pt-5 pb-2 font-bold">Wählen Sie Ihr Berechnungsziel:</h1>
   <v-form>
     <div>
+      <v-hover>
       <v-card elevation="0" >
         <v-chip-group
             v-model="sparplanInput.endpoint"
             @update:model-value="changeEndpoint"
-            selected-class="text-primary"
+            selected-class="bg-primary"
             class="overflow-hidden"
+            mandatory
         >
           <v-container class="px-0 py-0">
 
@@ -183,15 +185,16 @@ watch(sparplanInput,
                 <!-- starting value response slot-->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='saving-start-value'"
-                    label="1. Einmalzahlung"
                     variant="outlined"
                     density="compact"
                     prefix="€"
                     v-model="sparplanInput.oneTimeInvestment[0]"
                     :value="props.apiResponse ? props.apiResponse.startInvestment : ''"
                     hide-details
-                    type="number"
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- starting value input field -->
@@ -413,7 +416,9 @@ watch(sparplanInput,
                     readonly
                     required
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- saving rate input field -->
@@ -600,7 +605,9 @@ watch(sparplanInput,
                     required
                     readonly
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- interest rate input field -->
                 <v-text-field
@@ -659,6 +666,9 @@ watch(sparplanInput,
                     required
                     hide-details
                     type="date"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- end date input field -->
                 <v-text-field
@@ -714,7 +724,9 @@ watch(sparplanInput,
                     :value="props.apiResponse ? props.apiResponse.capitalResult ? props.apiResponse.capitalResult.capitalAmount : '' : ''"
                     readonly
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- capital input field -->
                 <v-text-field
@@ -760,6 +772,7 @@ watch(sparplanInput,
       >
         Berechnen
       </v-btn>
+      </v-hover>
     </div>
   </v-form>
 

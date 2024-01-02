@@ -238,7 +238,7 @@ const formatDifference = (
 
 <template>
   <div class="pb-10">
-    <h4 class="font-bold pb-3 mt-5"><v-icon>mdi-swap-horizontal</v-icon> {{ $t("vergleichstabelle.anderungen") }}</h4>
+    <h4 class="flex justify-center pt-5 pb-3 font-bold"><v-icon>mdi-swap-horizontal</v-icon> {{ $t("vergleichstabelle.anderungen") }}</h4>
     <div>
       <v-sheet
         class="rounded-lg elevation-0 bg-primary py-2 mb-3"
@@ -258,7 +258,7 @@ const formatDifference = (
     </div>
   </div>
   <div>
-    <h4 class="font-bold pb-3"><v-icon>mdi-equal-box</v-icon> {{ $t("vergleichstabelle.ergebnis") }}</h4>
+    <h4 class="flex justify-center pt-5 pb-3 font-bold"><v-icon>mdi-equal-box</v-icon> {{ $t("vergleichstabelle.ergebnis") }}</h4>
     <VergleichsSubtabelle :combinedArray="responseFilteredComparisonArray" />
   </div>
 </template>
