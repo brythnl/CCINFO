@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 /* -------------------------------------------------------------------------- */
 /*                                Imports                                     */
 /* -------------------------------------------------------------------------- */
@@ -12,6 +11,10 @@ import {
 } from "../utils/formUtils";
 import AnswerSentence from "../components/AnswerSentence.vue";
 
+/* -------------------------------------------------------------------------- */
+/*                                Composables                                 */
+/* -------------------------------------------------------------------------- */
+const switchLocalePath = useSwitchLocalePath();
 
 /* -------------------------------------------------------------------------- */
 /*                                Reactive State                              */
@@ -416,12 +419,17 @@ function findMaxOfLastTwoGraphs() {
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                Lifecycle Hooks                             */
+/* -------------------------------------------------------------------------- */
 onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
 </script>
 
 <template>
+  <NuxtLink :to="switchLocalePath('en-GB')">English</NuxtLink>
+  <NuxtLink :to="switchLocalePath('de-DE')">Deutsch</NuxtLink>
   <header class="bg-white">
     <v-row class="custom-row">
       <v-col cols="auto" class="flex align-center">
