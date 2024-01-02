@@ -1,0 +1,26 @@
+{
+  "vergleichstabelle": {
+    "anderungen": "Ihre Änderungen",
+    "ergebnis": "Ergebnis",
+    "sparphase": "Sparphase",
+    "entnahmephase": "Entnahmephase",
+    "feld": "Feld",
+    "vorher": "Vorher",
+    "aktuell": "Aktuell",
+    "differenz": "Differenz",
+    "jahre": "Jahre",
+    "monate": "Monate"
+  },
+  "fieldNames": {
+    "begin": "Startdatum",
+    "end": "Enddatum",
+    "interestRate": "Zinssatz",
+    "oneTimeInvestment": "Einmalzahlungen",
+    "oneTimeInvestmentDate": "Einmalzahlungsdaten",
+    "savingRate": "Sparrate",
+    "endValue": "Endkapital",
+    "capitalAmount": "Endkapital",
+    "startInvestment": "Startkapital"
+  },
+  "currency": "€"
+}

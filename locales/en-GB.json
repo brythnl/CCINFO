@@ -1,0 +1,26 @@
+{
+  "vergleichstabelle": {
+    "anderungen": "Your Changes",
+    "ergebnis": "Result",
+    "sparphase": "Saving Phase",
+    "entnahmephase": "Withdraw Phase",
+    "feld": "Field",
+    "vorher": "Before",
+    "aktuell": "Current",
+    "differenz": "Difference",
+    "jahre": "years",
+    "monate": "months"
+  },
+  "fieldNames": {
+    "begin": "Start Date",
+    "end": "End Date",
+    "interestRate": "Interest Rate",
+    "oneTimeInvestment": "One Time Investments",
+    "oneTimeInvestmentDate": "One Time Investment Dates",
+    "savingRate": "Saving Rate",
+    "endValue": "End Capital",
+    "capitalAmount": "End Capital",
+    "startInvestment": "Start Capital"
+  },
+  "currency": "£"
+}
