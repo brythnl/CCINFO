@@ -419,6 +419,9 @@ function findMaxOfLastTwoGraphs() {
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                Lifecycle Hooks                             */
+/* -------------------------------------------------------------------------- */
 onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
