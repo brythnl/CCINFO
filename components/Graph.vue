@@ -97,7 +97,7 @@ watch(
         //visible: false, // Don't show the Y Axis
         max: maxYAxis,
         title: {
-          text: 'Capital',
+          text: null,
         },
         labels: {
           formatter: function () {
