@@ -445,7 +445,6 @@ onBeforeMount(async () => {
           inset
           color="primary"
           label="API"
-          width="auto"
         ></v-switch>
       </v-col>
     </v-row>
@@ -589,7 +588,7 @@ onBeforeMount(async () => {
 }
 
 .custom-row {
-  height: 120px;
+  height: 90px;
 }
 
 .font-display {
