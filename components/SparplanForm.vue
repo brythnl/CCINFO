@@ -185,13 +185,16 @@ watch(sparplanInput,
                 <!-- starting value response slot-->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='saving-start-value'"
-                    variant="filled"
+                    variant="outlined"
                     density="compact"
                     prefix="€"
                     v-model="sparplanInput.oneTimeInvestment[0]"
                     :value="props.apiResponse ? props.apiResponse.startInvestment : ''"
                     hide-details
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- starting value input field -->
@@ -405,7 +408,7 @@ watch(sparplanInput,
                 <!-- saving rate response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='saving-rate'"
-                    variant="filled"
+                    variant="outlined"
                     prefix="€"
                     density="compact"
                     v-model="sparplanInput.savingRate"
@@ -413,6 +416,9 @@ watch(sparplanInput,
                     readonly
                     required
                     hide-details
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- saving rate input field -->
@@ -592,13 +598,16 @@ watch(sparplanInput,
                 <v-text-field
                     v-if="sparplanInput.endpoint=='interest-rate'"
                     prefix="%"
-                    variant="filled"
+                    variant="outlined"
                     density="compact"
                     v-model="sparplanInput.interestRate"
                     :value="props.apiResponse ? props.apiResponse.interestRate : ''"
                     required
                     readonly
                     hide-details
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- interest rate input field -->
                 <v-text-field
@@ -649,7 +658,7 @@ watch(sparplanInput,
                 <!-- end date response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint=='end-date'"
-                    variant="filled"
+                    variant="outlined"
                     density="compact"
                     :value="props.apiResponse ? props.apiResponse.end : ''"
                     v-model="sparplanInput.end"
@@ -657,6 +666,9 @@ watch(sparplanInput,
                     required
                     hide-details
                     type="date"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- end date input field -->
                 <v-text-field
@@ -705,13 +717,16 @@ watch(sparplanInput,
                 <!-- capital response slot -->
                 <v-text-field
                     v-if="sparplanInput.endpoint==='capital'"
-                    variant="filled"
+                    variant="outlined"
                     prefix="€"
                     density="compact"
                     v-model="sparplanInput.endValue"
                     :value="props.apiResponse ? props.apiResponse.capitalResult ? props.apiResponse.capitalResult.capitalAmount : '' : ''"
                     readonly
                     hide-details
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- capital input field -->
                 <v-text-field
