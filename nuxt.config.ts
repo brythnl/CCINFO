@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
@@ -19,7 +18,14 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
   ],
   i18n: {
-    vueI18n: './i18n.config.ts'
+    locales: ["de-DE", "en-GB"],
+    defaultLocale: "de-DE",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",
+    },
+    vueI18n: './i18n.config.ts',
   },
   vite: {
     vue: {
