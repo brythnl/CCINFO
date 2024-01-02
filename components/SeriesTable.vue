@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
   <h1 class="flex justify-center pt-5 pb-3 font-bold">Vermögens-Entwicklung</h1>
-  <v-table class="border rounded-lg overflow-y-auto " max-height="530" height="530">
+  <v-table class="border rounded-lg overflow-y-auto h-100" max-height="545" height="545">
     <thead>
       <tr>
         <th>Jahr</th>

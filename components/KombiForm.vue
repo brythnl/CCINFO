@@ -179,7 +179,7 @@ watch(
   <h1 class="flex justify-center pt-5 pb-2 font-bold">Definieren Sie die Spar- und Entnahmephase:</h1>
   <v-form>
     <div>
-      <v-card class="overflow-y-auto" elevation="0" max-height="500">
+      <v-card class="overflow-y-auto" elevation="0" max-height="504">
         <v-chip-group
             v-model="sparInput.endpoint"
             @update:model-value="changeEndpoint"
