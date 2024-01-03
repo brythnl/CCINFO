@@ -45,19 +45,19 @@ watch(
       class="rounded-lg blue-border text-primary"
       selected-class="bg-primary"
   >
-    <v-tab value="startInvestment">Startkapital</v-tab>
-    <v-tab value="capitalAmount">Endkapital</v-tab>
-    <v-tab value="savingRate">Sparrate</v-tab>
-    <v-tab value="interestRate">Zinssatz</v-tab>
-    <v-tab value="end">Enddatum</v-tab>
-    <v-tab value="begin">Startdatum</v-tab>
-    <v-tab value="oneTimeInvestment">Einmal-<br>zahlungen</v-tab>
-    <v-tab value="oneTimeInvestmentDate">Datum<br>Enmalzahlungen</v-tab>
-    <v-tab value="dynamicSavingRateFactor">Dynamik</v-tab>
-    <v-tab value="interestCalculation">Zins<br>berechnung</v-tab>
-    <v-tab value="savingPlanBegin">Sparplan-<br>Start</v-tab>
-    <v-tab value="savingPlanEnd">Sparplan-<br>Ende</v-tab>
-    <v-tab value="capitalSeries">Kapitalserie</v-tab>
+    <v-tab value="startInvestment" v-html="$t('apiTabs.startInvestment')"></v-tab>
+    <v-tab value="capitalAmount" v-html="$t('apiTabs.capitalAmount')"></v-tab>
+    <v-tab value="savingRate" v-html="$t('apiTabs.savingRate')"></v-tab>
+    <v-tab value="interestRate" v-html="$t('apiTabs.interestRate')"></v-tab>
+    <v-tab value="end" v-html="$t('apiTabs.end')"></v-tab>
+    <v-tab value="begin" v-html="$t('apiTabs.begin')"></v-tab>
+    <v-tab value="oneTimeInvestment" v-html="$t('apiTabs.oneTimeInvestment')"></v-tab>
+    <v-tab value="oneTimeInvestmentDate" v-html="$t('apiTabs.oneTimeInvestmentDate')"></v-tab>
+    <v-tab value="dynamicSavingRateFactor" v-html="$t('apiTabs.dynamicSavingRateFactor')"></v-tab>
+    <v-tab value="interestCalculation" v-html="$t('apiTabs.interestCalculation')"></v-tab>
+    <v-tab value="savingPlanBegin" v-html="$t('apiTabs.savingPlanBegin')"></v-tab>
+    <v-tab value="savingPlanEnd" v-html="$t('apiTabs.savingPlanEnd')"></v-tab>
+    <v-tab value="capitalSeries" v-html="$t('apiTabs.capitalSeries')"></v-tab>
   </v-tabs>
 
   <h1 class="flex justify-center pt-5 pb-3 font-bold">API Aufruf</h1>
