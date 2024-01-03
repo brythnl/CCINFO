@@ -6,13 +6,14 @@ const props = defineProps<{
   apiRequest2: financeMathInput;
   apiResponse: financeMathResult;
   apiResponse2: financeMathResult;
+  endPoint: String;
 }>();
 
 const find = ref("a");
 watch(
-    () => props.apiRequest.endpoint,
+    () => props.endPoint,
     () => {
-      switch (props.apiRequest.endpoint) {
+      switch (props.endPoint) {
         case "saving-start-value":
           find.value = "startInvestment";
           break;

@@ -555,6 +555,7 @@ onBeforeMount(async () => {
                   :apiRequest2="financeMathInputsEntnahme[0]"
                   :apiResponse="financeMathResultsSparen[0].value"
                   :apiResponse2="financeMathResultsEntnahme[0].value"
+                  :endPoint="endpoint[1]"
                 />
                 <api-visualization
                   v-else
@@ -562,6 +563,7 @@ onBeforeMount(async () => {
                   :apiResponse="financeMathResults[0].value"
                   :apiRequest2="null"
                   :apiResponse2="null"
+                  :endPoint="endpoint"
                 />
               </v-card-text>
             </v-card>
