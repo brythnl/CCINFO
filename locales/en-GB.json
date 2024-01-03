@@ -12,15 +12,58 @@
     "monate": "months"
   },
   "fieldNames": {
+    "title":"Choose what you want to calculate:",
     "begin": "Start Date",
     "end": "End Date",
     "interestRate": "Interest Rate",
-    "oneTimeInvestment": "One Time Investments",
-    "oneTimeInvestmentDate": "One Time Investment Dates",
+    "oneTimeInvestment": "One Time Investment",
+    "oneTimeInvestmentDate": "One Time Investment Date",
     "savingRate": "Saving Rate",
+    "dynamicSavingRateFactor":"Dynamic Saving Rate Factor",
     "endValue": "End Capital",
     "capitalAmount": "End Capital",
-    "startInvestment": "Start Capital"
+    "startInvestment": "Start Capital",
+    "withdrawRate": "Withdraw Rate",
+    "withdrawBegin": "Withdraw Begin",
+    "savingPhase": "Saving Phase",
+    "withdrawPhase": "Withdraw Phase",
+    "newOneTimeInvestment": "New one-time investment",
+    "calculate": "Calculate"
+  }, 
+  "fieldInfosSaving":{
+    "startCapital": "Enter the amount you would like to invest at the beginning.<br>The default value for the date of the first investment is the 1st day of the next month.<br>You can use the drop-down icon to set additional options for one-time payments.",
+    "startDate": "Enter the date on which you would like to invest the starting capital in your savings plan. By default this is the 1st of the next month. Format: DD/MM/YYYY.",
+    "oneTimeInvestment": "Enter the amount of the additional one-time investment here.",
+    "oneTimeInvestmentDate": "Enter the date of the additional one-time investment here. Format: DD/MM/YYYY.",
+    "savingRate":"Enter the monthly amount that you would like to regularly invest in your savings plan.<br>You can use the drop-down symbol to set additional options for the savings rate.",
+    "savingPlanStart":"Select the date on which you would like to start your monthly savings payments. If no date is specified, the savings rate is applied for the total investment period. Format : DD/MM/YYYY.",
+    "savingPlanEnd":"Select the date on which you would like to end your monthly savings payments. If no date is specified, the savings rate is applied for the total investment period. Format : DD/MM/YYYY.",
+    "dynamicFactor":"Enter a parameter that defines the percentage by which the monthly savings rate annually increases. Example: With a monthly savings rate of €50 and a factor of 150%, you will have to save €75 per month for the next year.",
+    "interestRate":"Enter the interest rate in percent that you expect on your savings. Interest is extra money you get when you save money.",
+    "endDate":"Enter the date on which your savings plan should end here. By default this is set to 10 years from the start date. Format: DD/MM/YYYY.",
+    "endValue":"Enter the amount you would like to reach by the end of your savings plan. The final capital is your financial goal."
+  },
+  "fieldInfosWithdraw":{
+    "startDate": "Enter the date on which you would like to invest the starting capital in your Withdrawal plan. By default this is the 1st of the next month. Format: DD/MM/YYYY.",
+    "savingRate":"Enter the monthly amount that you would like to regularly invest in your Withdrawal plan.<br>You can use the drop-down symbol to set additional options for the Withdraw rate.",
+    "savingPlanStart":"Select the date on which you would like to start your monthly Withdrawal. If no date is specified, the Withdraw rate is applied for the total investment period. Format: DD/MM/YYYY.",
+    "savingPlanEnd":"Select the date on which you would like to end your monthly Withdrawal. If no date is specified, the Withdraw rate is applied for the total investment period. Format: DD/MM/YYYY.",
+    "dynamicFactor":"Enter a parameter that defines the percentage by which the monthly Withdraw rate annually increases. Example: With a monthly Withdraw rate of €50 and a factor of 150%, you will have to save €75 per month for the next year.",
+    "interestRate":"Enter the interest rate in percent that you expect on your savings. Interest is extra money you get when you save money.",
+    "endDate":"Enter the date on which your Withdrawal plan should end here. By default this is set to 10 years from the start date. Format: DD/MM/YYYY.",
+    "endValue":"Enter the amount you would like to reach by the end of your Withdrawal plan. The final capital is your financial goal."
+  },
+  "fieldInfosCombo":{
+    "withdrawBegin": "Enter the date on which your savings plan should end and your withdrawal plan should start. Format: DD/MM/YYYY."
+  },
+  "dialog":{
+    "message":"Input errors for the calculations",
+    "close":"Close"
+  },
+  "tabs":{
+    "saving": "Saving",
+    "withdraw": "Withdrawal",
+    "combination" : "Combination"
   },
   "currency": "£"
 }
