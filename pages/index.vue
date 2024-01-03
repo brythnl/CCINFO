@@ -6,6 +6,8 @@ import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
 import { getAPIToken } from "~/utils/auth";
 import {
+  inTenYears,
+  nextMonthFirstDay,
   removeSearchedEndpointFromInput,
   revertOutput,
 } from "../utils/formUtils";
@@ -425,6 +427,13 @@ function findMaxOfLastTwoGraphs() {
 onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
+
+const language = ref('de-DE'); // Default language
+const languages = ref({
+  'de-DE': 'Deutsch',
+  'en-GB': 'English',
+});
+
 </script>
 
 <template>
@@ -438,12 +447,25 @@ onBeforeMount(async () => {
         />
       </v-col>
       <v-spacer></v-spacer>
+      <v-col cols="2" class="flex align-center">
+        <v-select
+            label="Sprache"
+            density="compact"
+            variant="outlined"
+            hide-details
+            v-model="language"
+        >
+        </v-select>
+      </v-col>
+
+      <!--
       <v-col cols="auto" class="flex align-center">
         <NuxtLink :to="switchLocalePath('en-GB')">English - UK</NuxtLink>
       </v-col>
       <v-col cols="auto" class="flex align-center">
         <NuxtLink :to="switchLocalePath('de-DE')">Deutsch - Deutschland</NuxtLink>
       </v-col>
+      !-->
       <v-col cols="auto" class="flex align-center me-2 me-md-10">
         <v-switch
           v-model="api"
