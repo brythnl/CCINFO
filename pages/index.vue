@@ -377,6 +377,8 @@ function assignGraphData(isCapitalEndpoint: boolean, capitalSeriesResult?: Ref<f
   );
 
   if (isCapitalEndpoint) {
+    // Set ONLY the capital result property into graph data's capital result
+    graphData.value.capitalResult = graphData.value.capitalResult.capitalResult
     // Assign series from initial endpoint call as graph data
     graphData.value.capitalSeries = revertOutput(
       financeMathResults.value[0].value
