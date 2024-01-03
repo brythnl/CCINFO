@@ -22,5 +22,10 @@
     "capitalAmount": "End Capital",
     "startInvestment": "Start Capital"
   },
+  "seriesTable": {
+    "jahr": "Year",
+    "kapital": "Capital",
+    "entwicklung": "Capital Development"
+  },
   "currency": "£"
 }

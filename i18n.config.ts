@@ -7,5 +7,19 @@ export default defineI18nConfig(() => ({
   messages: {
     "de-DE": deDE,
     "en-GB": enGB,
+  },
+  numberFormats: {
+    'en-GB': {
+      currency: {
+        style: 'currency',
+        currency: 'GBP'
+      }
+    },
+    'de-DE': {
+      currency: {
+        style: 'currency',
+        currency: 'EUR'
+      }
+    }
   }
 }));

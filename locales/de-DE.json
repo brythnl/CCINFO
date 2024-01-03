@@ -22,5 +22,10 @@
     "capitalAmount": "Endkapital",
     "startInvestment": "Startkapital"
   },
+  "seriesTable": {
+    "jahr": "Jahr",
+    "kapital": "Vermögen",
+    "entwicklung": "Vermögens-Entwicklung"
+  },
   "currency": "€"
 }
