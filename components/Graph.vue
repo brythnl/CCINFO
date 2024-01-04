@@ -6,8 +6,19 @@ const maxYAxis = ref(props.maxYaxis); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
 const yearsToSeriesPrev = ref([]);
 
+import { computed } from 'vue';
 const { t } = useI18n();
 const { n } = useI18n();
+
+let name = t('graph.title');
+
+function translate_tooltip (p_year, p_capital){
+  let year = new Date(p_year).getFullYear();
+  let capital = n(p_capital, 'currencyNoCents');
+
+  return t('graph.tooltip', { year: year , capital: capital});
+}
+
 
 const assignYearsToSeries = (series: [], result: {}) => {
   const seriesCount = series.length; // Length of the series
@@ -104,7 +115,8 @@ watch(
         },
         labels: {
           formatter: function () {
-            return this.value.toLocaleString('en') + ' €'; // TODO: The Currency should be variable and the 1000 seperators also (Change 'en' <-> 'de')
+            return n(this.value, 'currencyNoCents');
+            //return this.value.toLocaleString('en') + ' €'; // TODO: The Currency should be variable and the 1000 seperators also (Change 'en' <-> 'de')
           },
         },
       },
@@ -122,22 +134,20 @@ watch(
           color: '#4195ac',
         },
       ],
-      tooltip: {
-        formatter: function () {
-          let year = new Date(this.x).getFullYear();
-          let capital = this.$n(this.y, 'currency');
-          //let capital = Math.round(this.y).toLocaleString('en');
-          console.log(year);
-          console.log(capital);
+        tooltip: {
+          formatter: function () {
+            /*
+            let year = new Date(this.x).getFullYear();
+            let capital = this.$n(this.y, 'currency');
+            //let capital = Math.round(this.y).toLocaleString('en');
+            console.log(year);
+            console.log(capital);
 
-          return this.$t('graph.tooltip', { year: year}, { capital: capital }) + this.$t('currency');
 
-          /*
-          return `In ${new Date(
-            this.x
-          ).getFullYear()} there would be a capital of ${Math.round(
-            this.y
-          ).toLocaleString('en')}€`;*/
+            return this.$t('graph.curr_graph');
+          */
+
+          return translate_tooltip(this.x, this.y);
         },
       },
     }"

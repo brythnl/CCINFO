@@ -2,7 +2,6 @@
 import { watch } from "vue";
 const { t } = useI18n();
 
-
 const props = defineProps<{
   apiRequest: financeMathInput;
   apiResponse;
@@ -14,7 +13,7 @@ const props = defineProps<{
   <v-table class="border rounded-lg overflow-y-auto h-100" max-height="545" height="545">
     <thead>
       <tr>
-        <th>{{ $t("seriesTable.jahr") }}</th>
+        <th>{{ test }}</th>
         <th>{{ $t("seriesTable.kapital") }}</th>
       </tr>
     </thead>
