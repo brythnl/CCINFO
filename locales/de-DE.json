@@ -27,5 +27,12 @@
     "kapital": "Vermögen",
     "entwicklung": "Vermögens-Entwicklung"
   },
+  "graph": {
+    "title": "Vermögens-Entwicklung",
+    "years": "Jahre",
+    "prev_graph": "Vorherige Grafik",
+    "curr_graph": "Aktuelle Grafik",
+    "tooltip": "Im Jahr {year} hätten Sie ein Vermögen von {capital} €."
+  },
   "currency": "€"
 }

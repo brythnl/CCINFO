@@ -6,6 +6,9 @@ const maxYAxis = ref(props.maxYaxis); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
 const yearsToSeriesPrev = ref([]);
 
+const { t } = useI18n();
+const { n } = useI18n();
+
 const assignYearsToSeries = (series: [], result: {}) => {
   const seriesCount = series.length; // Length of the series
   const endYear = new Date(result.end).getFullYear();
@@ -60,7 +63,7 @@ watch(
         },
       },
       title: {
-        text: 'Kapital Akkumulierung',
+        text: this.$t('graph.title'),
         style: {
           fontSize: '14',
           fontFamily: 'Poppins',
@@ -90,7 +93,7 @@ watch(
         },
         tickInterval: 1,
         title: {
-          text: 'Years',
+          text: this.$t('graph.years'),
         },
       },
       yAxis: {
@@ -107,13 +110,13 @@ watch(
       },
       series: [
       {
-          name: 'Grafik vorher',
+          name: this.$t('graph.prev_graph'),
           showInLegend: prevSeries.length,
           data: yearsToSeriesPrev,
           color: '#00476B',
         },
         {
-          name: 'Grafik aktuell',
+          name: this.$t('graph.curr_graph'),
           showInLegend: series.length,
           data: yearsToSeries,
           color: '#4195ac',
@@ -121,11 +124,20 @@ watch(
       ],
       tooltip: {
         formatter: function () {
+          let year = new Date(this.x).getFullYear();
+          let capital = this.$n(this.y, 'currency');
+          //let capital = Math.round(this.y).toLocaleString('en');
+          console.log(year);
+          console.log(capital);
+
+          return this.$t('graph.tooltip', { year: year}, { capital: capital }) + this.$t('currency');
+
+          /*
           return `In ${new Date(
             this.x
           ).getFullYear()} there would be a capital of ${Math.round(
             this.y
-          ).toLocaleString('en')}€`;
+          ).toLocaleString('en')}€`;*/
         },
       },
     }"
