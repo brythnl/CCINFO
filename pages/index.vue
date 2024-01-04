@@ -12,6 +12,7 @@ import {
   revertOutput,
 } from "../utils/formUtils";
 import AnswerSentence from "../components/AnswerSentence.vue";
+import {defineI18nConfig, defineI18nLocale} from "../.nuxt/imports";
 
 /* -------------------------------------------------------------------------- */
 /*                                Composables                                 */
@@ -428,10 +429,22 @@ onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
 
-const language = ref('de-DE'); // Default language
-const languages = ref({
-  'de-DE': 'Deutsch',
-  'en-GB': 'English',
+const { locale, locales, setLocale } = useI18n();
+
+const language = ref({ name: "Deutsch - DE", path: "de-DE" }); // Default language
+const languages = ref([
+  { name: "Deutsch - DE", path: "de-DE" },
+  { name: "English - GB", path: "en-GB" }
+]);
+
+
+
+// Watcher that triggers when `language` changes
+watch(language, (newLanguage) => {
+  console.log(newLanguage);
+  // change locale
+  setLocale(newLanguage.path);
+  console.log(locale.value);
 });
 
 </script>
@@ -454,6 +467,9 @@ const languages = ref({
             variant="outlined"
             hide-details
             v-model="language"
+            :items="languages"
+            item-title="name"
+            return-object
         >
         </v-select>
       </v-col>
