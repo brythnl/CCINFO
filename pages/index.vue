@@ -429,27 +429,29 @@ onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
 
-// import
-const { locale, locales, setLocale } = useI18n();
+const { locale, setLocale } = useI18n();
 
-// selected language
-const language = ref({ name: "Deutsch - DE", path: "de-DE" }); // Default language
-
-// language options for select
 const languages = ref([
   { name: "Deutsch - DE", path: "de-DE" },
   { name: "English - GB", path: "en-GB" }
 ]);
 
-// Watcher that triggers when `language` changes
-watch(language, (newLanguage) => {
-  console.log(newLanguage);
-  // change locale
-  if(newLanguage.path != locale.value){
-    setLocale(newLanguage.path);
+// Finds the language object based on the current value of locale.value
+const findLanguageByPath = (path) => {
+  return languages.value.find(lang => lang.path === path);
+};
+
+const selectedLanguage = ref(findLanguageByPath(locale.value));
+
+// Watcher to update the i18n locale when the selected language changes
+watch(selectedLanguage, (newValue, oldValue) => {
+  if (newValue.path !== oldValue?.path) {
+    setLocale(newValue.path);
   }
-  console.log(locale.value);
 });
+
+// Generates a list of objects for v-select
+const languageItems = computed(() => languages.value);
 
 </script>
 
@@ -470,9 +472,10 @@ watch(language, (newLanguage) => {
             density="compact"
             variant="outlined"
             hide-details
-            v-model="language"
-            :items="languages"
+            v-model="selectedLanguage"
+            :items="languageItems"
             item-title="name"
+            item-value="path"
             return-object
         >
         </v-select>
