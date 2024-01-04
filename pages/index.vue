@@ -429,15 +429,17 @@ onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
 
+// import
 const { locale, locales, setLocale } = useI18n();
 
+// selected language
 const language = ref({ name: "Deutsch - DE", path: "de-DE" }); // Default language
+
+// language options for select
 const languages = ref([
   { name: "Deutsch - DE", path: "de-DE" },
   { name: "English - GB", path: "en-GB" }
 ]);
-
-
 
 // Watcher that triggers when `language` changes
 watch(language, (newLanguage) => {
