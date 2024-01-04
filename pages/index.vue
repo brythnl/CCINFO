@@ -445,7 +445,9 @@ const languages = ref([
 watch(language, (newLanguage) => {
   console.log(newLanguage);
   // change locale
-  setLocale(newLanguage.path);
+  if(newLanguage.path != locale.value){
+    setLocale(newLanguage.path);
+  }
   console.log(locale.value);
 });
 
