@@ -6,6 +6,20 @@ const maxYAxis = ref(props.maxYaxis); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
 const yearsToSeriesPrev = ref([]);
 
+import { computed } from 'vue';
+const { t } = useI18n();
+const { n } = useI18n();
+
+let name = t('graph.title');
+
+function translate_tooltip (p_year, p_capital){
+  let year = new Date(p_year).getFullYear();
+  let capital = n(p_capital, 'currencyNoCents');
+
+  return t('graph.tooltip', { year: year , capital: capital});
+}
+
+
 const assignYearsToSeries = (series: [], result: {}) => {
   const seriesCount = series.length; // Length of the series
   const endYear = new Date(result.end).getFullYear();
@@ -60,7 +74,7 @@ watch(
         },
       },
       title: {
-        text: 'Kapital Akkumulierung',
+        text: this.$t('graph.title'),
         style: {
           fontSize: '14',
           fontFamily: 'Poppins',
@@ -90,7 +104,7 @@ watch(
         },
         tickInterval: 1,
         title: {
-          text: 'Years',
+          text: this.$t('graph.years'),
         },
       },
       yAxis: {
@@ -101,31 +115,39 @@ watch(
         },
         labels: {
           formatter: function () {
-            return this.value.toLocaleString('en') + ' €'; // TODO: The Currency should be variable and the 1000 seperators also (Change 'en' <-> 'de')
+            return n(this.value, 'currencyNoCents');
+            //return this.value.toLocaleString('en') + ' €'; // TODO: The Currency should be variable and the 1000 seperators also (Change 'en' <-> 'de')
           },
         },
       },
       series: [
       {
-          name: 'Grafik vorher',
+          name: this.$t('graph.prev_graph'),
           showInLegend: prevSeries.length,
           data: yearsToSeriesPrev,
           color: '#00476B',
         },
         {
-          name: 'Grafik aktuell',
+          name: this.$t('graph.curr_graph'),
           showInLegend: series.length,
           data: yearsToSeries,
           color: '#4195ac',
         },
       ],
-      tooltip: {
-        formatter: function () {
-          return `In ${new Date(
-            this.x
-          ).getFullYear()} there would be a capital of ${Math.round(
-            this.y
-          ).toLocaleString('en')}€`;
+        tooltip: {
+          formatter: function () {
+            /*
+            let year = new Date(this.x).getFullYear();
+            let capital = this.$n(this.y, 'currency');
+            //let capital = Math.round(this.y).toLocaleString('en');
+            console.log(year);
+            console.log(capital);
+
+
+            return this.$t('graph.curr_graph');
+          */
+
+          return translate_tooltip(this.x, this.y);
         },
       },
     }"

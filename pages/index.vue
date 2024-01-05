@@ -6,10 +6,13 @@ import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
 import { getAPIToken } from "~/utils/auth";
 import {
+  inTenYears,
+  nextMonthFirstDay,
   removeSearchedEndpointFromInput,
   revertOutput,
 } from "../utils/formUtils";
 import AnswerSentence from "../components/AnswerSentence.vue";
+import {defineI18nConfig, defineI18nLocale} from "../.nuxt/imports";
 
 /* -------------------------------------------------------------------------- */
 /*                                Composables                                 */
@@ -427,6 +430,31 @@ function findMaxOfLastTwoGraphs() {
 onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
+
+const { locale, setLocale } = useI18n();
+
+const languages = ref([
+  { name: "Deutsch - DE", path: "de-DE" },
+  { name: "English - GB", path: "en-GB" }
+]);
+
+// Finds the language object based on the current value of locale.value
+const findLanguageByPath = (path) => {
+  return languages.value.find(lang => lang.path === path);
+};
+
+const selectedLanguage = ref(findLanguageByPath(locale.value));
+
+// Watcher to update the i18n locale when the selected language changes
+watch(selectedLanguage, (newValue, oldValue) => {
+  if (newValue.path !== oldValue?.path) {
+    setLocale(newValue.path);
+  }
+});
+
+// Generates a list of objects for v-select
+const languageItems = computed(() => languages.value);
+
 </script>
 
 <template>
@@ -440,12 +468,29 @@ onBeforeMount(async () => {
         />
       </v-col>
       <v-spacer></v-spacer>
+      <v-col cols="2" class="flex align-center">
+        <v-select
+            label="Sprache"
+            density="compact"
+            variant="outlined"
+            hide-details
+            v-model="selectedLanguage"
+            :items="languageItems"
+            item-title="name"
+            item-value="path"
+            return-object
+        >
+        </v-select>
+      </v-col>
+
+      <!--
       <v-col cols="auto" class="flex align-center">
         <NuxtLink :to="switchLocalePath('en-GB')">English - UK</NuxtLink>
       </v-col>
       <v-col cols="auto" class="flex align-center">
         <NuxtLink :to="switchLocalePath('de-DE')">Deutsch - Deutschland</NuxtLink>
       </v-col>
+      !-->
       <v-col cols="auto" class="flex align-center me-2 me-md-10">
         <v-switch
           v-model="api"

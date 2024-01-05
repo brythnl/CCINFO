@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import {watch} from "vue";
+
+import { watch } from "vue";
+const { t } = useI18n();
 
 
 const props = defineProps<{
@@ -35,7 +37,7 @@ function copyTable() {
 
 <template>
   <div class="flex justify-center pt-5 pb-3">
-    <h1 class="px-auto pe-2 font-bold">Vermögens-Entwicklung</h1>
+    <h1 class="px-auto pe-2 font-bold">{{ $t("seriesTable.entwicklung") }}</h1>
     <v-btn
         prepend-icon="mdi-content-copy"
         variant="tonal"
@@ -47,14 +49,14 @@ function copyTable() {
   <v-table id="table" class="border rounded-lg overflow-y-auto h-100" max-height="545" height="545">
     <thead>
     <tr>
-      <th>Jahr</th>
-      <th>Vermögen</th>
+       <th>{{ $t("seriesTable.jahr") }}</th>
+       <th>{{ $t("seriesTable.kapital") }}</th>
     </tr>
     </thead>
     <tbody>
     <tr v-for="(item, index) in props.apiResponse.capitalSeries" :key="index">
-      <td>{{ parseInt(props.apiRequest.begin.substring(0, 4)) + index + 1 }}</td>
-      <td>{{ new Intl.NumberFormat().format(item) }}</td>
+      <td>{{ parseInt(props.apiRequest.begin.substring(0, 4)) + index +1 }}</td>
+      <td>{{ $n(item, "currency") }}</td>
     </tr>
     </tbody>
   </v-table>

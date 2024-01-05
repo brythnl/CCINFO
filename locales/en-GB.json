@@ -83,5 +83,17 @@
     "savingPlanEnd": "saving plan<br>end",
     "capitalSeries": "Capital series"
   },
+  "seriesTable": {
+    "jahr": "Year",
+    "kapital": "Capital",
+    "entwicklung": "Capital Development"
+  },
+  "graph": {
+    "title": "Capital Accumulation",
+    "years": "Years",
+    "prev_graph": "Previous Graph",
+    "curr_graph": "Current Graph",
+    "tooltip": "In {year} there would be a capital of {capital}."
+  },
   "currency": "£"
 }
