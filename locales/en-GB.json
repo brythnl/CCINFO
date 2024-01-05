@@ -75,12 +75,12 @@
     "interestRate": "Interest rate",
     "end": "End date",
     "begin": "Begin date",
-    "oneTimeInvestment": "One-time<br>Investment",
-    "oneTimeInvestmentDate": "One-time<br>investment date",
-    "dynamicSavingRateFactor": "Dynamic<br>saving rate<br>factor",
-    "interestCalculation": "interest<br>calculation",
-    "savingPlanBegin": "Saving plan<br>begin",
-    "savingPlanEnd": "saving plan<br>end",
+    "oneTimeInvestment": "One-time\nInvestment",
+    "oneTimeInvestmentDate": "One-time\ninvestment date",
+    "dynamicSavingRateFactor": "Dynamic\nsaving rate\nfactor",
+    "interestCalculation": "interest\ncalculation",
+    "savingPlanBegin": "Saving plan\nbegin",
+    "savingPlanEnd": "saving plan\nend",
     "capitalSeries": "Capital series"
   },
   "currency": "£"

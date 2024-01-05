@@ -45,19 +45,19 @@ watch(
       class="rounded-lg blue-border text-primary"
       selected-class="bg-primary"
   >
-    <v-tab value="startInvestment" v-html="$t('apiTabs.startInvestment')"></v-tab>
-    <v-tab value="capitalAmount" v-html="$t('apiTabs.capitalAmount')"></v-tab>
-    <v-tab value="savingRate" v-html="$t('apiTabs.savingRate')"></v-tab>
-    <v-tab value="interestRate" v-html="$t('apiTabs.interestRate')"></v-tab>
-    <v-tab value="end" v-html="$t('apiTabs.end')"></v-tab>
-    <v-tab value="begin" v-html="$t('apiTabs.begin')"></v-tab>
-    <v-tab value="oneTimeInvestment" v-html="$t('apiTabs.oneTimeInvestment')"></v-tab>
-    <v-tab value="oneTimeInvestmentDate" v-html="$t('apiTabs.oneTimeInvestmentDate')"></v-tab>
-    <v-tab value="dynamicSavingRateFactor" v-html="$t('apiTabs.dynamicSavingRateFactor')"></v-tab>
-    <v-tab value="interestCalculation" v-html="$t('apiTabs.interestCalculation')"></v-tab>
-    <v-tab value="savingPlanBegin" v-html="$t('apiTabs.savingPlanBegin')"></v-tab>
-    <v-tab value="savingPlanEnd" v-html="$t('apiTabs.savingPlanEnd')"></v-tab>
-    <v-tab value="capitalSeries" v-html="$t('apiTabs.capitalSeries')"></v-tab>
+    <v-tab value="startInvestment" width="125">{{$t('apiTabs.startInvestment')}}</v-tab>
+    <v-tab value="capitalAmount" width="125">{{$t('apiTabs.capitalAmount')}}</v-tab>
+    <v-tab value="savingRate" width="125">{{$t('apiTabs.savingRate')}}</v-tab>
+    <v-tab value="interestRate" width="125">{{$t('apiTabs.interestRate')}}</v-tab>
+    <v-tab value="end" width="125">{{$t('apiTabs.end')}}</v-tab>
+    <v-tab value="begin" width="125">{{$t('apiTabs.begin')}}</v-tab>
+    <v-tab value="oneTimeInvestment" width="125">{{$t('apiTabs.oneTimeInvestment')}}</v-tab>
+    <v-tab value="oneTimeInvestmentDate" width="125">{{$t('apiTabs.oneTimeInvestmentDate')}}</v-tab>
+    <v-tab value="dynamicSavingRateFactor" width="125">{{$t('apiTabs.dynamicSavingRateFactor')}}</v-tab>
+    <v-tab value="interestCalculation" width="125">{{$t('apiTabs.interestCalculation')}}</v-tab>
+    <v-tab value="savingPlanBegin" width="125">{{$t('apiTabs.savingPlanBegin')}}</v-tab>
+    <v-tab value="savingPlanEnd" width="125">{{$t('apiTabs.savingPlanEnd')}}</v-tab>
+    <v-tab value="capitalSeries" width="125">{{$t('apiTabs.capitalSeries')}}</v-tab>
   </v-tabs>
 
   <h1 class="flex justify-center pt-5 pb-3 font-bold">API Aufruf</h1>
