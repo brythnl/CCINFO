@@ -12,15 +12,76 @@
     "monate": "Monate"
   },
   "fieldNames": {
+    "title":"Wählen Sie Ihr Berechnungsziel:",
     "begin": "Startdatum",
     "end": "Enddatum",
-    "interestRate": "Zinssatz",
-    "oneTimeInvestment": "Einmalzahlungen",
-    "oneTimeInvestmentDate": "Einmalzahlungsdaten",
+    "interestRate": "Zins",
+    "oneTimeInvestment": "Einmalzahlung",
+    "oneTimeInvestmentDate": "Einmalzahlungsdatum",
     "savingRate": "Sparrate",
+    "dynamicSavingRateFactor":"Dynamik",
     "endValue": "Endkapital",
     "capitalAmount": "Endkapital",
-    "startInvestment": "Startkapital"
+    "startInvestment": "Startkapital",
+    "withdrawRate": "Entnahmerate",
+    "withdrawBegin": "Entnahmebegin",
+    "savingPhase": "Sparphase",
+    "withdrawPhase": "Entnahmephase",
+    "newOneTimeInvestment": "Neue Einmalzahlung",
+    "calculate": "Berechnen"
+  },
+  "fieldInfosSaving":{
+    "startCapital": "Trage den Betrag ein, den du zu Beginn investieren möchtest.\n Der Standardwert für das Datum der 1. Investition ist der 1. des nächsten Monats.\n Über das Aufklapp-Symbol kannst du zusätzliche Optionen für Einmalzahlungen festlegen.",
+    "startDate": "Gib das Datum ein, an dem du das Startkapital in deinen Sparplan investieren möchtest. Standardmäßig ist dieses der 1. des nächsten Monats.\nFormat: DD/MM/YYYY.",
+    "oneTimeInvestment": "Gib hier den Betrag der zusätzlichen Einmalzahlung ein.",
+    "oneTimeInvestmentDate": "Gib hier das Datum der zusätzlichen Einmalzahlung ein.\nFormat: DD/MM/YYYY.",
+    "savingRate":"Trage den monatlichen Betrag ein, den du regelmäßig in deinen Sparplan investieren möchtest.\n Über das Aufklapp-Symbol kannst du zusätzliche Optionen für die Sparrate festlegen.",
+    "savingPlanStart":"Wähle das Datum aus, an dem du mit deinen monatlichen Sparraten beginnen möchtest. Sollten kein Datum angegeben, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
+    "savingPlanEnd":"Wähle das Datum aus, an dem du deine monatlichen Sparraten beenden möchtest. Sollten kein Datum angegeben, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
+    "dynamicFactor":"Trage einen Faktor ein, der die dynamische Anpassung der Sparrate beeinflusst. Beispiel: Bei einer monatlichen Sparrate von 50€ und einem Faktor von 150% sparst du plötzlich 75€ pro Monat.",
+    "interestRate":"Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld sparst.",
+    "endDate":"Trage hier das Datum ein, an dem dein Sparplan enden soll. Standardmäßig ist dieses auf 10 Jahre von dem Startdatum eingestellt.\nFormat: DD/MM/YYYY.",
+    "endValue":"Gib hier den Betrag an, den du am Ende deines Sparplans erreichen möchtest. Das Endkapital ist dein finanzielles Ziel."
+  },
+  "fieldInfosWithdraw":{
+    "startDate": "Gib das Datum ein, an dem du das Startkapital in deinen Entnahmeplan investieren möchtest. Standardmäßig ist dieses der 1. des nächsten Monats.\nFormat: DD/MM/YYYY.",
+    "savingRate":"Trage den monatlichen Betrag ein, den du regelmäßig in deinen Entnahmeplan investieren möchtest.\n Über das Aufklapp-Symbol kannst du zusätzliche Optionen für die Entnahmerate festlegen.",
+    "savingPlanStart":"Wähle das Datum aus, an dem du mit deinen monatlichen Entnahmeraten beginnen möchtest. Sollten kein Datum angegeben, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
+    "savingPlanEnd":"Wähle das Datum aus, an dem du deine monatlichen Entnahmeraten beenden möchtest. Sollten kein Datum angegeben, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
+    "dynamicFactor":"Trage einen Faktor ein, der die dynamische Anpassung der Entnahmerate beeinflusst. Beispiel: Bei einer monatlichen Entnahmerate von 50€ und einem Faktor von 150% entnimsst du plötzlich 75€ pro Monat.",
+    "interestRate":"Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld entnimmst.",
+    "endDate":"Trage hier das Datum ein, an dem dein Entnahmeplan enden soll. Standardmäßig ist dieses auf 10 Jahre von dem Startdatum eingestellt.\nFormat: DD/MM/YYYY.",
+    "endValue":"Gib hier den Betrag an, den du am Ende deines Entnahmeplans erreichen möchtest. Das Endkapital ist dein finanzielles Ziel."
+  },
+  "fieldInfosCombo":{
+    "withdrawBegin": "Trage hier das Datum ein, an dem dein Sparplan enden und dein Entnahmeplan starten soll.\nFormat: DD/MM/YYYY."
+  },
+  "dialog":{
+    "message":"Eingabefehler bei den Berechnungen",
+    "close":"Schließen"
+  },
+  "tabs":{
+    "saving": "Sparen",
+    "withdraw": "Entnahme",
+    "combination" : "Kombi",
+    "graph": "Grafik",
+    "comparison": "Vergleich",
+    "table": "Tabelle"
+  },
+  "apiTabs":{
+    "startInvestment": "Startkapital",
+    "capitalAmount": "Endkapital",
+    "savingRate": "Sparrate",
+    "interestRate": "Zinssatz",
+    "end": "Enddatum",
+    "begin": "Startdatum",
+    "oneTimeInvestment": "Einmal-<br>zahlungen",
+    "oneTimeInvestmentDate": "Datum<br>Einmalzahlungen",
+    "dynamicSavingRateFactor": "Dynamik",
+    "interestCalculation": "Zins<br>berechnung",
+    "savingPlanBegin": "Sparplan-<br>Start",
+    "savingPlanEnd": "Sparplan-<br>Ende",
+    "capitalSeries": "Kapitalserie"
   },
   "seriesTable": {
     "jahr": "Jahr",

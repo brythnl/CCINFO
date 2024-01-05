@@ -600,6 +600,7 @@ const languageItems = computed(() => languages.value);
                   :apiRequest2="financeMathInputsEntnahme[0]"
                   :apiResponse="financeMathResultsSparen[0].value"
                   :apiResponse2="financeMathResultsEntnahme[0].value"
+                  :endPoint="endpoint[1]"
                 />
                 <api-visualization
                   v-else
@@ -607,6 +608,7 @@ const languageItems = computed(() => languages.value);
                   :apiResponse="financeMathResults[0].value"
                   :apiRequest2="null"
                   :apiResponse2="null"
+                  :endPoint="endpoint"
                 />
               </v-card-text>
             </v-card>
