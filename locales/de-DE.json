@@ -75,12 +75,12 @@
     "interestRate": "Zinssatz",
     "end": "Enddatum",
     "begin": "Startdatum",
-    "oneTimeInvestment": "Einmal-<br>zahlungen",
-    "oneTimeInvestmentDate": "Datum<br>Einmalzahlungen",
+    "oneTimeInvestment": "Einmal-\nzahlungen",
+    "oneTimeInvestmentDate": "Datum\nEinmalzahlungen",
     "dynamicSavingRateFactor": "Dynamik",
-    "interestCalculation": "Zins<br>berechnung",
-    "savingPlanBegin": "Sparplan-<br>Start",
-    "savingPlanEnd": "Sparplan-<br>Ende",
+    "interestCalculation": "Zins\nberechnung",
+    "savingPlanBegin": "Sparplan-\nStart",
+    "savingPlanEnd": "Sparplan-\nEnde",
     "capitalSeries": "Kapitalserie"
   },
   "seriesTable": {
