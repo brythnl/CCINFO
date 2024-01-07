@@ -96,5 +96,43 @@
     "curr_graph": "Current Graph",
     "tooltip": "In {year} there would be a capital of {capital}."
   },
+  "answersentence":{
+    "headline": "Your Result",
+    "savingplan":{
+      "capital-1": "With the planned investments, you will achieve a",
+      "capital-2": "final capital of",
+      "saving-rate-1": "To reach your savings goal, a",
+      "saving-rate-2": "monthly savings rate of",
+      "saving-rate-3": "is required",
+      "interest-rate-1": "To reach your savings goal, a",
+      "interest-rate-2": "return of",
+      "interest-rate-3": "is required",
+      "saving-start-value-1": "To reach your savings goal, an",
+      "saving-start-value-2": "initial capital of",
+      "saving-start-value-3": "is required",
+      "end-date-1": "With the planned investments, your",
+      "end-date-2": "savings goal will be achieved in",
+      "end-date-3": "years",
+      "end-date-4": ""
+    },
+      "withdrawplan": {
+        "capital-1": "After deducting the planned withdrawals, there will be a",
+        "capital-2": "remaining capital of",
+        "saving-rate-1": "Your investment allows you to make",
+        "saving-rate-2": "monthly withdrawals of",
+        "saving-rate-3": "",
+        "interest-rate-1": "To finance your desired withdrawals, a",
+        "interest-rate-2": "return of",
+        "interest-rate-3": "is required",
+        "saving-start-value-1": "To finance your withdrawal request, an",
+        "saving-start-value-2": "initial capital of",
+        "saving-start-value-3": "is required",
+        "end-date-1": "With your invested capital, the planned",
+        "end-date-2": "withdrawal is possible for",
+        "end-date-3": "years",
+        "end-date-4": ""
+      }
+  },
+
   "currency": "£"
 }
