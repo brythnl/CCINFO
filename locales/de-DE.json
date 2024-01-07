@@ -96,5 +96,42 @@
     "curr_graph": "Aktuelle Grafik",
     "tooltip": "Im Jahr {year} hätten Sie ein Vermögen von {capital}."
   },
+  "answersentence":{
+    "headline": "Ihr Ergebnis",
+    "savingplan":{
+      "capital-1": "Mit den geplanten Investitionen erreichen Sie ein",
+      "capital-2": "Endkapital von",
+      "saving-rate-1": "Um Ihr Sparziel zu erreichen ist eine",
+      "saving-rate-2": "monatliche Sparrate von",
+      "saving-rate-3": "erforderlich",
+      "interest-rate-1": "Um Ihr Sparziel zu erreichen ist eine",
+      "interest-rate-2": "Rendite von",
+      "interest-rate-3": "erforderlich",
+      "saving-start-value-1":"Um Ihr Sparziel zu erreichen ist ein",
+      "saving-start-value-2":"Startkapital von",
+      "saving-start-value-3": "erforderlich",
+      "end-date-1":"Mit den geplanten Investitionen wird Ihr",
+      "end-date-2":"Sparziel in",
+      "end-date-3":"Jahren",
+      "end-date-4":"erreicht"
+    },
+    "withdrawplan":{
+      "capital-1": "Nach Abzug der geplanten Auszahlungen bleibt am Ende der Laufzeit ein",
+      "capital-2": "Restkapital von",
+      "saving-rate-1": "Ihre Investition ermöglicht Ihnen die",
+      "saving-rate-2": "Entnahme von monatlich",
+      "saving-rate-3": "",
+      "interest-rate-1": "Um Ihre gewünschten Entnahmen zu finanzieren ist eine",
+      "interest-rate-2": "Rendite von",
+      "interest-rate-3": "erforderlich",
+      "saving-start-value-1":"Um Ihren Entnahmewunsch zu finanzieren ist ein",
+      "saving-start-value-2":"Startkapital von",
+      "saving-start-value-3": "erforderlich",
+      "end-date-1":"Mit Ihrem investierten Vermögen ist die geplante",
+      "end-date-2":"Entnahme für",
+      "end-date-3":"Jahren",
+      "end-date-4":"möglich"
+    }
+  },
   "currency": "€"
 }
