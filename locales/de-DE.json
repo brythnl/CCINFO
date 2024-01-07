@@ -69,6 +69,7 @@
     "table": "Tabelle"
   },
   "apiTabs":{
+    "title": "API Aufruf",
     "startInvestment": "Startkapital",
     "capitalAmount": "Endkapital",
     "savingRate": "Sparrate",

@@ -69,6 +69,7 @@
     "table": "Table"
   },
   "apiTabs":{
+    "title": "API Call",
     "startInvestment": "Start capital",
     "capitalAmount": "Capital amount",
     "savingRate": "Saving rate",

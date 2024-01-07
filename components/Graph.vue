@@ -74,7 +74,7 @@ watch(
         },
       },
       title: {
-        text: this.$t('graph.title'),
+        text: $t('graph.title'),
         style: {
           fontSize: '14',
           fontFamily: 'Poppins',
@@ -92,10 +92,6 @@ watch(
             dataMin = yearsToSeries[0][0],
             dataMax = yearsToSeries[yearsToSeries.length - 1][0];
 
-          // yearsToSeries.forEach((element) => {
-          //   positions.push(element[0]);
-          // });
-
           //Add the first and last year to the list of positions
           positions.push(dataMin);
           positions.push(dataMax);
@@ -104,7 +100,7 @@ watch(
         },
         tickInterval: 1,
         title: {
-          text: this.$t('graph.years'),
+          text: $t('graph.years'),
         },
       },
       yAxis: {
@@ -116,19 +112,18 @@ watch(
         labels: {
           formatter: function () {
             return n(this.value, 'currencyNoCents');
-            //return this.value.toLocaleString('en') + ' €'; // TODO: The Currency should be variable and the 1000 seperators also (Change 'en' <-> 'de')
           },
         },
       },
       series: [
       {
-          name: this.$t('graph.prev_graph'),
+          name: $t('graph.prev_graph'),
           showInLegend: prevSeries.length,
           data: yearsToSeriesPrev,
           color: '#00476B',
         },
         {
-          name: this.$t('graph.curr_graph'),
+          name: $t('graph.curr_graph'),
           showInLegend: series.length,
           data: yearsToSeries,
           color: '#4195ac',
@@ -136,17 +131,6 @@ watch(
       ],
         tooltip: {
           formatter: function () {
-            /*
-            let year = new Date(this.x).getFullYear();
-            let capital = this.$n(this.y, 'currency');
-            //let capital = Math.round(this.y).toLocaleString('en');
-            console.log(year);
-            console.log(capital);
-
-
-            return this.$t('graph.curr_graph');
-          */
-
           return translate_tooltip(this.x, this.y);
         },
       },

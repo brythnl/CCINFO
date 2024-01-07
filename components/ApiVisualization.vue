@@ -60,7 +60,7 @@ watch(
     <v-tab value="capitalSeries" width="125">{{$t('apiTabs.capitalSeries')}}</v-tab>
   </v-tabs>
 
-  <h1 class="flex justify-center pt-5 pb-3 font-bold">API Aufruf</h1>
+  <h1 class="flex justify-center pt-5 pb-3 font-bold">{{$t('apiTabs.title')}}</h1>
 
   <v-card class="overflow-y-auto bg-grey-lighten-4 elevation-0 rounded-lg" max-height="545" height="545">
     <v-card-item>
