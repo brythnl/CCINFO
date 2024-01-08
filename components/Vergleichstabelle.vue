@@ -85,19 +85,41 @@ const createCombinedArray = (
   currentData: financeMathInput | financeMathResult
 ): combinedData[] => {
   const combinedArray = [];
+  let previousValue: financeMathTypes, currentValue: financeMathTypes;
 
   for (const key in previousData) {
-    const previousValue = formatValue(previousData[key], key);
-    const currentValue = formatValue(currentData[key], key);
-    const valueDifference = calculateDifference(previousData[key], currentData[key]);
+    if (key === "capitalResult") {
+      for (const capitalResultKey in previousData[key]) {
+        previousValue = previousData[key][capitalResultKey];
+        currentValue = currentData[key][capitalResultKey];
+        const valueDifference = calculateDifference(previousValue, currentValue);
 
-    if (valueDifference !== 0 && valueDifference !== ""){
-      combinedArray.push({
-        name: fieldNames[key],
-        previousValue: previousValue,
-        currentValue: currentValue,
-        valueDifference: formatDifference(valueDifference, key),
-      });
+        if (valueDifference !== 0 && valueDifference !== ""){
+          combinedArray.push({
+            name: fieldNames[capitalResultKey],
+            previousValue: formatValue(previousValue, capitalResultKey),
+            currentValue: formatValue(currentValue, capitalResultKey),
+            valueDifference: formatDifference(valueDifference, capitalResultKey),
+          });
+        }
+      }
+
+    } else if (key === "capitalSeries") {
+      break;
+
+    } else {
+      previousValue = previousData[key];
+      currentValue = currentData[key];
+      const valueDifference = calculateDifference(previousValue, currentValue);
+
+      if (valueDifference !== 0 && valueDifference !== ""){
+        combinedArray.push({
+          name: fieldNames[key],
+          previousValue: formatValue(previousValue, key),
+          currentValue: formatValue(currentValue, key),
+          valueDifference: formatDifference(valueDifference, key),
+        });
+      }
     }
   }
 
