@@ -133,5 +133,7 @@
       "end-date-4":"möglich"
     }
   },
-  "currency": "€"
+  "currency": "€",
+  "language": "Sprache",
+  "seperator": "."
 }
