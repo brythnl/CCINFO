@@ -16,7 +16,9 @@ interface combinedData {
   valueDifference: difference;
 }
 
-const { t } = useI18n();
+type financeMathTypes = string | string[] | number | number[]
+
+const { t, n } = useI18n();
 const dayjs = useDayjs()
 dayjs.extend(customParseFormat)
 
@@ -141,7 +143,7 @@ const formatValue = (
     if (typeof value === 'number') {
       return key === "interestRate" ?
         `${(value * 100).toFixed(2)} %`
-      : `${(value / 100).toFixed(2)} ${t("currency")}`;
+      : `${n((value / 100), 'currency')}`;
     }
 
     return value;
@@ -219,16 +221,16 @@ const formatDifference = (
     }
   } else {
     if (key === "interestRate") {
-      difference *= 100;
+      difference = (difference * 100).toFixed(2);
       unit = '%';
     } else {
       difference /= 100;
-      unit = t("currency");
+      unit = '';
     }
 
     return {
       sign,
-      value: difference.toFixed(2),
+      value: difference,
       unit
     }
   }
