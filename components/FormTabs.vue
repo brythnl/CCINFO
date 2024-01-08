@@ -22,15 +22,15 @@ function tabUpdate() {
     >
       <v-tab value="saving">
         <v-icon size="x-large">mdi-plus</v-icon>
-        Sparen
+        {{ $t('tabs.saving') }}
       </v-tab>
       <v-tab value="withdraw">
         <v-icon size="x-large">mdi-minus</v-icon>
-        Entnahme
+        {{ $t('tabs.withdraw') }}
       </v-tab>
       <v-tab value="comb">
         <v-icon size="x-large">mdi-plus-minus</v-icon>
-        Kombi
+        {{ $t('tabs.combination') }}
       </v-tab>
     </v-tabs>
   </div>

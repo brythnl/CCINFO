@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
@@ -11,13 +10,24 @@ export default defineNuxtConfig({
       // Change vite config
       nuxt.hooks.hook("vite:extendConfig", (config) => {
         // Add vuetify plugin to array of vite plugins
-        // @ts-expect-error
         config.plugins.push(vuetify({ autoImport: true }));
       });
     },
-    'dayjs-nuxt',
+    "dayjs-nuxt",
     "@nuxtjs/tailwindcss",
+    "@nuxtjs/i18n",
+    "@nuxtjs/google-fonts",
   ],
+  i18n: {
+    locales: ["de-DE", "en-GB"],
+    defaultLocale: "de-DE",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",
+    },
+    vueI18n: './i18n.config.ts',
+  },
   vite: {
     vue: {
       template: {
@@ -25,6 +35,14 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
+  },
+  googleFonts: {
+    families: {
+      // a simple name
+      Poppins: true,
+      Lato: true,
+      Roboto: true,
+    }
   },
   dayjs: {
     plugins: ['customParseFormat'],

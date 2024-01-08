@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 /* -------------------------------------------------------------------------- */
 /*                                Imports                                     */
 /* -------------------------------------------------------------------------- */
@@ -7,11 +6,18 @@ import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
 import { useFinanceMathFetch } from "~/composables/useFinanceMathFetch";
 import { getAPIToken } from "~/utils/auth";
 import {
+  inTenYears,
+  nextMonthFirstDay,
   removeSearchedEndpointFromInput,
   revertOutput,
 } from "../utils/formUtils";
 import AnswerSentence from "../components/AnswerSentence.vue";
+import {defineI18nConfig, defineI18nLocale} from "../.nuxt/imports";
 
+/* -------------------------------------------------------------------------- */
+/*                                Composables                                 */
+/* -------------------------------------------------------------------------- */
+const switchLocalePath = useSwitchLocalePath();
 
 /* -------------------------------------------------------------------------- */
 /*                                Reactive State                              */
@@ -19,7 +25,7 @@ import AnswerSentence from "../components/AnswerSentence.vue";
 const API_TOKEN = ref(""); // Authenticate access to aixigo's API
 const grafikTabs = ref(""); // Toggle between displays (middle component): Grafik aktuell, Grafik vorher, Vergleich, Tabelle
 const formTab = ref(""); // Toggle between forms (leftmost component) for different plans: Sparplan, Entnahmeplan, Kombiplan
-const api = ref(true); // Toggle API Visualization display
+const api = ref(false); // Toggle API Visualization display
 const endpoint: Ref<string | string[]> = ref("") // Current selected endpoint
 const startDate = ref("") // Current start date
 const callsTwoSameEndpoints = ref(false); // Check if there are already two API calls to the same endpoint
@@ -374,6 +380,8 @@ function assignGraphData(isCapitalEndpoint: boolean, capitalSeriesResult?: Ref<f
   );
 
   if (isCapitalEndpoint) {
+    // Set ONLY the capital result property into graph data's capital result
+    graphData.value.capitalResult = graphData.value.capitalResult.capitalResult
     // Assign series from initial endpoint call as graph data
     graphData.value.capitalSeries = revertOutput(
       financeMathResults.value[0].value
@@ -416,9 +424,40 @@ function findMaxOfLastTwoGraphs() {
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                Lifecycle Hooks                             */
+/* -------------------------------------------------------------------------- */
 onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
+
+/* -------------------------------------------------------------------------- */
+/*                                     I18n                                   */
+/* -------------------------------------------------------------------------- */
+const { locale, setLocale } = useI18n();
+
+const languages = ref([
+  { name: "Deutsch - DE", path: "de-DE" },
+  { name: "English - GB", path: "en-GB" }
+]);
+
+// Finds the language object based on the current value of locale.value
+const findLanguageByPath = (path) => {
+  return languages.value.find(lang => lang.path === path);
+};
+
+const selectedLanguage = ref(findLanguageByPath(locale.value));
+
+// Watcher to update the i18n locale when the selected language changes
+watch(selectedLanguage, (newValue, oldValue) => {
+  if (newValue.path !== oldValue?.path) {
+    setLocale(newValue.path);
+  }
+});
+
+// Generates a list of objects for v-select
+const languageItems = computed(() => languages.value);
+
 </script>
 
 <template>
@@ -432,6 +471,21 @@ onBeforeMount(async () => {
         />
       </v-col>
       <v-spacer></v-spacer>
+      <v-col cols="2" class="flex align-center">
+        <v-select
+            label="Sprache"
+            density="compact"
+            variant="outlined"
+            hide-details
+            v-model="selectedLanguage"
+            :items="languageItems"
+            item-title="name"
+            item-value="path"
+            return-object
+        >
+        </v-select>
+      </v-col>
+
       <v-col cols="auto" class="flex align-center me-2 me-md-10">
         <v-switch
           v-model="api"
@@ -439,17 +493,14 @@ onBeforeMount(async () => {
           inset
           color="primary"
           label="API"
-          width="auto"
         ></v-switch>
       </v-col>
     </v-row>
   </header>
-  <v-container fluid>
-    <v-row class="h-lg-100 justify-center">
-      <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1 h-100">
-        <div class="h-100">
+  <v-container fluid class="font-display">
+    <v-row class="justify-center">
+      <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1">
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
-            <div>
               <v-card-text>
                 <div>
                   <form-tabs @tabUpdate="(n: string) => (formTab = n)" />
@@ -475,12 +526,9 @@ onBeforeMount(async () => {
                   </v-window-item>
                 </v-window>
               </v-card-text>
-            </div>
           </v-card>
-        </div>
       </v-col>
-      <v-col :cols="12" :sm="12" :md="6" :lg="api ? 4 : 6" class="px-1 h-100">
-        <div class="h-100">
+      <v-col :cols="12" :sm="12" :md="6" :lg="api ? 4 : 6" class="px-1">
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
             <div>
               <v-card-text>
@@ -490,21 +538,12 @@ onBeforeMount(async () => {
                 />
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
-                    <AnswerSentence :output="graphData.capitalResult" :currency="'€'" :endpoint="endpoint" :scenario="formTab" :startDate="startDate" :seperator="'.'"></AnswerSentence>
+                    <AnswerSentence :output="graphData.capitalResult" :currency="$t('currency')" :endpoint="endpoint" :scenario="formTab" :startDate="startDate" :seperator="'.'"></AnswerSentence>
                     <graph
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
                       :prevSeries="previousGraphData.capitalSeries"
                       :prevResult="previousGraphData.capitalResult"
-                      :maxYaxis="graphMaxYAxis"
-                    />
-                  </v-window-item>
-                  <v-window-item value="vorher" transition="false" reverse-transition="false">
-                    <graph
-                      :prevSeries="previousGraphData.capitalSeries"
-                      :prevResult="previousGraphData.capitalResult"
-                      :series="previousGraphData.capitalSeries"
-                      :result="previousGraphData.capitalResult"
                       :maxYaxis="graphMaxYAxis"
                     />
                   </v-window-item>
@@ -537,18 +576,17 @@ onBeforeMount(async () => {
               </v-card-text>
             </div>
           </v-card>
-        </div>
       </v-col>
-      <v-slide-x-reverse-transition leave-absolute>
+      <!--hide on leave to solve transition issue -->
+      <v-slide-x-reverse-transition leave-absolute hide-on-leave="">
         <v-col
           :cols="12"
           :sm="12"
           :md="12"
           :lg="4"
-          class="px-1 h-100"
+          class="px-1"
           v-if="api"
         >
-          <div class="h-100">
             <v-card class="h-100 rounded-xl elevation-6 pb-5">
               <v-card-text>
                 <api-visualization
@@ -557,6 +595,7 @@ onBeforeMount(async () => {
                   :apiRequest2="financeMathInputsEntnahme[0]"
                   :apiResponse="financeMathResultsSparen[0].value"
                   :apiResponse2="financeMathResultsEntnahme[0].value"
+                  :endPoint="endpoint[1]"
                 />
                 <api-visualization
                   v-else
@@ -564,10 +603,10 @@ onBeforeMount(async () => {
                   :apiResponse="financeMathResults[0].value"
                   :apiRequest2="null"
                   :apiResponse2="null"
+                  :endPoint="endpoint"
                 />
               </v-card-text>
             </v-card>
-          </div>
         </v-col>
       </v-slide-x-reverse-transition>
     </v-row>
@@ -594,6 +633,10 @@ onBeforeMount(async () => {
 }
 
 .custom-row {
-  height: 120px;
+  height: 90px;
+}
+
+.font-display {
+  font-family: 'Poppins', 'sans-serif';
 }
 </style>

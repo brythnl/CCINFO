@@ -6,6 +6,20 @@ const maxYAxis = ref(props.maxYaxis); // The maximum value of the Y Axis
 const yearsToSeries = ref([]);
 const yearsToSeriesPrev = ref([]);
 
+import { computed } from 'vue';
+const { t } = useI18n();
+const { n } = useI18n();
+
+let name = t('graph.title');
+
+function translate_tooltip (p_year, p_capital){
+  let year = new Date(p_year).getFullYear();
+  let capital = n(p_capital, 'currencyNoCents');
+
+  return t('graph.tooltip', { year: year , capital: capital});
+}
+
+
 const assignYearsToSeries = (series: [], result: {}) => {
   const seriesCount = series.length; // Length of the series
   const endYear = new Date(result.end).getFullYear();
@@ -60,9 +74,10 @@ watch(
         },
       },
       title: {
-        text: 'Kapital Akkumulierung',
+        text: $t('graph.title'),
         style: {
-          fontSize: 'inherit',
+          fontSize: '14',
+          fontFamily: 'Poppins',
         },
       },
 
@@ -77,10 +92,6 @@ watch(
             dataMin = yearsToSeries[0][0],
             dataMax = yearsToSeries[yearsToSeries.length - 1][0];
 
-          // yearsToSeries.forEach((element) => {
-          //   positions.push(element[0]);
-          // });
-
           //Add the first and last year to the list of positions
           positions.push(dataMin);
           positions.push(dataMax);
@@ -89,42 +100,38 @@ watch(
         },
         tickInterval: 1,
         title: {
-          text: 'Years',
+          text: $t('graph.years'),
         },
       },
       yAxis: {
         //visible: false, // Don't show the Y Axis
         max: maxYAxis,
         title: {
-          text: 'Capital',
+          text: null,
         },
         labels: {
           formatter: function () {
-            return this.value.toLocaleString('en') + ' €'; // TODO: The Currency should be variable and the 1000 seperators also (Change 'en' <-> 'de')
+            return n(this.value, 'currencyNoCents');
           },
         },
       },
       series: [
       {
-          name: 'Grafik vorher',
+          name: $t('graph.prev_graph'),
           showInLegend: prevSeries.length,
           data: yearsToSeriesPrev,
           color: '#00476B',
         },
         {
-          name: 'Grafik aktuell',
+          name: $t('graph.curr_graph'),
           showInLegend: series.length,
           data: yearsToSeries,
           color: '#4195ac',
         },
       ],
-      tooltip: {
-        formatter: function () {
-          return `In ${new Date(
-            this.x
-          ).getFullYear()} there would be a capital of ${Math.round(
-            this.y
-          ).toLocaleString('en')}€`;
+        tooltip: {
+          formatter: function () {
+          return translate_tooltip(this.x, this.y);
         },
       },
     }"

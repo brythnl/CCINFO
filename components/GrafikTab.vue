@@ -21,10 +21,9 @@ function grafikUpdate() {
     class="rounded-lg blue-border text-primary"
     selected-class="bg-primary"
   >
-    <v-tab value="aktuell">Grafik<br />aktuell</v-tab>
-    <v-tab value="vorher" :disabled="!callsTwoSameEndpoints">Grafik<br />vorher</v-tab>
-    <v-tab value="vergleich" :disabled="!callsTwoSameEndpoints">Vergleich</v-tab>
-    <v-tab value="tabelle">Tabelle</v-tab>
+    <v-tab value="aktuell">{{$t("tabs.graph")}}</v-tab>
+    <v-tab value="vergleich" :disabled="!callsTwoSameEndpoints">{{$t("tabs.comparison")}}</v-tab>
+    <v-tab value="tabelle">{{$t("tabs.table")}}</v-tab>
   </v-tabs>
 </template>
 

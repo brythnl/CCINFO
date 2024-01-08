@@ -155,7 +155,7 @@ watch(entnahmeplaninput,
 
 <template>
   <!-- headline -->
-  <h1 class="flex justify-center pt-5 pb-2 font-bold">Wählen Sie Ihr Berechnungsziel:</h1>
+  <h1 class="flex justify-center pt-5 pb-2 font-bold">{{ $t("fieldNames.title") }}</h1>
   <!-- form container -->
   <v-form>
     <div>
@@ -163,8 +163,9 @@ watch(entnahmeplaninput,
         <v-chip-group
             v-model="entnahmeplaninput.endpoint"
             @update:model-value="changeEndpoint"
-            selected-class="text-primary"
+            selected-class="bg-primary"
             class="overflow-hidden"
+            mandatory
         >
           <v-container class="px-0 py-0">
 
@@ -175,7 +176,7 @@ watch(entnahmeplaninput,
                 <v-chip
                     value="saving-start-value"
                     density="compact"
-                >Startkapital</v-chip>
+                >{{ $t("fieldNames.startInvestment") }}</v-chip>
               </v-col>
             </v-row>
 
@@ -189,23 +190,24 @@ watch(entnahmeplaninput,
                 <!-- starting value response slot -->
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'saving-start-value'"
-                    label="1. Einmalzahlung"
                     variant="outlined"
                     density="compact"
-                    prefix="€"
+                    :prefix="$t('currency')"
                     v-model="entnahmeplaninput.oneTimeInvestment[0]"
                     :value="props.apiResponse ? props.apiResponse.startInvestment : ''"
                     hide-details
-                    type="number"
                     readonly
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- starting value input field -->
                 <v-text-field
                     v-else
-                    label="1. Einmalzahlung"
+                    :label="'1.'+ $t('fieldNames.oneTimeInvestment')"
                     variant="outlined"
                     density="compact"
-                    prefix="€"
+                    :prefix="$t('currency')"
                     v-model="entnahmeplaninput.oneTimeInvestment[0]"
                     required
                     hide-details
@@ -224,9 +226,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Trage den Betrag ein, den du zu Beginn investieren möchtest.<br>Der Standardwert für das Datum der
-                    1. Investition ist der 1. des nächsten Monats.<br>Über
-                    das Aufklapp-Symbol kannst du zusätzliche Optionen für Einmalzahlungen festlegen.
+                    {{ $t('fieldInfosSaving.startCapital') }}
                   </v-tooltip>
                 </v-btn>
 
@@ -240,7 +240,7 @@ watch(entnahmeplaninput,
                   class="flex ps-0 pe-2 order-3 order-sm-2"
               >
                 <v-text-field
-                    label="Startdatum"
+                    :label="$t('fieldNames.begin')"
                     variant="outlined"
                     density="compact"
                     v-model="entnahmeplaninput.oneTimeInvestmentDate[0]"
@@ -263,9 +263,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Gib das Datum ein, an dem du das Startkapital in deinen Sparplan investieren möchtest. Standardmäßig
-                    ist dieses der 1. des nächsten Monats.
-                  </v-tooltip>
+                    {{ $t('fieldInfosWithdraw.startDate') }}</v-tooltip>
                 </v-btn>
               </v-col>
               <v-col cols="1" class="px-0 flex align-center justify-center order-2 order-sm-3">
@@ -288,8 +286,8 @@ watch(entnahmeplaninput,
 
                 <!-- one time investment input field -->
                 <v-text-field
-                    prefix="€"
-                    :label="`${n + 1}. Einmalzahlung`"
+                    :prefix="$t('currency')"
+                    :label="`${n + 1}. `+$t('fieldNames.oneTimeInvestment')"
                     variant="outlined"
                     density="compact"
                     v-model="entnahmeplaninput.oneTimeInvestment[n]"
@@ -313,7 +311,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Gib hier den Betrag der zusätzlichen Einmalzahlung ein.
+                    {{ $t('fieldInfosSaving.oneTimeInvestment') }}
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -325,7 +323,7 @@ watch(entnahmeplaninput,
                   class="flex ps-0 pe-2"
               >
                 <v-text-field
-                    :label="`${n + 1}. Datum`"
+                    :label="`${n + 1}. `+$t('fieldNames.oneTimeInvestmentDate')"
                     variant="outlined"
                     density="compact"
                     v-model="entnahmeplaninput.oneTimeInvestmentDate[n]"
@@ -347,7 +345,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Gib hier das Datum der zusätzlichen Einmalzahlung ein.
+                    {{ $t('fieldInfosSaving.oneTimeInvestmentDate') }}
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -388,7 +386,7 @@ watch(entnahmeplaninput,
                     rounded="lg"
                     variant="tonal"
                     color="#4195AC"
-                    text="Neue Einmalzahlung"
+                    :text="$t('fieldNames.newOneTimeInvestment')"
                     prepend-icon="mdi-plus-circle-outline"
                     class="text-none"
                 >
@@ -403,7 +401,7 @@ watch(entnahmeplaninput,
                 <v-chip
                     value="saving-rate"
                     density="compact"
-                >Entnahmerate</v-chip>
+                >{{ $t("fieldNames.withdrawRate") }}</v-chip>
               </v-col>
             </v-row>
 
@@ -416,20 +414,22 @@ watch(entnahmeplaninput,
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'saving-rate'"
                     variant="outlined"
-                    prefix="€"
+                    :prefix="$t('currency')"
                     density="compact"
                     v-model="entnahmeplaninput.savingRate"
                     :value="props.apiResponse ? props.apiResponse.savingRate : ''"
                     readonly
                     required
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
                 <!-- withdrawal rate input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
-                    prefix="€"
+                    :prefix="$t('currency')"
                     density="compact"
                     v-model="entnahmeplaninput.savingRate"
                     required
@@ -453,8 +453,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Gib hier den monatlichen Betrag ein, den du regelmäßig von deinem angesparten Kapital entnehmen
-                    möchtest. Über das Aufklapp-Symbol kannst du zusätzliche Optionen für die Entnahmerate einstellen.
+                    {{ $t('fieldInfosWithdraw.savingRate') }}
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -473,7 +472,7 @@ watch(entnahmeplaninput,
 
                 <!-- starting date of withdrawal input field -->
                 <v-text-field
-                    label="Startdatum"
+                    :label="$t('fieldNames.begin')"
                     variant="outlined"
                     density="compact"
                     v-model="entnahmeplaninput.savingPlanBegin"
@@ -495,7 +494,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Wähle hier das Datum aus, an dem du mit den regelmäßigen Entnahmen beginnen möchtest. Standardmäßig ist dieser Wert auf den 1. des nächsten Monats gesetzt.
+                    {{ $t('fieldInfosWithdraw.savingPlanStart') }}
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -508,7 +507,7 @@ watch(entnahmeplaninput,
               >
                 <!-- input field for end date of withdrawal rate -->
                 <v-text-field
-                    label="Enddatum"
+                    :label="$t('fieldNames.end')"
                     variant="outlined"
                     density="compact"
                     v-model="entnahmeplaninput.savingPlanEnd"
@@ -531,7 +530,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Wähle hier das Datum aus, an dem du die regelmäßigen Entnahmen beenden möchtest. Standardmäßig ist dieser Wert auf 10 Jahre ab heute gesetzt.
+                    {{ $t('fieldInfosWithdraw.savingPlanEnd') }}
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -543,7 +542,7 @@ watch(entnahmeplaninput,
                 <!-- checkbox for dynamic rate factor -->
                 <v-radio-group v-model="dynamik" hide-details>
                   <v-checkbox
-                      label="Dynamik"
+                    :label="$t('fieldNames.dynamicSavingRateFactor')"
                       density="compact"
                       hide-details=""
                       :disabled="
@@ -576,7 +575,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Trage einen Faktor ein, der die dynamische Anpassung der Entnahmerate beeinflusst. Beispiel: Bei einer monatlichen Sparrate von 50€ und einem Faktor von 150% sparst du plötzlich 75€ pro Monat.
+                    {{ $t('fieldInfosWithdraw.dynamicFactor') }}
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -590,7 +589,7 @@ watch(entnahmeplaninput,
                     disabled
                     value="interest-rate"
                     density="compact"
-                >Zins</v-chip>
+                >{{ $t("fieldNames.interestRate") }}</v-chip>
               </v-col>
             </v-row>
 
@@ -610,7 +609,9 @@ watch(entnahmeplaninput,
                     required
                     readonly
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- interest rater input field -->
@@ -642,7 +643,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld sparst.
+                    {{ $t('fieldInfosWithdraw.interestRate') }}
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -657,7 +658,7 @@ watch(entnahmeplaninput,
                 <v-chip
                     value="end-date"
                     density="compact"
-                >Enddatum</v-chip>
+                >{{ $t("fieldNames.end") }}</v-chip>
               </v-col>
             </v-row>
 
@@ -676,6 +677,9 @@ watch(entnahmeplaninput,
                     readonly
                     hide-details
                     type="date"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- end date input field -->
@@ -704,7 +708,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Trage hier das Datum ein, an dem dein Entnahmeplan enden soll. Standardmäßig ist dieses auf 10 Jahre von heute eingestellt.
+                    {{ $t('fieldInfosWithdraw.endDate') }}
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -718,7 +722,7 @@ watch(entnahmeplaninput,
                 <v-chip
                     value="capital"
                     density="compact"
-                >Endkapital</v-chip>
+                >{{ $t("fieldNames.capitalAmount") }}</v-chip>
               </v-col>
             </v-row>
 
@@ -731,7 +735,7 @@ watch(entnahmeplaninput,
                 <v-text-field
                     v-if="entnahmeplaninput.endpoint == 'capital'"
                     variant="outlined"
-                    prefix="€"
+                    :prefix="$t('currency')"
                     density="compact"
                     v-model="entnahmeplaninput.endValue"
                     :value="props.apiResponse
@@ -740,14 +744,16 @@ watch(entnahmeplaninput,
                                 : '' : ''"
                     readonly
                     hide-details
-                    type="number"
+                    bg-color="#E3F1F4"
+                    color="primary"
+                    base-color="primary"
                 ></v-text-field>
 
                 <!-- capital input field -->
                 <v-text-field
                     v-else
                     variant="outlined"
-                    prefix="€"
+                    :prefix="$t('currency')"
                     density="compact"
                     v-model="entnahmeplaninput.endValue"
                     type="number"
@@ -770,7 +776,7 @@ watch(entnahmeplaninput,
                 >
                   <v-icon size="small">mdi-information-outline</v-icon>
                   <v-tooltip activator="parent" location="end" class="w-50">
-                    Trage hier den gewünschten Betrag ein, den du am Ende deines Entnahmeplans übrig haben möchtest.
+                    {{ $t('fieldInfosWithdraw.endValue') }}
                   </v-tooltip>
                 </v-btn>
               </v-col>
@@ -789,19 +795,19 @@ watch(entnahmeplaninput,
           variant="flat"
           @click="emitData"
       >
-        Berechnen
+      {{ $t('fieldNames.calculate') }}
       </v-btn>
     </div>
   </v-form>
   <v-dialog v-model="dialog" width="auto">
       <v-card>
         <v-card-title>
-          Eingabe Fehler bei den Berechnungen
+          {{ $t('dialog.message') }}
         </v-card-title>
         <v-card-text v-text="dialogText"></v-card-text>
         <v-card-actions>
           <v-btn color="primary" block @click="dialog = false"
-            >Schließen</v-btn
+            >{{ $t('dialog.close') }}</v-btn
           >
         </v-card-actions>
       </v-card>

@@ -11,10 +11,10 @@ const props = defineProps<{
   <v-table class="border-2 rounded-lg">
     <thead>
       <tr>
-        <th>Feld</th>
-        <th>Vorher</th>
-        <th>Aktuell</th>
-        <th>Differenz</th>
+        <th>{{ $t("vergleichstabelle.feld") }}</th>
+        <th>{{ $t("vergleichstabelle.vorher") }}</th>
+        <th>{{ $t("vergleichstabelle.aktuell") }}</th>
+        <th>{{ $t("vergleichstabelle.differenz") }}</th>
       </tr>
     </thead>
     <tbody>
@@ -34,12 +34,12 @@ const props = defineProps<{
         </td>
         <td
           :class="{
-            'red-text': item.valueDifference.value < 0,
-            'green-text': item.valueDifference.value > 0,
+            'red-text': item.valueDifference.value as number < 0,
+            'green-text': item.valueDifference.value as number > 0,
           }"
           v-if="item.valueDifference.value !== 'array'"
         >
-          {{ item.valueDifference.sign }}{{ item.valueDifference.value }} {{ item.valueDifference.unit }}
+          {{ item.valueDifference.sign }}{{ item.valueDifference.unit === '%' ? item.valueDifference.value : $n(item.valueDifference.value, 'currency') }} {{ item.valueDifference.unit }}
         </td>
         <td v-else></td>
       </tr>

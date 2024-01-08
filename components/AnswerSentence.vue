@@ -52,9 +52,6 @@ function formatOutput(output:Output){
     formattedOutput.startInvestment = addThousandSeparator(output.startInvestment, props.seperator);
     formattedOutput.interestRate = output.interestRate
     formattedOutput.end = formatDate(output.end)
-
-    console.log(output.capitalAmount);
-
 }
 
 function formatDate(inputDateStr: string) {
@@ -72,7 +69,6 @@ function formatDate(inputDateStr: string) {
 
 function addThousandSeparator(amount:number, separator:string) {
   // Convert the number to a string and split the integer and decimal parts
-  console.log(typeof amount);
   if (typeof amount == 'undefined') {
     return 0;
   }else
@@ -133,145 +129,64 @@ watch(()=>props.output, ()=>{
 
 </script>
 <template>
-    <div class="pa-5 fs-12">
+    <div class="px-5">
+      <h4 class="flex justify-center pt-5 pb-3 font-bold">{{ $t('answersentence.headline') }}</h4>
         <div v-if="scenario == 'saving'">
-        <div v-if="isActive[0]">
-            Wenn Sie monatlich
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
-            zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%Zinsen</span><br>
-            über {{ years }} Jahre
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>
-            anlegen,<br> kommen Sie auf ein Endkapital von 
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}.</span><br>
-            Sie investieren am {{ formatDate(startDate) }}
-            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span>.
+
+        <div v-if="isActive[0]" class="text-center">            
+            {{ $t('answersentence.savingplan.saving-rate-1') }}<br>
+            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.saving-rate-2') }} {{ formattedOutput.savingRate }}{{ currency }} {{ $t('answersentence.savingplan.saving-rate-3')}}</span>.
         </div>
 
-        <div v-if="isActive[1]">
-            Wenn Sie zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%</span> Zinsen
-            monatlich
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span><br>
-            über {{ years }} Jahre
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>
-            anlegen,<br> kommen Sie auf ein Endkapital von 
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}.</span><br>
-            Sie investieren am {{ formatDate(startDate) }}
-            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span>.
+        <div v-if="isActive[1]" class="text-center">            
+            {{ $t('answersentence.savingplan.interest-rate-1') }}<br>
+            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.interest-rate-2') }} {{ formattedOutput.interestRate }}% {{ $t('answersentence.savingplan.interest-rate-3') }}</span>.
         </div>
 
-        <div v-if="isActive[2]">
-            Sie müssen am {{ formatDate(startDate) }}
-            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span> investieren.<br>
-            Wenn sie nun über  {{ years }} Jahre
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span><br>
-            monatlich 
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
-            zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%</span> Zinsen
-            anlegen,<br> kommen Sie auf ein Endkapital von 
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>.
+        <div v-if="isActive[2]" class="text-center">            
+            {{ $t('answersentence.savingplan.saving-start-value-1') }}<br>
+            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.saving-start-value-2') }} {{ formattedOutput.startInvestment }}{{ currency }} {{ $t('answersentence.savingplan.saving-start-value-3') }}</span>.
         </div>
 
-        <div v-if="isActive[3]">
-            Wenn Sie über  {{ years }} Jahre
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span><br>
-            monatlich 
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
-            zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%</span> Zinsen
-            anlegen, <br>kommen Sie auf ein Endkapital von 
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>.
-            <br>Sie investieren am {{ formatDate(startDate) }}
-            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span>.
+        <div v-if="isActive[3]" class="text-center">            
+            {{ $t('answersentence.savingplan.end-date-1') }}<br>
+            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.end-date-2') }} {{ years }} {{ $t('answersentence.savingplan.end-date-3') }}</span> ({{ formattedOutput.end }}) <span class="font-weight-bold"> {{ $t('answersentence.savingplan.end-date-4') }}</span>.
         </div>
 
-        <div v-if="isActive[4]">
-            Sie kommen auf ein Endkapital von 
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>,<br>
-            wenn Sie über {{ years }} Jahre
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span><br>
-            monatlich
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
-            zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%</span> Zinsen
-            anlegen <br> und am 
-            {{ formatDate(startDate) }}
-            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span> investieren.
+        <div v-if="isActive[4]" class="text-center">
+            {{ $t('answersentence.savingplan.capital-1') }}<br>
+            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.capital-2') }} {{ formattedOutput.capitalAmount }}{{ currency }}</span>.
         </div>
     </div>
 
 
     <div v-if="scenario =='withdraw'">
-        <div v-if="isActive[4]">
-            Sie haben noch
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span> Ersparnisse
-            nach {{ years }} Jahren 
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>,
-            wenn Sie am {{ formatDate(startDate) }} mit einem Vermögen von
-            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span>
-            starten und jeden Monat
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
-            zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}%</span> Zinsen
-            entnehmen.
+        <div v-if="isActive[0]" class="text-center">            
+            {{ $t('answersentence.withdrawplan.saving-rate-1') }}<br>
+            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.saving-rate-2') }} {{ formattedOutput.savingRate }}{{ currency }} {{ $t('answersentence.withdrawplan.saving-rate-3') }}</span>.
         </div>
 
-        <div v-if="isActive[0]">
-            Sie dürfen jeden Monat
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
-            entnehmen,
-            wenn sie ihr Startvermögen von
-            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span>
-            zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}% verzinsen.</span>
-            Nach {{ years }} Jahren 
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>
-            haben Sie noch
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>  Ersparnisse.
+        <div v-if="isActive[1]" class="text-center">            
+            {{ $t('answersentence.withdrawplan.interest-rate-1') }}<br>
+            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.interest-rate-2') }} {{ formattedOutput.interestRate }}% {{ $t('answersentence.withdrawplan.interest-rate-3') }}</span>.
         </div>
 
-        <div v-if="isActive[2]">
-            Sie brauchen ein Startvermögen von
-            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span>,
-            welches Sie zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}% verzinsen,</span>
-            um jeden Monat 
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
-            entnehmen zu können.
-            Nach {{ years }} Jahren 
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>
-            haben Sie noch
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>  Ersparnisse.
+        <div v-if="isActive[2]" class="text-center">            
+            {{ $t('answersentence.withdrawplan.saving-start-value-1') }}<br>
+            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.saving-start-value-2') }} {{ formattedOutput.startInvestment }}{{ currency }} {{ $t('answersentence.withdrawplan.saving-start-value-3') }}</span>.
         </div>
 
-        <div v-if="isActive[1]">
-            Sie müssen ihr Startvermögen von
-            <span :class="{'font-weight-bold': isActive[2]}">({{ formattedOutput.startInvestment }} {{ currency }})</span>
-            zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}% verzinsen,</span>
-            um jeden Monat 
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
-            entnehmen zu können.
-            Nach {{ years }} Jahren 
-            <span :class="{'font-weight-bold': isActive[3]}">({{ formattedOutput.end }})</span>
-            haben Sie noch
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>  Ersparnisse.
+        <div v-if="isActive[3]" class="text-center">            
+            {{ $t('answersentence.withdrawplan.end-date-1') }} <br>
+            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.end-date-2') }} {{ years }} {{ $t('answersentence.withdrawplan.end-date-3') }}</span> ({{ formattedOutput.end }}) <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.end-date-4') }}</span>.
         </div>
 
-        <div v-if="isActive[3]">
-            Sie können über {{ years }} Jahre bis zum
-            <span :class="{'font-weight-bold': isActive[3]}">{{ formattedOutput.end }}</span>
-            jeden Monat 
-            <span :class="{'font-weight-bold': isActive[0]}">{{ formattedOutput.savingRate }}{{ currency }}</span>
-            entnehmen, wenn Sie mit einem Vermögen von
-            <span :class="{'font-weight-bold': isActive[2]}">{{ formattedOutput.startInvestment }}{{ currency }}</span>
-            starten, welches Sie zu 
-            <span :class="{'font-weight-bold': isActive[1]}">{{ formattedOutput.interestRate }}% verzinsen.</span>
-            Ihnen bleiben
-            <span :class="{'font-weight-bold': isActive[4]}">{{ formattedOutput.capitalAmount }}{{ currency }}</span>  Ersparnisse.
+        <div v-if="isActive[4]" class="text-center">
+            {{ $t('answersentence.withdrawplan.capital-1') }} <br>
+            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.capital-2') }} {{ formattedOutput.capitalAmount }}{{ currency }}</span>.
         </div>
+
+
     </div>
     </div>
 </template>
