@@ -135,7 +135,7 @@ watch(()=>props.output, ()=>{
 
         <div v-if="isActive[0]" class="text-center">            
             {{ $t('answersentence.savingplan.saving-rate-1') }}<br>
-            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.saving-rate-2') }} {{ formattedOutput.savingRate }}{{ currency }} {{ $t('answersentence.savingplan.saving-rate-3')}}</span>.
+            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.saving-rate-2') }} {{ formattedOutput.savingRate }} {{ currency }} {{ $t('answersentence.savingplan.saving-rate-3')}}</span>.
         </div>
 
         <div v-if="isActive[1]" class="text-center">            
@@ -145,7 +145,7 @@ watch(()=>props.output, ()=>{
 
         <div v-if="isActive[2]" class="text-center">            
             {{ $t('answersentence.savingplan.saving-start-value-1') }}<br>
-            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.saving-start-value-2') }} {{ formattedOutput.startInvestment }}{{ currency }} {{ $t('answersentence.savingplan.saving-start-value-3') }}</span>.
+            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.saving-start-value-2') }} {{ formattedOutput.startInvestment }} {{ currency }} {{ $t('answersentence.savingplan.saving-start-value-3') }}</span>.
         </div>
 
         <div v-if="isActive[3]" class="text-center">            
@@ -155,7 +155,7 @@ watch(()=>props.output, ()=>{
 
         <div v-if="isActive[4]" class="text-center">
             {{ $t('answersentence.savingplan.capital-1') }}<br>
-            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.capital-2') }} {{ formattedOutput.capitalAmount }}{{ currency }}</span>.
+            <span class="font-weight-bold"> {{ $t('answersentence.savingplan.capital-2') }} {{ formattedOutput.capitalAmount }} {{ currency }}</span>.
         </div>
     </div>
 
@@ -163,7 +163,7 @@ watch(()=>props.output, ()=>{
     <div v-if="scenario =='withdraw'">
         <div v-if="isActive[0]" class="text-center">            
             {{ $t('answersentence.withdrawplan.saving-rate-1') }}<br>
-            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.saving-rate-2') }} {{ formattedOutput.savingRate }}{{ currency }} {{ $t('answersentence.withdrawplan.saving-rate-3') }}</span>.
+            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.saving-rate-2') }} {{ formattedOutput.savingRate }} {{ currency }} {{ $t('answersentence.withdrawplan.saving-rate-3') }}</span>.
         </div>
 
         <div v-if="isActive[1]" class="text-center">            
@@ -173,7 +173,7 @@ watch(()=>props.output, ()=>{
 
         <div v-if="isActive[2]" class="text-center">            
             {{ $t('answersentence.withdrawplan.saving-start-value-1') }}<br>
-            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.saving-start-value-2') }} {{ formattedOutput.startInvestment }}{{ currency }} {{ $t('answersentence.withdrawplan.saving-start-value-3') }}</span>.
+            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.saving-start-value-2') }} {{ formattedOutput.startInvestment }} {{ currency }} {{ $t('answersentence.withdrawplan.saving-start-value-3') }}</span>.
         </div>
 
         <div v-if="isActive[3]" class="text-center">            
@@ -183,7 +183,7 @@ watch(()=>props.output, ()=>{
 
         <div v-if="isActive[4]" class="text-center">
             {{ $t('answersentence.withdrawplan.capital-1') }} <br>
-            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.capital-2') }} {{ formattedOutput.capitalAmount }}{{ currency }}</span>.
+            <span class="font-weight-bold"> {{ $t('answersentence.withdrawplan.capital-2') }} {{ formattedOutput.capitalAmount }} {{ currency }}</span>.
         </div>
 
 

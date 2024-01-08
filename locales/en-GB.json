@@ -134,5 +134,7 @@
       }
   },
 
-  "currency": "£"
+  "currency": "£",
+  "language": "language",
+  "seperator": ","
 }

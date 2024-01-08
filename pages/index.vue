@@ -543,7 +543,7 @@ const languageItems = computed(() => languages.value);
                 />
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
-                    <AnswerSentence :output="graphData.capitalResult" :currency="$t('currency')" :endpoint="endpoint" :scenario="formTab" :startDate="startDate" :seperator="'.'"></AnswerSentence>
+                    <AnswerSentence :output="graphData.capitalResult" :currency="$t('currency')" :endpoint="endpoint" :scenario="formTab" :startDate="startDate" :seperator="$t('seperator')"></AnswerSentence>
                     <graph
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
