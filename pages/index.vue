@@ -25,7 +25,7 @@ const switchLocalePath = useSwitchLocalePath();
 const API_TOKEN = ref(""); // Authenticate access to aixigo's API
 const grafikTabs = ref(""); // Toggle between displays (middle component): Grafik aktuell, Grafik vorher, Vergleich, Tabelle
 const formTab = ref(""); // Toggle between forms (leftmost component) for different plans: Sparplan, Entnahmeplan, Kombiplan
-const api = ref(true); // Toggle API Visualization display
+const api = ref(false); // Toggle API Visualization display
 const endpoint: Ref<string | string[]> = ref("") // Current selected endpoint
 const startDate = ref("") // Current start date
 const callsTwoSameEndpoints = ref(false); // Check if there are already two API calls to the same endpoint
@@ -431,6 +431,9 @@ onBeforeMount(async () => {
   API_TOKEN.value = await getAPIToken();
 });
 
+/* -------------------------------------------------------------------------- */
+/*                                     I18n                                   */
+/* -------------------------------------------------------------------------- */
 const { locale, setLocale } = useI18n();
 
 const languages = ref([
@@ -483,14 +486,6 @@ const languageItems = computed(() => languages.value);
         </v-select>
       </v-col>
 
-      <!--
-      <v-col cols="auto" class="flex align-center">
-        <NuxtLink :to="switchLocalePath('en-GB')">English - UK</NuxtLink>
-      </v-col>
-      <v-col cols="auto" class="flex align-center">
-        <NuxtLink :to="switchLocalePath('de-DE')">Deutsch - Deutschland</NuxtLink>
-      </v-col>
-      !-->
       <v-col cols="auto" class="flex align-center me-2 me-md-10">
         <v-switch
           v-model="api"
