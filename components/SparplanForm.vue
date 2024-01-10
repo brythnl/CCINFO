@@ -200,7 +200,7 @@ watch(sparplanInput,
                 <!-- starting value input field -->
                 <v-text-field
                     v-else
-                    :label="'1.'+ $t('fieldNames.oneTimeInvestment')"
+                    :label="'1. '+ $t('fieldNames.oneTimeInvestment')"
                     variant="outlined"
                     density="compact"
                     :prefix="$t('currency')"
@@ -429,7 +429,7 @@ watch(sparplanInput,
                     v-model="sparplanInput.savingRate"
                     required
                     hide-details
-                    placeholder="Sparrate"
+                    :placeholder="$t('fieldNames.savingRate')"
                     type="number"
                     step="50"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
@@ -616,7 +616,7 @@ watch(sparplanInput,
                     v-model="sparplanInput.interestRate"
                     required
                     hide-details
-                    placeholder="Sparzins"
+                    :placeholder="$t('fieldNames.interestRate')"
                     type="number"
                     step="0.5"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='interest-rate'"
