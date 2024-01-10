@@ -135,6 +135,6 @@
   },
 
   "currency": "£",
-  "language": "language",
+  "label_language": "language",
   "seperator": ","
 }

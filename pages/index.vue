@@ -470,7 +470,7 @@ const languageItems = computed(() => languages.value);
       <v-spacer></v-spacer>
       <v-col cols="2" class="flex align-center">
         <v-select
-            label="Sprache"
+            :label="$t('label_language')"
             density="compact"
             variant="outlined"
             hide-details
