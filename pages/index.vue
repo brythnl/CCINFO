@@ -197,7 +197,6 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     shiftStoredData(financeMathResultsEntnahme, entnahmeData);
     revertAPIResult(true, entnahmeData);
 
-    console.log(financeMathResultsEntnahme);
     savePreviousGraphData();
     await getGraphData(financeMathResultsEntnahme, financeMathInputsEntnahme.value[0]);
   }
