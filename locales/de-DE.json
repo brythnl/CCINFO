@@ -134,6 +134,6 @@
     }
   },
   "currency": "€",
-  "language": "Sprache",
+  "label_language": "Sprache",
   "seperator": "."
 }
