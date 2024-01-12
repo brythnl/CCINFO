@@ -30,6 +30,7 @@ const endpoint: Ref<string | string[]> = ref("") // Current selected endpoint
 const startDate = ref("") // Current start date
 const callsTwoSameEndpoints = ref(false); // Check if there are already two API calls to the same endpoint
 const graphMaxYAxis = ref(0); // Maximal y-axis value of graph for both, to avoid inconsistency
+const answerWarning = ref(false);
 // Visibility of previous graph in current graph
 
 /* Query parameters of:
@@ -96,6 +97,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   await getGraphData(financeMathResults, formInput);
 
   findMaxOfLastTwoGraphs();
+  answerWarning.value=false;
 }
 
 
@@ -205,6 +207,7 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
   financeMathInputsSparen.value[0] = removeSearchedEndpointFromInput(financeMathInputsSparen.value[0]);
 
   findMaxOfLastTwoGraphs();
+  answerWarning.value=false;
 }
 
 
@@ -342,6 +345,7 @@ function savePreviousGraphData() {
 async function getGraphData(apiResult: Ref<financeMathResult[]>, input: financeMathInput) {
   // When selected endpoint is not capital (thus doesn't return capital series)
   if (input.endpoint !== "capital") {
+
     // Fetch capital series (for graph)
     const { data } = await useFinanceMathFetch<financeMathResult>(
       "capital",
@@ -509,6 +513,7 @@ const languageItems = computed(() => languages.value);
                   <v-window-item value="saving" transition="false" reverse-transition="false" >
                     <sparplan-form
                       @calculateInput="fetchFinanceMathAPI"
+                      @inputChange="answerWarning=true"
                       :apiResponse="revertedSavingResult"
                     />
                   </v-window-item>
@@ -537,7 +542,21 @@ const languageItems = computed(() => languages.value);
                   :callsTwoSameEndpoints="callsTwoSameEndpoints"
                 />
                 <v-window v-model="grafikTabs">
-                  <v-window-item value="aktuell">
+                  <v-window-item value="aktuell" :class="(financeMathResultsSparen[0].value !== undefined || financeMathResults[0].value !== undefined) && answerWarning?'warning-window':''" >
+                      <v-btn
+                      v-if="(financeMathResultsSparen[0].value !== undefined || financeMathResults[0].value !== undefined) && answerWarning"
+                      icon
+                      elevation="0"
+                      variant="plain"
+                      height="auto"
+                      width="auto"
+                      class="warning-tooltip"
+                      >
+                        <v-icon size="small">mdi-information-outline</v-icon>
+                        <v-tooltip activator="parent"  class="w-50 warning-tooltip">
+                        {{ $t('answerWarning') }}
+                        </v-tooltip>
+                      </v-btn>
                     <AnswerSentence :output="graphData.capitalResult" :currency="$t('currency')" :endpoint="endpoint" :scenario="formTab" :startDate="startDate" :seperator="$t('seperator')"></AnswerSentence>
                     <graph
                       :series="graphData.capitalSeries"
@@ -638,5 +657,14 @@ const languageItems = computed(() => languages.value);
 
 .font-display {
   font-family: 'Poppins', 'sans-serif';
+}
+.warning-tooltip{
+  position: absolute;
+  right: 0;
+  color: #fcb900;
+}
+.warning-window{
+  background-color: rgba(224, 208, 61,0.35);
+  border: 1px solid #c2b544;
 }
 </style>

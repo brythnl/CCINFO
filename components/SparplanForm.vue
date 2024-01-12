@@ -9,6 +9,7 @@ import {
 
 const emit = defineEmits<{
   (e: "calculateInput", sparplanInput: {}): void;
+  (e: "inputChange"):void;
 }>();
 
 //dialog for error inputs
@@ -94,7 +95,9 @@ function emitData() {
   emit("calculateInput", toSend);
   }
 }
-
+function inputChangeWarn(){
+  emit("inputChange");
+}
 watch(
     () => sparplanInput.oneTimeInvestmentDate,
     () => {
@@ -145,6 +148,7 @@ watch(sparplanInput,
 
     }
   }
+  inputChangeWarn();
 }
 )
 </script>
