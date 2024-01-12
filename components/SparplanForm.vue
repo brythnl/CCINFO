@@ -95,6 +95,8 @@ function emitData() {
   emit("calculateInput", toSend);
   }
 }
+
+// send signal that input or chip is changed
 function inputChangeWarn(){
   emit("inputChange");
 }

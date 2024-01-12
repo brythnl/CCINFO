@@ -10,6 +10,7 @@ import {
 
 const emit = defineEmits<{
   (e: "calculateInput", kombiplanInput: {}): void;
+  (e: "inputChange"):void;
 }>();
 
 const einmalZahlung = ref(0);
@@ -122,6 +123,11 @@ function emitData() {
   emit("calculateInput", { sparFormInput: sparen, entnahmeFormInput: entnahme });
 }
 
+// send signal that input or chip is changed
+function inputChangeWarn(){
+  emit("inputChange");
+}
+
 watch(
     () => sparInput.savingPlanEnd,
     () => {
@@ -172,6 +178,12 @@ watch(
       }
     },
 );
+watch(
+  [sparInput , entnahmeInput],
+  () => {
+    inputChangeWarn();
+  }
+)
 </script>
 
 <template>

@@ -520,11 +520,13 @@ const languageItems = computed(() => languages.value);
                   <v-window-item value="withdraw" transition="false" reverse-transition="false"
                     ><entnahme-form
                       @calculateInput="fetchFinanceMathAPI"
+                      @inputChange="answerWarning=true"
                       :apiResponse="revertedWithdrawResult"
                   /></v-window-item>
                   <v-window-item value="comb" transition="false" reverse-transition="false">
                     <kombi-form
                       @calculateInput="fetchKombiPlan"
+                      @inputChange="answerWarning=true"
                       :apiResponseSparen="revertedSavingResult"
                       :apiResponseEntnahme="revertedWithdrawResult"
                     />
