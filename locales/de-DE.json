@@ -133,7 +133,18 @@
       "end-date-4":"möglich"
     }
   },
-  "answerWarning":"Aufgrund von Änderungen in der Eingabe sind die folgenden Informationen möglicherweise nicht mehr relevant",
+  "error-message":{
+    "withdrawplan":{
+      "enddate": "Berechnung des Enddatums nicht möglich, da ihre Zinsgutschreibungen ihre Entnahmerate übertreffen. Ihr Vermögen wird nie aufgebraucht!",
+      "endcapital-bigger-than-startcapital": "Beim Entnahmeplan sollte das Endkapital nicht grösser als das Startkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Sparplan.",
+      "no-startcapital": "Der Betrag vom Startkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein."
+    },
+    "savingplan":{
+      "no-endcapital": "Der Betrag vom Endkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein.",
+      "startcapital-bigger-than-endcapital": "Beim Sparplan sollte das Startkapital nicht grösser als das Endkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Entnahmeplan."
+    }
+  },
+  "answerWarning":"Ausstehende Berechnung",
   "currency": "€",
   "label_language": "Sprache",
   "seperator": "."
