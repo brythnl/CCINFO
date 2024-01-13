@@ -552,7 +552,7 @@ const languageItems = computed(() => languages.value);
                       :persistent="true"
                       class="rounded-lg mt-3 d-flex justify-center align-center"
                     >
-                    <p class="diagonal-text text-h4 text-md-h4 text-lg-h4 font-italic">{{ $t('answerWarning') }}</p>
+                    <p class="text-3xl text-white">{{ $t('answerWarning') }}</p>
                     </v-overlay>
                     <AnswerSentence 
                     :class="answerWarning?'blur':''"
@@ -578,7 +578,7 @@ const languageItems = computed(() => languages.value);
                       :persistent="true"
                       class="rounded-lg mt-3 d-flex justify-center align-center"
                     >
-                    <p class="diagonal-text text-h4 text-md-h4 text-lg-h4 font-italic">{{ $t('answerWarning') }}</p>
+                    <p class="text-3xl text-white">{{ $t('answerWarning') }}</p>
                     </v-overlay>
                     <vergleichstabelle v-if="formTab === 'comb'"
                       :class="answerWarning?'blur':''"
@@ -608,7 +608,7 @@ const languageItems = computed(() => languages.value);
                       :persistent="true"
                       class="rounded-lg mt-3 d-flex justify-center align-center"
                     >
-                    <p class="diagonal-text text-h4 text-md-h4 text-lg-h4 font-italic">{{ $t('answerWarning') }}</p>
+                    <p class="text-3xl text-white">{{ $t('answerWarning') }}</p>
                     </v-overlay>
                     <series-table
                     :class="answerWarning?'blur':''"
