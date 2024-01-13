@@ -117,11 +117,11 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
   shiftStoredData(financeMathInputsSparen, sparFormInput);
   shiftStoredData(financeMathInputsEntnahme, entnahmeFormInput)
 
-  // Get "pure" endpoint from Endpoint property: [sparen/entnahme]/<API endpoint>
+  // Get "pure" endpoint from Endpoint property: [saving/withdraw]/<API endpoint>
   const endpointType = sparFormInput.endpoint.split("/");
   endpoint.value = endpointType;
 
-  if (endpointType[0] === "sparen") {
+  if (endpointType[0] === "saving") {
     // Assign endpoint for each plan
     financeMathInputsSparen.value[0].endpoint = endpointType[1];
     financeMathInputsEntnahme.value[0].endpoint = "saving-start-value";
@@ -172,7 +172,7 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     savePreviousGraphData();
     assignGraphDataKombi(sparenSeriesData, entnahmeSeriesData)
 
-  } else if (endpointType[0] === "entnahme") {
+  } else if (endpointType[0] === "withdraw") {
     // Assign endpoint for each plan
     financeMathInputsSparen.value[0].endpoint = "capital";
     financeMathInputsEntnahme.value[0].endpoint = endpointType[1];
@@ -305,7 +305,9 @@ function getCapitalSeriesInput(apiResult: Ref<financeMathResult[]>, input: finan
   // Input preprocessing, so that it can be passed to /capital API call as query parameters
   switch (endpoint) {
     case "end-date":
-      if (formTab.value === "withdraw") {
+      console.log(formTab.value);
+      console.log(capitalSeriesInput.oneTimeInvestment[0]);
+      if (formTab.value === "withdraw" || (formTab.value === "comb"&& capitalSeriesInput.oneTimeInvestment[0]<=0)) {
         capitalSeriesInput.savingRate = -capitalSeriesInput.savingRate;
         capitalSeriesInput.oneTimeInvestment =
           capitalSeriesInput.oneTimeInvestment.map(
@@ -327,7 +329,6 @@ function getCapitalSeriesInput(apiResult: Ref<financeMathResult[]>, input: finan
       capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin];
       break;
   }
-
   return capitalSeriesInput;
 }
 
@@ -356,7 +357,6 @@ async function getGraphData(apiResult: Ref<financeMathResult[]>, input: financeM
       ),
       API_TOKEN.value
     );
-
     if (formTab.value === "comb") {
       // In Kombiplan, data is capital series of Entnahmeplan
       data.value = revertOutput(data.value);
@@ -391,7 +391,7 @@ function assignGraphData(isCapitalEndpoint: boolean, capitalSeriesResult?: Ref<f
       financeMathResults.value[0].value
     ).capitalSeries;
   } else { // when selected endpoint is not /capital
-    if (formTab.value === "withdraw" && endpoint === "end-date") {
+    if (formTab.value === "withdraw" && endpoint.value === "end-date") {
       graphData.value.capitalResult.startInvestment =
         -graphData.value.capitalResult.startInvestment;
     }
@@ -559,7 +559,13 @@ const languageItems = computed(() => languages.value);
                         {{ $t('answerWarning') }}
                         </v-tooltip>
                       </v-btn>
-                    <AnswerSentence :output="graphData.capitalResult" :currency="$t('currency')" :endpoint="endpoint" :scenario="formTab" :startDate="startDate" :seperator="$t('seperator')"></AnswerSentence>
+                    <AnswerSentence 
+                    :output="graphData.capitalResult" 
+                    :currency="$t('currency')" 
+                    :endpoint="formTab==='comb'?endpoint[1]:endpoint" 
+                    :scenario="formTab==='comb'?endpoint[0]:formTab" 
+                    :startDate="startDate" 
+                    :seperator="$t('seperator')"></AnswerSentence>
                     <graph
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
@@ -574,8 +580,8 @@ const languageItems = computed(() => languages.value);
                       :newRequest="financeMathInputsSparen[0]"
                       :oldRequestEntnahme="financeMathInputsEntnahme[1]"
                       :newRequestEntnahme="financeMathInputsEntnahme[0]"
-                     :oldResponse="endpoint[0] === 'sparen' ? financeMathResultsSparen[1].value : financeMathResultsEntnahme[1].value"
-                      :newResponse="endpoint[0] === 'sparen' ? financeMathResultsSparen[0].value : financeMathResultsEntnahme[0].value"
+                     :oldResponse="endpoint[0] === 'saving' ? financeMathResultsSparen[1].value : financeMathResultsEntnahme[1].value"
+                      :newResponse="endpoint[0] === 'saving' ? financeMathResultsSparen[0].value : financeMathResultsEntnahme[0].value"
                       :endpoint="endpoint[1]"
                       :isKombiplan="true"
                     ></vergleichstabelle>
