@@ -18,8 +18,8 @@ const props = defineProps<{
     end: string,
  },
  currency: string,
- endpoint: string,
- scenario: string,
+ endpoint?: string,
+ scenario?: string,
  startDate: string,
  seperator: string
 }>()
