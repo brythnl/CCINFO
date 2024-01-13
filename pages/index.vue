@@ -30,7 +30,7 @@ const endpoint: Ref<string | string[]> = ref("") // Current selected endpoint
 const startDate = ref("") // Current start date
 const callsTwoSameEndpoints = ref(false); // Check if there are already two API calls to the same endpoint
 const graphMaxYAxis = ref(0); // Maximal y-axis value of graph for both, to avoid inconsistency
-const answerWarning = ref(false);
+const answerWarning = ref(true);
 // Visibility of previous graph in current graph
 
 /* Query parameters of:
@@ -545,22 +545,17 @@ const languageItems = computed(() => languages.value);
                   :callsTwoSameEndpoints="callsTwoSameEndpoints"
                 />
                 <v-window v-model="grafikTabs">
-                  <v-window-item value="aktuell" :class="(financeMathResultsSparen[0].value !== undefined || financeMathResults[0].value !== undefined) && answerWarning?'warning-window':''" >
-                      <v-btn
-                      v-if="(financeMathResultsSparen[0].value !== undefined || financeMathResults[0].value !== undefined) && answerWarning"
-                      icon
-                      elevation="0"
-                      variant="plain"
-                      height="auto"
-                      width="auto"
-                      class="warning-tooltip"
-                      >
-                        <v-icon size="small">mdi-information-outline</v-icon>
-                        <v-tooltip activator="parent"  class="w-50 warning-tooltip">
-                        {{ $t('answerWarning') }}
-                        </v-tooltip>
-                      </v-btn>
+                  <v-window-item value="aktuell">
+                    <v-overlay
+                      v-model="answerWarning"
+                      contained
+                      :persistent="true"
+                      class="rounded-lg mt-3 d-flex justify-center align-center"
+                    >
+                    <p class="diagonal-text text-h4 text-md-h4 text-lg-h4 font-italic">{{ $t('answerWarning') }}</p>
+                    </v-overlay>
                     <AnswerSentence 
+                    :class="answerWarning?'blur':''"
                     :output="graphData.capitalResult" 
                     :currency="$t('currency')" 
                     :endpoint="formTab==='comb'?endpoint[1]:endpoint" 
@@ -568,6 +563,7 @@ const languageItems = computed(() => languages.value);
                     :startDate="startDate" 
                     :seperator="$t('seperator')"></AnswerSentence>
                     <graph
+                      :class="answerWarning?'blur':''"
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
                       :prevSeries="previousGraphData.capitalSeries"
@@ -576,7 +572,16 @@ const languageItems = computed(() => languages.value);
                     />
                   </v-window-item>
                   <v-window-item value="vergleich">
+                    <v-overlay
+                      v-model="answerWarning"
+                      contained
+                      :persistent="true"
+                      class="rounded-lg mt-3 d-flex justify-center align-center"
+                    >
+                    <p class="diagonal-text text-h4 text-md-h4 text-lg-h4 font-italic">{{ $t('answerWarning') }}</p>
+                    </v-overlay>
                     <vergleichstabelle v-if="formTab === 'comb'"
+                      :class="answerWarning?'blur':''"
                       :oldRequest="financeMathInputsSparen[1]"
                       :newRequest="financeMathInputsSparen[0]"
                       :oldRequestEntnahme="financeMathInputsEntnahme[1]"
@@ -587,6 +592,7 @@ const languageItems = computed(() => languages.value);
                       :isKombiplan="true"
                     ></vergleichstabelle>
                     <vergleichstabelle v-else
+                      :class="answerWarning?'blur':''"
                       :oldRequest="financeMathInputs[1]"
                       :newRequest="financeMathInputs[0]"
                       :oldResponse="financeMathResults[1].value"
@@ -596,7 +602,16 @@ const languageItems = computed(() => languages.value);
                     ></vergleichstabelle>
                   </v-window-item>
                   <v-window-item value="tabelle" transition="false" reverse-transition="false">
+                    <v-overlay
+                      v-model="answerWarning"
+                      contained
+                      :persistent="true"
+                      class="rounded-lg mt-3 d-flex justify-center align-center"
+                    >
+                    <p class="diagonal-text text-h4 text-md-h4 text-lg-h4 font-italic">{{ $t('answerWarning') }}</p>
+                    </v-overlay>
                     <series-table
+                    :class="answerWarning?'blur':''"
                     :apiRequest="formTab==='comb'?financeMathInputsSparen[0]:financeMathInputs[0]"
                     :apiResponse="graphData"/>
                   </v-window-item>
@@ -675,5 +690,14 @@ const languageItems = computed(() => languages.value);
 .warning-window{
   background-color: rgba(224, 208, 61,0.35);
   border: 1px solid #c2b544;
+}
+
+.diagonal-text {
+      transform: rotate(30deg);
+      white-space: nowrap; /* Prevent text from wrapping */
+      color: white;
+}
+.blur{
+  filter: blur(2px)
 }
 </style>
