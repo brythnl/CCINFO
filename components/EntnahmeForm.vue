@@ -9,6 +9,7 @@ import {
 
 const emit = defineEmits<{
   (e: "calculateInput", entnahmeplanInput: {}): void;
+  (e: "inputChange"):void;
 }>();
 //dialog for error inputs
 const dialog = ref(false);
@@ -98,6 +99,11 @@ function emitData() {
     }
 }
 
+// send signal that input or chip is changed
+function inputChangeWarn(){
+  emit("inputChange");
+}
+
 watch(
     () => entnahmeplaninput.oneTimeInvestmentDate,
     () => {
@@ -149,8 +155,8 @@ watch(entnahmeplaninput,
 
     }
   }
-}
-)
+  inputChangeWarn();
+})
 </script>
 
 <template>

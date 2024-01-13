@@ -9,6 +9,7 @@ import {
 
 const emit = defineEmits<{
   (e: "calculateInput", sparplanInput: {}): void;
+  (e: "inputChange"):void;
 }>();
 
 //dialog for error inputs
@@ -95,6 +96,10 @@ function emitData() {
   }
 }
 
+// send signal that input or chip is changed
+function inputChangeWarn(){
+  emit("inputChange");
+}
 watch(
     () => sparplanInput.oneTimeInvestmentDate,
     () => {
@@ -145,6 +150,7 @@ watch(sparplanInput,
 
     }
   }
+  inputChangeWarn();
 }
 )
 </script>

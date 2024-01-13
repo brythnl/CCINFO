@@ -133,6 +133,7 @@
       "end-date-4":"möglich"
     }
   },
+  "answerWarning":"Aufgrund von Änderungen in der Eingabe sind die folgenden Informationen möglicherweise nicht mehr relevant",
   "currency": "€",
   "label_language": "Sprache",
   "seperator": "."
