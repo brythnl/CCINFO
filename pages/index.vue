@@ -344,7 +344,7 @@ function savePreviousGraphData() {
 * @param {financeMathInput} input - input for current selected endpoint
 */
 async function getGraphData(apiResult: Ref<financeMathResult[]>, input: financeMathInput) {
-  // When selected endpoint is not capital (thus doesn't return capital series)
+  // When selected endpoint is not capital (thus doesn't return capital series)#
   if (input.endpoint !== "capital") {
 
     // Fetch capital series (for graph)
@@ -378,12 +378,11 @@ async function getGraphData(apiResult: Ref<financeMathResult[]>, input: financeM
 * @param {Ref<financeMathResult>} capitalSeriesResult - result of fetched capital series
 */
 function assignGraphData(isCapitalEndpoint: boolean, capitalSeriesResult?: Ref<financeMathResult>) {
-  // Assign result from initial endpoint call as graph data
-  graphData.value.capitalResult = revertOutput(
-    financeMathResults.value[0].value
-  );
-
   if (isCapitalEndpoint) {
+    // Assign result from initial endpoint call as graph data
+      graphData.value.capitalResult = revertOutput(
+      financeMathResults.value[0].value
+    );
     // Set ONLY the capital result property into graph data's capital result
     graphData.value.capitalResult = graphData.value.capitalResult.capitalResult
     // Assign series from initial endpoint call as graph data
@@ -391,11 +390,13 @@ function assignGraphData(isCapitalEndpoint: boolean, capitalSeriesResult?: Ref<f
       financeMathResults.value[0].value
     ).capitalSeries;
   } else { // when selected endpoint is not /capital
-    if (formTab.value === "withdraw" && endpoint.value === "end-date") {
+    graphData.value.capitalResult = revertOutput(
+      capitalSeriesResult.value.capitalResult
+  );
+    if (formTab.value === "withdraw" && endpoint === "end-date") {
       graphData.value.capitalResult.startInvestment =
         -graphData.value.capitalResult.startInvestment;
     }
-
     // Assign result from second call to /capital to get capital series as graph data
     graphData.value.capitalSeries = revertOutput(capitalSeriesResult.value).capitalSeries;
   }
@@ -477,7 +478,7 @@ const languageItems = computed(() => languages.value);
       <v-spacer></v-spacer>
       <v-col cols="2" class="flex align-center">
         <v-select
-            label="Sprache"
+            :label="$t('label_language')"
             density="compact"
             variant="outlined"
             hide-details

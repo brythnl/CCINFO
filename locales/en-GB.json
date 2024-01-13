@@ -135,6 +135,6 @@
   },
   "answerWarning":"This information below might not be relevant anymore, due to changes in the Input",
   "currency": "£",
-  "language": "language",
+  "label_language": "language",
   "seperator": ","
 }

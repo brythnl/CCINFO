@@ -43,7 +43,7 @@ function calculateTimeDifference(dateString1, dateString2) {
   const millisecondsInYear = 1000 * 60 * 60 * 24 * 365.25; // Considering leap years
   const yearsDifference = timeDifference / millisecondsInYear;
 
-  return Math.floor(yearsDifference);
+  return Math.round(yearsDifference);
 }
 
 function formatOutput(output:Output){

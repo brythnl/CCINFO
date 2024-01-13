@@ -248,7 +248,7 @@ watch(
                 <!-- starting value input field -->
                 <v-text-field
                     v-else
-                    :label="'1.'+ $t('fieldNames.oneTimeInvestment')"
+                    :label="'1. '+ $t('fieldNames.oneTimeInvestment')"
                     variant="outlined"
                     density="compact"
                     :prefix="$t('currency')"
@@ -481,7 +481,7 @@ watch(
                     v-model="sparInput.savingRate"
                     required
                     hide-details
-                    placeholder="Sparrate"
+                    :placeholder="$t('fieldNames.savingRate')"
                     type="number"
                     step="50"
                     :disabled="
@@ -680,7 +680,7 @@ watch(
                     v-model="sparInput.interestRate"
                     required
                     hide-details
-                    placeholder="Sparzins"
+                    :placeholder="$t('fieldNames.interestRate')"
                     type="number"
                     step="0.5"
                     :disabled="
@@ -829,7 +829,7 @@ watch(
                     v-model="entnahmeInput.savingRate"
                     required
                     hide-details
-                    placeholder="Entnahmerate"
+                   :placeholder="$t('fieldNames.withdrawRate')"
                     type="number"
                     step="50"
                     :disabled="
@@ -1033,7 +1033,7 @@ watch(
                     v-model="entnahmeInput.interestRate"
                     required
                     hide-details
-                    placeholder="Entnahmezins"
+                    :placeholder="$t('fieldNames.interestRate')"
                     type="number"
                     step="0.5"
                     :disabled="

@@ -135,6 +135,6 @@
   },
   "answerWarning":"Aufgrund von Änderungen in der Eingabe sind die folgenden Informationen möglicherweise nicht mehr relevant",
   "currency": "€",
-  "language": "Sprache",
+  "label_language": "Sprache",
   "seperator": "."
 }
