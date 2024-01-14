@@ -13,11 +13,11 @@
   },
   "fieldNames": {
     "title":"Choose what you want to calculate:",
-    "begin": "Start Date",
+    "begin": "1. Investment Date",
     "end": "End Date",
     "interestRate": "Interest Rate",
     "oneTimeInvestment": "One Time Investment",
-    "oneTimeInvestmentDate": "One Time Investment Date",
+    "oneTimeInvestmentDate": "Investment Date",
     "savingRate": "Saving Rate",
     "dynamicSavingRateFactor":"Dynamic Saving Rate Factor",
     "endValue": "End Capital",
