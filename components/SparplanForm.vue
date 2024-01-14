@@ -160,7 +160,7 @@ watch(sparplanInput,
   <v-form>
     <div>
       <v-hover>
-      <v-card elevation="0" >
+      <v-card elevation="0" class="overflow-y-auto" max-height="504">
         <v-chip-group
             v-model="sparplanInput.endpoint"
             @update:model-value="changeEndpoint"

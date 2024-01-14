@@ -169,7 +169,7 @@ watch(entnahmeplaninput,
   <!-- form container -->
   <v-form>
     <div>
-      <v-card  elevation="0">
+      <v-card  elevation="0" class="overflow-y-auto" max-height="504">
         <v-chip-group
             v-model="entnahmeplaninput.endpoint"
             @update:model-value="changeEndpoint"
