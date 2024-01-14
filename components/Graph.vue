@@ -76,7 +76,7 @@ watch(
       title: {
         text: $t('graph.title'),
         style: {
-          fontSize: '14',
+          fontSize: '18px',
           fontFamily: 'Poppins',
         },
       },

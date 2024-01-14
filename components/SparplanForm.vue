@@ -156,7 +156,7 @@ watch(sparplanInput,
 </script>
 
 <template>
-  <h1 class="flex justify-center pt-5 pb-2 font-bold">{{ $t("fieldNames.title") }}</h1>
+  <h1 class="flex justify-center pt-5 pb-2 font-bold text-lg">{{ $t("fieldNames.title") }}</h1>
   <v-form>
     <div>
       <v-hover>

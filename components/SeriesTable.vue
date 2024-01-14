@@ -37,11 +37,11 @@ function copyTable() {
 
 <template>
   <div class="flex justify-center pt-5 pb-3">
-    <h1 class="px-auto pe-2 font-bold">{{ $t("seriesTable.entwicklung") }}</h1>
+    <h1 class="px-auto pe-2 font-bold text-lg">{{ $t("seriesTable.entwicklung") }}</h1>
     <v-btn
         prepend-icon="mdi-content-copy"
         variant="tonal"
-        slim size="x-small"
+        slim size="small"
         class="text-none"
         @click="copyTable">Copy
     </v-btn>
