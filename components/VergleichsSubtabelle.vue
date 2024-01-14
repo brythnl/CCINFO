@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <v-table class="border-2 rounded-lg">
+  <v-table class="border rounded-lg">
     <thead>
       <tr>
         <th>{{ $t("vergleichstabelle.feld") }}</th>

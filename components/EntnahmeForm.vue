@@ -165,11 +165,11 @@ watch(entnahmeplaninput,
 
 <template>
   <!-- headline -->
-  <h1 class="flex justify-center pt-5 pb-2 font-bold">{{ $t("fieldNames.title") }}</h1>
+  <h1 class="flex justify-center pt-5 pb-2 font-bold text-lg">{{ $t("fieldNames.title") }}</h1>
   <!-- form container -->
   <v-form>
     <div>
-      <v-card  elevation="0">
+      <v-card  elevation="0" class="overflow-y-auto" max-height="504">
         <v-chip-group
             v-model="entnahmeplaninput.endpoint"
             @update:model-value="changeEndpoint"

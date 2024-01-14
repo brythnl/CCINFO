@@ -13,11 +13,11 @@
   },
   "fieldNames": {
     "title":"Wählen Sie Ihr Berechnungsziel:",
-    "begin": "Startdatum",
+    "begin": "1. Zahlungsdatum",
     "end": "Enddatum",
     "interestRate": "Zins",
     "oneTimeInvestment": "Einmalzahlung",
-    "oneTimeInvestmentDate": "Einmalzahlungsdatum",
+    "oneTimeInvestmentDate": "Zahlungsdatum",
     "savingRate": "Sparrate",
     "dynamicSavingRateFactor":"Dynamik",
     "endValue": "Endkapital",
