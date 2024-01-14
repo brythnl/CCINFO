@@ -359,8 +359,8 @@ watch(sparplanInput,
                     @click="
                     () => {
                       einmalZahlung > 0 ? einmalZahlung-- : (einmalZahlung = 0);
-                      sparplanInput.oneTimeInvestment.pop();
-                      sparplanInput.oneTimeInvestmentDate.pop();
+                      sparplanInput.oneTimeInvestment.splice(n,1);
+                      sparplanInput.oneTimeInvestmentDate.splice(n,1);
                     }
                   "
                     :disabled="
