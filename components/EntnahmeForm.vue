@@ -369,8 +369,8 @@ watch(entnahmeplaninput,
                     @click="
                     () => {
                       einmalZahlung > 0 ? einmalZahlung-- : (einmalZahlung = 0);
-                      entnahmeplaninput.oneTimeInvestment.pop();
-                      entnahmeplaninput.oneTimeInvestmentDate.pop();
+                      entnahmeplaninput.oneTimeInvestment.splice(n,1);
+                      entnahmeplaninput.oneTimeInvestmentDate.splice(n,1);
                     }
                   "
                     :disabled="
