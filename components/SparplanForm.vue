@@ -5,6 +5,7 @@ import {
   inTenYears,
   validateInput,
   setEndDateToBiggestDate,
+  todayDate
 } from "~/utils/formUtils";
 
 const emit = defineEmits<{
@@ -15,15 +16,20 @@ const emit = defineEmits<{
 //dialog for error inputs
 const dialog = ref(false);
 const dialogText =ref("");
+
 // Amount of oneTimeInvestment(s)
 const einmalZahlung = ref(0);
+
 // Dynamic status
 const dynamik = ref(false);
+
 //details status for start capital and saving
 const startkapitalDetails = ref(false);
 const sparplanDetails = ref(false);
 const iconStartkapital = ref("mdi-chevron-down");
 const iconSparplan = ref("mdi-chevron-down");
+
+//I18n Locale
 const { t } = useI18n();
 
 //prop to show the result of selected field
@@ -48,6 +54,7 @@ const sparplanInput = reactive({
   endpoint: "",
 });
 
+//function to show or hide details for start capital
 function toggleStartkapital() {
   if (startkapitalDetails.value === false) {
     startkapitalDetails.value = true;
@@ -57,7 +64,7 @@ function toggleStartkapital() {
     iconStartkapital.value = "mdi-chevron-down";
   }
 }
-
+//function to show or hide details for saving plan
 function toggleSparplan() {
   if (sparplanDetails.value === false) {
     sparplanDetails.value = true;
@@ -78,7 +85,7 @@ function changeEndpoint() {
 }
 
 
-// get form data (user input)
+// validate input and get form data (user input)
 function emitData() {
   if(parseInt(sparplanInput.endValue)<=0 && sparplanInput.endpoint!="capital"){
     dialog.value=true;
@@ -87,12 +94,31 @@ function emitData() {
   }else if(parseInt(sparplanInput.endValue)<=parseInt(sparplanInput.oneTimeInvestment[0]) && sparplanInput.endpoint!="capital" && sparplanInput.endpoint!="saving-start-value"){
     dialog.value=true;
     dialogText.value = t('error-message.savingplan.startcapital-bigger-than-endcapital')
-  }
-  else
+  }else if(sparplanInput.oneTimeInvestmentDate.find((element)=>new Date(element)<new Date(todayDate))){
+    dialog.value=true;
+    dialogText.value = t('error-message.oneTimeInvestmentDate-in-the-past')
+  }else if(new Date(sparplanInput.savingPlanBegin)<new Date(todayDate)){
+    dialog.value=true;
+    dialogText.value = t('error-message.savingplan.savingPlanStart-in-the-past')
+  }else
   {
-  const toSend = JSON.parse(JSON.stringify(sparplanInput));
-  validateInput(toSend);
-  emit("calculateInput", toSend);
+    for(let i = 0; i<=einmalZahlung.value;i++){
+      if(i > 0 && (sparplanInput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(sparplanInput.oneTimeInvestment[i]))){
+        dialog.value=true;
+        dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+        break;
+      }
+      if(sparplanInput.oneTimeInvestmentDate[i] === undefined || sparplanInput.oneTimeInvestmentDate[i]==="" ){
+        dialog.value=true;
+        dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+        break;
+      }
+    }
+    if(!dialog.value){
+      const toSend = JSON.parse(JSON.stringify(sparplanInput));
+      validateInput(toSend);
+      emit("calculateInput", toSend);
+    }
   }
 }
 
@@ -108,25 +134,25 @@ function checkEnddateForErrorMessage(){
   }
 }
 
+//watch to validate input
 watch(
-    () => sparplanInput.oneTimeInvestmentDate,
-    () => {
-      setEndDateToBiggestDate(sparplanInput);
-    },
-    {deep: true},
-);
-
-watch(
-    () => sparplanInput.savingPlanEnd,
+    () => sparplanInput,
     () => {
       setEndDateToBiggestDate(sparplanInput);
       if (
           new Date(sparplanInput.savingPlanEnd) <
-          new Date(sparplanInput.savingPlanStart)
-      )
-        sparplanInput.savingPlanEnd = sparplanInput.savingPlanStart;
+          new Date(sparplanInput.savingPlanBegin)
+      ){
+        sparplanInput.savingPlanEnd = sparplanInput.savingPlanBegin;
+        dialog.value=true;
+        dialogText.value = t('error-message.savingplan.savingEnd-earlier-than-savingStart')
+      }
+      
+      inputChangeWarn();
     },
+    {deep: true},
 );
+//watch to take over respon to input
 watch(
     () => props.apiResponse,
     () => {
@@ -149,18 +175,6 @@ watch(
       }
     },
 );
-watch(sparplanInput,
-()=>{
-  if(new Date(sparplanInput.end)<new Date(sparplanInput.savingPlanEnd)){
-    //sparplanInput.savingPlanEnd=sparplanInput.end;
-  }else{
-    if(sparplanInput.savingPlanEnd===inTenYears){
-
-    }
-  }
-  inputChangeWarn();
-}
-)
 </script>
 
 <template>
@@ -255,7 +269,7 @@ watch(sparplanInput,
                   class="flex ps-0 pe-2 order-3 order-sm-2"
               >
                 <v-text-field
-                    :label="$t('fieldNames.begin')"
+                    :label="'1. '+$t('fieldNames.oneTimeInvestmentDate')"
                     variant="outlined"
                     density="compact"
                     v-model="sparplanInput.oneTimeInvestmentDate[0]"
@@ -466,7 +480,7 @@ watch(sparplanInput,
               </v-col>
               <!-- saving rate toggle button -->
               <v-col cols="1" class="px-0 flex justify-center align-center">
-                <v-icon v-if="sparplanInput.endpoint!='saving-rate'" size="large" @click="toggleSparplan">
+                <v-icon size="large" @click="toggleSparplan">
                   {{ iconSparplan }}
                 </v-icon>
               </v-col>
@@ -485,10 +499,7 @@ watch(sparplanInput,
                     v-model="sparplanInput.savingPlanBegin"
                     hide-details
                     type="date"
-                    :disabled="
-                    sparplanInput.endpoint == '' ||
-                    sparplanInput.endpoint == 'saving-rate'
-                  "
+                    :disabled=" sparplanInput.endpoint == ''"
                 ></v-text-field>
 
                 <!-- info button for saving rate begin date -->
@@ -522,10 +533,7 @@ watch(sparplanInput,
                     hide-details
                     type="date"
                     min="sparplan"
-                    :disabled="
-                    sparplanInput.endpoint == '' ||
-                    sparplanInput.endpoint == 'saving-rate'
-                  "
+                    :disabled="sparplanInput.endpoint == ''"
                 ></v-text-field>
 
                 <!--info button for saving rate end date -->
@@ -555,9 +563,7 @@ watch(sparplanInput,
                       density="compact"
                       hide-details=""
                       :disabled="
-                    sparplanInput.endpoint == '' ||
-                    sparplanInput.endpoint == 'saving-rate'
-                  "
+                    sparplanInput.endpoint == ''"
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>

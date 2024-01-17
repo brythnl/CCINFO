@@ -12,7 +12,7 @@ import {
   revertOutput,
 } from "../utils/formUtils";
 import AnswerSentence from "../components/AnswerSentence.vue";
-import {defineI18nConfig, defineI18nLocale} from "../.nuxt/imports";
+import {defineI18nConfig, defineI18nLocale, useI18n} from "../.nuxt/imports";
 
 /* -------------------------------------------------------------------------- */
 /*                                Composables                                 */
@@ -30,7 +30,11 @@ const endpoint: Ref<string | string[]> = ref("") // Current selected endpoint
 const startDate = ref("") // Current start date
 const callsTwoSameEndpoints = ref(false); // Check if there are already two API calls to the same endpoint
 const graphMaxYAxis = ref(0); // Maximal y-axis value of graph for both, to avoid inconsistency
-const answerWarning = ref(true);
+const answerWarning = ref(true); //Overlay status that cover result window in app when input of form changed
+const {t} = useI18n();
+//Variable to validate input of combi plan and show dialog if input is not correct (similar to validation dialog in all forms component )
+const dialog = ref(false);
+const dialogText = ref("");
 // Visibility of previous graph in current graph
 
 /* Query parameters of:
@@ -187,7 +191,13 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     );
     financeMathResultsSparen.value[0] = sparEndCapitalData;
     revertAPIResult(false, sparEndCapitalData);
-
+    
+    if(financeMathInputsEntnahme.value[0].endpoint==="end-date" && 
+    financeMathResultsSparen.value[0].value.capitalResult.capitalAmount * financeMathInputsEntnahme.value[0].interestRate >= financeMathInputsEntnahme.value[0].savingRate *12/100){
+      dialog.value = true;
+      dialogText.value = t('error-message.withdrawplan.enddate');
+      return
+    }
     setSparEndAsEntnahmeStart();
 
     // Fetch results for Entnahmeplan to selected endpoint
@@ -528,6 +538,8 @@ const languageItems = computed(() => languages.value);
                       @inputChange="answerWarning=true"
                       :apiResponseSparen="revertedSavingResult"
                       :apiResponseEntnahme="revertedWithdrawResult"
+                      :dialogProp="dialog"
+                      :dialogTextProp="dialogText"
                     />
                   </v-window-item>
                 </v-window>
