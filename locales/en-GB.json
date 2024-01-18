@@ -137,11 +137,13 @@
     "withdrawplan": {
       "enddate": "Calculation of the end date is not possible as your interest credits exceed your withdrawal rate. Your capital will never be depleted!",
       "endcapital-bigger-than-startcapital": "In the withdrawal plan, the end capital should not be greater than the start capital. Please enter the values again or switch to the savings plan.",
-      "no-startcapital": "The amount of the start capital must be greater than 0. Please enter the values again."
+      "no-startcapital": "The amount of the start capital must be greater than 0. Please enter the values again.",
+      "endDateToEarly": "The end date of a one-time investment or the end date of the withdrawal rate is after the set end date.\nPlease adjust the respective durations to choose an earlier end date."
     },
     "savingplan": {
       "no-endcapital": "The amount of the end capital must be greater than 0. Please enter the values again.",
-      "startcapital-bigger-than-endcapital": "In the savings plan, the start capital should not be greater than the end capital. Please enter the values again or switch to the withdrawal plan."
+      "startcapital-bigger-than-endcapital": "In the savings plan, the start capital should not be greater than the end capital. Please enter the values again or switch to the withdrawal plan.",
+      "endDateToEarly": "The end date of a one-time investment or the end date of the saving rate is after the set end date.\nPlease adjust the respective durations to choose an earlier end date."
     }
   },  
   "answerWarning":"Pending Calculation",

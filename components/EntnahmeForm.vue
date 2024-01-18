@@ -108,6 +108,13 @@ function inputChangeWarn(){
   emit("inputChange");
 }
 
+function checkEnddateForErrorMessage(){
+  if(setEndDateToBiggestDate(entnahmeplaninput)){
+    dialog.value=true;
+    dialogText.value = t('error-message.withdrawplan.endDateToEarly');
+  }
+}
+
 watch(
     () => entnahmeplaninput.oneTimeInvestmentDate,
     () => {
@@ -153,7 +160,7 @@ watch(
 watch(entnahmeplaninput,
 ()=>{
   if(new Date(entnahmeplaninput.end)<new Date(entnahmeplaninput.savingPlanEnd)){
-    entnahmeplaninput.savingPlanEnd=entnahmeplaninput.end;
+    //entnahmeplaninput.savingPlanEnd=entnahmeplaninput.end;
   }else{
     if(entnahmeplaninput.savingPlanEnd===inTenYears){
 
@@ -165,11 +172,11 @@ watch(entnahmeplaninput,
 
 <template>
   <!-- headline -->
-  <h1 class="flex justify-center pt-5 pb-2 font-bold text-lg">{{ $t("fieldNames.title") }}</h1>
+  <h1 class="flex justify-center pt-5 pb-2 font-bold">{{ $t("fieldNames.title") }}</h1>
   <!-- form container -->
   <v-form>
     <div>
-      <v-card  elevation="0" class="overflow-y-auto" max-height="504">
+      <v-card  elevation="0">
         <v-chip-group
             v-model="entnahmeplaninput.endpoint"
             @update:model-value="changeEndpoint"
@@ -369,8 +376,8 @@ watch(entnahmeplaninput,
                     @click="
                     () => {
                       einmalZahlung > 0 ? einmalZahlung-- : (einmalZahlung = 0);
-                      entnahmeplaninput.oneTimeInvestment.splice(n,1);
-                      entnahmeplaninput.oneTimeInvestmentDate.splice(n,1);
+                      entnahmeplaninput.oneTimeInvestment.pop();
+                      entnahmeplaninput.oneTimeInvestmentDate.pop();
                     }
                   "
                     :disabled="
@@ -694,6 +701,7 @@ watch(entnahmeplaninput,
 
                 <!-- end date input field -->
                 <v-text-field
+                    @blur="checkEnddateForErrorMessage()"
                     v-else
                     variant="outlined"
                     density="compact"
