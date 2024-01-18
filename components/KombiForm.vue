@@ -38,8 +38,6 @@ const { t } = useI18n();
 const props = defineProps<{
   apiResponseSparen?: financeMathResult;
   apiResponseEntnahme?: financeMathResult;
-  dialogProp?: boolean;
-  dialogTextProp?: string; 
 }>();
 
 const sparInput = reactive({
@@ -241,13 +239,6 @@ watch(
   [sparInput , entnahmeInput],
   () => {
     inputChangeWarn();
-  }
-)
-watch(
-  ()=>[props.dialogProp,props.dialogTextProp],
-  ()=>{
-    dialog.value = props.dialogProp;
-    dialogText.value = props.dialogTextProp;
   }
 )
 </script>
