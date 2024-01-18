@@ -129,7 +129,7 @@ function emitData() {
     dialogText.value = t('error-message.withdrawplan.savingPlanStart-in-the-past')
   }else 
   {
-    if(sparInput.endpoint!=="saving-start-value"){
+    if(sparInput.endpoint!=="saving/saving-start-value"){
       for(let i = 0; i<=einmalZahlung.value;i++){
         if(i > 0 && (sparInput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(sparInput.oneTimeInvestment[i]))){
           dialog.value=true;
