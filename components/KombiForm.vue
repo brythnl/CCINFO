@@ -172,6 +172,15 @@ function inputChangeWarn(){
 }
 
 watch(
+    () => sparInput.oneTimeInvestmentDate,
+    () => {
+      setEndDateToBiggestDate(sparInput);
+    },
+    {
+      deep: true,
+    }
+);
+watch(
     () => sparInput.savingPlanEnd,
     () => {
       setEndDateToBiggestDate(sparInput);
@@ -794,6 +803,7 @@ watch(
 
                 <!-- switch date input field -->
                 <v-text-field
+                    @blur="setEndDateToBiggestDate(sparInput); entnahmeInput.begin=sparInput.end; entnahmeInput.oneTimeInvestmentDate = [sparInput.end]; setEndDateToBiggestDate(entnahmeInput);"
                     v-else
                     variant="outlined"
                     density="compact"
@@ -1129,6 +1139,7 @@ watch(
 
                 <!-- end date input field -->
                 <v-text-field
+                    @blur="setEndDateToBiggestDate(entnahmeInput);"
                     v-else
                     variant="outlined"
                     density="compact"
