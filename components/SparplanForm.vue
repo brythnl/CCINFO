@@ -100,6 +100,14 @@ function emitData() {
 function inputChangeWarn(){
   emit("inputChange");
 }
+
+function checkEnddateForErrorMessage(){
+  if(setEndDateToBiggestDate(sparplanInput)){
+    dialog.value=true;
+    dialogText.value = t('error-message.savingplan.endDateToEarly');
+  }
+}
+
 watch(
     () => sparplanInput.oneTimeInvestmentDate,
     () => {
@@ -144,7 +152,7 @@ watch(
 watch(sparplanInput,
 ()=>{
   if(new Date(sparplanInput.end)<new Date(sparplanInput.savingPlanEnd)){
-    sparplanInput.savingPlanEnd=sparplanInput.end;
+    //sparplanInput.savingPlanEnd=sparplanInput.end;
   }else{
     if(sparplanInput.savingPlanEnd===inTenYears){
 
@@ -676,6 +684,7 @@ watch(sparplanInput,
                 ></v-text-field>
                 <!-- end date input field -->
                 <v-text-field
+                   @blur="checkEnddateForErrorMessage()"
                     v-else
                     variant="outlined"
                     density="compact"
