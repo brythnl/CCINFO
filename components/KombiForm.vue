@@ -175,6 +175,10 @@ watch(
     () => sparInput.oneTimeInvestmentDate,
     () => {
       setEndDateToBiggestDate(sparInput);
+      entnahmeInput.begin = sparInput.end;
+      entnahmeInput.oneTimeInvestmentDate = [sparInput.end];
+      console.log(entnahmeInput);
+      setEndDateToBiggestDate(entnahmeInput);
     },
     {
       deep: true,
@@ -184,6 +188,9 @@ watch(
     () => sparInput.savingPlanEnd,
     () => {
       setEndDateToBiggestDate(sparInput);
+      entnahmeInput.begin = sparInput.end;
+      entnahmeInput.oneTimeInvestmentDate = [sparInput.end];
+      setEndDateToBiggestDate(entnahmeInput);
       if (new Date(sparInput.savingPlanEnd) < new Date(sparInput.savingPlanStart))
         sparInput.savingPlanEnd = sparInput.savingPlanStart;
     },
