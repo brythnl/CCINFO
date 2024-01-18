@@ -97,7 +97,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   await getGraphData(financeMathResults, formInput);
 
   findMaxOfLastTwoGraphs();
-  answerWarning.value=false;
+  answerWarning.value = false;
 }
 
 
@@ -207,7 +207,7 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
   financeMathInputsSparen.value[0] = removeSearchedEndpointFromInput(financeMathInputsSparen.value[0]);
 
   findMaxOfLastTwoGraphs();
-  answerWarning.value=false;
+  answerWarning.value = false;
 }
 
 
@@ -305,9 +305,7 @@ function getCapitalSeriesInput(apiResult: Ref<financeMathResult[]>, input: finan
   // Input preprocessing, so that it can be passed to /capital API call as query parameters
   switch (endpoint) {
     case "end-date":
-      console.log(formTab.value);
-      console.log(capitalSeriesInput.oneTimeInvestment[0]);
-      if (formTab.value === "withdraw" || (formTab.value === "comb"&& capitalSeriesInput.oneTimeInvestment[0]<=0)) {
+      if (formTab.value === "withdraw" || (formTab.value === "comb" && capitalSeriesInput.oneTimeInvestment[0] <= 0)) {
         capitalSeriesInput.savingRate = -capitalSeriesInput.savingRate;
         capitalSeriesInput.oneTimeInvestment =
           capitalSeriesInput.oneTimeInvestment.map(

@@ -122,7 +122,8 @@ export const removeSearchedEndpointFromInput = (formInput: financeMathInput): fi
       delete processedFormInput.savingRate;
       break;
     case "saving-start-value":
-      delete processedFormInput.startInvestment;
+      delete processedFormInput.oneTimeInvestment;
+      delete processedFormInput.oneTimeInvestmentDate;
       break;
   }
 
