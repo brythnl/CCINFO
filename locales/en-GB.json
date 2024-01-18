@@ -152,7 +152,7 @@
       "savingPlanStart-in-the-past":"The start date of the saving plan is in the past"
     }
   },  
-  "answerWarning":"Pending Calculation",
+  "answerWarning":"Please execute the new calculation",
   "currency": "£",
   "label_language": "language",
   "seperator": ","

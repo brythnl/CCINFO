@@ -152,7 +152,7 @@
       "savingPlanStart-in-the-past":"Das Startdatum des Sparplans ist in Vergangenheit"
     }
   },
-  "answerWarning":"Ausstehende Berechnung",
+  "answerWarning":"Bitte neue Berechnung durchführen",
   "currency": "€",
   "label_language": "Sprache",
   "seperator": "."
