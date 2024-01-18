@@ -13,7 +13,7 @@
   },
   "fieldNames": {
     "title":"Wählen Sie Ihr Berechnungsziel:",
-    "begin": "1. Zahlungsdatum",
+    "begin": "Startdatum",
     "end": "Enddatum",
     "interestRate": "Zins",
     "oneTimeInvestment": "Einmalzahlung",
@@ -134,19 +134,25 @@
     }
   },
   "error-message":{
+    "oneTimeInvestmentDate-in-the-past":"Das Einmalzahlungsdatum ist in Vergangenheit",
+    "oneTimeInvestment-is-not-completed":"Bitte füllen Sie die Einmalzahlungsfeldern vollständig aus. Bitte überprüfen Sie, dass alle Daten für die Einmalzahlungen definiert sind, und keine Einmalzahlung (außer die erste), die 0-Wert hat oder entfernen Sie die Zeile.",
     "withdrawplan":{
       "enddate": "Berechnung des Enddatums nicht möglich, da ihre Zinsgutschreibungen ihre Entnahmerate übertreffen. Ihr Vermögen wird nie aufgebraucht!",
       "endcapital-bigger-than-startcapital": "Beim Entnahmeplan sollte das Endkapital nicht grösser als das Startkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Sparplan.",
       "no-startcapital": "Der Betrag vom Startkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein.",
-      "endDateToEarly": "Das Enddatum einer Eimalzahlung oder das Enddatum der Entnahmerate liegen nach dem festgelegten Enddatum. \n Ändern Sie die entsprechenden Laufzeiten, um ein früheres Enddatum auswählen zu können."
+      "endDateToEarly": "Das Enddatum einer Eimalzahlung oder das Enddatum der Entnahmerate liegen nach dem festgelegten Enddatum. \n Ändern Sie die entsprechenden Laufzeiten, um ein früheres Enddatum auswählen zu können.",
+      "withdrawEnd-earlier-than-withdrawStart" : "Das Enddatum des Entnahmerates können nicht früher als das Startdatum sein",
+      "savingPlanStart-in-the-past":"Das Startdatum des Entnahmeplans ist in Vergangenheit"
     },
     "savingplan":{
       "no-endcapital": "Der Betrag vom Endkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein.",
       "startcapital-bigger-than-endcapital": "Beim Sparplan sollte das Startkapital nicht grösser als das Endkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Entnahmeplan.",
-      "endDateToEarly": "Das Enddatum einer Eimalzahlung oder das Enddatum der Sparrate liegen nach dem festgelegten Enddatum. \n Ändern Sie die entsprechenden Laufzeiten, um ein früheres Enddatum auswählen zu können."
+      "endDateToEarly": "Das Enddatum einer Eimalzahlung oder das Enddatum der Sparrate liegen nach dem festgelegten Enddatum. \n Ändern Sie die entsprechenden Laufzeiten, um ein früheres Enddatum auswählen zu können.",
+      "savingEnd-earlier-than-savingStart" : "Das Enddatum des Sparrates können nicht früher als das Startdatum sein",
+      "savingPlanStart-in-the-past":"Das Startdatum des Sparplans ist in Vergangenheit"
     }
   },
-  "answerWarning":"Ausstehende Berechnung",
+  "answerWarning":"Bitte neue Berechnung durchführen",
   "currency": "€",
   "label_language": "Sprache",
   "seperator": "."
