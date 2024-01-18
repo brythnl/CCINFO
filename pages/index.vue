@@ -193,7 +193,7 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     revertAPIResult(false, sparEndCapitalData);
     
     if(financeMathInputsEntnahme.value[0].endpoint==="end-date" && 
-    financeMathResultsSparen.value[0].value.capitalResult.capitalAmount * financeMathInputsEntnahme.value[0].interestRate >= financeMathInputsEntnahme.value[0].savingRate *12/100){
+    financeMathResultsSparen.value[0].value.capitalResult.capitalAmount * financeMathInputsEntnahme.value[0].interestRate / 100 >= financeMathInputsEntnahme.value[0].savingRate *12 / 100){
       dialog.value = true;
       dialogText.value = t('error-message.withdrawplan.enddate');
       return
@@ -476,7 +476,7 @@ const languageItems = computed(() => languages.value);
 <template>
   <header class="bg-white">
     <v-row class="custom-row">
-      <v-col cols="auto" class="flex align-center">
+      <v-col cols="5" sm="auto" class="flex align-center">
         <img
           class="pa-5 pe-0"
           src="https://assets-global.website-files.com/60d5bca841056859df8738f0/60dec34edc0691ce3efed5f1_Logo.svg"
@@ -484,7 +484,7 @@ const languageItems = computed(() => languages.value);
         />
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="2" class="flex align-center">
+      <v-col cols="4" sm="2" class="flex align-center">
         <v-select
             :label="$t('label_language')"
             density="compact"
@@ -499,7 +499,7 @@ const languageItems = computed(() => languages.value);
         </v-select>
       </v-col>
 
-      <v-col cols="auto" class="flex align-center me-2 me-md-10">
+      <v-col cols="2" sm="auto" class="flex align-center me-2 me-md-10">
         <v-switch
           v-model="api"
           hide-details
@@ -516,7 +516,7 @@ const languageItems = computed(() => languages.value);
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
               <v-card-text>
                 <div>
-                  <form-tabs @tabUpdate="(n: string) => (formTab = n)" />
+                  <form-tabs @tabUpdate="(n: string) => {(formTab = n);answerWarning=true}" />
                 </div>
                 <v-window v-model="formTab">
                   <v-window-item value="saving" transition="false" reverse-transition="false" >
@@ -538,8 +538,6 @@ const languageItems = computed(() => languages.value);
                       @inputChange="answerWarning=true"
                       :apiResponseSparen="revertedSavingResult"
                       :apiResponseEntnahme="revertedWithdrawResult"
-                      :dialogProp="dialog"
-                      :dialogTextProp="dialogText"
                     />
                   </v-window-item>
                 </v-window>
@@ -664,6 +662,19 @@ const languageItems = computed(() => languages.value);
       </v-slide-x-reverse-transition>
     </v-row>
   </v-container>
+  <v-dialog v-model="dialog" width="auto">
+      <v-card>
+        <v-card-title>
+          {{ $t('dialog.message') }}
+        </v-card-title>
+        <v-card-text v-text="dialogText"></v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" block @click="dialog = false"
+            >{{ $t('dialog.close') }}</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 </template>
 
 <style scoped>
