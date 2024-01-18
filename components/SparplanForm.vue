@@ -91,10 +91,10 @@ function emitData() {
     dialog.value=true;
     dialogText.value = t('error-message.savingplan.no-endcapital')
       
-  }else if(parseInt(sparplanInput.endValue)<=parseInt(sparplanInput.oneTimeInvestment[0]) && sparplanInput.endpoint!="capital" && sparplanInput.endpoint!="saving-start-value"){
+  }else if(parseInt(sparplanInput.endValue)<=parseInt(sparplanInput.oneTimeInvestment[0]) && sparplanInput.endpoint!=="capital" && sparplanInput.endpoint!=="saving-start-value"){
     dialog.value=true;
     dialogText.value = t('error-message.savingplan.startcapital-bigger-than-endcapital')
-  }else if(sparplanInput.oneTimeInvestmentDate.find((element)=>new Date(element)<new Date(todayDate))){
+  }else if(sparplanInput.endpoint!=="saving-start-value" && sparplanInput.oneTimeInvestmentDate.find((element)=>new Date(element)<new Date(todayDate))){
     dialog.value=true;
     dialogText.value = t('error-message.oneTimeInvestmentDate-in-the-past')
   }else if(new Date(sparplanInput.savingPlanBegin)<new Date(todayDate)){
@@ -102,16 +102,18 @@ function emitData() {
     dialogText.value = t('error-message.savingplan.savingPlanStart-in-the-past')
   }else
   {
-    for(let i = 0; i<=einmalZahlung.value;i++){
-      if(i > 0 && (sparplanInput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(sparplanInput.oneTimeInvestment[i]))){
-        dialog.value=true;
-        dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
-        break;
-      }
-      if(sparplanInput.oneTimeInvestmentDate[i] === undefined || sparplanInput.oneTimeInvestmentDate[i]==="" ){
-        dialog.value=true;
-        dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
-        break;
+    if(sparplanInput.endpoint!=="saving-start-value"){
+      for(let i = 0; i<=einmalZahlung.value;i++){
+        if(i > 0 && (sparplanInput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(sparplanInput.oneTimeInvestment[i]))){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
+        if(sparplanInput.oneTimeInvestmentDate[i] === undefined || sparplanInput.oneTimeInvestmentDate[i]==="" ){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
       }
     }
     if(!dialog.value){

@@ -94,7 +94,7 @@ function emitData() {
   }else if(entnahmeplaninput.endpoint=="end-date" && entnahmeplaninput.oneTimeInvestment[0] * entnahmeplaninput.interestRate *0.01 >= entnahmeplaninput.savingRate *12){
     dialog.value=true;
     dialogText.value = t('error-message.withdrawplan.enddate');
-  }else if(entnahmeplaninput.oneTimeInvestmentDate.find((element)=>new Date(element)<new Date(todayDate))){
+  }else if(entnahmeplaninput.endpoint!=="saving-start-value" && entnahmeplaninput.oneTimeInvestmentDate.find((element)=>new Date(element)<new Date(todayDate))){
     dialog.value=true;
     dialogText.value = t('error-message.oneTimeInvestmentDate-in-the-past')
   }else if(new Date(entnahmeplaninput.savingPlanBegin)<new Date(todayDate)){
@@ -102,16 +102,18 @@ function emitData() {
     dialogText.value = t('error-message.withdrawplan.savingPlanStart-in-the-past')
   }else 
   {
-    for(let i = 0; i<=einmalZahlung.value;i++){
-      if(i > 0 && (entnahmeplaninput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(entnahmeplaninput.oneTimeInvestment[i]))){
-        dialog.value=true;
-        dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
-        break;
-      }
-      if(entnahmeplaninput.oneTimeInvestmentDate[i] === undefined || entnahmeplaninput.oneTimeInvestmentDate[i]==="" ){
-        dialog.value=true;
-        dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
-        break;
+    if(entnahmeplaninput.endpoint!=="saving-start-value"){
+      for(let i = 0; i<=einmalZahlung.value;i++){
+        if(i > 0 && (entnahmeplaninput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(entnahmeplaninput.oneTimeInvestment[i]))){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
+        if(entnahmeplaninput.oneTimeInvestmentDate[i] === undefined || entnahmeplaninput.oneTimeInvestmentDate[i]==="" ){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
       }
     }
     if(!dialog.value){

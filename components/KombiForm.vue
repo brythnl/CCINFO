@@ -118,7 +118,7 @@ function changeEndpoint() {
 function emitData() {
   entnahmeInput.begin = sparInput.end;
   entnahmeInput.oneTimeInvestmentDate = [sparInput.end];
-  if(sparInput.oneTimeInvestmentDate.find((element)=>new Date(element)<new Date(todayDate))){
+  if(sparInput.endpoint!=="saving/saving-start-value" && sparInput.oneTimeInvestmentDate.find((element)=>new Date(element)<new Date(todayDate))){
     dialog.value=true;
     dialogText.value = t('error-message.oneTimeInvestmentDate-in-the-past')
   }else if(new Date(sparInput.savingPlanBegin)<new Date(todayDate)){
@@ -129,16 +129,18 @@ function emitData() {
     dialogText.value = t('error-message.withdrawplan.savingPlanStart-in-the-past')
   }else 
   {
-    for(let i = 0; i<=einmalZahlung.value;i++){
-      if(i > 0 && (sparInput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(sparInput.oneTimeInvestment[i]))){
-        dialog.value=true;
-        dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
-        break;
-      }
-      if(sparInput.oneTimeInvestmentDate[i] === undefined || sparInput.oneTimeInvestmentDate[i]==="" ){
-        dialog.value=true;
-        dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
-        break;
+    if(sparInput.endpoint!=="saving-start-value"){
+      for(let i = 0; i<=einmalZahlung.value;i++){
+        if(i > 0 && (sparInput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(sparInput.oneTimeInvestment[i]))){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
+        if(sparInput.oneTimeInvestmentDate[i] === undefined || sparInput.oneTimeInvestmentDate[i]==="" ){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
       }
     }
     if(!dialog.value){
