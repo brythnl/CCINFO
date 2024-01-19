@@ -565,7 +565,7 @@ const languageItems = computed(() => languages.value);
                     </v-overlay>
                     <AnswerSentence 
                     :class="answerWarning?'blur':''"
-                    :output="formTab==='comb'? (endpoint[0]==='saving'?revertedSavingResult : revertedWithdrawResult  ): graphData.capitalResult" 
+                    :output="formTab==='comb'? (endpoint[0]==='saving'?revertedSavingResult : graphData.capitalResult  ): graphData.capitalResult" 
                     :currency="$t('currency')" 
                     :endpoint="formTab==='comb'?endpoint[1]:endpoint" 
                     :scenario="formTab==='comb'?endpoint[0]:formTab" 
