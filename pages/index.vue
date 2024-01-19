@@ -121,6 +121,7 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
   shiftStoredData(financeMathInputsSparen, sparFormInput);
   shiftStoredData(financeMathInputsEntnahme, entnahmeFormInput)
 
+  startDate.value = sparFormInput.begin;
   // Get "pure" endpoint from Endpoint property: [saving/withdraw]/<API endpoint>
   const endpointType = sparFormInput.endpoint.split("/");
   endpoint.value = endpointType;
@@ -564,7 +565,7 @@ const languageItems = computed(() => languages.value);
                     </v-overlay>
                     <AnswerSentence 
                     :class="answerWarning?'blur':''"
-                    :output="graphData.capitalResult" 
+                    :output="formTab==='comb'? (endpoint[0]==='saving'?revertedSavingResult : graphData.capitalResult  ): graphData.capitalResult" 
                     :currency="$t('currency')" 
                     :endpoint="formTab==='comb'?endpoint[1]:endpoint" 
                     :scenario="formTab==='comb'?endpoint[0]:formTab" 
