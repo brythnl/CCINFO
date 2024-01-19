@@ -84,7 +84,7 @@ function changeEndpoint() {
 
 // validate input and get form data (user input)
 function emitData() {
-  if(parseInt(entnahmeplaninput.oneTimeInvestment[0])<=0 && entnahmeplaninput.endpoint!="saving-start-value"){
+  if((parseInt(entnahmeplaninput.oneTimeInvestment[0])<=0 || [0,'0',''].includes(entnahmeplaninput.oneTimeInvestment[0]) ) && entnahmeplaninput.endpoint!="saving-start-value"){
     dialog.value=true;
     dialogText.value = t('error-message.withdrawplan.no-startcapital');
       

@@ -87,7 +87,7 @@ function changeEndpoint() {
 
 // validate input and get form data (user input)
 function emitData() {
-  if(parseInt(sparplanInput.endValue)<=0 && sparplanInput.endpoint!="capital"){
+  if((parseInt(sparplanInput.endValue) <= 0 || [0,'','0'].includes(sparplanInput.endValue) )&& sparplanInput.endpoint!="capital"){
     dialog.value=true;
     dialogText.value = t('error-message.savingplan.no-endcapital')
       
