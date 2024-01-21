@@ -29,7 +29,6 @@ const api = ref(false); // Toggle API Visualization display
 const endpoint: Ref<string | string[]> = ref("") // Current selected endpoint
 const startDate = ref("") // Current start date
 const callsTwoSameEndpoints = ref(false); // Check if there are already two API calls to the same endpoint
-const graphMaxYAxis = ref(0); // Maximal y-axis value of graph for both, to avoid inconsistency
 const answerWarning = ref(true); //Overlay status that cover result window in app when input of form changed
 const {t} = useI18n();
 //Variable to validate input of combi plan and show dialog if input is not correct (similar to validation dialog in all forms component )
@@ -100,7 +99,6 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   savePreviousGraphData();
   await getGraphData(financeMathResults, formInput);
 
-  findMaxOfLastTwoGraphs();
   answerWarning.value = false;
 }
 
@@ -217,7 +215,6 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
   // Remove searched property from input/request for API visualization
   financeMathInputsSparen.value[0] = removeSearchedEndpointFromInput(financeMathInputsSparen.value[0]);
 
-  findMaxOfLastTwoGraphs();
   answerWarning.value = false;
 }
 
@@ -428,15 +425,6 @@ function assignGraphDataKombi(sparenData: Ref<financeMathResult>, entnahmeData: 
     sparenData.value.capitalResult.startInvestment;
 }
 
-/** Find the maximum between last two graphs
-*/
-function findMaxOfLastTwoGraphs() {
-  const max = Math.max(...graphData.value.capitalSeries);
-
-  if (Math.max(max, graphData.value.capitalResult.startInvestment) > graphMaxYAxis.value) {
-    graphMaxYAxis.value = Math.max(max, graphData.value.capitalResult.startInvestment);
-  }
-}
 
 /* -------------------------------------------------------------------------- */
 /*                                Lifecycle Hooks                             */
@@ -577,7 +565,6 @@ const languageItems = computed(() => languages.value);
                       :result="graphData.capitalResult"
                       :prevSeries="previousGraphData.capitalSeries"
                       :prevResult="previousGraphData.capitalResult"
-                      :maxYaxis="graphMaxYAxis"
                     />
                   </v-window-item>
                   <v-window-item value="vergleich">
