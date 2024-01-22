@@ -142,6 +142,17 @@ function checkEnddateForErrorMessage(){
     dialog.value=true;
     dialogText.value = t('error-message.withdrawplan.endDateToEarly');
   }
+
+  if (
+          new Date(entnahmeplaninput.savingPlanEnd) <
+          new Date(entnahmeplaninput.savingPlanBegin) || 
+          entnahmeplaninput.savingPlanEnd < todayDate
+      ){
+        entnahmeplaninput.savingPlanEnd = entnahmeplaninput.savingPlanBegin;
+        dialog.value=true;
+        dialogText.value = t('error-message.withdrawplan.withdrawEnd-earlier-than-withdrawStart');
+      }
+
 }
 
 //watch to validate input
@@ -149,15 +160,6 @@ watch(
     () => entnahmeplaninput,
     () => {
       setEndDateToBiggestDate(entnahmeplaninput);
-      if (
-          new Date(entnahmeplaninput.savingPlanEnd) <
-          new Date(entnahmeplaninput.savingPlanBegin)
-      ){
-        entnahmeplaninput.savingPlanEnd = entnahmeplaninput.savingPlanBegin;
-        dialog.value=true;
-        dialogText.value = t('error-message.withdrawplan.withdrawEnd-earlier-than-withdrawStart');
-      }
-
       inputChangeWarn();
     },
     {deep: true},
@@ -551,8 +553,8 @@ watch(
                     type="date"
                     min="sparplan"
                     :disabled="
-                    entnahmeplaninput.endpoint == ''
-                  "
+                    entnahmeplaninput.endpoint == ''"
+                    @blur="checkEnddateForErrorMessage()"
                 ></v-text-field>
                 <!-- info button for end date of withdrawal rate -->
                 <v-btn

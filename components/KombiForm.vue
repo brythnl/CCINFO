@@ -169,40 +169,38 @@ function inputChangeWarn(){
   emit("inputChange");
 }
 
+function validateEndDate(){
+  if (
+          new Date(sparInput.savingPlanEnd) <
+          new Date(sparInput.savingPlanStart) || 
+          sparInput.savingPlanEnd< todayDate
+      ){
+        sparInput.savingPlanEnd = sparInput.savingPlanStart;
+        dialog.value=true;
+        dialogText.value = t('error-message.savingplan.savingEnd-earlier-than-savingStart')
+      }
+  if (
+          new Date(entnahmeInput.savingPlanEnd) <
+          new Date(entnahmeInput.savingPlanStart) || 
+          entnahmeInput.savingPlanEnd< todayDate
+      ){
+        entnahmeInput.savingPlanEnd = entnahmeInput.savingPlanStart;
+        dialog.value=true;
+        dialogText.value = t('error-message.savingplan.savingEnd-earlier-than-savingStart')
+      }
+}
+
 watch(
-    () => sparInput.oneTimeInvestmentDate,
+    () => [sparInput.oneTimeInvestmentDate,sparInput.savingPlanEnd,entnahmeInput.savingPlanEnd],
     () => {
       setEndDateToBiggestDate(sparInput);
       entnahmeInput.begin = sparInput.end;
       entnahmeInput.oneTimeInvestmentDate = [sparInput.end];
-      console.log(entnahmeInput);
       setEndDateToBiggestDate(entnahmeInput);
     },
     {
       deep: true,
     }
-);
-watch(
-    () => sparInput.savingPlanEnd,
-    () => {
-      setEndDateToBiggestDate(sparInput);
-      entnahmeInput.begin = sparInput.end;
-      entnahmeInput.oneTimeInvestmentDate = [sparInput.end];
-      setEndDateToBiggestDate(entnahmeInput);
-      if (new Date(sparInput.savingPlanEnd) < new Date(sparInput.savingPlanStart))
-        sparInput.savingPlanEnd = sparInput.savingPlanStart;
-    },
-);
-watch(
-    () => entnahmeInput.savingPlanEnd,
-    () => {
-      setEndDateToBiggestDate(entnahmeInput);
-      if (
-          new Date(entnahmeInput.savingPlanEnd) <
-          new Date(entnahmeInput.savingPlanStart)
-      )
-        entnahmeInput.savingPlanEnd = entnahmeInput.savingPlanStart;
-    },
 );
 watch(
     () => [props.apiResponseEntnahme, props.apiResponseSparen],
@@ -620,6 +618,7 @@ watch(
                     min="sparplan"
                     :disabled="
                     sparInput.endpoint == ''"
+                    @blur="validateEndDate()"
                 ></v-text-field>
 
                 <!-- info button for saving rate end date -->
@@ -963,6 +962,7 @@ watch(
                     type="date"
                     min="sparplan"
                     :disabled="sparInput.endpoint == ''"
+                    @blur="validateEndDate()"
                 ></v-text-field>
 
                 <!-- info button for withdrawal rate end date -->
