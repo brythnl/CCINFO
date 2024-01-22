@@ -141,14 +141,14 @@
       "endcapital-bigger-than-startcapital": "Beim Entnahmeplan sollte das Endkapital nicht grösser als das Startkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Sparplan.",
       "no-startcapital": "Der Betrag vom Startkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein.",
       "endDateToEarly": "Das Enddatum einer Eimalzahlung oder das Enddatum der Entnahmerate liegen nach dem festgelegten Enddatum. \n Ändern Sie die entsprechenden Laufzeiten, um ein früheres Enddatum auswählen zu können.",
-      "withdrawEnd-earlier-than-withdrawStart" : "Das Enddatum des Entnahmerates können nicht früher als das Startdatum sein",
+      "withdrawEnd-earlier-than-withdrawStart" : "Das Enddatum des Entnahmerates können nicht früher als das Startdatum oder in Vergangenheit sein",
       "savingPlanStart-in-the-past":"Das Startdatum des Entnahmeplans ist in Vergangenheit"
     },
     "savingplan":{
       "no-endcapital": "Der Betrag vom Endkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein.",
       "startcapital-bigger-than-endcapital": "Beim Sparplan sollte das Startkapital nicht grösser als das Endkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Entnahmeplan.",
       "endDateToEarly": "Das Enddatum einer Eimalzahlung oder das Enddatum der Sparrate liegen nach dem festgelegten Enddatum. \n Ändern Sie die entsprechenden Laufzeiten, um ein früheres Enddatum auswählen zu können.",
-      "savingEnd-earlier-than-savingStart" : "Das Enddatum des Sparrates können nicht früher als das Startdatum sein",
+      "savingEnd-earlier-than-savingStart" : "Das Enddatum des Sparrates können nicht früher als das Startdatum oder in Vergangenheit sein",
       "savingPlanStart-in-the-past":"Das Startdatum des Sparplans ist in Vergangenheit"
     }
   },
