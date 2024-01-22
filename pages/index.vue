@@ -13,6 +13,7 @@ import {
 } from "../utils/formUtils";
 import AnswerSentence from "../components/AnswerSentence.vue";
 import {defineI18nConfig, defineI18nLocale, useI18n} from "../.nuxt/imports";
+import { useDisplay } from 'vuetify';
 
 /* -------------------------------------------------------------------------- */
 /*                                Composables                                 */
@@ -34,6 +35,8 @@ const {t} = useI18n();
 //Variable to validate input of combi plan and show dialog if input is not correct (similar to validation dialog in all forms component )
 const dialog = ref(false);
 const dialogText = ref("");
+// Breakpoint conditionals
+const { xs, mdAndUp } = useDisplay();
 // Visibility of previous graph in current graph
 
 /* Query parameters of:
@@ -494,7 +497,7 @@ const languageItems = computed(() => languages.value);
           hide-details
           inset
           color="primary"
-          label="API"
+          :label="mdAndUp ? 'API' : ''"
         ></v-switch>
       </v-col>
     </v-row>
@@ -549,7 +552,7 @@ const languageItems = computed(() => languages.value);
                       :persistent="true"
                       class="rounded-lg mt-3 d-flex justify-center align-center"
                     >
-                    <p class="text-3xl text-white">{{ $t('answerWarning') }}</p>
+                    <p class="text-2xl text-center text-white">{{ $t('answerWarning') }}</p>
                     </v-overlay>
                     <AnswerSentence 
                     :class="answerWarning?'blur':''"
@@ -574,7 +577,7 @@ const languageItems = computed(() => languages.value);
                       :persistent="true"
                       class="rounded-lg mt-3 d-flex justify-center align-center"
                     >
-                    <p class="text-3xl text-white">{{ $t('answerWarning') }}</p>
+                    <p class="text-2xl text-center text-white">{{ $t('answerWarning') }}</p>
                     </v-overlay>
                     <vergleichstabelle v-if="formTab === 'comb'"
                       :class="answerWarning?'blur':''"
@@ -604,7 +607,7 @@ const languageItems = computed(() => languages.value);
                       :persistent="true"
                       class="rounded-lg mt-3 d-flex justify-center align-center"
                     >
-                    <p class="text-3xl text-white">{{ $t('answerWarning') }}</p>
+                    <p class="text-2xl text-center text-white">{{ $t('answerWarning') }}</p>
                     </v-overlay>
                     <series-table
                     :class="answerWarning?'blur':''"
