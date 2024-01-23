@@ -8,7 +8,7 @@
   <h1 align="center">Customer Centric Investment Forecast</h3>
 
   <p align="center">
-    A finance planner app to calculate investment plans.
+    A finance app to calculate investment plans.
     <br />
     Developed for <a href="https://https://www.aixigo.com">aixigo AG</a>. Powered by the <a href="https://portal.aixigo.com/docs/finance-math-api#">BLOXX Finance Math API</a>.
     <br />
