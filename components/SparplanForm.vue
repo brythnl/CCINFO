@@ -134,15 +134,15 @@ function checkEnddateForErrorMessage(){
     dialog.value=true;
     dialogText.value = t('error-message.savingplan.endDateToEarly');
   }
-  if (
-          new Date(sparplanInput.savingPlanEnd) <
-          new Date(sparplanInput.savingPlanBegin) || 
-          sparplanInput.savingPlanEnd < todayDate
-      ){
-        sparplanInput.savingPlanEnd = sparplanInput.savingPlanBegin;
-        dialog.value=true;
-        dialogText.value = t('error-message.savingplan.savingEnd-earlier-than-savingStart')
-      }
+  // if (
+  //         new Date(sparplanInput.savingPlanEnd) <
+  //         new Date(sparplanInput.savingPlanBegin) || 
+  //         sparplanInput.savingPlanEnd < todayDate
+  //     ){
+  //       sparplanInput.savingPlanEnd = sparplanInput.savingPlanBegin;
+  //       dialog.value=true;
+  //       dialogText.value = t('error-message.savingplan.savingEnd-earlier-than-savingStart')
+  //     }
 }
 
 //watch to validate input

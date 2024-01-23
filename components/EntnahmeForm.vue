@@ -143,15 +143,15 @@ function checkEnddateForErrorMessage(){
     dialogText.value = t('error-message.withdrawplan.endDateToEarly');
   }
 
-  if (
-          new Date(entnahmeplaninput.savingPlanEnd) <
-          new Date(entnahmeplaninput.savingPlanBegin) || 
-          entnahmeplaninput.savingPlanEnd < todayDate
-      ){
-        entnahmeplaninput.savingPlanEnd = entnahmeplaninput.savingPlanBegin;
-        dialog.value=true;
-        dialogText.value = t('error-message.withdrawplan.withdrawEnd-earlier-than-withdrawStart');
-      }
+  // if (
+  //         new Date(entnahmeplaninput.savingPlanEnd) <
+  //         new Date(entnahmeplaninput.savingPlanBegin) || 
+  //         entnahmeplaninput.savingPlanEnd < todayDate
+  //     ){
+  //       entnahmeplaninput.savingPlanEnd = entnahmeplaninput.savingPlanBegin;
+  //       dialog.value=true;
+  //       dialogText.value = t('error-message.withdrawplan.withdrawEnd-earlier-than-withdrawStart');
+  //     }
 
 }
 
