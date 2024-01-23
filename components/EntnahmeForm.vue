@@ -5,23 +5,32 @@ import {
   inTenYears,
   validateInput,
   setEndDateToBiggestDate,
+  todayDate
 } from "~/utils/formUtils";
 
 const emit = defineEmits<{
   (e: "calculateInput", entnahmeplanInput: {}): void;
+  (e: "inputChange"):void;
 }>();
+
 //dialog for error inputs
 const dialog = ref(false);
 const dialogText =ref("");
+
 // Amount of oneTimeInvestment(s)
 const einmalZahlung = ref(0);
+
 // Dynamic status
 const dynamik = ref(false);
+
 //details status for start capital and withdraw rate
 const startkapitalDetails = ref(false);
 const sparplanDetails = ref(false);
 const iconStartkapital = ref("mdi-chevron-down");
 const iconSparplan = ref("mdi-chevron-down");
+
+//I18n Locale
+const { t } = useI18n();
 
 const props = defineProps<{
   apiResponse: financeMathResult;
@@ -42,6 +51,7 @@ const entnahmeplaninput = reactive({
   endValue: 0,
   endpoint: "",
 });
+//function to show or hide details for start capital
 
 function toggleStartkapital() {
   if (startkapitalDetails.value === false) {
@@ -52,7 +62,7 @@ function toggleStartkapital() {
     iconStartkapital.value = "mdi-chevron-down";
   }
 }
-
+//function to show or hide details for withdraw plan
 function toggleSparplan() {
   if (sparplanDetails.value === false) {
     sparplanDetails.value = true;
@@ -72,51 +82,91 @@ function changeEndpoint() {
   }
 }
 
-// get form data (user input)
+// validate input and get form data (user input)
 function emitData() {
-  if(parseInt(entnahmeplaninput.oneTimeInvestment[0])<=0 && entnahmeplaninput.endpoint!="saving-start-value"){
+  if((parseInt(entnahmeplaninput.oneTimeInvestment[0])<=0 || [0,'0',''].includes(entnahmeplaninput.oneTimeInvestment[0]) ) && entnahmeplaninput.endpoint!="saving-start-value"){
     dialog.value=true;
-    dialogText.value = "Der Betrag vom Startkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein."
+    dialogText.value = t('error-message.withdrawplan.no-startcapital');
       
   }else if(parseInt(entnahmeplaninput.endValue)>=parseInt(entnahmeplaninput.oneTimeInvestment[0]) && entnahmeplaninput.endpoint!="capital" && entnahmeplaninput.endpoint!="saving-start-value"){
     dialog.value=true;
-    dialogText.value = "Beim Sparplan kann das Endkapital nicht grösser als das Startkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Entnahmeplan."
-  }
-  else 
+    dialogText.value = t('error-message.withdrawplan.endcapital-bigger-than-startcapital');
+  }else if(entnahmeplaninput.endpoint=="end-date" && entnahmeplaninput.oneTimeInvestment[0] * entnahmeplaninput.interestRate *0.01 >= entnahmeplaninput.savingRate *12){
+    dialog.value=true;
+    dialogText.value = t('error-message.withdrawplan.enddate');
+  }else if(entnahmeplaninput.endpoint!=="saving-start-value" && entnahmeplaninput.oneTimeInvestmentDate.find((element)=>new Date(element)<new Date(todayDate))){
+    dialog.value=true;
+    dialogText.value = t('error-message.oneTimeInvestmentDate-in-the-past')
+  }else if(new Date(entnahmeplaninput.savingPlanBegin)<new Date(todayDate)){
+    dialog.value=true;
+    dialogText.value = t('error-message.withdrawplan.savingPlanStart-in-the-past')
+  }else 
   {
-    const toSend = JSON.parse(JSON.stringify(entnahmeplaninput));
-    if (toSend.endpoint === "interest-rate" || toSend.endpoint === "end-date") {
-      toSend.oneTimeInvestment = toSend.oneTimeInvestment.map(
-          (investment) => -investment,
-      );
-      toSend.endValue === 0 ? (toSend.endValue = 0.01) : "";
-    } else {
-      toSend.savingRate = -toSend.savingRate;
+    if(entnahmeplaninput.endpoint!=="saving-start-value"){
+      for(let i = 0; i<=einmalZahlung.value;i++){
+        if(i > 0 && (entnahmeplaninput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(entnahmeplaninput.oneTimeInvestment[i]))){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
+        if(entnahmeplaninput.oneTimeInvestmentDate[i] === undefined || entnahmeplaninput.oneTimeInvestmentDate[i]==="" ){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
+      }
     }
-    validateInput(toSend);
-    emit("calculateInput", toSend);
+    if(!dialog.value){
+      const toSend = JSON.parse(JSON.stringify(entnahmeplaninput));
+      if (toSend.endpoint === "interest-rate" || toSend.endpoint === "end-date") {
+        toSend.oneTimeInvestment = toSend.oneTimeInvestment.map(
+            (investment) => -investment,
+        );
+        toSend.endValue === 0 ? (toSend.endValue = 0.01) : "";
+      } else {
+        toSend.savingRate = -toSend.savingRate;
+      }
+      validateInput(toSend);
+      emit("calculateInput", toSend);
+      }
     }
 }
 
+// send signal that input or chip is changed
+function inputChangeWarn(){
+  emit("inputChange");
+}
+
+function checkEnddateForErrorMessage(){
+  if(setEndDateToBiggestDate(entnahmeplaninput)){
+    dialog.value=true;
+    dialogText.value = t('error-message.withdrawplan.endDateToEarly');
+  }
+
+  // if (
+  //         new Date(entnahmeplaninput.savingPlanEnd) <
+  //         new Date(entnahmeplaninput.savingPlanBegin) || 
+  //         entnahmeplaninput.savingPlanEnd < todayDate
+  //     ){
+  //       entnahmeplaninput.savingPlanEnd = entnahmeplaninput.savingPlanBegin;
+  //       dialog.value=true;
+  //       dialogText.value = t('error-message.withdrawplan.withdrawEnd-earlier-than-withdrawStart');
+  //     }
+
+}
+
+//watch to validate input
 watch(
-    () => entnahmeplaninput.oneTimeInvestmentDate,
+    () => entnahmeplaninput,
     () => {
       setEndDateToBiggestDate(entnahmeplaninput);
+      inputChangeWarn();
     },
     {deep: true},
 );
 
-watch(
-    () => entnahmeplaninput.savingPlanEnd,
-    () => {
-      setEndDateToBiggestDate(entnahmeplaninput);
-      if (
-          new Date(entnahmeplaninput.savingPlanEnd) <
-          new Date(entnahmeplaninput.savingPlanStart)
-      )
-        entnahmeplaninput.savingPlanEnd = entnahmeplaninput.savingPlanStart;
-    },
-);
+
+//watch to take over respon to input
 watch(
     () => props.apiResponse,
     () => {
@@ -140,17 +190,6 @@ watch(
     },
 );
 
-watch(entnahmeplaninput,
-()=>{
-  if(new Date(entnahmeplaninput.end)<new Date(entnahmeplaninput.savingPlanEnd)){
-    entnahmeplaninput.savingPlanEnd=entnahmeplaninput.end;
-  }else{
-    if(entnahmeplaninput.savingPlanEnd===inTenYears){
-
-    }
-  }
-}
-)
 </script>
 
 <template>
@@ -204,7 +243,7 @@ watch(entnahmeplaninput,
                 <!-- starting value input field -->
                 <v-text-field
                     v-else
-                    :label="'1.'+ $t('fieldNames.oneTimeInvestment')"
+                    :label="'1. '+ $t('fieldNames.oneTimeInvestment')"
                     variant="outlined"
                     density="compact"
                     :prefix="$t('currency')"
@@ -240,7 +279,7 @@ watch(entnahmeplaninput,
                   class="flex ps-0 pe-2 order-3 order-sm-2"
               >
                 <v-text-field
-                    :label="$t('fieldNames.begin')"
+                    :label="'1. '+$t('fieldNames.oneTimeInvestmentDate')"
                     variant="outlined"
                     density="compact"
                     v-model="entnahmeplaninput.oneTimeInvestmentDate[0]"
@@ -434,7 +473,7 @@ watch(entnahmeplaninput,
                     v-model="entnahmeplaninput.savingRate"
                     required
                     hide-details
-                    placeholder="Sparrate"
+                    :placeholder="$t('fieldNames.withdrawRate')"
                     type="number"
                     step="50"
                     :disabled="
@@ -459,7 +498,7 @@ watch(entnahmeplaninput,
               </v-col>
               <v-col cols="1" class="px-0 flex justify-center align-center" >
                 <!-- toggle for withdrawal rate details -->
-                <v-icon v-if="entnahmeplaninput.endpoint!='saving-rate'"  size="large" @click="toggleSparplan">{{
+                <v-icon  size="large" @click="toggleSparplan">{{
                     iconSparplan
                   }}
                 </v-icon>
@@ -479,8 +518,7 @@ watch(entnahmeplaninput,
                     hide-details
                     type="date"
                     :disabled="
-                    entnahmeplaninput.endpoint == '' ||
-                    entnahmeplaninput.endpoint == 'saving-rate'
+                    entnahmeplaninput.endpoint == ''
                   "
                 ></v-text-field>
                 <!-- info button for starting date of withdrawal -->
@@ -515,9 +553,8 @@ watch(entnahmeplaninput,
                     type="date"
                     min="sparplan"
                     :disabled="
-                    entnahmeplaninput.endpoint == '' ||
-                    entnahmeplaninput.endpoint == 'saving-rate'
-                  "
+                    entnahmeplaninput.endpoint == ''"
+                    @blur="checkEnddateForErrorMessage()"
                 ></v-text-field>
                 <!-- info button for end date of withdrawal rate -->
                 <v-btn
@@ -545,10 +582,7 @@ watch(entnahmeplaninput,
                     :label="$t('fieldNames.dynamicSavingRateFactor')"
                       density="compact"
                       hide-details=""
-                      :disabled="
-                    entnahmeplaninput.endpoint == '' ||
-                    entnahmeplaninput.endpoint == 'saving-rate'
-                  "
+                      :disabled="entnahmeplaninput.endpoint == ''"
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
@@ -623,7 +657,7 @@ watch(entnahmeplaninput,
                     v-model="entnahmeplaninput.interestRate"
                     required
                     hide-details
-                    placeholder="Zins"
+                    :placeholder="$t('fieldNames.interestRate')"
                     type="number"
                     step="0.5"
                     :disabled="
@@ -684,6 +718,7 @@ watch(entnahmeplaninput,
 
                 <!-- end date input field -->
                 <v-text-field
+                    @blur="checkEnddateForErrorMessage()"
                     v-else
                     variant="outlined"
                     density="compact"

@@ -12,7 +12,8 @@ import {
   revertOutput,
 } from "../utils/formUtils";
 import AnswerSentence from "../components/AnswerSentence.vue";
-import {defineI18nConfig, defineI18nLocale} from "../.nuxt/imports";
+import {defineI18nConfig, defineI18nLocale, useI18n} from "../.nuxt/imports";
+import { useDisplay } from 'vuetify';
 
 /* -------------------------------------------------------------------------- */
 /*                                Composables                                 */
@@ -29,7 +30,13 @@ const api = ref(false); // Toggle API Visualization display
 const endpoint: Ref<string | string[]> = ref("") // Current selected endpoint
 const startDate = ref("") // Current start date
 const callsTwoSameEndpoints = ref(false); // Check if there are already two API calls to the same endpoint
-const graphMaxYAxis = ref(0); // Maximal y-axis value of graph for both, to avoid inconsistency
+const answerWarning = ref(true); //Overlay status that cover result window in app when input of form changed
+const {t} = useI18n();
+//Variable to validate input of combi plan and show dialog if input is not correct (similar to validation dialog in all forms component )
+const dialog = ref(false);
+const dialogText = ref("");
+// Breakpoint conditionals
+const { xs, mdAndUp } = useDisplay();
 // Visibility of previous graph in current graph
 
 /* Query parameters of:
@@ -95,7 +102,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   savePreviousGraphData();
   await getGraphData(financeMathResults, formInput);
 
-  findMaxOfLastTwoGraphs();
+  answerWarning.value = false;
 }
 
 
@@ -115,11 +122,12 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
   shiftStoredData(financeMathInputsSparen, sparFormInput);
   shiftStoredData(financeMathInputsEntnahme, entnahmeFormInput)
 
-  // Get "pure" endpoint from Endpoint property: [sparen/entnahme]/<API endpoint>
+  startDate.value = sparFormInput.begin;
+  // Get "pure" endpoint from Endpoint property: [saving/withdraw]/<API endpoint>
   const endpointType = sparFormInput.endpoint.split("/");
   endpoint.value = endpointType;
 
-  if (endpointType[0] === "sparen") {
+  if (endpointType[0] === "saving") {
     // Assign endpoint for each plan
     financeMathInputsSparen.value[0].endpoint = endpointType[1];
     financeMathInputsEntnahme.value[0].endpoint = "saving-start-value";
@@ -170,7 +178,7 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     savePreviousGraphData();
     assignGraphDataKombi(sparenSeriesData, entnahmeSeriesData)
 
-  } else if (endpointType[0] === "entnahme") {
+  } else if (endpointType[0] === "withdraw") {
     // Assign endpoint for each plan
     financeMathInputsSparen.value[0].endpoint = "capital";
     financeMathInputsEntnahme.value[0].endpoint = endpointType[1];
@@ -185,7 +193,13 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     );
     financeMathResultsSparen.value[0] = sparEndCapitalData;
     revertAPIResult(false, sparEndCapitalData);
-
+    
+    if(financeMathInputsEntnahme.value[0].endpoint==="end-date" && 
+    financeMathResultsSparen.value[0].value.capitalResult.capitalAmount * financeMathInputsEntnahme.value[0].interestRate / 100 >= financeMathInputsEntnahme.value[0].savingRate *12 / 100){
+      dialog.value = true;
+      dialogText.value = t('error-message.withdrawplan.enddate');
+      return
+    }
     setSparEndAsEntnahmeStart();
 
     // Fetch results for Entnahmeplan to selected endpoint
@@ -204,7 +218,7 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
   // Remove searched property from input/request for API visualization
   financeMathInputsSparen.value[0] = removeSearchedEndpointFromInput(financeMathInputsSparen.value[0]);
 
-  findMaxOfLastTwoGraphs();
+  answerWarning.value = false;
 }
 
 
@@ -302,7 +316,7 @@ function getCapitalSeriesInput(apiResult: Ref<financeMathResult[]>, input: finan
   // Input preprocessing, so that it can be passed to /capital API call as query parameters
   switch (endpoint) {
     case "end-date":
-      if (formTab.value === "withdraw") {
+      if (formTab.value === "withdraw" || (formTab.value === "comb" && capitalSeriesInput.oneTimeInvestment[0] <= 0)) {
         capitalSeriesInput.savingRate = -capitalSeriesInput.savingRate;
         capitalSeriesInput.oneTimeInvestment =
           capitalSeriesInput.oneTimeInvestment.map(
@@ -324,7 +338,6 @@ function getCapitalSeriesInput(apiResult: Ref<financeMathResult[]>, input: finan
       capitalSeriesInput.oneTimeInvestmentDate = [capitalSeriesInput.begin];
       break;
   }
-
   return capitalSeriesInput;
 }
 
@@ -340,8 +353,9 @@ function savePreviousGraphData() {
 * @param {financeMathInput} input - input for current selected endpoint
 */
 async function getGraphData(apiResult: Ref<financeMathResult[]>, input: financeMathInput) {
-  // When selected endpoint is not capital (thus doesn't return capital series)
+  // When selected endpoint is not capital (thus doesn't return capital series)#
   if (input.endpoint !== "capital") {
+
     // Fetch capital series (for graph)
     const { data } = await useFinanceMathFetch<financeMathResult>(
       "capital",
@@ -352,7 +366,6 @@ async function getGraphData(apiResult: Ref<financeMathResult[]>, input: financeM
       ),
       API_TOKEN.value
     );
-
     if (formTab.value === "comb") {
       // In Kombiplan, data is capital series of Entnahmeplan
       data.value = revertOutput(data.value);
@@ -374,12 +387,11 @@ async function getGraphData(apiResult: Ref<financeMathResult[]>, input: financeM
 * @param {Ref<financeMathResult>} capitalSeriesResult - result of fetched capital series
 */
 function assignGraphData(isCapitalEndpoint: boolean, capitalSeriesResult?: Ref<financeMathResult>) {
-  // Assign result from initial endpoint call as graph data
-  graphData.value.capitalResult = revertOutput(
-    financeMathResults.value[0].value
-  );
-
   if (isCapitalEndpoint) {
+    // Assign result from initial endpoint call as graph data
+      graphData.value.capitalResult = revertOutput(
+      financeMathResults.value[0].value
+    );
     // Set ONLY the capital result property into graph data's capital result
     graphData.value.capitalResult = graphData.value.capitalResult.capitalResult
     // Assign series from initial endpoint call as graph data
@@ -387,11 +399,13 @@ function assignGraphData(isCapitalEndpoint: boolean, capitalSeriesResult?: Ref<f
       financeMathResults.value[0].value
     ).capitalSeries;
   } else { // when selected endpoint is not /capital
+    graphData.value.capitalResult = revertOutput(
+      capitalSeriesResult.value.capitalResult
+  );
     if (formTab.value === "withdraw" && endpoint === "end-date") {
       graphData.value.capitalResult.startInvestment =
         -graphData.value.capitalResult.startInvestment;
     }
-
     // Assign result from second call to /capital to get capital series as graph data
     graphData.value.capitalSeries = revertOutput(capitalSeriesResult.value).capitalSeries;
   }
@@ -414,15 +428,6 @@ function assignGraphDataKombi(sparenData: Ref<financeMathResult>, entnahmeData: 
     sparenData.value.capitalResult.startInvestment;
 }
 
-/** Find the maximum between last two graphs
-*/
-function findMaxOfLastTwoGraphs() {
-  const max = Math.max(...graphData.value.capitalSeries);
-
-  if (Math.max(max, graphData.value.capitalResult.startInvestment) > graphMaxYAxis.value) {
-    graphMaxYAxis.value = Math.max(max, graphData.value.capitalResult.startInvestment);
-  }
-}
 
 /* -------------------------------------------------------------------------- */
 /*                                Lifecycle Hooks                             */
@@ -463,7 +468,7 @@ const languageItems = computed(() => languages.value);
 <template>
   <header class="bg-white">
     <v-row class="custom-row">
-      <v-col cols="auto" class="flex align-center">
+      <v-col cols="5" sm="auto" class="flex align-center">
         <img
           class="pa-5 pe-0"
           src="https://assets-global.website-files.com/60d5bca841056859df8738f0/60dec34edc0691ce3efed5f1_Logo.svg"
@@ -471,9 +476,9 @@ const languageItems = computed(() => languages.value);
         />
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="2" class="flex align-center">
+      <v-col cols="4" sm="2" class="flex align-center">
         <v-select
-            label="Sprache"
+            :label="$t('label_language')"
             density="compact"
             variant="outlined"
             hide-details
@@ -486,13 +491,13 @@ const languageItems = computed(() => languages.value);
         </v-select>
       </v-col>
 
-      <v-col cols="auto" class="flex align-center me-2 me-md-10">
+      <v-col cols="2" sm="auto" class="flex align-center me-2 me-md-10">
         <v-switch
           v-model="api"
           hide-details
           inset
           color="primary"
-          label="API"
+          :label="mdAndUp ? 'API' : ''"
         ></v-switch>
       </v-col>
     </v-row>
@@ -503,23 +508,26 @@ const languageItems = computed(() => languages.value);
           <v-card class="h-100 rounded-xl elevation-6 pb-5">
               <v-card-text>
                 <div>
-                  <form-tabs @tabUpdate="(n: string) => (formTab = n)" />
+                  <form-tabs @tabUpdate="(n: string) => {(formTab = n);answerWarning=true}" />
                 </div>
                 <v-window v-model="formTab">
                   <v-window-item value="saving" transition="false" reverse-transition="false" >
                     <sparplan-form
                       @calculateInput="fetchFinanceMathAPI"
+                      @inputChange="answerWarning=true"
                       :apiResponse="revertedSavingResult"
                     />
                   </v-window-item>
                   <v-window-item value="withdraw" transition="false" reverse-transition="false"
                     ><entnahme-form
                       @calculateInput="fetchFinanceMathAPI"
+                      @inputChange="answerWarning=true"
                       :apiResponse="revertedWithdrawResult"
                   /></v-window-item>
                   <v-window-item value="comb" transition="false" reverse-transition="false">
                     <kombi-form
                       @calculateInput="fetchKombiPlan"
+                      @inputChange="answerWarning=true"
                       :apiResponseSparen="revertedSavingResult"
                       :apiResponseEntnahme="revertedWithdrawResult"
                     />
@@ -538,27 +546,52 @@ const languageItems = computed(() => languages.value);
                 />
                 <v-window v-model="grafikTabs">
                   <v-window-item value="aktuell">
-                    <AnswerSentence :output="graphData.capitalResult" :currency="$t('currency')" :endpoint="endpoint" :scenario="formTab" :startDate="startDate" :seperator="'.'"></AnswerSentence>
+                    <v-overlay
+                      v-model="answerWarning"
+                      contained
+                      :persistent="true"
+                      class="rounded-lg mt-3 d-flex justify-center align-center"
+                    >
+                    <p class="text-2xl text-center text-white">{{ $t('answerWarning') }}</p>
+                    </v-overlay>
+                    <AnswerSentence 
+                    :class="answerWarning?'blur':''"
+                    :output="formTab==='comb'? (endpoint[0]==='saving'?revertedSavingResult : graphData.capitalResult  ): graphData.capitalResult" 
+                    :currency="$t('currency')" 
+                    :endpoint="formTab==='comb'?endpoint[1]:endpoint" 
+                    :scenario="formTab==='comb'?endpoint[0]:formTab" 
+                    :startDate="startDate" 
+                    :seperator="$t('seperator')"></AnswerSentence>
                     <graph
+                      :class="answerWarning?'blur':''"
                       :series="graphData.capitalSeries"
                       :result="graphData.capitalResult"
                       :prevSeries="previousGraphData.capitalSeries"
                       :prevResult="previousGraphData.capitalResult"
-                      :maxYaxis="graphMaxYAxis"
                     />
                   </v-window-item>
                   <v-window-item value="vergleich">
+                    <v-overlay
+                      v-model="answerWarning"
+                      contained
+                      :persistent="true"
+                      class="rounded-lg mt-3 d-flex justify-center align-center"
+                    >
+                    <p class="text-2xl text-center text-white">{{ $t('answerWarning') }}</p>
+                    </v-overlay>
                     <vergleichstabelle v-if="formTab === 'comb'"
+                      :class="answerWarning?'blur':''"
                       :oldRequest="financeMathInputsSparen[1]"
                       :newRequest="financeMathInputsSparen[0]"
                       :oldRequestEntnahme="financeMathInputsEntnahme[1]"
                       :newRequestEntnahme="financeMathInputsEntnahme[0]"
-                     :oldResponse="endpoint[0] === 'sparen' ? financeMathResultsSparen[1].value : financeMathResultsEntnahme[1].value"
-                      :newResponse="endpoint[0] === 'sparen' ? financeMathResultsSparen[0].value : financeMathResultsEntnahme[0].value"
+                     :oldResponse="endpoint[0] === 'saving' ? financeMathResultsSparen[1].value : financeMathResultsEntnahme[1].value"
+                      :newResponse="endpoint[0] === 'saving' ? financeMathResultsSparen[0].value : financeMathResultsEntnahme[0].value"
                       :endpoint="endpoint[1]"
                       :isKombiplan="true"
                     ></vergleichstabelle>
                     <vergleichstabelle v-else
+                      :class="answerWarning?'blur':''"
                       :oldRequest="financeMathInputs[1]"
                       :newRequest="financeMathInputs[0]"
                       :oldResponse="financeMathResults[1].value"
@@ -568,7 +601,16 @@ const languageItems = computed(() => languages.value);
                     ></vergleichstabelle>
                   </v-window-item>
                   <v-window-item value="tabelle" transition="false" reverse-transition="false">
+                    <v-overlay
+                      v-model="answerWarning"
+                      contained
+                      :persistent="true"
+                      class="rounded-lg mt-3 d-flex justify-center align-center"
+                    >
+                    <p class="text-2xl text-center text-white">{{ $t('answerWarning') }}</p>
+                    </v-overlay>
                     <series-table
+                    :class="answerWarning?'blur':''"
                     :apiRequest="formTab==='comb'?financeMathInputsSparen[0]:financeMathInputs[0]"
                     :apiResponse="graphData"/>
                   </v-window-item>
@@ -611,6 +653,19 @@ const languageItems = computed(() => languages.value);
       </v-slide-x-reverse-transition>
     </v-row>
   </v-container>
+  <v-dialog v-model="dialog" width="auto">
+      <v-card>
+        <v-card-title>
+          {{ $t('dialog.message') }}
+        </v-card-title>
+        <v-card-text v-text="dialogText"></v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" block @click="dialog = false"
+            >{{ $t('dialog.close') }}</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 </template>
 
 <style scoped>
@@ -638,5 +693,23 @@ const languageItems = computed(() => languages.value);
 
 .font-display {
   font-family: 'Poppins', 'sans-serif';
+}
+.warning-tooltip{
+  position: absolute;
+  right: 0;
+  color: #fcb900;
+}
+.warning-window{
+  background-color: rgba(224, 208, 61,0.35);
+  border: 1px solid #c2b544;
+}
+
+.diagonal-text {
+      transform: rotate(30deg);
+      white-space: nowrap; /* Prevent text from wrapping */
+      color: white;
+}
+.blur{
+  filter: blur(2px)
 }
 </style>

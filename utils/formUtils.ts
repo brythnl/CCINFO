@@ -63,8 +63,8 @@ export const validateInput = (userInput: financeMathInput): void => {
 };
 
 // set end date value as the latest date found from all date inputs (oneTimeInvestmentDate, savingPlanEnd, end)
-export const setEndDateToBiggestDate = (userInput: financeMathInput): void => {
-  if (userInput.endpoint === "end-date") return;
+export const setEndDateToBiggestDate = (userInput: financeMathInput): boolean => {
+  if (userInput.endpoint === "end-date") return false;
   const tmp: string[] = JSON.parse(
     JSON.stringify(userInput.oneTimeInvestmentDate),
   );
@@ -72,7 +72,9 @@ export const setEndDateToBiggestDate = (userInput: financeMathInput): void => {
     tmp.push(JSON.parse(JSON.stringify(userInput.savingPlanEnd)));
   }
   tmp.push(JSON.parse(JSON.stringify(userInput.end)));
+  let endBefore: string = JSON.parse(JSON.stringify(userInput.end));
   userInput.end = findBiggestDate(tmp);
+  if(endBefore == userInput.end){return false;}else{return true;}
 };
 
 export const revertOutput = (responseOutput:financeMathResult):financeMathResult =>{
@@ -122,7 +124,8 @@ export const removeSearchedEndpointFromInput = (formInput: financeMathInput): fi
       delete processedFormInput.savingRate;
       break;
     case "saving-start-value":
-      delete processedFormInput.startInvestment;
+      delete processedFormInput.oneTimeInvestment;
+      delete processedFormInput.oneTimeInvestmentDate;
       break;
   }
 

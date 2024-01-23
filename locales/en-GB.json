@@ -13,11 +13,11 @@
   },
   "fieldNames": {
     "title":"Choose what you want to calculate:",
-    "begin": "Start Date",
+    "begin": "Start date",
     "end": "End Date",
     "interestRate": "Interest Rate",
     "oneTimeInvestment": "One Time Investment",
-    "oneTimeInvestmentDate": "One Time Investment Date",
+    "oneTimeInvestmentDate": "Investment Date",
     "savingRate": "Saving Rate",
     "dynamicSavingRateFactor":"Dynamic Saving Rate Factor",
     "endValue": "End Capital",
@@ -133,6 +133,27 @@
         "end-date-4": ""
       }
   },
-
-  "currency": "£"
+  "error-message": {
+    "oneTimeInvestmentDate-in-the-past":"The One-Time Investment date is in the past",
+    "oneTimeInvestment-is-not-completed":"Please fill the one-time investment completely, make sure that all dates are defined, and there is no one-time investment (other than the first) with 0 value or you can delete the row",
+    "withdrawplan": {
+      "enddate": "Calculation of the end date is not possible as your interest credits exceed your withdrawal rate. Your capital will never be depleted!",
+      "endcapital-bigger-than-startcapital": "In the withdrawal plan, the end capital should not be greater than the start capital. Please enter the values again or switch to the savings plan.",
+      "no-startcapital": "The amount of the start capital must be greater than 0. Please enter the values again.",
+      "endDateToEarly": "The end date of a one-time investment or the end date of the withdrawal rate is after the set end date.\nPlease adjust the respective durations to choose an earlier end date.",
+      "withdrawEnd-earlier-than-withdrawStart" : "The end date of the withdaw rate plan cannot be in the past or earlier than the start date",
+      "savingPlanStart-in-the-past":"The start date of the withdraw plan is in the past"
+    },
+    "savingplan": {
+      "no-endcapital": "The amount of the end capital must be greater than 0. Please enter the values again.",
+      "startcapital-bigger-than-endcapital": "In the savings plan, the start capital should not be greater than the end capital. Please enter the values again or switch to the withdrawal plan.",
+      "endDateToEarly": "The end date of a one-time investment or the end date of the saving rate is after the set end date.\nPlease adjust the respective durations to choose an earlier end date.",
+      "savingEnd-earlier-than-savingStart" : "The end date of the saving rate plan cannot be in the past or earlier than the start date",
+      "savingPlanStart-in-the-past":"The start date of the saving plan is in the past"
+    }
+  },  
+  "answerWarning":"Please execute the new calculation",
+  "currency": "£",
+  "label_language": "language",
+  "seperator": ","
 }

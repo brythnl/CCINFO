@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <v-table class="border-2 rounded-lg">
+  <v-table class="border rounded-lg">
     <thead>
       <tr>
         <th>{{ $t("vergleichstabelle.feld") }}</th>
@@ -39,7 +39,7 @@ const props = defineProps<{
           }"
           v-if="item.valueDifference.value !== 'array'"
         >
-          {{ item.valueDifference.sign }}{{ item.valueDifference.unit === '%' ? item.valueDifference.value : $n(item.valueDifference.value, 'currency') }} {{ item.valueDifference.unit }}
+          {{ item.valueDifference.sign }}{{ item.valueDifference.unit === '' ? $n(item.valueDifference.value, 'currency') : item.valueDifference.value }} {{ item.valueDifference.unit }}
         </td>
         <td v-else></td>
       </tr>

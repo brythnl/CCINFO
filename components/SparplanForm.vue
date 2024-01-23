@@ -5,25 +5,32 @@ import {
   inTenYears,
   validateInput,
   setEndDateToBiggestDate,
+  todayDate
 } from "~/utils/formUtils";
 
 const emit = defineEmits<{
   (e: "calculateInput", sparplanInput: {}): void;
+  (e: "inputChange"):void;
 }>();
 
 //dialog for error inputs
 const dialog = ref(false);
 const dialogText =ref("");
+
 // Amount of oneTimeInvestment(s)
 const einmalZahlung = ref(0);
+
 // Dynamic status
 const dynamik = ref(false);
+
 //details status for start capital and saving
 const startkapitalDetails = ref(false);
 const sparplanDetails = ref(false);
 const iconStartkapital = ref("mdi-chevron-down");
 const iconSparplan = ref("mdi-chevron-down");
 
+//I18n Locale
+const { t } = useI18n();
 
 //prop to show the result of selected field
 const props = defineProps<{
@@ -47,6 +54,7 @@ const sparplanInput = reactive({
   endpoint: "",
 });
 
+//function to show or hide details for start capital
 function toggleStartkapital() {
   if (startkapitalDetails.value === false) {
     startkapitalDetails.value = true;
@@ -56,7 +64,7 @@ function toggleStartkapital() {
     iconStartkapital.value = "mdi-chevron-down";
   }
 }
-
+//function to show or hide details for saving plan
 function toggleSparplan() {
   if (sparplanDetails.value === false) {
     sparplanDetails.value = true;
@@ -77,43 +85,76 @@ function changeEndpoint() {
 }
 
 
-// get form data (user input)
+// validate input and get form data (user input)
 function emitData() {
-  if(parseInt(sparplanInput.endValue)<=0 && sparplanInput.endpoint!="capital"){
+  if((parseInt(sparplanInput.endValue) <= 0 || [0,'','0'].includes(sparplanInput.endValue) )&& sparplanInput.endpoint!="capital"){
     dialog.value=true;
-    dialogText.value = "Der Betrag vom Endkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein."
+    dialogText.value = t('error-message.savingplan.no-endcapital')
       
-  }else if(parseInt(sparplanInput.endValue)<=parseInt(sparplanInput.oneTimeInvestment[0]) && sparplanInput.endpoint!="capital" && sparplanInput.endpoint!="saving-start-value"){
+  }else if(parseInt(sparplanInput.endValue)<=parseInt(sparplanInput.oneTimeInvestment[0]) && sparplanInput.endpoint!=="capital" && sparplanInput.endpoint!=="saving-start-value"){
     dialog.value=true;
-    dialogText.value = "Beim Sparplan kann das Startkapital nicht grösser als das Endkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Entnahmeplan."
-  }
-  else
+    dialogText.value = t('error-message.savingplan.startcapital-bigger-than-endcapital')
+  }else if(sparplanInput.endpoint!=="saving-start-value" && sparplanInput.oneTimeInvestmentDate.find((element)=>new Date(element)<new Date(todayDate))){
+    dialog.value=true;
+    dialogText.value = t('error-message.oneTimeInvestmentDate-in-the-past')
+  }else if(new Date(sparplanInput.savingPlanBegin)<new Date(todayDate)){
+    dialog.value=true;
+    dialogText.value = t('error-message.savingplan.savingPlanStart-in-the-past')
+  }else
   {
-  const toSend = JSON.parse(JSON.stringify(sparplanInput));
-  validateInput(toSend);
-  emit("calculateInput", toSend);
+    if(sparplanInput.endpoint!=="saving-start-value"){
+      for(let i = 0; i<=einmalZahlung.value;i++){
+        if(i > 0 && (sparplanInput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(sparplanInput.oneTimeInvestment[i]))){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
+        if(sparplanInput.oneTimeInvestmentDate[i] === undefined || sparplanInput.oneTimeInvestmentDate[i]==="" ){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
+      }
+    }
+    if(!dialog.value){
+      const toSend = JSON.parse(JSON.stringify(sparplanInput));
+      validateInput(toSend);
+      emit("calculateInput", toSend);
+    }
   }
 }
 
+// send signal that input or chip is changed
+function inputChangeWarn(){
+  emit("inputChange");
+}
+
+function checkEnddateForErrorMessage(){
+  if(setEndDateToBiggestDate(sparplanInput)){
+    dialog.value=true;
+    dialogText.value = t('error-message.savingplan.endDateToEarly');
+  }
+  // if (
+  //         new Date(sparplanInput.savingPlanEnd) <
+  //         new Date(sparplanInput.savingPlanBegin) || 
+  //         sparplanInput.savingPlanEnd < todayDate
+  //     ){
+  //       sparplanInput.savingPlanEnd = sparplanInput.savingPlanBegin;
+  //       dialog.value=true;
+  //       dialogText.value = t('error-message.savingplan.savingEnd-earlier-than-savingStart')
+  //     }
+}
+
+//watch to validate input
 watch(
-    () => sparplanInput.oneTimeInvestmentDate,
+    () => sparplanInput,
     () => {
       setEndDateToBiggestDate(sparplanInput);
+      inputChangeWarn();
     },
     {deep: true},
 );
-
-watch(
-    () => sparplanInput.savingPlanEnd,
-    () => {
-      setEndDateToBiggestDate(sparplanInput);
-      if (
-          new Date(sparplanInput.savingPlanEnd) <
-          new Date(sparplanInput.savingPlanStart)
-      )
-        sparplanInput.savingPlanEnd = sparplanInput.savingPlanStart;
-    },
-);
+//watch to take over respon to input
 watch(
     () => props.apiResponse,
     () => {
@@ -136,25 +177,14 @@ watch(
       }
     },
 );
-watch(sparplanInput,
-()=>{
-  if(new Date(sparplanInput.end)<new Date(sparplanInput.savingPlanEnd)){
-    sparplanInput.savingPlanEnd=sparplanInput.end;
-  }else{
-    if(sparplanInput.savingPlanEnd===inTenYears){
-
-    }
-  }
-}
-)
 </script>
 
 <template>
-  <h1 class="flex justify-center pt-5 pb-2 font-bold">{{ $t("fieldNames.title") }}</h1>
+  <h1 class="flex justify-center pt-5 pb-2 font-bold text-lg">{{ $t("fieldNames.title") }}</h1>
   <v-form>
     <div>
       <v-hover>
-      <v-card elevation="0" >
+      <v-card elevation="0" class="overflow-y-auto" max-height="504">
         <v-chip-group
             v-model="sparplanInput.endpoint"
             @update:model-value="changeEndpoint"
@@ -200,7 +230,7 @@ watch(sparplanInput,
                 <!-- starting value input field -->
                 <v-text-field
                     v-else
-                    :label="'1.'+ $t('fieldNames.oneTimeInvestment')"
+                    :label="'1. '+ $t('fieldNames.oneTimeInvestment')"
                     variant="outlined"
                     density="compact"
                     :prefix="$t('currency')"
@@ -241,7 +271,7 @@ watch(sparplanInput,
                   class="flex ps-0 pe-2 order-3 order-sm-2"
               >
                 <v-text-field
-                    :label="$t('fieldNames.begin')"
+                    :label="'1. '+$t('fieldNames.oneTimeInvestmentDate')"
                     variant="outlined"
                     density="compact"
                     v-model="sparplanInput.oneTimeInvestmentDate[0]"
@@ -353,8 +383,8 @@ watch(sparplanInput,
                     @click="
                     () => {
                       einmalZahlung > 0 ? einmalZahlung-- : (einmalZahlung = 0);
-                      sparplanInput.oneTimeInvestment.pop();
-                      sparplanInput.oneTimeInvestmentDate.pop();
+                      sparplanInput.oneTimeInvestment.splice(n,1);
+                      sparplanInput.oneTimeInvestmentDate.splice(n,1);
                     }
                   "
                     :disabled="
@@ -429,7 +459,7 @@ watch(sparplanInput,
                     v-model="sparplanInput.savingRate"
                     required
                     hide-details
-                    placeholder="Sparrate"
+                    :placeholder="$t('fieldNames.savingRate')"
                     type="number"
                     step="50"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='saving-rate'"
@@ -452,7 +482,7 @@ watch(sparplanInput,
               </v-col>
               <!-- saving rate toggle button -->
               <v-col cols="1" class="px-0 flex justify-center align-center">
-                <v-icon v-if="sparplanInput.endpoint!='saving-rate'" size="large" @click="toggleSparplan">
+                <v-icon size="large" @click="toggleSparplan">
                   {{ iconSparplan }}
                 </v-icon>
               </v-col>
@@ -471,10 +501,7 @@ watch(sparplanInput,
                     v-model="sparplanInput.savingPlanBegin"
                     hide-details
                     type="date"
-                    :disabled="
-                    sparplanInput.endpoint == '' ||
-                    sparplanInput.endpoint == 'saving-rate'
-                  "
+                    :disabled=" sparplanInput.endpoint == ''"
                 ></v-text-field>
 
                 <!-- info button for saving rate begin date -->
@@ -508,10 +535,8 @@ watch(sparplanInput,
                     hide-details
                     type="date"
                     min="sparplan"
-                    :disabled="
-                    sparplanInput.endpoint == '' ||
-                    sparplanInput.endpoint == 'saving-rate'
-                  "
+                    :disabled="sparplanInput.endpoint == ''"
+                    @blur="checkEnddateForErrorMessage()"
                 ></v-text-field>
 
                 <!--info button for saving rate end date -->
@@ -541,9 +566,7 @@ watch(sparplanInput,
                       density="compact"
                       hide-details=""
                       :disabled="
-                    sparplanInput.endpoint == '' ||
-                    sparplanInput.endpoint == 'saving-rate'
-                  "
+                    sparplanInput.endpoint == ''"
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
@@ -616,7 +639,7 @@ watch(sparplanInput,
                     v-model="sparplanInput.interestRate"
                     required
                     hide-details
-                    placeholder="Sparzins"
+                    :placeholder="$t('fieldNames.interestRate')"
                     type="number"
                     step="0.5"
                     :disabled="sparplanInput.endpoint==''||sparplanInput.endpoint=='interest-rate'"
@@ -670,6 +693,7 @@ watch(sparplanInput,
                 ></v-text-field>
                 <!-- end date input field -->
                 <v-text-field
+                   @blur="checkEnddateForErrorMessage()"
                     v-else
                     variant="outlined"
                     density="compact"

@@ -6,20 +6,34 @@ import {
   inTwentyYears,
   validateInput,
   setEndDateToBiggestDate,
+  todayDate
 } from "~/utils/formUtils";
 
 const emit = defineEmits<{
   (e: "calculateInput", kombiplanInput: {}): void;
+  (e: "inputChange"):void;
 }>();
 
+//dialog for error inputs
+const dialog = ref(false);
+const dialogText =ref("");
+
+//amount of oneTimeInvestment
 const einmalZahlung = ref(0);
+
+//dynamic status
 const dynamik = ref(false);
+
+//details status for start capital and withdraw rate
 const startkapitalDetails = ref(false);
 const sparplanDetails = ref(false);
 const entnahmeplanDetails = ref(false);
 const iconStartkapital = ref("mdi-chevron-down");
 const iconSparplan = ref("mdi-chevron-down");
 const iconEntnahmeplan = ref("mdi-chevron-down");
+
+//I18n Locale
+const { t } = useI18n();
 
 const props = defineProps<{
   apiResponseSparen?: financeMathResult;
@@ -57,7 +71,7 @@ const entnahmeInput = reactive({
   endValue: 0,
   endpoint: "",
 });
-
+//function to show or hide details for start capital
 function toggleStartkapital() {
   if (startkapitalDetails.value === false) {
     startkapitalDetails.value = true;
@@ -67,7 +81,7 @@ function toggleStartkapital() {
     iconStartkapital.value = "mdi-chevron-down";
   }
 }
-
+//function to show or hide details for savingplan
 function toggleSparplan() {
   if (sparplanDetails.value === false) {
     sparplanDetails.value = true;
@@ -77,7 +91,7 @@ function toggleSparplan() {
     iconSparplan.value = "mdi-chevron-down";
   }
 }
-
+//function to show or hide details for withdrawplan
 function toggleEntnahmeplan() {
   if (entnahmeplanDetails.value === false) {
     entnahmeplanDetails.value = true;
@@ -91,92 +105,145 @@ function toggleEntnahmeplan() {
 // set variable when endpoint is changed, so both variables have the same endpoint
 function changeEndpoint() {
   entnahmeInput.endpoint = sparInput.endpoint;
-  if (sparInput.endpoint === "sparen/saving-start-value") {
+  if (sparInput.endpoint === "saving/saving-start-value") {
     if (startkapitalDetails.value === true) {
       toggleStartkapital();
     }
   }
 }
 
+//validate input and get form data (user input)
 function emitData() {
   entnahmeInput.begin = sparInput.end;
   entnahmeInput.oneTimeInvestmentDate = [sparInput.end];
+  if(sparInput.endpoint!=="saving/saving-start-value" && sparInput.oneTimeInvestmentDate.find((element)=>new Date(element)<new Date(todayDate))){
+    dialog.value=true;
+    dialogText.value = t('error-message.oneTimeInvestmentDate-in-the-past')
+  }else if(new Date(sparInput.savingPlanBegin)<new Date(todayDate)){
+    dialog.value=true;
+    dialogText.value = t('error-message.savingplan.savingPlanStart-in-the-past')
+  }else if(new Date(entnahmeInput.savingPlanBegin)<new Date(todayDate)){
+    dialog.value=true;
+    dialogText.value = t('error-message.withdrawplan.savingPlanStart-in-the-past')
+  }else 
+  {
+    if(sparInput.endpoint!=="saving/saving-start-value"){
+      for(let i = 0; i<=einmalZahlung.value;i++){
+        if(i > 0 && (sparInput.oneTimeInvestment[i]===undefined||[0,'0',""].includes(sparInput.oneTimeInvestment[i]))){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
+        if(sparInput.oneTimeInvestmentDate[i] === undefined || sparInput.oneTimeInvestmentDate[i]==="" ){
+          dialog.value=true;
+          dialogText.value = t('error-message.oneTimeInvestment-is-not-completed')
+          break;
+        }
+      }
+    }
+    if(!dialog.value){
+      const saving = JSON.parse(JSON.stringify(sparInput));
+      const withdraw = JSON.parse(JSON.stringify(entnahmeInput));
+      for (let key = 0; key < saving.oneTimeInvestmentDate.length; key++) {
+        if (new Date(saving.oneTimeInvestmentDate[key]) > new Date(saving.end)) {
+          withdraw.oneTimeInvestment.push(saving.oneTimeInvestment[key]);
+          withdraw.oneTimeInvestmentDate.push(saving.oneTimeInvestmentDate[key]);
+          saving.oneTimeInvestment.splice(key, 1);
+          saving.oneTimeInvestmentDate.splice(key, 1);
+        }
+      }
 
-  const sparen = JSON.parse(JSON.stringify(sparInput));
-  const entnahme = JSON.parse(JSON.stringify(entnahmeInput));
-  for (let key = 0; key < sparen.oneTimeInvestmentDate.length; key++) {
-    if (new Date(sparen.oneTimeInvestmentDate[key]) > new Date(sparen.end)) {
-      entnahme.oneTimeInvestment.push(sparen.oneTimeInvestment[key]);
-      entnahme.oneTimeInvestmentDate.push(sparen.oneTimeInvestmentDate[key]);
-      sparen.oneTimeInvestment.splice(key, 1);
-      sparen.oneTimeInvestmentDate.splice(key, 1);
+      if (sparInput.endpoint !== "withdraw/end-date") {
+        withdraw.savingRate = -withdraw.savingRate;
+      }
+
+      validateInput(saving);
+      validateInput(withdraw);
+      emit("calculateInput", { sparFormInput: saving, entnahmeFormInput: withdraw });
     }
   }
+}
 
-  if (sparInput.endpoint !== "entnahme/end-date") {
-    entnahme.savingRate = -entnahme.savingRate;
-  }
+// send signal that input or chip is changed
+function inputChangeWarn(){
+  emit("inputChange");
+}
 
-  validateInput(sparen);
-  validateInput(entnahme);
-  emit("calculateInput", { sparFormInput: sparen, entnahmeFormInput: entnahme });
+function validateEndDate(){
+  if (
+          new Date(sparInput.savingPlanEnd) <
+          new Date(sparInput.savingPlanStart) || 
+          sparInput.savingPlanEnd< todayDate
+      ){
+        sparInput.savingPlanEnd = sparInput.savingPlanStart;
+        dialog.value=true;
+        dialogText.value = t('error-message.savingplan.savingEnd-earlier-than-savingStart')
+      }
+  if (
+          new Date(entnahmeInput.savingPlanEnd) <
+          new Date(entnahmeInput.savingPlanStart) || 
+          entnahmeInput.savingPlanEnd< todayDate
+      ){
+        entnahmeInput.savingPlanEnd = entnahmeInput.savingPlanStart;
+        dialog.value=true;
+        dialogText.value = t('error-message.savingplan.savingEnd-earlier-than-savingStart')
+      }
 }
 
 watch(
-    () => sparInput.savingPlanEnd,
+    () => [sparInput.oneTimeInvestmentDate,sparInput.savingPlanEnd,entnahmeInput.savingPlanEnd],
     () => {
       setEndDateToBiggestDate(sparInput);
-      if (new Date(sparInput.savingPlanEnd) < new Date(sparInput.savingPlanStart))
-        sparInput.savingPlanEnd = sparInput.savingPlanStart;
-    },
-);
-watch(
-    () => entnahmeInput.savingPlanEnd,
-    () => {
+      entnahmeInput.begin = sparInput.end;
+      entnahmeInput.oneTimeInvestmentDate = [sparInput.end];
       setEndDateToBiggestDate(entnahmeInput);
-      if (
-          new Date(entnahmeInput.savingPlanEnd) <
-          new Date(entnahmeInput.savingPlanStart)
-      )
-        entnahmeInput.savingPlanEnd = entnahmeInput.savingPlanStart;
     },
+    {
+      deep: true,
+    }
 );
 watch(
     () => [props.apiResponseEntnahme, props.apiResponseSparen],
     () => {
       switch (sparInput.endpoint) {
-        case "sparen/saving-start-value":
+        case "saving/saving-start-value":
           sparInput.oneTimeInvestment[0] = props.apiResponseSparen.startInvestment;
           break;
-        case "sparen/saving-rate":
+        case "saving/saving-rate":
           sparInput.savingRate = props.apiResponseSparen.savingRate;
           break;
-        case "sparen/interest-rate":
+        case "saving/interest-rate":
           sparInput.interestRate = props.apiResponseSparen.interestRate;
           break;
-        case "sparen/end-date":
+        case "saving/end-date":
           sparInput.end = props.apiResponseSparen.end;
           break;
-        case "entnahme/saving-rate":
+        case "withdraw/saving-rate":
           entnahmeInput.savingRate = props.apiResponseEntnahme.savingRate;
           break;
-        case "entnahme/interest-rate":
+        case "withdraw/interest-rate":
           entnahmeInput.interestRate = props.apiResponseEntnahme.interestRate;
           break;
-        case "entnahme/end-date":
+        case "withdraw/end-date":
           entnahmeInput.end = props.apiResponseEntnahme.end;
           break;
-        case "entnahme/capital":
+        case "withdraw/capital":
           entnahmeInput.endValue = props.apiResponseEntnahme.capitalResult.capitalAmount
           break;
       }
     },
 );
+watch(
+  [sparInput , entnahmeInput],
+  () => {
+    inputChangeWarn();
+  }
+)
 </script>
 
 <template>
   <!-- headline -->
-  <h1 class="flex justify-center pt-5 pb-2 font-bold">{{ $t("fieldNames.title") }}</h1>
+  <h1 class="flex justify-center pt-5 pb-2 font-bold text-lg">{{ $t("fieldNames.title") }}</h1>
   <v-form>
     <div>
       <v-card class="overflow-y-auto" elevation="0" max-height="504">
@@ -202,7 +269,7 @@ watch(
             <v-row class="mt-0 ps-5 pt-2">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
-                    value="sparen/saving-start-value"
+                    value="saving/saving-start-value"
                     density="compact"
                 >{{ $t("fieldNames.startInvestment") }}
                 </v-chip>
@@ -219,7 +286,7 @@ watch(
               >
                 <!-- starting value response slot -->
                 <v-text-field
-                    v-if="sparInput.endpoint == 'sparen/saving-start-value'"
+                    v-if="sparInput.endpoint == 'saving/saving-start-value'"
                     variant="outlined"
                     density="compact"
                     :prefix="$t('currency')"
@@ -236,7 +303,7 @@ watch(
                 <!-- starting value input field -->
                 <v-text-field
                     v-else
-                    :label="'1.'+ $t('fieldNames.oneTimeInvestment')"
+                    :label="'1. '+ $t('fieldNames.oneTimeInvestment')"
                     variant="outlined"
                     density="compact"
                     :prefix="$t('currency')"
@@ -272,7 +339,7 @@ watch(
               >
                 <!-- starting value date input field -->
                 <v-text-field
-                    :label="$t('fieldNames.begin')"
+                    :label="'1. '+$t('fieldNames.oneTimeInvestmentDate')"
                     variant="outlined"
                     density="compact"
                     v-model="sparInput.oneTimeInvestmentDate[0]"
@@ -280,7 +347,7 @@ watch(
                     type="date"
                     :disabled="
                     sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'sparen/saving-start-value'
+                    sparInput.endpoint == 'saving/saving-start-value'
                   "
                 ></v-text-field>
                 <!-- info button for starting value date -->
@@ -300,7 +367,7 @@ watch(
               </v-col>
               <v-col cols="1" class="px-0 flex justify-start align-center order-2 order-sm-3">
                 <!-- button to toggle starting value details form -->
-                <v-icon v-if="sparInput.endpoint!='sparen/saving-start-value'" size="large" @click="toggleStartkapital">
+                <v-icon v-if="sparInput.endpoint!='saving/saving-start-value'" size="large" @click="toggleStartkapital">
                   {{
                     iconStartkapital
                   }}
@@ -389,8 +456,8 @@ watch(
                     @click="
                     () => {
                       einmalZahlung > 0 ? einmalZahlung-- : (einmalZahlung = 0);
-                      sparInput.oneTimeInvestment.pop();
-                      sparInput.oneTimeInvestmentDate.pop();
+                      sparInput.oneTimeInvestment.splice(n,1);
+                      sparInput.oneTimeInvestmentDate.splice(n,1);
                     }
                   "
                     :disabled="
@@ -417,7 +484,7 @@ watch(
                     class="text-none"
                     :disabled="
                     sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'sparen/saving-start-value'
+                    sparInput.endpoint == 'saving/saving-start-value'
                   "
                 >
                 </v-btn>
@@ -429,7 +496,7 @@ watch(
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
-                    value="sparen/saving-rate"
+                    value="saving/saving-rate"
                     density="compact"
                 >{{ $t("fieldNames.savingRate") }}
                 </v-chip>
@@ -444,7 +511,7 @@ watch(
 
                 <!-- saving rate response slot -->
                 <v-text-field
-                    v-if="sparInput.endpoint == 'sparen/saving-rate'"
+                    v-if="sparInput.endpoint == 'saving/saving-rate'"
                     variant="outlined"
                     :prefix="$t('currency')"
                     density="compact"
@@ -469,12 +536,12 @@ watch(
                     v-model="sparInput.savingRate"
                     required
                     hide-details
-                    placeholder="Sparrate"
+                    :placeholder="$t('fieldNames.savingRate')"
                     type="number"
                     step="50"
                     :disabled="
                     sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'sparen/saving-rate'
+                    sparInput.endpoint == 'saving/saving-rate'
                   "
                 ></v-text-field>
 
@@ -496,7 +563,7 @@ watch(
               <v-col cols="1" class="px-0 flex justify-start align-center">
 
                 <!-- toggle for saving rate details -->
-                <v-icon v-if="sparInput.endpoint!='sparen/saving-rate'" size="large" @click="toggleSparplan">{{
+                <v-icon size="large" @click="toggleSparplan">{{
                     iconSparplan
                   }}
                 </v-icon>
@@ -515,10 +582,7 @@ watch(
                     v-model="sparInput.savingPlanBegin"
                     hide-details
                     type="date"
-                    :disabled="
-                    sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'sparen/saving-rate'
-                  "
+                    :disabled=" sparInput.endpoint == ''"
                 ></v-text-field>
 
                 <!-- info button for saving rate begin date -->
@@ -553,9 +617,8 @@ watch(
                     type="date"
                     min="sparplan"
                     :disabled="
-                    sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'sparen/saving-rate'
-                  "
+                    sparInput.endpoint == ''"
+                    @blur="validateEndDate()"
                 ></v-text-field>
 
                 <!-- info button for saving rate end date -->
@@ -585,10 +648,7 @@ watch(
                       :label="$t('fieldNames.dynamicSavingRateFactor')"
                       density="compact"
                       hide-details=""
-                      :disabled="
-                    sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'sparen/saving-rate'
-                  "
+                      :disabled="sparInput.endpoint == ''"
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
@@ -629,7 +689,7 @@ watch(
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
-                    value="sparen/interest-rate"
+                    value="saving/interest-rate"
                     density="compact"
                 >{{ $t("fieldNames.interestRate") }}
                 </v-chip>
@@ -643,7 +703,7 @@ watch(
 
                 <!-- interest rate response slot -->
                 <v-text-field
-                    v-if="sparInput.endpoint == 'sparen/interest-rate'"
+                    v-if="sparInput.endpoint == 'saving/interest-rate'"
                     prefix="%"
                     variant="outlined"
                     density="compact"
@@ -668,12 +728,12 @@ watch(
                     v-model="sparInput.interestRate"
                     required
                     hide-details
-                    placeholder="Sparzins"
+                    :placeholder="$t('fieldNames.interestRate')"
                     type="number"
                     step="0.5"
                     :disabled="
                     sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'sparen/interest-rate'
+                    sparInput.endpoint == 'saving/interest-rate'
                   "
                 ></v-text-field>
 
@@ -711,7 +771,7 @@ watch(
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
                     disabled
-                    value="sparen/end-date"
+                    value="saving/end-date"
                     density="compact"
                 >{{ $t("fieldNames.withdrawBegin") }}
                 </v-chip>
@@ -724,7 +784,7 @@ watch(
 
                 <!-- switch date response slot -->
                 <v-text-field
-                    v-if="sparInput.endpoint == 'sparen/end-date'"
+                    v-if="sparInput.endpoint == 'saving/end-date'"
                     variant="outlined"
                     density="compact"
                     v-model="sparInput.end"
@@ -740,6 +800,7 @@ watch(
 
                 <!-- switch date input field -->
                 <v-text-field
+                    @blur="setEndDateToBiggestDate(sparInput); entnahmeInput.begin=sparInput.end; entnahmeInput.oneTimeInvestmentDate = [sparInput.end]; setEndDateToBiggestDate(entnahmeInput);"
                     v-else
                     variant="outlined"
                     density="compact"
@@ -749,7 +810,7 @@ watch(
                     type="date"
                     :disabled="
                     sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'sparen/end-date'
+                    sparInput.endpoint == 'saving/end-date'
                   "
                 ></v-text-field>
 
@@ -777,7 +838,7 @@ watch(
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
-                    value="entnahme/saving-rate"
+                    value="withdraw/saving-rate"
                     density="compact"
                 >{{ $t("fieldNames.withdrawRate") }}
                 </v-chip>
@@ -793,7 +854,7 @@ watch(
 
                 <!--withdrawal rate response slot-->
                 <v-text-field
-                    v-if="sparInput.endpoint == 'entnahme/saving-rate'"
+                    v-if="sparInput.endpoint == 'withdraw/saving-rate'"
                     variant="outlined"
                     :prefix="$t('currency')"
                     density="compact"
@@ -817,12 +878,12 @@ watch(
                     v-model="entnahmeInput.savingRate"
                     required
                     hide-details
-                    placeholder="Entnahmerate"
+                   :placeholder="$t('fieldNames.withdrawRate')"
                     type="number"
                     step="50"
                     :disabled="
                     sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'entnahme/saving-rate'
+                    sparInput.endpoint == 'withdraw/saving-rate'
                   "
                 ></v-text-field>
 
@@ -844,7 +905,7 @@ watch(
               <v-col cols="1" class="px-0 flex align-center justify-start">
 
                 <!-- toggle for withdrawal rate details -->
-                <v-icon v-if="entnahmeInput.endpoint!='entnahme/saving-rate'" size="large" @click="toggleEntnahmeplan">
+                <v-icon size="large" @click="toggleEntnahmeplan">
                   {{
                     iconEntnahmeplan
                   }}
@@ -865,10 +926,7 @@ watch(
                     v-model="entnahmeInput.savingPlanBegin"
                     hide-details
                     type="date"
-                    :disabled="
-                    sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'entnahme/saving-rate'
-                  "
+                    :disabled="sparInput.endpoint == '' "
                 ></v-text-field>
 
                 <!-- info button for withdrawal rate begin date -->
@@ -903,10 +961,8 @@ watch(
                     hide-details
                     type="date"
                     min="sparplan"
-                    :disabled="
-                    sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'entnahme/saving-rate'
-                  "
+                    :disabled="sparInput.endpoint == ''"
+                    @blur="validateEndDate()"
                 ></v-text-field>
 
                 <!-- info button for withdrawal rate end date -->
@@ -936,10 +992,7 @@ watch(
                       :label="$t('fieldNames.dynamicSavingRateFactor')"
                       density="compact"
                       hide-details=""
-                      :disabled="
-                    sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'entnahme/saving-rate'
-                  "
+                      :disabled="sparInput.endpoint == ''"
                   ></v-checkbox>
                 </v-radio-group>
               </v-col>
@@ -983,7 +1036,7 @@ watch(
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
                     disabled
-                    value="entnahme/interest-rate"
+                    value="withdraw/interest-rate"
                     density="compact"
                 >{{ $t("fieldNames.interestRate") }}
                 </v-chip>
@@ -997,7 +1050,7 @@ watch(
 
                 <!-- interest rate response slot (withdrawal period) -->
                 <v-text-field
-                    v-if="sparInput.endpoint == 'entnahme/interest-rate'"
+                    v-if="sparInput.endpoint == 'withdraw/interest-rate'"
                     prefix="%"
                     variant="outlined"
                     density="compact"
@@ -1021,12 +1074,12 @@ watch(
                     v-model="entnahmeInput.interestRate"
                     required
                     hide-details
-                    placeholder="Entnahmezins"
+                    :placeholder="$t('fieldNames.interestRate')"
                     type="number"
                     step="0.5"
                     :disabled="
                     sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'entnahme/interest-rate'
+                    sparInput.endpoint == 'withdraw/interest-rate'
                   "
                 ></v-text-field>
 
@@ -1054,7 +1107,7 @@ watch(
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
-                    value="entnahme/end-date"
+                    value="withdraw/end-date"
                     density="compact"
                 >{{ $t("fieldNames.end") }}
                 </v-chip>
@@ -1067,7 +1120,7 @@ watch(
 
                 <!--End date response slot-->
                 <v-text-field
-                    v-if="sparInput.endpoint == 'entnahme/end-date'"
+                    v-if="sparInput.endpoint == 'withdraw/end-date'"
                     variant="outlined"
                     density="compact"
                     v-model="entnahmeInput.end"
@@ -1084,6 +1137,7 @@ watch(
 
                 <!-- end date input field -->
                 <v-text-field
+                    @blur="setEndDateToBiggestDate(entnahmeInput);"
                     v-else
                     variant="outlined"
                     density="compact"
@@ -1093,7 +1147,7 @@ watch(
                     type="date"
                     :disabled="
                     sparInput.endpoint == '' ||
-                    sparInput.endpoint == 'entnahme/end-date'
+                    sparInput.endpoint == 'withdraw/end-date'
                   "
                 ></v-text-field>
 
@@ -1120,7 +1174,7 @@ watch(
             <v-row class="py-0 ps-5">
               <v-col cols="auto" class="flex px-0 py-0">
                 <v-chip
-                    value="entnahme/capital"
+                    value="withdraw/capital"
                     density="compact"
                 >{{ $t("fieldNames.capitalAmount") }}
                 </v-chip>
@@ -1134,7 +1188,7 @@ watch(
 
                 <!-- final capital response slot -->
                 <v-text-field
-                    v-if="sparInput.endpoint == 'entnahme/capital'"
+                    v-if="sparInput.endpoint == 'withdraw/capital'"
                     variant="outlined"
                     :prefix="$t('currency')"
                     density="compact"
@@ -1163,7 +1217,7 @@ watch(
                     type="number"
                     step="1000"
                     :disabled="
-                    sparInput.endpoint == '' || sparInput.endpoint == 'entnahme/capital'
+                    sparInput.endpoint == '' || sparInput.endpoint == 'withdraw/capital'
                   "
                 ></v-text-field>
 
@@ -1201,6 +1255,19 @@ watch(
       </v-btn>
     </div>
   </v-form>
+  <v-dialog v-model="dialog" width="auto">
+      <v-card>
+        <v-card-title>
+          {{ $t('dialog.message') }}
+        </v-card-title>
+        <v-card-text v-text="dialogText"></v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" block @click="dialog = false"
+            >{{ $t('dialog.close') }}</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 </template>
 
 <style scoped>

@@ -17,7 +17,7 @@
     "end": "Enddatum",
     "interestRate": "Zins",
     "oneTimeInvestment": "Einmalzahlung",
-    "oneTimeInvestmentDate": "Einmalzahlungsdatum",
+    "oneTimeInvestmentDate": "Zahlungsdatum",
     "savingRate": "Sparrate",
     "dynamicSavingRateFactor":"Dynamik",
     "endValue": "Endkapital",
@@ -30,32 +30,32 @@
     "newOneTimeInvestment": "Neue Einmalzahlung",
     "calculate": "Berechnen"
   },
-  "fieldInfosSaving":{
-    "startCapital": "Trage den Betrag ein, den du zu Beginn investieren möchtest.\n Der Standardwert für das Datum der 1. Investition ist der 1. des nächsten Monats.\n Über das Aufklapp-Symbol kannst du zusätzliche Optionen für Einmalzahlungen festlegen.",
-    "startDate": "Gib das Datum ein, an dem du das Startkapital in deinen Sparplan investieren möchtest. Standardmäßig ist dieses der 1. des nächsten Monats.\nFormat: DD/MM/YYYY.",
-    "oneTimeInvestment": "Gib hier den Betrag der zusätzlichen Einmalzahlung ein.",
-    "oneTimeInvestmentDate": "Gib hier das Datum der zusätzlichen Einmalzahlung ein.\nFormat: DD/MM/YYYY.",
-    "savingRate":"Trage den monatlichen Betrag ein, den du regelmäßig in deinen Sparplan investieren möchtest.\n Über das Aufklapp-Symbol kannst du zusätzliche Optionen für die Sparrate festlegen.",
-    "savingPlanStart":"Wähle das Datum aus, an dem du mit deinen monatlichen Sparraten beginnen möchtest. Sollten kein Datum angegeben, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
-    "savingPlanEnd":"Wähle das Datum aus, an dem du deine monatlichen Sparraten beenden möchtest. Sollten kein Datum angegeben, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
-    "dynamicFactor":"Trage einen Faktor ein, der die dynamische Anpassung der Sparrate beeinflusst. Beispiel: Bei einer monatlichen Sparrate von 50€ und einem Faktor von 150% sparst du plötzlich 75€ pro Monat.",
-    "interestRate":"Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld sparst.",
-    "endDate":"Trage hier das Datum ein, an dem dein Sparplan enden soll. Standardmäßig ist dieses auf 10 Jahre von dem Startdatum eingestellt.\nFormat: DD/MM/YYYY.",
-    "endValue":"Gib hier den Betrag an, den du am Ende deines Sparplans erreichen möchtest. Das Endkapital ist dein finanzielles Ziel."
+  "fieldInfosSaving": {
+    "startCapital": "Tragen Sie den Betrag ein, den Sie zu Beginn investieren möchten.\nDer Standardwert für das Datum der 1. Investition ist der 1. des nächsten Monats.\nÜber das Aufklapp-Symbol können Sie zusätzliche Optionen für Einmalzahlungen festlegen.",
+    "startDate": "Geben Sie das Datum ein, an dem Sie das Startkapital in Ihren Sparplan investieren möchten. Standardmäßig ist dies der 1. des nächsten Monats.\nFormat: DD/MM/YYYY.",
+    "oneTimeInvestment": "Geben Sie hier den Betrag der zusätzlichen Einmalzahlung ein.",
+    "oneTimeInvestmentDate": "Geben Sie hier das Datum der zusätzlichen Einmalzahlung ein.\nFormat: DD/MM/YYYY.",
+    "savingRate": "Tragen Sie den monatlichen Betrag ein, den Sie regelmäßig in Ihren Sparplan investieren möchten.\nÜber das Aufklapp-Symbol können Sie zusätzliche Optionen für die Sparrate festlegen.",
+    "savingPlanStart": "Wählen Sie das Datum aus, an dem Sie mit Ihren monatlichen Sparraten beginnen möchten. Sollte kein Datum angegeben sein, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
+    "savingPlanEnd": "Wählen Sie das Datum aus, an dem Sie Ihre monatlichen Sparraten beenden möchten. Sollte kein Datum angegeben sein, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
+    "dynamicFactor": "Tragen Sie einen Faktor ein, der die dynamische Anpassung der Sparrate beeinflusst. Beispiel: Bei einer monatlichen Sparrate von 50€ und einem Faktor von 150% sparen Sie plötzlich 75€ pro Monat.",
+    "interestRate": "Tragen Sie hier den Zinssatz in Prozent ein, den Sie für Ihre Ersparnisse erwarten. Zinsen sind zusätzliches Geld, das Sie erhalten, wenn Sie Geld sparen.",
+    "endDate": "Tragen Sie hier das Datum ein, an dem Ihr Sparplan enden soll. Standardmäßig ist dieses auf 10 Jahre ab dem Startdatum eingestellt.\nFormat: DD/MM/YYYY.",
+    "endValue": "Geben Sie hier den Betrag an, den Sie am Ende Ihres Sparplans erreichen möchten. Das Endkapital ist Ihr finanzielles Ziel."
   },
-  "fieldInfosWithdraw":{
-    "startDate": "Gib das Datum ein, an dem du das Startkapital in deinen Entnahmeplan investieren möchtest. Standardmäßig ist dieses der 1. des nächsten Monats.\nFormat: DD/MM/YYYY.",
-    "savingRate":"Trage den monatlichen Betrag ein, den du regelmäßig in deinen Entnahmeplan investieren möchtest.\n Über das Aufklapp-Symbol kannst du zusätzliche Optionen für die Entnahmerate festlegen.",
-    "savingPlanStart":"Wähle das Datum aus, an dem du mit deinen monatlichen Entnahmeraten beginnen möchtest. Sollten kein Datum angegeben, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
-    "savingPlanEnd":"Wähle das Datum aus, an dem du deine monatlichen Entnahmeraten beenden möchtest. Sollten kein Datum angegeben, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
-    "dynamicFactor":"Trage einen Faktor ein, der die dynamische Anpassung der Entnahmerate beeinflusst. Beispiel: Bei einer monatlichen Entnahmerate von 50€ und einem Faktor von 150% entnimsst du plötzlich 75€ pro Monat.",
-    "interestRate":"Trage hier den Zinssatz in Prozent ein, den du für deine Ersparnisse erwartest. Zinsen sind zusätzliches Geld, das du bekommst, wenn du Geld entnimmst.",
-    "endDate":"Trage hier das Datum ein, an dem dein Entnahmeplan enden soll. Standardmäßig ist dieses auf 10 Jahre von dem Startdatum eingestellt.\nFormat: DD/MM/YYYY.",
-    "endValue":"Gib hier den Betrag an, den du am Ende deines Entnahmeplans erreichen möchtest. Das Endkapital ist dein finanzielles Ziel."
+  "fieldInfosWithdraw": {
+    "startDate": "Geben Sie das Datum ein, an dem Sie das Startkapital in Ihren Entnahmeplan investieren möchten. Standardmäßig ist dies der 1. des nächsten Monats.\nFormat: DD/MM/YYYY.",
+    "savingRate": "Tragen Sie den monatlichen Betrag ein, den Sie regelmäßig in Ihren Entnahmeplan investieren möchten.\nÜber das Aufklapp-Symbol können Sie zusätzliche Optionen für die Entnahmerate festlegen.",
+    "savingPlanStart": "Wählen Sie das Datum aus, an dem Sie mit Ihren monatlichen Entnahmeraten beginnen möchten. Sollte kein Datum angegeben sein, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
+    "savingPlanEnd": "Wählen Sie das Datum aus, an dem Sie Ihre monatlichen Entnahmeraten beenden möchten. Sollte kein Datum angegeben sein, gilt die Sparrate für die gesamte Plandauer.\nFormat: DD/MM/YYYY.",
+    "dynamicFactor": "Tragen Sie einen Faktor ein, der die dynamische Anpassung der Entnahmerate beeinflusst. Beispiel: Bei einer monatlichen Entnahmerate von 50€ und einem Faktor von 150% entnehmen Sie plötzlich 75€ pro Monat.",
+    "interestRate": "Tragen Sie hier den Zinssatz in Prozent ein, den Sie für Ihre Ersparnisse erwarten. Zinsen sind zusätzliches Geld, das Sie erhalten, wenn Sie Geld entnehmen.",
+    "endDate": "Tragen Sie hier das Datum ein, an dem Ihr Entnahmeplan enden soll. Standardmäßig ist dieses auf 10 Jahre ab dem Startdatum eingestellt.\nFormat: DD/MM/YYYY.",
+    "endValue": "Geben Sie hier den Betrag an, den Sie am Ende Ihres Entnahmeplans erreichen möchten. Das Endkapital ist Ihr finanzielles Ziel."
   },
-  "fieldInfosCombo":{
-    "withdrawBegin": "Trage hier das Datum ein, an dem dein Sparplan enden und dein Entnahmeplan starten soll.\nFormat: DD/MM/YYYY."
-  },
+  "fieldInfosCombo": {
+    "withdrawBegin": "Tragen Sie hier das Datum ein, an dem Ihr Sparplan enden und Ihr Entnahmeplan beginnen soll.\nFormat: DD/MM/YYYY."
+  },   
   "dialog":{
     "message":"Eingabefehler bei den Berechnungen",
     "close":"Schließen"
@@ -133,5 +133,27 @@
       "end-date-4":"möglich"
     }
   },
-  "currency": "€"
+  "error-message":{
+    "oneTimeInvestmentDate-in-the-past":"Das Einmalzahlungsdatum ist in Vergangenheit",
+    "oneTimeInvestment-is-not-completed":"Bitte füllen Sie die Einmalzahlungsfeldern vollständig aus. Bitte überprüfen Sie, dass alle Daten für die Einmalzahlungen definiert sind, und keine Einmalzahlung (außer die erste), die 0-Wert hat oder entfernen Sie die Zeile.",
+    "withdrawplan":{
+      "enddate": "Berechnung des Enddatums nicht möglich, da ihre Zinsgutschreibungen ihre Entnahmerate übertreffen. Ihr Vermögen wird nie aufgebraucht!",
+      "endcapital-bigger-than-startcapital": "Beim Entnahmeplan sollte das Endkapital nicht grösser als das Startkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Sparplan.",
+      "no-startcapital": "Der Betrag vom Startkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein.",
+      "endDateToEarly": "Das Enddatum einer Eimalzahlung oder das Enddatum der Entnahmerate liegen nach dem festgelegten Enddatum. \n Ändern Sie die entsprechenden Laufzeiten, um ein früheres Enddatum auswählen zu können.",
+      "withdrawEnd-earlier-than-withdrawStart" : "Das Enddatum des Entnahmerates können nicht früher als das Startdatum oder in Vergangenheit sein",
+      "savingPlanStart-in-the-past":"Das Startdatum des Entnahmeplans ist in Vergangenheit"
+    },
+    "savingplan":{
+      "no-endcapital": "Der Betrag vom Endkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein.",
+      "startcapital-bigger-than-endcapital": "Beim Sparplan sollte das Startkapital nicht grösser als das Endkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Entnahmeplan.",
+      "endDateToEarly": "Das Enddatum einer Eimalzahlung oder das Enddatum der Sparrate liegen nach dem festgelegten Enddatum. \n Ändern Sie die entsprechenden Laufzeiten, um ein früheres Enddatum auswählen zu können.",
+      "savingEnd-earlier-than-savingStart" : "Das Enddatum des Sparrates können nicht früher als das Startdatum oder in Vergangenheit sein",
+      "savingPlanStart-in-the-past":"Das Startdatum des Sparplans ist in Vergangenheit"
+    }
+  },
+  "answerWarning":"Bitte neue Berechnung durchführen",
+  "currency": "€",
+  "label_language": "Sprache",
+  "seperator": "."
 }
