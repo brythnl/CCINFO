@@ -13,23 +13,36 @@
     Developed for <a href="https://https://www.aixigo.com">aixigo AG</a>. Powered by the <a href="https://portal.aixigo.com/docs/finance-math-api#">BLOXX Finance Math API</a>.
     <br />
     <br />
-    <a href="https://ccinfo.vercel.app">Check it out!</a>
+    <a href="https://ccinfo.vercel.app">Check it out!</a> (You have to register first if you don't have an account)
     <br />
     <br />
-    <a href="https://github.com/brythnl/CCINFO/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/brythnl/CCINFO/issues">Request Feature</a>
   </p>
 </div>
 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+This project is created in collaboration with aixigo AG in order to solve problems concerning 2 target groups: end users and internal users (sales, bankers, etc.).
+- For end users, they are able to choose an investment plan, whether it be saving, withdrawing or a combination of the two and calculate the results. They can choose on aspect they wish to calculate (e.g. saving rate) and receive the results for the whole plan, visualized through different mediums.
+- For internal users, to get the results from the API they had to go through multiple steps to get the data (form) they need. Now this can be done with a single tool.
 
+Below is a screenshot of a calculation of a combination plan compared to a previous calculation in the graph with the API visualization shown.
 
 [![CCINFO Kombiplan Screenshot][kombiplan-screenshot]](https://ccinfo.vercel.app)
 
-### Built with
+### Features
+- Calculate a saving or withdrawing plan, or even a combination of the two.
+- Choose a specific aspect to calculate (e.g. start investments, saving rate, interest rate, etc.)
+- Visualize and represent data through:
+  - A graph of the data with details for each year.
+  - A natural language statement that explains the result of the calculated aspect.
+  - A series table, also with details for each year.
+- Store the latest 2 calculations, which can be compared in:
+  - The graph, which the user can also choose to hide/show the calculation(s).
+  - The comparison table, to directly compare any changes made to the input and the result difference.
+- Show a visualization of the API response and request that also enables highlighting for the API endpoints or properties - for developers, bankers or other interested groups. (It is hidden by default)
+
+### Technology
 * [![Nuxt][Nuxt.js]][Nuxt-url]
 * [![Vue][Vue.js]][Vue-url]
 * [![TypeScript][TypeScript]][TypeScript-url]
@@ -37,8 +50,7 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Getting started
-
+## Getting Started (Development)
 ### Installation
 1. Clone the repository
 ```bash
