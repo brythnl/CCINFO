@@ -2,7 +2,7 @@ FROM node:18.18.2-slim
 
 WORKDIR /app
 
-RUN apt-get update && apt-get upgrade
+RUN apt-get update -y && apt-get upgrade -y
 
 COPY package*.json ./
 
