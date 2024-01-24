@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const planSelect = ref("aktuell");
 
-const props = defineProps(["callsTwoSameEndpoints"])
+const props = defineProps(["callsTwoSameEndpoints"]);
 
 const emit = defineEmits(["grafikUpdate"]);
 
@@ -21,9 +21,11 @@ function grafikUpdate() {
     class="rounded-lg blue-border text-primary"
     selected-class="bg-primary"
   >
-    <v-tab value="aktuell">{{$t("tabs.graph")}}</v-tab>
-    <v-tab value="vergleich" :disabled="!callsTwoSameEndpoints">{{$t("tabs.comparison")}}</v-tab>
-    <v-tab value="tabelle">{{$t("tabs.table")}}</v-tab>
+    <v-tab value="aktuell">{{ $t("tabs.graph") }}</v-tab>
+    <v-tab value="vergleich" :disabled="!callsTwoSameEndpoints">{{
+      $t("tabs.comparison")
+    }}</v-tab>
+    <v-tab value="tabelle">{{ $t("tabs.table") }}</v-tab>
   </v-tabs>
 </template>
 
@@ -33,8 +35,6 @@ function grafikUpdate() {
 }
 
 .blue-border {
-  border: 1px solid #4195AC;
+  border: 1px solid #4195ac;
 }
-
-
 </style>
