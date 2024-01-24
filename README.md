@@ -72,7 +72,7 @@ docker compose up
 [contributors-url]: https://github.com/brythnl/CCINFO/graphs/contributors
 [issues-shield]: https://img.shields.io/github/issues/brythnl/CCINFO.svg?style=for-the-badge
 [issues-url]: https://github.com/brythnl/CCINFO/issues
-[kombiplan-screenshot]: images/app-screenshot.png
+[kombiplan-screenshot]: images/ccinfo_ss.png
 [Nuxt.js]: https://img.shields.io/badge/Nuxt-002E3B?style=for-the-badge&logo=nuxtdotjs&logoColor=#00DC82
 [Nuxt-url]: https://nuxt.com
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vue.js&logoColor=4FC08D
