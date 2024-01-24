@@ -26,7 +26,7 @@ export default defineNuxtConfig({
       cookieKey: "i18n_redirected",
       redirectOn: "root",
     },
-    vueI18n: './i18n.config.ts',
+    vueI18n: "./i18n.config.ts",
   },
   vite: {
     vue: {
@@ -42,10 +42,10 @@ export default defineNuxtConfig({
       Poppins: true,
       Lato: true,
       Roboto: true,
-    }
+    },
   },
   dayjs: {
-    plugins: ['customParseFormat'],
+    plugins: ["customParseFormat"],
   },
   ssr: false,
 });

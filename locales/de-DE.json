@@ -12,14 +12,14 @@
     "monate": "Monate"
   },
   "fieldNames": {
-    "title":"Wählen Sie Ihr Berechnungsziel:",
+    "title": "Wählen Sie Ihr Berechnungsziel:",
     "begin": "Startdatum",
     "end": "Enddatum",
     "interestRate": "Zins",
     "oneTimeInvestment": "Einmalzahlung",
     "oneTimeInvestmentDate": "Zahlungsdatum",
     "savingRate": "Sparrate",
-    "dynamicSavingRateFactor":"Dynamik",
+    "dynamicSavingRateFactor": "Dynamik",
     "endValue": "Endkapital",
     "capitalAmount": "Endkapital",
     "startInvestment": "Startkapital",
@@ -55,20 +55,20 @@
   },
   "fieldInfosCombo": {
     "withdrawBegin": "Tragen Sie hier das Datum ein, an dem Ihr Sparplan enden und Ihr Entnahmeplan beginnen soll.\nFormat: DD/MM/YYYY."
-  },   
-  "dialog":{
-    "message":"Eingabefehler bei den Berechnungen",
-    "close":"Schließen"
   },
-  "tabs":{
+  "dialog": {
+    "message": "Eingabefehler bei den Berechnungen",
+    "close": "Schließen"
+  },
+  "tabs": {
     "saving": "Sparen",
     "withdraw": "Entnahme",
-    "combination" : "Kombi",
+    "combination": "Kombi",
     "graph": "Grafik",
     "comparison": "Vergleich",
     "table": "Tabelle"
   },
-  "apiTabs":{
+  "apiTabs": {
     "title": "API Aufruf",
     "startInvestment": "Startkapital",
     "capitalAmount": "Endkapital",
@@ -96,9 +96,9 @@
     "curr_graph": "Aktuelle Grafik",
     "tooltip": "Im Jahr {year} hätten Sie ein Vermögen von {capital}."
   },
-  "answersentence":{
+  "answersentence": {
     "headline": "Ihr Ergebnis",
-    "savingplan":{
+    "savingplan": {
       "capital-1": "Mit den geplanten Investitionen erreichen Sie ein",
       "capital-2": "Endkapital von",
       "saving-rate-1": "Um Ihr Sparziel zu erreichen ist eine",
@@ -107,15 +107,15 @@
       "interest-rate-1": "Um Ihr Sparziel zu erreichen ist eine",
       "interest-rate-2": "Rendite von",
       "interest-rate-3": "erforderlich",
-      "saving-start-value-1":"Um Ihr Sparziel zu erreichen ist ein",
-      "saving-start-value-2":"Startkapital von",
+      "saving-start-value-1": "Um Ihr Sparziel zu erreichen ist ein",
+      "saving-start-value-2": "Startkapital von",
       "saving-start-value-3": "erforderlich",
-      "end-date-1":"Mit den geplanten Investitionen wird Ihr",
-      "end-date-2":"Sparziel in",
-      "end-date-3":"Jahren",
-      "end-date-4":"erreicht"
+      "end-date-1": "Mit den geplanten Investitionen wird Ihr",
+      "end-date-2": "Sparziel in",
+      "end-date-3": "Jahren",
+      "end-date-4": "erreicht"
     },
-    "withdrawplan":{
+    "withdrawplan": {
       "capital-1": "Nach Abzug der geplanten Auszahlungen bleibt am Ende der Laufzeit ein",
       "capital-2": "Restkapital von",
       "saving-rate-1": "Ihre Investition ermöglicht Ihnen die",
@@ -124,35 +124,35 @@
       "interest-rate-1": "Um Ihre gewünschten Entnahmen zu finanzieren ist eine",
       "interest-rate-2": "Rendite von",
       "interest-rate-3": "erforderlich",
-      "saving-start-value-1":"Um Ihren Entnahmewunsch zu finanzieren ist ein",
-      "saving-start-value-2":"Startkapital von",
+      "saving-start-value-1": "Um Ihren Entnahmewunsch zu finanzieren ist ein",
+      "saving-start-value-2": "Startkapital von",
       "saving-start-value-3": "erforderlich",
-      "end-date-1":"Mit Ihrem investierten Vermögen ist die geplante",
-      "end-date-2":"Entnahme für",
-      "end-date-3":"Jahren",
-      "end-date-4":"möglich"
+      "end-date-1": "Mit Ihrem investierten Vermögen ist die geplante",
+      "end-date-2": "Entnahme für",
+      "end-date-3": "Jahren",
+      "end-date-4": "möglich"
     }
   },
-  "error-message":{
-    "oneTimeInvestmentDate-in-the-past":"Das Einmalzahlungsdatum ist in Vergangenheit",
-    "oneTimeInvestment-is-not-completed":"Bitte füllen Sie die Einmalzahlungsfeldern vollständig aus. Bitte überprüfen Sie, dass alle Daten für die Einmalzahlungen definiert sind, und keine Einmalzahlung (außer die erste), die 0-Wert hat oder entfernen Sie die Zeile.",
-    "withdrawplan":{
+  "error-message": {
+    "oneTimeInvestmentDate-in-the-past": "Das Einmalzahlungsdatum ist in Vergangenheit",
+    "oneTimeInvestment-is-not-completed": "Bitte füllen Sie die Einmalzahlungsfeldern vollständig aus. Bitte überprüfen Sie, dass alle Daten für die Einmalzahlungen definiert sind, und keine Einmalzahlung (außer die erste), die 0-Wert hat oder entfernen Sie die Zeile.",
+    "withdrawplan": {
       "enddate": "Berechnung des Enddatums nicht möglich, da ihre Zinsgutschreibungen ihre Entnahmerate übertreffen. Ihr Vermögen wird nie aufgebraucht!",
       "endcapital-bigger-than-startcapital": "Beim Entnahmeplan sollte das Endkapital nicht grösser als das Startkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Sparplan.",
       "no-startcapital": "Der Betrag vom Startkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein.",
       "endDateToEarly": "Das Enddatum einer Eimalzahlung oder das Enddatum der Entnahmerate liegen nach dem festgelegten Enddatum. \n Ändern Sie die entsprechenden Laufzeiten, um ein früheres Enddatum auswählen zu können.",
-      "withdrawEnd-earlier-than-withdrawStart" : "Das Enddatum des Entnahmerates können nicht früher als das Startdatum oder in Vergangenheit sein",
-      "savingPlanStart-in-the-past":"Das Startdatum des Entnahmeplans ist in Vergangenheit"
+      "withdrawEnd-earlier-than-withdrawStart": "Das Enddatum des Entnahmerates können nicht früher als das Startdatum oder in Vergangenheit sein",
+      "savingPlanStart-in-the-past": "Das Startdatum des Entnahmeplans ist in Vergangenheit"
     },
-    "savingplan":{
+    "savingplan": {
       "no-endcapital": "Der Betrag vom Endkapital muss grösser als 0 sein. Geben Sie bitte die Werte nochmal ein.",
       "startcapital-bigger-than-endcapital": "Beim Sparplan sollte das Startkapital nicht grösser als das Endkapital sein. Geben Sie bitte die Werte nochmal ein oder wechseln Sie bitte zum Entnahmeplan.",
       "endDateToEarly": "Das Enddatum einer Eimalzahlung oder das Enddatum der Sparrate liegen nach dem festgelegten Enddatum. \n Ändern Sie die entsprechenden Laufzeiten, um ein früheres Enddatum auswählen zu können.",
-      "savingEnd-earlier-than-savingStart" : "Das Enddatum des Sparrates können nicht früher als das Startdatum oder in Vergangenheit sein",
-      "savingPlanStart-in-the-past":"Das Startdatum des Sparplans ist in Vergangenheit"
+      "savingEnd-earlier-than-savingStart": "Das Enddatum des Sparrates können nicht früher als das Startdatum oder in Vergangenheit sein",
+      "savingPlanStart-in-the-past": "Das Startdatum des Sparplans ist in Vergangenheit"
     }
   },
-  "answerWarning":"Bitte neue Berechnung durchführen",
+  "answerWarning": "Bitte neue Berechnung durchführen",
   "currency": "€",
   "label_language": "Sprache",
   "seperator": "."

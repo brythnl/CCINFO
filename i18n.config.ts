@@ -9,29 +9,29 @@ export default defineI18nConfig(() => ({
     "en-GB": enGB,
   },
   numberFormats: {
-    'en-GB': {
+    "en-GB": {
       currency: {
-        style: 'currency',
-        currency: 'GBP'
+        style: "currency",
+        currency: "GBP",
       },
       currencyNoCents: {
-        style: 'currency',
-        currency: 'GBP',
+        style: "currency",
+        currency: "GBP",
         minimumFractionDigits: 0, // set fraction digits to 0 to remove cents
-        maximumFractionDigits: 0
-      }
+        maximumFractionDigits: 0,
+      },
     },
-    'de-DE': {
+    "de-DE": {
       currency: {
-        style: 'currency',
-        currency: 'EUR'
+        style: "currency",
+        currency: "EUR",
       },
       currencyNoCents: {
-        style: 'currency',
-        currency: 'EUR',
+        style: "currency",
+        currency: "EUR",
         minimumFractionDigits: 0, // set fraction digits to 0 to remove cents
-        maximumFractionDigits: 0
-      }
-    }
-  }
+        maximumFractionDigits: 0,
+      },
+    },
+  },
 }));

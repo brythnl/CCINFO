@@ -5,19 +5,18 @@ const props = defineProps(["series", "result", "prevSeries", "prevResult"]);
 const yearsToSeries = ref([]);
 const yearsToSeriesPrev = ref([]);
 
-import { computed } from 'vue';
+import { computed } from "vue";
 const { t } = useI18n();
 const { n } = useI18n();
 
-let name = t('graph.title');
+let name = t("graph.title");
 
-function translate_tooltip (p_year, p_capital){
+function translate_tooltip(p_year, p_capital) {
   let year = new Date(p_year).getFullYear();
-  let capital = n(p_capital, 'currencyNoCents');
+  let capital = n(p_capital, "currencyNoCents");
 
-  return t('graph.tooltip', { year: year , capital: capital});
+  return t("graph.tooltip", { year: year, capital: capital });
 }
-
 
 const assignYearsToSeries = (series: [], result: {}) => {
   const seriesCount = series.length; // Length of the series
@@ -54,10 +53,13 @@ watch(
   () => props,
   (newValue, oldValue) => {
     // Control the range of the y axis
-    yearsToSeriesPrev.value = assignYearsToSeries(newValue.prevSeries, newValue.prevResult);
+    yearsToSeriesPrev.value = assignYearsToSeries(
+      newValue.prevSeries,
+      newValue.prevResult,
+    );
     yearsToSeries.value = assignYearsToSeries(newValue.series, newValue.result);
   },
-  { deep: true }
+  { deep: true },
 );
 </script>
 
@@ -113,7 +115,7 @@ watch(
         },
       },
       series: [
-      {
+        {
           name: $t('graph.prev_graph'),
           showInLegend: prevSeries.length,
           data: yearsToSeriesPrev,
@@ -126,8 +128,8 @@ watch(
           color: '#4195ac',
         },
       ],
-        tooltip: {
-          formatter: function () {
+      tooltip: {
+        formatter: function () {
           return translate_tooltip(this.x, this.y);
         },
       },

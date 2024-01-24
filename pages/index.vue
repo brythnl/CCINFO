@@ -12,8 +12,8 @@ import {
   revertOutput,
 } from "../utils/formUtils";
 import AnswerSentence from "../components/AnswerSentence.vue";
-import {defineI18nConfig, defineI18nLocale, useI18n} from "../.nuxt/imports";
-import { useDisplay } from 'vuetify';
+import { defineI18nConfig, defineI18nLocale, useI18n } from "../.nuxt/imports";
+import { useDisplay } from "vuetify";
 
 /* -------------------------------------------------------------------------- */
 /*                                Composables                                 */
@@ -27,11 +27,11 @@ const API_TOKEN = ref(""); // Authenticate access to aixigo's API
 const grafikTabs = ref(""); // Toggle between displays (middle component): Grafik aktuell, Grafik vorher, Vergleich, Tabelle
 const formTab = ref(""); // Toggle between forms (leftmost component) for different plans: Sparplan, Entnahmeplan, Kombiplan
 const api = ref(false); // Toggle API Visualization display
-const endpoint: Ref<string | string[]> = ref("") // Current selected endpoint
-const startDate = ref("") // Current start date
+const endpoint: Ref<string | string[]> = ref(""); // Current selected endpoint
+const startDate = ref(""); // Current start date
 const callsTwoSameEndpoints = ref(false); // Check if there are already two API calls to the same endpoint
 const answerWarning = ref(true); //Overlay status that cover result window in app when input of form changed
-const {t} = useI18n();
+const { t } = useI18n();
 //Variable to validate input of combi plan and show dialog if input is not correct (similar to validation dialog in all forms component )
 const dialog = ref(false);
 const dialogText = ref("");
@@ -73,7 +73,6 @@ const graphData: Ref<financeMathResult> = ref({
 const revertedWithdrawResult: Ref<financeMathResult> = ref({});
 const revertedSavingResult: Ref<financeMathResult> = ref({});
 
-
 /* -------------------------------------------------------------------------- */
 /*                                Handler Functions                           */
 /* -------------------------------------------------------------------------- */
@@ -81,7 +80,7 @@ const revertedSavingResult: Ref<financeMathResult> = ref({});
 /**
  * Handler for Spar- and Entnahmeplan
  * @param {financeMathInput} formInput - User data for API query parameters
-*/
+ */
 async function fetchFinanceMathAPI(formInput: financeMathInput) {
   endpoint.value = formInput.endpoint;
   startDate.value = formInput.begin;
@@ -94,9 +93,9 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
   const { data } = await useFinanceMathFetch<financeMathResult>(
     formInput.endpoint,
     formInput,
-    API_TOKEN.value
+    API_TOKEN.value,
   );
-  shiftStoredData(financeMathResults, data)
+  shiftStoredData(financeMathResults, data);
   revertAPIResult();
 
   savePreviousGraphData();
@@ -104,7 +103,6 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
 
   answerWarning.value = false;
 }
-
 
 /**
  * Handler for Kombiplan
@@ -120,7 +118,7 @@ async function fetchFinanceMathAPI(formInput: financeMathInput) {
  */
 async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
   shiftStoredData(financeMathInputsSparen, sparFormInput);
-  shiftStoredData(financeMathInputsEntnahme, entnahmeFormInput)
+  shiftStoredData(financeMathInputsEntnahme, entnahmeFormInput);
 
   startDate.value = sparFormInput.begin;
   // Get "pure" endpoint from Endpoint property: [saving/withdraw]/<API endpoint>
@@ -132,16 +130,17 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     financeMathInputsSparen.value[0].endpoint = endpointType[1];
     financeMathInputsEntnahme.value[0].endpoint = "saving-start-value";
 
-    checkTwoSameEndpoints(financeMathInputsSparen)
+    checkTwoSameEndpoints(financeMathInputsSparen);
 
     // Fetch start capital of Entnahmeplan for the end capital of Sparplan
-    const { data: entnahmeStartCapitalData } = await useFinanceMathFetch<financeMathResult>(
-      financeMathInputsEntnahme.value[0].endpoint,
-      financeMathInputsEntnahme.value[0],
-      API_TOKEN.value
-    );
-    shiftStoredData(financeMathResultsEntnahme, entnahmeStartCapitalData)
-    revertAPIResult(true, entnahmeStartCapitalData)
+    const { data: entnahmeStartCapitalData } =
+      await useFinanceMathFetch<financeMathResult>(
+        financeMathInputsEntnahme.value[0].endpoint,
+        financeMathInputsEntnahme.value[0],
+        API_TOKEN.value,
+      );
+    shiftStoredData(financeMathResultsEntnahme, entnahmeStartCapitalData);
+    revertAPIResult(true, entnahmeStartCapitalData);
 
     setEntnahmeStartAsSparEnd();
 
@@ -149,17 +148,18 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     const { data: sparplanData } = await useFinanceMathFetch<financeMathResult>(
       financeMathInputsSparen.value[0].endpoint,
       financeMathInputsSparen.value[0],
-      API_TOKEN.value
+      API_TOKEN.value,
     );
     shiftStoredData(financeMathResultsSparen, sparplanData);
     revertAPIResult(false, financeMathResultsSparen.value[0]);
 
     // Fetch capital series for Entnahmeplan (for graph)
-    const { data: entnahmeSeriesData } = await useFinanceMathFetch<financeMathResult>(
-      "capital",
-      financeMathInputsEntnahme.value[0],
-      API_TOKEN.value
-    );
+    const { data: entnahmeSeriesData } =
+      await useFinanceMathFetch<financeMathResult>(
+        "capital",
+        financeMathInputsEntnahme.value[0],
+        API_TOKEN.value,
+      );
     entnahmeSeriesData.value = revertOutput(entnahmeSeriesData.value);
 
     // Fetch capital series for Sparplan (for graph)
@@ -169,15 +169,14 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
         getCapitalSeriesInput(
           financeMathResultsSparen,
           financeMathInputsSparen.value[0],
-          endpointType[1]
+          endpointType[1],
         ),
-        API_TOKEN.value
+        API_TOKEN.value,
       );
     sparenSeriesData.value = revertOutput(sparenSeriesData.value);
 
     savePreviousGraphData();
-    assignGraphDataKombi(sparenSeriesData, entnahmeSeriesData)
-
+    assignGraphDataKombi(sparenSeriesData, entnahmeSeriesData);
   } else if (endpointType[0] === "withdraw") {
     // Assign endpoint for each plan
     financeMathInputsSparen.value[0].endpoint = "capital";
@@ -186,19 +185,25 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     checkTwoSameEndpoints(financeMathInputsEntnahme);
 
     // Fetch end capital of Sparplan for start capital of Entnahmeplan
-    const { data: sparEndCapitalData } = await useFinanceMathFetch<financeMathResult>(
-      financeMathInputsSparen.value[0].endpoint,
-      financeMathInputsSparen.value[0],
-      API_TOKEN.value
-    );
+    const { data: sparEndCapitalData } =
+      await useFinanceMathFetch<financeMathResult>(
+        financeMathInputsSparen.value[0].endpoint,
+        financeMathInputsSparen.value[0],
+        API_TOKEN.value,
+      );
     financeMathResultsSparen.value[0] = sparEndCapitalData;
     revertAPIResult(false, sparEndCapitalData);
-    
-    if(financeMathInputsEntnahme.value[0].endpoint==="end-date" && 
-    financeMathResultsSparen.value[0].value.capitalResult.capitalAmount * financeMathInputsEntnahme.value[0].interestRate / 100 >= financeMathInputsEntnahme.value[0].savingRate *12 / 100){
+
+    if (
+      financeMathInputsEntnahme.value[0].endpoint === "end-date" &&
+      (financeMathResultsSparen.value[0].value.capitalResult.capitalAmount *
+        financeMathInputsEntnahme.value[0].interestRate) /
+        100 >=
+        (financeMathInputsEntnahme.value[0].savingRate * 12) / 100
+    ) {
       dialog.value = true;
-      dialogText.value = t('error-message.withdrawplan.enddate');
-      return
+      dialogText.value = t("error-message.withdrawplan.enddate");
+      return;
     }
     setSparEndAsEntnahmeStart();
 
@@ -206,31 +211,38 @@ async function fetchKombiPlan({ sparFormInput, entnahmeFormInput }) {
     const { data: entnahmeData } = await useFinanceMathFetch<financeMathResult>(
       financeMathInputsEntnahme.value[0].endpoint,
       financeMathInputsEntnahme.value[0],
-      API_TOKEN.value
+      API_TOKEN.value,
     );
     shiftStoredData(financeMathResultsEntnahme, entnahmeData);
     revertAPIResult(true, entnahmeData);
 
     savePreviousGraphData();
-    await getGraphData(financeMathResultsEntnahme, financeMathInputsEntnahme.value[0]);
+    await getGraphData(
+      financeMathResultsEntnahme,
+      financeMathInputsEntnahme.value[0],
+    );
   }
 
   // Remove searched property from input/request for API visualization
-  financeMathInputsSparen.value[0] = removeSearchedEndpointFromInput(financeMathInputsSparen.value[0]);
+  financeMathInputsSparen.value[0] = removeSearchedEndpointFromInput(
+    financeMathInputsSparen.value[0],
+  );
 
   answerWarning.value = false;
 }
-
 
 /* -------------------------------------------------------------------------- */
 /*                                Helper Functions                           */
 /* -------------------------------------------------------------------------- */
 
 /** Save current input/result and remove input/result before previous input/result
-* @param {Ref<financeMathInput[] | financeMathResult[]>} dataQueue - Queue to store last two inputs/results
-* @param {Ref<financeMathInput | financeMathResult>} data - New/current input/result
-*/
-function shiftStoredData(dataQueue: Ref<financeMathInput[] | financeMathResult[]>, data: Ref<financeMathInput | financeMathResult>) {
+ * @param {Ref<financeMathInput[] | financeMathResult[]>} dataQueue - Queue to store last two inputs/results
+ * @param {Ref<financeMathInput | financeMathResult>} data - New/current input/result
+ */
+function shiftStoredData(
+  dataQueue: Ref<financeMathInput[] | financeMathResult[]>,
+  data: Ref<financeMathInput | financeMathResult>,
+) {
   // Save current data on index 0 and push back previous data to index 1
   dataQueue.value.unshift(data);
   // Remove data before previous data (only save last two)
@@ -238,17 +250,20 @@ function shiftStoredData(dataQueue: Ref<financeMathInput[] | financeMathResult[]
 }
 
 /** Revert result from Cent to Euro and assign to respective states
-* @param {boolean} kombiWithdraw - false: for Entnahme part of Kombiplan, true: for Sparplan part of Kombiplan
-* @param {Ref<financeMathResult>} kombiAPIResult - Result to revert
-*/
-function revertAPIResult(kombiWithdraw?: boolean, kombiAPIResult?: Ref<financeMathResult>) {
+ * @param {boolean} kombiWithdraw - false: for Entnahme part of Kombiplan, true: for Sparplan part of Kombiplan
+ * @param {Ref<financeMathResult>} kombiAPIResult - Result to revert
+ */
+function revertAPIResult(
+  kombiWithdraw?: boolean,
+  kombiAPIResult?: Ref<financeMathResult>,
+) {
   if (formTab.value === "saving") {
     revertedSavingResult.value = revertOutput(
-      financeMathResults.value[0].value
+      financeMathResults.value[0].value,
     );
   } else if (formTab.value === "withdraw") {
     revertedWithdrawResult.value = revertOutput(
-      financeMathResults.value[0].value
+      financeMathResults.value[0].value,
     );
     revertedWithdrawResult.value.savingRate =
       -revertedWithdrawResult.value.savingRate;
@@ -264,40 +279,38 @@ function revertAPIResult(kombiWithdraw?: boolean, kombiAPIResult?: Ref<financeMa
 }
 
 /** Check if both API calls are directed to the same endpoint
-* @param {Ref<financeMathInput[]>} inputsQueue - Queue with last two inputs
-*/
+ * @param {Ref<financeMathInput[]>} inputsQueue - Queue with last two inputs
+ */
 function checkTwoSameEndpoints(inputsQueue: Ref<financeMathInput[]>) {
-  if (
-    inputsQueue.value[0].endpoint === inputsQueue.value[1].endpoint
-  ) {
+  if (inputsQueue.value[0].endpoint === inputsQueue.value[1].endpoint) {
     callsTwoSameEndpoints.value = true;
   } else callsTwoSameEndpoints.value = false;
 }
 
 /** Set start capital of Entnahmeplan as end capital of Sparplan
-*/
+ */
 function setEntnahmeStartAsSparEnd() {
   financeMathInputsSparen.value[0].endValue = Math.round(
-    financeMathResultsEntnahme.value[0].value.startInvestment
+    financeMathResultsEntnahme.value[0].value.startInvestment,
   );
   financeMathInputsEntnahme.value[0].oneTimeInvestment[0] = Math.round(
-    financeMathResultsEntnahme.value[0].value.startInvestment
+    financeMathResultsEntnahme.value[0].value.startInvestment,
   );
 }
 
 /** Set end capital of Sparplan as start capital of Entnahmeplan
-*/
+ */
 function setSparEndAsEntnahmeStart() {
   if (financeMathInputsEntnahme.value[0].endpoint === "end-date") {
     financeMathInputsEntnahme.value[0].oneTimeInvestment[0] = -Math.round(
-      financeMathResultsSparen.value[0].value.capitalResult.capitalAmount
+      financeMathResultsSparen.value[0].value.capitalResult.capitalAmount,
     );
     if (financeMathInputsEntnahme.value[0].endValue <= 0) {
       financeMathInputsEntnahme.value[0].endValue = 1;
     }
   } else {
     financeMathInputsEntnahme.value[0].oneTimeInvestment[0] = Math.round(
-      financeMathResultsSparen.value[0].value.capitalResult.capitalAmount
+      financeMathResultsSparen.value[0].value.capitalResult.capitalAmount,
     );
   }
 }
@@ -305,23 +318,29 @@ function setSparEndAsEntnahmeStart() {
 /* ---------------------------- Graph-related ----------------------------------- */
 
 /** Fetch capital series from a call to /endpoint
-* @param {Ref<financeMathResult[]>} apiResult - result of call to current selected endpoint
-* @param {financeMathInput} input - input for current selected endpoint
-* @param {string} endpoint - current selected endpoint
-*/
-function getCapitalSeriesInput(apiResult: Ref<financeMathResult[]>, input: financeMathInput, endpoint: string): financeMathInput {
+ * @param {Ref<financeMathResult[]>} apiResult - result of call to current selected endpoint
+ * @param {financeMathInput} input - input for current selected endpoint
+ * @param {string} endpoint - current selected endpoint
+ */
+function getCapitalSeriesInput(
+  apiResult: Ref<financeMathResult[]>,
+  input: financeMathInput,
+  endpoint: string,
+): financeMathInput {
   const result = toRaw(apiResult.value[0].value);
   const { endValue, ...capitalSeriesInput }: financeMathInput = input;
 
   // Input preprocessing, so that it can be passed to /capital API call as query parameters
   switch (endpoint) {
     case "end-date":
-      if (formTab.value === "withdraw" || (formTab.value === "comb" && capitalSeriesInput.oneTimeInvestment[0] <= 0)) {
+      if (
+        formTab.value === "withdraw" ||
+        (formTab.value === "comb" &&
+          capitalSeriesInput.oneTimeInvestment[0] <= 0)
+      ) {
         capitalSeriesInput.savingRate = -capitalSeriesInput.savingRate;
         capitalSeriesInput.oneTimeInvestment =
-          capitalSeriesInput.oneTimeInvestment.map(
-            (investment) => -investment
-          );
+          capitalSeriesInput.oneTimeInvestment.map((investment) => -investment);
       }
       capitalSeriesInput.end = result.end;
       break;
@@ -342,92 +361,97 @@ function getCapitalSeriesInput(apiResult: Ref<financeMathResult[]>, input: finan
 }
 
 /** Store graph data from previous calculation
-*/
+ */
 function savePreviousGraphData() {
   previousGraphData.value.capitalResult = graphData.value.capitalResult;
   previousGraphData.value.capitalSeries = graphData.value.capitalSeries;
 }
 
 /** Process of getting graph data
-* @param {Ref<financeMathResult[]>} apiResult - result of call to current selected endpoint
-* @param {financeMathInput} input - input for current selected endpoint
-*/
-async function getGraphData(apiResult: Ref<financeMathResult[]>, input: financeMathInput) {
+ * @param {Ref<financeMathResult[]>} apiResult - result of call to current selected endpoint
+ * @param {financeMathInput} input - input for current selected endpoint
+ */
+async function getGraphData(
+  apiResult: Ref<financeMathResult[]>,
+  input: financeMathInput,
+) {
   // When selected endpoint is not capital (thus doesn't return capital series)#
   if (input.endpoint !== "capital") {
-
     // Fetch capital series (for graph)
     const { data } = await useFinanceMathFetch<financeMathResult>(
       "capital",
-      getCapitalSeriesInput(
-        apiResult,
-        input,
-        input.endpoint,
-      ),
-      API_TOKEN.value
+      getCapitalSeriesInput(apiResult, input, input.endpoint),
+      API_TOKEN.value,
     );
     if (formTab.value === "comb") {
       // In Kombiplan, data is capital series of Entnahmeplan
       data.value = revertOutput(data.value);
 
       assignGraphDataKombi(revertedSavingResult, data);
-
     } else {
       assignGraphData(false, data);
     }
-
-  } else { // when selected endpoint is /capital
-    if (formTab.value === "comb") assignGraphDataKombi(revertedSavingResult, revertedWithdrawResult);
+  } else {
+    // when selected endpoint is /capital
+    if (formTab.value === "comb")
+      assignGraphDataKombi(revertedSavingResult, revertedWithdrawResult);
     else assignGraphData(true);
   }
 }
 
 /** Assign graph data to respective states
-* @param {boolean} isCapitalEndpoint - false: current endpoint is NOT /capital, true: current endpoint is /capital
-* @param {Ref<financeMathResult>} capitalSeriesResult - result of fetched capital series
-*/
-function assignGraphData(isCapitalEndpoint: boolean, capitalSeriesResult?: Ref<financeMathResult>) {
+ * @param {boolean} isCapitalEndpoint - false: current endpoint is NOT /capital, true: current endpoint is /capital
+ * @param {Ref<financeMathResult>} capitalSeriesResult - result of fetched capital series
+ */
+function assignGraphData(
+  isCapitalEndpoint: boolean,
+  capitalSeriesResult?: Ref<financeMathResult>,
+) {
   if (isCapitalEndpoint) {
     // Assign result from initial endpoint call as graph data
-      graphData.value.capitalResult = revertOutput(
-      financeMathResults.value[0].value
+    graphData.value.capitalResult = revertOutput(
+      financeMathResults.value[0].value,
     );
     // Set ONLY the capital result property into graph data's capital result
-    graphData.value.capitalResult = graphData.value.capitalResult.capitalResult
+    graphData.value.capitalResult = graphData.value.capitalResult.capitalResult;
     // Assign series from initial endpoint call as graph data
     graphData.value.capitalSeries = revertOutput(
-      financeMathResults.value[0].value
+      financeMathResults.value[0].value,
     ).capitalSeries;
-  } else { // when selected endpoint is not /capital
+  } else {
+    // when selected endpoint is not /capital
     graphData.value.capitalResult = revertOutput(
-      capitalSeriesResult.value.capitalResult
-  );
+      capitalSeriesResult.value.capitalResult,
+    );
     if (formTab.value === "withdraw" && endpoint === "end-date") {
       graphData.value.capitalResult.startInvestment =
         -graphData.value.capitalResult.startInvestment;
     }
     // Assign result from second call to /capital to get capital series as graph data
-    graphData.value.capitalSeries = revertOutput(capitalSeriesResult.value).capitalSeries;
+    graphData.value.capitalSeries = revertOutput(
+      capitalSeriesResult.value,
+    ).capitalSeries;
   }
 }
 
 /** Assign graph data to respective states for Kombiplan
-* @param {Ref<financeMathResult>} sparenData - result of API call
-* @param {Ref<financeMathResult>} entnahmeData - result of API call
-*/
-function assignGraphDataKombi(sparenData: Ref<financeMathResult>, entnahmeData: Ref<financeMathResult>) {
+ * @param {Ref<financeMathResult>} sparenData - result of API call
+ * @param {Ref<financeMathResult>} entnahmeData - result of API call
+ */
+function assignGraphDataKombi(
+  sparenData: Ref<financeMathResult>,
+  entnahmeData: Ref<financeMathResult>,
+) {
   // Combine capital series for graph
-  graphData.value.capitalSeries = sparenData.value.capitalSeries
-    .concat(
-      entnahmeData.value.capitalSeries
-    );
+  graphData.value.capitalSeries = sparenData.value.capitalSeries.concat(
+    entnahmeData.value.capitalSeries,
+  );
 
   // Assign needed variables for the capital result of graph
   graphData.value.capitalResult = entnahmeData.value.capitalResult;
   graphData.value.capitalResult.startInvestment =
     sparenData.value.capitalResult.startInvestment;
 }
-
 
 /* -------------------------------------------------------------------------- */
 /*                                Lifecycle Hooks                             */
@@ -443,12 +467,12 @@ const { locale, setLocale } = useI18n();
 
 const languages = ref([
   { name: "Deutsch - DE", path: "de-DE" },
-  { name: "English - GB", path: "en-GB" }
+  { name: "English - GB", path: "en-GB" },
 ]);
 
 // Finds the language object based on the current value of locale.value
 const findLanguageByPath = (path) => {
-  return languages.value.find(lang => lang.path === path);
+  return languages.value.find((lang) => lang.path === path);
 };
 
 const selectedLanguage = ref(findLanguageByPath(locale.value));
@@ -462,7 +486,6 @@ watch(selectedLanguage, (newValue, oldValue) => {
 
 // Generates a list of objects for v-select
 const languageItems = computed(() => languages.value);
-
 </script>
 
 <template>
@@ -478,15 +501,15 @@ const languageItems = computed(() => languages.value);
       <v-spacer></v-spacer>
       <v-col cols="4" sm="2" class="flex align-center">
         <v-select
-            :label="$t('label_language')"
-            density="compact"
-            variant="outlined"
-            hide-details
-            v-model="selectedLanguage"
-            :items="languageItems"
-            item-title="name"
-            item-value="path"
-            return-object
+          :label="$t('label_language')"
+          density="compact"
+          variant="outlined"
+          hide-details
+          v-model="selectedLanguage"
+          :items="languageItems"
+          item-title="name"
+          item-value="path"
+          return-object
         >
         </v-select>
       </v-col>
@@ -505,167 +528,210 @@ const languageItems = computed(() => languages.value);
   <v-container fluid class="font-display">
     <v-row class="justify-center">
       <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1">
-          <v-card class="h-100 rounded-xl elevation-6 pb-5">
-              <v-card-text>
-                <div>
-                  <form-tabs @tabUpdate="(n: string) => {(formTab = n);answerWarning=true}" />
-                </div>
-                <v-window v-model="formTab">
-                  <v-window-item value="saving" transition="false" reverse-transition="false" >
-                    <sparplan-form
-                      @calculateInput="fetchFinanceMathAPI"
-                      @inputChange="answerWarning=true"
-                      :apiResponse="revertedSavingResult"
-                    />
-                  </v-window-item>
-                  <v-window-item value="withdraw" transition="false" reverse-transition="false"
-                    ><entnahme-form
-                      @calculateInput="fetchFinanceMathAPI"
-                      @inputChange="answerWarning=true"
-                      :apiResponse="revertedWithdrawResult"
-                  /></v-window-item>
-                  <v-window-item value="comb" transition="false" reverse-transition="false">
-                    <kombi-form
-                      @calculateInput="fetchKombiPlan"
-                      @inputChange="answerWarning=true"
-                      :apiResponseSparen="revertedSavingResult"
-                      :apiResponseEntnahme="revertedWithdrawResult"
-                    />
-                  </v-window-item>
-                </v-window>
-              </v-card-text>
-          </v-card>
+        <v-card class="h-100 rounded-xl elevation-6 pb-5">
+          <v-card-text>
+            <div>
+              <form-tabs
+                @tabUpdate="
+                  (n: string) => {
+                    formTab = n;
+                    answerWarning = true;
+                  }
+                "
+              />
+            </div>
+            <v-window v-model="formTab">
+              <v-window-item
+                value="saving"
+                transition="false"
+                reverse-transition="false"
+              >
+                <sparplan-form
+                  @calculateInput="fetchFinanceMathAPI"
+                  @inputChange="answerWarning = true"
+                  :apiResponse="revertedSavingResult"
+                />
+              </v-window-item>
+              <v-window-item
+                value="withdraw"
+                transition="false"
+                reverse-transition="false"
+                ><entnahme-form
+                  @calculateInput="fetchFinanceMathAPI"
+                  @inputChange="answerWarning = true"
+                  :apiResponse="revertedWithdrawResult"
+              /></v-window-item>
+              <v-window-item
+                value="comb"
+                transition="false"
+                reverse-transition="false"
+              >
+                <kombi-form
+                  @calculateInput="fetchKombiPlan"
+                  @inputChange="answerWarning = true"
+                  :apiResponseSparen="revertedSavingResult"
+                  :apiResponseEntnahme="revertedWithdrawResult"
+                />
+              </v-window-item>
+            </v-window>
+          </v-card-text>
+        </v-card>
       </v-col>
       <v-col :cols="12" :sm="12" :md="6" :lg="api ? 4 : 6" class="px-1">
-          <v-card class="h-100 rounded-xl elevation-6 pb-5">
-            <div>
-              <v-card-text>
-                <grafik-tab
-                  @grafikUpdate="(m: string) => (grafikTabs = m)"
-                  :callsTwoSameEndpoints="callsTwoSameEndpoints"
-                />
-                <v-window v-model="grafikTabs">
-                  <v-window-item value="aktuell">
-                    <v-overlay
-                      v-model="answerWarning"
-                      contained
-                      :persistent="true"
-                      class="rounded-lg mt-3 d-flex justify-center align-center"
-                    >
-                    <p class="text-2xl text-center text-white">{{ $t('answerWarning') }}</p>
-                    </v-overlay>
-                    <AnswerSentence 
-                    :class="answerWarning?'blur':''"
-                    :output="formTab==='comb'? (endpoint[0]==='saving'?revertedSavingResult : graphData.capitalResult  ): graphData.capitalResult" 
-                    :currency="$t('currency')" 
-                    :endpoint="formTab==='comb'?endpoint[1]:endpoint" 
-                    :scenario="formTab==='comb'?endpoint[0]:formTab" 
-                    :startDate="startDate" 
-                    :seperator="$t('seperator')"></AnswerSentence>
-                    <graph
-                      :class="answerWarning?'blur':''"
-                      :series="graphData.capitalSeries"
-                      :result="graphData.capitalResult"
-                      :prevSeries="previousGraphData.capitalSeries"
-                      :prevResult="previousGraphData.capitalResult"
-                    />
-                  </v-window-item>
-                  <v-window-item value="vergleich">
-                    <v-overlay
-                      v-model="answerWarning"
-                      contained
-                      :persistent="true"
-                      class="rounded-lg mt-3 d-flex justify-center align-center"
-                    >
-                    <p class="text-2xl text-center text-white">{{ $t('answerWarning') }}</p>
-                    </v-overlay>
-                    <vergleichstabelle v-if="formTab === 'comb'"
-                      :class="answerWarning?'blur':''"
-                      :oldRequest="financeMathInputsSparen[1]"
-                      :newRequest="financeMathInputsSparen[0]"
-                      :oldRequestEntnahme="financeMathInputsEntnahme[1]"
-                      :newRequestEntnahme="financeMathInputsEntnahme[0]"
-                     :oldResponse="endpoint[0] === 'saving' ? financeMathResultsSparen[1].value : financeMathResultsEntnahme[1].value"
-                      :newResponse="endpoint[0] === 'saving' ? financeMathResultsSparen[0].value : financeMathResultsEntnahme[0].value"
-                      :endpoint="endpoint[1]"
-                      :isKombiplan="true"
-                    ></vergleichstabelle>
-                    <vergleichstabelle v-else
-                      :class="answerWarning?'blur':''"
-                      :oldRequest="financeMathInputs[1]"
-                      :newRequest="financeMathInputs[0]"
-                      :oldResponse="financeMathResults[1].value"
-                      :newResponse="financeMathResults[0].value"
-                      :endpoint="endpoint"
-                      :isKombiplan="false"
-                    ></vergleichstabelle>
-                  </v-window-item>
-                  <v-window-item value="tabelle" transition="false" reverse-transition="false">
-                    <v-overlay
-                      v-model="answerWarning"
-                      contained
-                      :persistent="true"
-                      class="rounded-lg mt-3 d-flex justify-center align-center"
-                    >
-                    <p class="text-2xl text-center text-white">{{ $t('answerWarning') }}</p>
-                    </v-overlay>
-                    <series-table
-                    :class="answerWarning?'blur':''"
-                    :apiRequest="formTab==='comb'?financeMathInputsSparen[0]:financeMathInputs[0]"
-                    :apiResponse="graphData"/>
-                  </v-window-item>
-                </v-window>
-              </v-card-text>
-            </div>
-          </v-card>
+        <v-card class="h-100 rounded-xl elevation-6 pb-5">
+          <div>
+            <v-card-text>
+              <grafik-tab
+                @grafikUpdate="(m: string) => (grafikTabs = m)"
+                :callsTwoSameEndpoints="callsTwoSameEndpoints"
+              />
+              <v-window v-model="grafikTabs">
+                <v-window-item value="aktuell">
+                  <v-overlay
+                    v-model="answerWarning"
+                    contained
+                    :persistent="true"
+                    class="rounded-lg mt-3 d-flex justify-center align-center"
+                  >
+                    <p class="text-2xl text-center text-white">
+                      {{ $t("answerWarning") }}
+                    </p>
+                  </v-overlay>
+                  <AnswerSentence
+                    :class="answerWarning ? 'blur' : ''"
+                    :output="
+                      formTab === 'comb'
+                        ? endpoint[0] === 'saving'
+                          ? revertedSavingResult
+                          : graphData.capitalResult
+                        : graphData.capitalResult
+                    "
+                    :currency="$t('currency')"
+                    :endpoint="formTab === 'comb' ? endpoint[1] : endpoint"
+                    :scenario="formTab === 'comb' ? endpoint[0] : formTab"
+                    :startDate="startDate"
+                    :seperator="$t('seperator')"
+                  ></AnswerSentence>
+                  <graph
+                    :class="answerWarning ? 'blur' : ''"
+                    :series="graphData.capitalSeries"
+                    :result="graphData.capitalResult"
+                    :prevSeries="previousGraphData.capitalSeries"
+                    :prevResult="previousGraphData.capitalResult"
+                  />
+                </v-window-item>
+                <v-window-item value="vergleich">
+                  <v-overlay
+                    v-model="answerWarning"
+                    contained
+                    :persistent="true"
+                    class="rounded-lg mt-3 d-flex justify-center align-center"
+                  >
+                    <p class="text-2xl text-center text-white">
+                      {{ $t("answerWarning") }}
+                    </p>
+                  </v-overlay>
+                  <vergleichstabelle
+                    v-if="formTab === 'comb'"
+                    :class="answerWarning ? 'blur' : ''"
+                    :oldRequest="financeMathInputsSparen[1]"
+                    :newRequest="financeMathInputsSparen[0]"
+                    :oldRequestEntnahme="financeMathInputsEntnahme[1]"
+                    :newRequestEntnahme="financeMathInputsEntnahme[0]"
+                    :oldResponse="
+                      endpoint[0] === 'saving'
+                        ? financeMathResultsSparen[1].value
+                        : financeMathResultsEntnahme[1].value
+                    "
+                    :newResponse="
+                      endpoint[0] === 'saving'
+                        ? financeMathResultsSparen[0].value
+                        : financeMathResultsEntnahme[0].value
+                    "
+                    :endpoint="endpoint[1]"
+                    :isKombiplan="true"
+                  ></vergleichstabelle>
+                  <vergleichstabelle
+                    v-else
+                    :class="answerWarning ? 'blur' : ''"
+                    :oldRequest="financeMathInputs[1]"
+                    :newRequest="financeMathInputs[0]"
+                    :oldResponse="financeMathResults[1].value"
+                    :newResponse="financeMathResults[0].value"
+                    :endpoint="endpoint"
+                    :isKombiplan="false"
+                  ></vergleichstabelle>
+                </v-window-item>
+                <v-window-item
+                  value="tabelle"
+                  transition="false"
+                  reverse-transition="false"
+                >
+                  <v-overlay
+                    v-model="answerWarning"
+                    contained
+                    :persistent="true"
+                    class="rounded-lg mt-3 d-flex justify-center align-center"
+                  >
+                    <p class="text-2xl text-center text-white">
+                      {{ $t("answerWarning") }}
+                    </p>
+                  </v-overlay>
+                  <series-table
+                    :class="answerWarning ? 'blur' : ''"
+                    :apiRequest="
+                      formTab === 'comb'
+                        ? financeMathInputsSparen[0]
+                        : financeMathInputs[0]
+                    "
+                    :apiResponse="graphData"
+                  />
+                </v-window-item>
+              </v-window>
+            </v-card-text>
+          </div>
+        </v-card>
       </v-col>
       <!--hide on leave to solve transition issue -->
       <v-slide-x-reverse-transition leave-absolute hide-on-leave="">
-        <v-col
-          :cols="12"
-          :sm="12"
-          :md="12"
-          :lg="4"
-          class="px-1"
-          v-if="api"
-        >
-            <v-card class="h-100 rounded-xl elevation-6 pb-5">
-              <v-card-text>
-                <api-visualization
-                  v-if="formTab == 'comb'"
-                  :apiRequest="financeMathInputsSparen[0]"
-                  :apiRequest2="financeMathInputsEntnahme[0]"
-                  :apiResponse="financeMathResultsSparen[0].value"
-                  :apiResponse2="financeMathResultsEntnahme[0].value"
-                  :endPoint="endpoint[1]"
-                />
-                <api-visualization
-                  v-else
-                  :apiRequest="financeMathInputs[0]"
-                  :apiResponse="financeMathResults[0].value"
-                  :apiRequest2="null"
-                  :apiResponse2="null"
-                  :endPoint="endpoint"
-                />
-              </v-card-text>
-            </v-card>
+        <v-col :cols="12" :sm="12" :md="12" :lg="4" class="px-1" v-if="api">
+          <v-card class="h-100 rounded-xl elevation-6 pb-5">
+            <v-card-text>
+              <api-visualization
+                v-if="formTab == 'comb'"
+                :apiRequest="financeMathInputsSparen[0]"
+                :apiRequest2="financeMathInputsEntnahme[0]"
+                :apiResponse="financeMathResultsSparen[0].value"
+                :apiResponse2="financeMathResultsEntnahme[0].value"
+                :endPoint="endpoint[1]"
+              />
+              <api-visualization
+                v-else
+                :apiRequest="financeMathInputs[0]"
+                :apiResponse="financeMathResults[0].value"
+                :apiRequest2="null"
+                :apiResponse2="null"
+                :endPoint="endpoint"
+              />
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-slide-x-reverse-transition>
     </v-row>
   </v-container>
   <v-dialog v-model="dialog" width="auto">
-      <v-card>
-        <v-card-title>
-          {{ $t('dialog.message') }}
-        </v-card-title>
-        <v-card-text v-text="dialogText"></v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" block @click="dialog = false"
-            >{{ $t('dialog.close') }}</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <v-card>
+      <v-card-title>
+        {{ $t("dialog.message") }}
+      </v-card-title>
+      <v-card-text v-text="dialogText"></v-card-text>
+      <v-card-actions>
+        <v-btn color="primary" block @click="dialog = false">{{
+          $t("dialog.close")
+        }}</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>
@@ -692,24 +758,24 @@ const languageItems = computed(() => languages.value);
 }
 
 .font-display {
-  font-family: 'Poppins', 'sans-serif';
+  font-family: "Poppins", "sans-serif";
 }
-.warning-tooltip{
+.warning-tooltip {
   position: absolute;
   right: 0;
   color: #fcb900;
 }
-.warning-window{
-  background-color: rgba(224, 208, 61,0.35);
+.warning-window {
+  background-color: rgba(224, 208, 61, 0.35);
   border: 1px solid #c2b544;
 }
 
 .diagonal-text {
-      transform: rotate(30deg);
-      white-space: nowrap; /* Prevent text from wrapping */
-      color: white;
+  transform: rotate(30deg);
+  white-space: nowrap; /* Prevent text from wrapping */
+  color: white;
 }
-.blur{
-  filter: blur(2px)
+.blur {
+  filter: blur(2px);
 }
 </style>

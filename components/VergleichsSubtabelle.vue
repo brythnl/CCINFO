@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { combinedData } from '../utils/vergleichstabelleUtils';
+import type { combinedData } from "../utils/vergleichstabelleUtils";
 
 const props = defineProps<{
   combinedArray?: combinedData[];
-}>()
-
+}>();
 </script>
 
 <template>
@@ -20,13 +19,17 @@ const props = defineProps<{
     <tbody>
       <tr v-for="item in props.combinedArray">
         <td>{{ item.name }}</td>
-        <td v-if="!Array.isArray(item.previousValue)">{{ item.previousValue }}</td>
+        <td v-if="!Array.isArray(item.previousValue)">
+          {{ item.previousValue }}
+        </td>
         <td v-else>
           <tr v-for="(element, index) in item.previousValue">
             <td>{{ index + 1 }} : {{ element }}</td>
           </tr>
         </td>
-        <td v-if="!Array.isArray(item.currentValue)">{{ item.currentValue }}</td>
+        <td v-if="!Array.isArray(item.currentValue)">
+          {{ item.currentValue }}
+        </td>
         <td v-else>
           <tr v-for="(element, index) in item.currentValue">
             <td>{{ index + 1 }} : {{ element }}</td>
@@ -34,12 +37,18 @@ const props = defineProps<{
         </td>
         <td
           :class="{
-            'red-text': item.valueDifference.value as number < 0,
-            'green-text': item.valueDifference.value as number > 0,
+            'red-text': (item.valueDifference.value as number) < 0,
+            'green-text': (item.valueDifference.value as number) > 0,
           }"
           v-if="item.valueDifference.value !== 'array'"
         >
-          {{ item.valueDifference.sign }}{{ item.valueDifference.unit === '' ? $n(item.valueDifference.value, 'currency') : item.valueDifference.value }} {{ item.valueDifference.unit }}
+          {{ item.valueDifference.sign
+          }}{{
+            item.valueDifference.unit === ""
+              ? $n(item.valueDifference.value, "currency")
+              : item.valueDifference.value
+          }}
+          {{ item.valueDifference.unit }}
         </td>
         <td v-else></td>
       </tr>

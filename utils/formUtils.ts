@@ -1,18 +1,22 @@
-import type { financeMathInput,financeMathResult } from "~/types/index.d.ts";
+import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
 
 // Date constants for form default values (todayDate, inTenYears, inTwentyYears)
 export const todayDate = formatDate(new Date());
 export const nextMonthFirstDay = calculateNextMonthFirstDay();
 
 function formatDate(date: Date) {
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const year = date.getFullYear().toString();
   return `${year}-${month}-${day}`;
 }
 function calculateNextMonthFirstDay() {
   const currentDate = new Date();
-  const nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+  const nextMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    1,
+  );
   return formatDate(nextMonth);
 }
 
@@ -63,51 +67,78 @@ export const validateInput = (userInput: financeMathInput): void => {
 };
 
 // set end date value as the latest date found from all date inputs (oneTimeInvestmentDate, savingPlanEnd, end)
-export const setEndDateToBiggestDate = (userInput: financeMathInput): boolean => {
+export const setEndDateToBiggestDate = (
+  userInput: financeMathInput,
+): boolean => {
   if (userInput.endpoint === "end-date") return false;
   const tmp: string[] = JSON.parse(
     JSON.stringify(userInput.oneTimeInvestmentDate),
   );
-  if(userInput.savingPlanEnd){
+  if (userInput.savingPlanEnd) {
     tmp.push(JSON.parse(JSON.stringify(userInput.savingPlanEnd)));
   }
   tmp.push(JSON.parse(JSON.stringify(userInput.end)));
   let endBefore: string = JSON.parse(JSON.stringify(userInput.end));
   userInput.end = findBiggestDate(tmp);
-  if(endBefore == userInput.end){return false;}else{return true;}
+  if (endBefore == userInput.end) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
-export const revertOutput = (responseOutput:financeMathResult):financeMathResult =>{
+export const revertOutput = (
+  responseOutput: financeMathResult,
+): financeMathResult => {
   let apiOutput = JSON.parse(JSON.stringify(responseOutput));
-  if(apiOutput.capitalResult){
-    apiOutput.capitalResult.capitalAmount=Math.round(apiOutput.capitalResult.capitalAmount/100);
-    apiOutput.capitalResult.savingRate=Math.ceil(apiOutput.capitalResult.savingRate/100);
-    apiOutput.capitalResult.startInvestment=Math.round(apiOutput.capitalResult.startInvestment/100);
-    apiOutput.capitalResult.interestRate=Math.round(apiOutput.capitalResult.interestRate*100);
+  if (apiOutput.capitalResult) {
+    apiOutput.capitalResult.capitalAmount = Math.round(
+      apiOutput.capitalResult.capitalAmount / 100,
+    );
+    apiOutput.capitalResult.savingRate = Math.ceil(
+      apiOutput.capitalResult.savingRate / 100,
+    );
+    apiOutput.capitalResult.startInvestment = Math.round(
+      apiOutput.capitalResult.startInvestment / 100,
+    );
+    apiOutput.capitalResult.interestRate = Math.round(
+      apiOutput.capitalResult.interestRate * 100,
+    );
   }
-  if(apiOutput.capitalSeries){
-    apiOutput.capitalSeries = apiOutput.capitalSeries.map((investment)=>Math.round(investment/100));}
-  if(apiOutput.interestRate){
-    apiOutput.interestRate = Math.round(apiOutput.interestRate*100); }
-  if(apiOutput.startValue){
-    apiOutput.startValue = Math.round(apiOutput.startValue/100);  }
-  if(apiOutput.compoundInterest){
-    apiOutput.compoundInterest = Math.round(apiOutput.compoundInterest*100);  }
-  if(apiOutput.capitalAmount){
-    apiOutput.capitalAmount = Math.round(apiOutput.capitalAmount/100);  }
-  if(apiOutput.savingRate){
-    apiOutput.savingRate = Math.ceil(apiOutput.savingRate/100);  }
-  if(apiOutput.startInvestment){
-    apiOutput.startInvestment = Math.round(apiOutput.startInvestment/100);  }
+  if (apiOutput.capitalSeries) {
+    apiOutput.capitalSeries = apiOutput.capitalSeries.map((investment) =>
+      Math.round(investment / 100),
+    );
+  }
+  if (apiOutput.interestRate) {
+    apiOutput.interestRate = Math.round(apiOutput.interestRate * 100);
+  }
+  if (apiOutput.startValue) {
+    apiOutput.startValue = Math.round(apiOutput.startValue / 100);
+  }
+  if (apiOutput.compoundInterest) {
+    apiOutput.compoundInterest = Math.round(apiOutput.compoundInterest * 100);
+  }
+  if (apiOutput.capitalAmount) {
+    apiOutput.capitalAmount = Math.round(apiOutput.capitalAmount / 100);
+  }
+  if (apiOutput.savingRate) {
+    apiOutput.savingRate = Math.ceil(apiOutput.savingRate / 100);
+  }
+  if (apiOutput.startInvestment) {
+    apiOutput.startInvestment = Math.round(apiOutput.startInvestment / 100);
+  }
   return apiOutput;
-}
+};
 
 /**
  * Remove searched API endpoint from the input
  * @param {financeMathInput} formInput - User data for API query parameters
  * @return {financeMathInput}
  */
-export const removeSearchedEndpointFromInput = (formInput: financeMathInput): financeMathInput => {
+export const removeSearchedEndpointFromInput = (
+  formInput: financeMathInput,
+): financeMathInput => {
   const processedFormInput = formInput;
 
   switch (formInput.endpoint) {
@@ -130,4 +161,4 @@ export const removeSearchedEndpointFromInput = (formInput: financeMathInput): fi
   }
 
   return processedFormInput;
-}
+};

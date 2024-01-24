@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { financeMathInput, financeMathResult } from '~/types/index.d.ts';
-import { useDayjs } from '#dayjs'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
+import type { financeMathInput, financeMathResult } from "~/types/index.d.ts";
+import { useDayjs } from "#dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 interface difference {
   sign: string;
@@ -16,11 +16,11 @@ interface combinedData {
   valueDifference: difference;
 }
 
-type financeMathTypes = string | string[] | number | number[]
+type financeMathTypes = string | string[] | number | number[];
 
 const { t, n } = useI18n();
-const dayjs = useDayjs()
-dayjs.extend(customParseFormat)
+const dayjs = useDayjs();
+dayjs.extend(customParseFormat);
 
 const props = defineProps<{
   oldRequest?: financeMathInput;
@@ -31,7 +31,7 @@ const props = defineProps<{
   newResponse?: financeMathResult;
   endpoint?: string;
   isKombiplan?: boolean;
-}>()
+}>();
 
 const requestComparisonArray: combinedData[] = computed(() => {
   if (props.oldRequest && props.newRequest) {
@@ -56,33 +56,33 @@ const responseFilteredComparisonArray: combinedData[] = computed(() => {
     return filterCombinedArrayResp(
       createCombinedArray(
         JSON.parse(JSON.stringify(props.oldResponse)),
-        JSON.parse(JSON.stringify(props.newResponse))
+        JSON.parse(JSON.stringify(props.newResponse)),
       ),
-      props.endpoint
+      props.endpoint,
     );
   } else return [];
 });
 
 const fieldNames = {
-  "begin": t("fieldNames.begin"),
-  "end": t("fieldNames.end"),
-  "interestRate": t("fieldNames.interestRate"),
-  "oneTimeInvestment": t("fieldNames.oneTimeInvestment"),
-  "oneTimeInvestmentDate": t("fieldNames.oneTimeInvestmentDate"),
-  "savingRate": t("fieldNames.savingRate"),
-  "endValue": t("fieldNames.endValue"),
-  "interestCalculation": "",
-  "dynamicSavingRateFactor": "",
-  "reductionFactor": "",
-  "savingPlanBegin": "",
-  "savingPlanEnd": "",
-  "capitalAmount": t("fieldNames.capitalAmount"),
-  "startInvestment": t("fieldNames.startInvestment")
-}
+  begin: t("fieldNames.begin"),
+  end: t("fieldNames.end"),
+  interestRate: t("fieldNames.interestRate"),
+  oneTimeInvestment: t("fieldNames.oneTimeInvestment"),
+  oneTimeInvestmentDate: t("fieldNames.oneTimeInvestmentDate"),
+  savingRate: t("fieldNames.savingRate"),
+  endValue: t("fieldNames.endValue"),
+  interestCalculation: "",
+  dynamicSavingRateFactor: "",
+  reductionFactor: "",
+  savingPlanBegin: "",
+  savingPlanEnd: "",
+  capitalAmount: t("fieldNames.capitalAmount"),
+  startInvestment: t("fieldNames.startInvestment"),
+};
 
 const createCombinedArray = (
   previousData: financeMathInput | financeMathResult,
-  currentData: financeMathInput | financeMathResult
+  currentData: financeMathInput | financeMathResult,
 ): combinedData[] => {
   const combinedArray = [];
   let previousValue: financeMathTypes, currentValue: financeMathTypes;
@@ -92,27 +92,31 @@ const createCombinedArray = (
       for (const capitalResultKey in previousData[key]) {
         previousValue = previousData[key][capitalResultKey];
         currentValue = currentData[key][capitalResultKey];
-        const valueDifference = calculateDifference(previousValue, currentValue);
+        const valueDifference = calculateDifference(
+          previousValue,
+          currentValue,
+        );
 
-        if (valueDifference !== 0 && valueDifference !== ""){
+        if (valueDifference !== 0 && valueDifference !== "") {
           combinedArray.push({
             name: fieldNames[capitalResultKey],
             previousValue: formatValue(previousValue, capitalResultKey),
             currentValue: formatValue(currentValue, capitalResultKey),
-            valueDifference: formatDifference(valueDifference, capitalResultKey),
+            valueDifference: formatDifference(
+              valueDifference,
+              capitalResultKey,
+            ),
           });
         }
       }
-
     } else if (key === "capitalSeries") {
       break;
-
     } else {
       previousValue = previousData[key];
       currentValue = currentData[key];
       const valueDifference = calculateDifference(previousValue, currentValue);
 
-      if (valueDifference !== 0 && valueDifference !== ""){
+      if (valueDifference !== 0 && valueDifference !== "") {
         combinedArray.push({
           name: fieldNames[key],
           previousValue: formatValue(previousValue, key),
@@ -124,7 +128,7 @@ const createCombinedArray = (
   }
 
   return combinedArray;
-}
+};
 
 const filterCombinedArrayResp = (
   comparisonArray: combinedData[],
@@ -150,7 +154,9 @@ const filterCombinedArrayResp = (
       break;
   }
 
-  return comparisonArray.filter(item => item && item.name === selectedEndpoint);
+  return comparisonArray.filter(
+    (item) => item && item.name === selectedEndpoint,
+  );
 };
 
 const formatValue = (
@@ -158,18 +164,18 @@ const formatValue = (
   key: string,
 ): string | string[] => {
   const formatSingleValue = (value: string | number): string => {
-    if (typeof value === 'string' && dayjs(value).isValid()) {
-      return dayjs(value).format('DD.MM.YYYY');
+    if (typeof value === "string" && dayjs(value).isValid()) {
+      return dayjs(value).format("DD.MM.YYYY");
     }
 
-    if (typeof value === 'number') {
-      return key === "interestRate" ?
-        `${(value * 100).toFixed(2)} %`
-      : `${n((value / 100), 'currency')}`;
+    if (typeof value === "number") {
+      return key === "interestRate"
+        ? `${(value * 100).toFixed(2)} %`
+        : `${n(value / 100, "currency")}`;
     }
 
     return value;
-  }
+  };
 
   if (Array.isArray(value)) {
     if (value.length === 1) {
@@ -186,32 +192,41 @@ const calculateDifference = (
   previousValue: string | number | Array<string | number>,
   currentValue: string | number | Array<string | number>,
 ): string | number => {
-  const calculateSingleDifference = (previousValue: string | number, currentValue: string | number): string | number => {
+  const calculateSingleDifference = (
+    previousValue: string | number,
+    currentValue: string | number,
+  ): string | number => {
     if (typeof previousValue === "number" && typeof currentValue === "number") {
       return currentValue - previousValue;
     }
 
-    if (typeof previousValue === 'string' && dayjs(previousValue).isValid()) {
+    if (typeof previousValue === "string" && dayjs(previousValue).isValid()) {
       const previousDate = dayjs(previousValue);
       const currentDate = dayjs(currentValue);
 
-      return currentDate.diff(previousDate, 'month');
+      return currentDate.diff(previousDate, "month");
     }
 
-    return '';
-  }
+    return "";
+  };
 
   if (Array.isArray(previousValue) && Array.isArray(currentValue)) {
     if (previousValue.length === 1 && currentValue.length === 1) {
-      return calculateSingleDifference(previousValue[0] as string | number, currentValue[0] as string | number)
+      return calculateSingleDifference(
+        previousValue[0] as string | number,
+        currentValue[0] as string | number,
+      );
     }
 
     // This is a placeholder. Real solution for finding the difference for Startkapital (Array) not yet found.
-    return 'array';
+    return "array";
   }
 
-  return calculateSingleDifference(previousValue as string | number, currentValue as string | number);
-}
+  return calculateSingleDifference(
+    previousValue as string | number,
+    currentValue as string | number,
+  );
+};
 
 const formatDifference = (
   difference: string | number,
@@ -219,13 +234,13 @@ const formatDifference = (
 ): difference => {
   if (typeof difference === "string") {
     return {
-      sign: '',
+      sign: "",
       value: difference,
-      unit: ''
+      unit: "",
     };
   }
 
-  const sign = difference > 0 ? '+' : '';
+  const sign = difference > 0 ? "+" : "";
   let unit: string;
 
   if (key === "begin" || key === "end" || key === "oneTimeInvestmentDate") {
@@ -239,51 +254,64 @@ const formatDifference = (
     return {
       sign,
       value: difference,
-      unit
-    }
+      unit,
+    };
   } else {
     if (key === "interestRate") {
       difference = (difference * 100).toFixed(2);
-      unit = '%';
+      unit = "%";
     } else {
       difference /= 100;
-      unit = '';
+      unit = "";
     }
 
     return {
       sign,
       value: difference,
-      unit
-    }
+      unit,
+    };
   }
-}
-
+};
 </script>
 
 <template>
   <div>
-    <h4 class="flex justify-center pt-5 pb-3 font-bold text-lg"><v-icon class="pe-2">mdi-swap-horizontal</v-icon> {{ $t("vergleichstabelle.anderungen") }}</h4>
+    <h4 class="flex justify-center pt-5 pb-3 font-bold text-lg">
+      <v-icon class="pe-2">mdi-swap-horizontal</v-icon>
+      {{ $t("vergleichstabelle.anderungen") }}
+    </h4>
     <div>
       <v-sheet
         class="rounded-lg elevation-0 bg-primary py-2 mb-3"
         v-if="isKombiplan"
       >
-        <h1 class="text-white ps-5 font-bold">{{ $t("vergleichstabelle.sparphase") }}</h1>
+        <h1 class="text-white ps-5 font-bold">
+          {{ $t("vergleichstabelle.sparphase") }}
+        </h1>
       </v-sheet>
       <VergleichsSubtabelle :combinedArray="requestComparisonArray" />
     </div>
     <div v-if="isKombiplan">
-      <v-sheet
-        class="rounded-lg elevation-0 bg-primary py-2 mt-5 mb-3"
-      >
-        <h1 class="text-white ps-5 font-bold">{{ $t("vergleichstabelle.entnahmephase") }}</h1>
+      <v-sheet class="rounded-lg elevation-0 bg-primary py-2 mt-5 mb-3">
+        <h1 class="text-white ps-5 font-bold">
+          {{ $t("vergleichstabelle.entnahmephase") }}
+        </h1>
       </v-sheet>
       <VergleichsSubtabelle :combinedArray="requestComparisonArrayEntnahme" />
     </div>
   </div>
   <div>
-    <h4 v-if="!isKombiplan" class="flex justify-center pt-10 pb-3 font-bold text-lg"><v-icon class="pe-2">mdi-equal-box</v-icon> {{ $t("vergleichstabelle.ergebnis") }}</h4>
-    <h4 v-else class="flex justify-center pt-5 pb-3 font-bold text-lg"><v-icon class="pe-2">mdi-equal-box</v-icon> {{ $t("vergleichstabelle.ergebnis") }}</h4>
+    <h4
+      v-if="!isKombiplan"
+      class="flex justify-center pt-10 pb-3 font-bold text-lg"
+    >
+      <v-icon class="pe-2">mdi-equal-box</v-icon>
+      {{ $t("vergleichstabelle.ergebnis") }}
+    </h4>
+    <h4 v-else class="flex justify-center pt-5 pb-3 font-bold text-lg">
+      <v-icon class="pe-2">mdi-equal-box</v-icon>
+      {{ $t("vergleichstabelle.ergebnis") }}
+    </h4>
     <VergleichsSubtabelle :combinedArray="responseFilteredComparisonArray" />
   </div>
 </template>
