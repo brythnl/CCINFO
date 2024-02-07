@@ -735,11 +735,10 @@ const languageItems = computed(() => languages.value);
           <v-dialog
               v-model="about"
               activator="parent"
-              width="500"
+              width="600"
           >
             <v-card>
-
-              <v-card-title>
+              <v-card-title class="px-6 pt-4">
                 <v-img
                     src="assets/img/fhaachen-logo.png"
                     :width="130"
@@ -751,8 +750,8 @@ const languageItems = computed(() => languages.value);
               <v-card-text>
                 Diese Anwendung wurde mit viel Leidenschaft im Auftrag der aixigo AG erstellt von Bryan Joestin, Claudia
                 Strehle-Mayo, Fachrial Perdana, Johannes Schneidewind, Redouan Akdim.<br><br>Es handelt sich um ein
-                Praxisprojekt im Wintersemester 2023/24 des Studiengangs Wirtschaftsinformatik an der FH Aachen. Das
-                Entwicklungsteam von Studierenden der Informatik und der Wirtschaftsinformatik wurde betreut durch von
+                Praxisprojekt im Wintersemester 2023/24 des Fachbereichs 5 an der FH Aachen. Das
+                Entwicklungsteam von Studierenden der Informatik und der Wirtschaftsinformatik wurde betreut von
                 Prof. Mathias Eggert.
               </v-card-text>
               <v-card-actions>
