@@ -529,7 +529,7 @@ const languageItems = computed(() => languages.value);
   <v-container fluid class="font-display">
     <v-row class="justify-center">
       <v-col :cols="12" :sm="12" :md="6" :lg="4" class="px-1">
-        <v-card class="h-100 rounded-xl elevation-6 pb-5">
+        <v-card class="h-100 rounded-xl elevation-6 ">
           <v-card-text>
             <div>
               <form-tabs
