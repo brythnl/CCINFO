@@ -731,7 +731,7 @@ const languageItems = computed(() => languages.value);
             variant="text"
             density="compact"
         >
-          About
+          Credits
           <v-dialog
               v-model="about"
               activator="parent"
