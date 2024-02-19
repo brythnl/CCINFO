@@ -275,7 +275,7 @@ watch([sparInput, entnahmeInput], () => {
 
 <template>
   <!-- headline -->
-  <h1 class="flex justify-center pt-5 pb-2 font-bold text-lg">
+  <h1 class="flex justify-center pt-5 pb-2 font-bold">
     {{ $t("fieldNames.title") }}
   </h1>
   <v-form>
